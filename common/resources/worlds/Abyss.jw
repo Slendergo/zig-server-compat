@@ -1,0 +1,14 @@
+﻿{
+    "id": 0,
+    "isLimbo": false,
+    "persist": false,
+    "name": "Abyss",
+    "sbName": "Abyss of Demons",
+    "difficulty": 4,
+    "background": 0,
+    "blocking": 2,
+    "restrictTp": false,
+    "showDisplays": false,
+    "portals": [ 1819 ],
+    "maps": []
+}
