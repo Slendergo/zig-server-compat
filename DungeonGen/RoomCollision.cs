@@ -19,6 +19,7 @@
 */
 
 using System;
+using System.IO.Compression;
 using System.Collections.Generic;
 using DungeonGenerator.Dungeon;
 using RotMG.Common;
@@ -78,8 +79,8 @@ namespace DungeonGenerator {
 
 		bool HitTest(int x, int y, Rect bounds) {
 			var key = new RoomKey(x, y);
-			var roomList = rooms.GetValueOrDefault(key, (HashSet<Room>)null);
-			if (roomList != null) {
+			HashSet<Room> roomList;
+			if (rooms.TryGetValue(key, out roomList)) {
 				foreach (var room in roomList)
 					if (!room.Bounds.Intersection(bounds).IsEmpty)
 						return true;

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
-using Ionic.Zlib;
 using System.IO;
+using System.IO.Compression;
 using common;
 using common.resources;
 using wServer.realm.terrain;
@@ -40,7 +40,10 @@ namespace terrain
         public static byte[] Convert(XmlData data, string json)
         {
             var obj = JsonConvert.DeserializeObject<json_dat>(json);
-            var dat = ZlibStream.UncompressBuffer(obj.data);
+            Span<byte> dat = new();
+            int length = 0;
+            using (var decompressor = new ZLibStream(new MemoryStream(obj.data), CompressionMode.Decompress))
+                length = decompressor.Read(dat);
 
             Dictionary<short, TerrainTile> tileDict = new Dictionary<short, TerrainTile>();
             for (int i = 0; i < obj.dict.Length; i++)
@@ -57,7 +60,7 @@ namespace terrain
             }
 
             var tiles = new TerrainTile[obj.width, obj.height];
-            using (NReader rdr = new NReader(new MemoryStream(dat)))
+            using (NReader rdr = new NReader(new MemoryStream(dat.ToArray())))
                 for (int y = 0; y < obj.height; y++)
                     for (int x = 0; x < obj.width; x++)
                     {

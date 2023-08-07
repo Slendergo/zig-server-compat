@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using Ionic.Zlib;
+using System.IO.Compression;
 
 namespace terrain
 {
@@ -53,9 +53,12 @@ namespace terrain
                 wtr.Write(h);
                 wtr.Write(dat);
             }
-            byte[] buff = ZlibStream.CompressBuffer(ms.ToArray());
-            byte[] ret = new byte[buff.Length + 1];
-            Buffer.BlockCopy(buff, 0, ret, 1, buff.Length);
+            Span<byte> buff = new(); 
+            int length = 0;
+            using (var compressor = new ZLibStream(ms, CompressionMode.Compress))
+                length = compressor.Read(buff);
+            byte[] ret = new byte[length + 1];
+            Buffer.BlockCopy(buff.ToArray(), 0, ret, 1, length);
             ret[0] = 2;
             return ret;
         }

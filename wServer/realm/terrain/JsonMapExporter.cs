@@ -1,15 +1,16 @@
 ﻿using System;
+using System.IO;
+using System.IO.Compression;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using common.resources;
-using Ionic.Zlib;
 using Newtonsoft.Json;
 using wServer.realm.terrain;
 
 namespace terrain
 {
-    class JsonMapExporter
+    public class JsonMapExporter
     {
         struct TileComparer : IEqualityComparer<TerrainTile>
         {
@@ -54,6 +55,7 @@ namespace terrain
             Dictionary<TerrainTile, short> idxs = new Dictionary<TerrainTile, short>(new TileComparer());
             List<loc> dict = new List<loc>();
             for (int y = 0; y < h; y++)
+            {
                 for (int x = 0; x < w; x++)
                 {
                     TerrainTile tile = tiles[x, y];
@@ -79,9 +81,16 @@ namespace terrain
                     dat[i] = (byte)(idx >> 8);
                     i += 2;
                 }
+            }
+
+            Span<byte> compressed = new();
+            int length = 0;
+            using (var compressor = new ZLibStream(new MemoryStream(dat), CompressionMode.Compress))
+                length = compressor.Read(compressed);
+
             var ret = new json_dat()
             {
-                data = ZlibStream.CompressBuffer(dat),
+                data = compressed.ToArray(),
                 width = w,
                 height = h,
                 dict = dict.ToArray()

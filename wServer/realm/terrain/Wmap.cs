@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Ionic.Zlib;
+using System.IO.Compression;
 using common;
 using common.resources;
 using NLog;
@@ -217,7 +217,7 @@ namespace wServer.realm.terrain
             if (ver < 0 || ver > 2)
                 throw new NotSupportedException("WMap version " + ver);
 
-            using (var rdr = new BinaryReader(new ZlibStream(stream, CompressionMode.Decompress)))
+            using (var rdr = new BinaryReader(new ZLibStream(stream, CompressionMode.Decompress)))
             {
                 var dict = new List<WmapDesc>();
                 var c = rdr.ReadInt16();
