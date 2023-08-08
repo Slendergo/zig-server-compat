@@ -1,4 +1,5 @@
 ﻿#region License
+
 /*
 MIT License
 Copyright © 2006 The Mono.Xna Team
@@ -23,10 +24,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #endregion License
 
 using System;
-using System.Text;
 using System.Globalization;
 #if WINRT
 using System.Runtime.Serialization;
@@ -43,15 +44,11 @@ namespace Mono.Game
     {
         #region Private Fields
 
-        private static Vector2 zeroVector = new Vector2(0f, 0f);
-        private static Vector2 unitVector = new Vector2(1f, 1f);
-        private static Vector2 unitXVector = new Vector2(1f, 0f);
-        private static Vector2 unitYVector = new Vector2(0f, 1f);
-
         #endregion Private Fields
 
 
         #region Public Fields
+
 #if WINRT
         [DataMember]
 #endif
@@ -66,25 +63,13 @@ namespace Mono.Game
 
         #region Properties
 
-        public static Vector2 Zero
-        {
-            get { return zeroVector; }
-        }
+        public static Vector2 Zero { get; } = new(0f, 0f);
 
-        public static Vector2 One
-        {
-            get { return unitVector; }
-        }
+        public static Vector2 One { get; } = new(1f, 1f);
 
-        public static Vector2 UnitX
-        {
-            get { return unitXVector; }
-        }
+        public static Vector2 UnitX { get; } = new(1f, 0f);
 
-        public static Vector2 UnitY
-        {
-            get { return unitYVector; }
-        }
+        public static Vector2 UnitY { get; } = new(0f, 1f);
 
         #endregion Properties
 
@@ -93,14 +78,14 @@ namespace Mono.Game
 
         public Vector2(float x, float y)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
         }
 
         public Vector2(float value)
         {
-            this.X = value;
-            this.Y = value;
+            X = value;
+            Y = value;
         }
 
         #endregion Constructors
@@ -124,25 +109,25 @@ namespace Mono.Game
         public static float Distance(Vector2 value1, Vector2 value2)
         {
             float v1 = value1.X - value2.X, v2 = value1.Y - value2.Y;
-            return (float)System.Math.Sqrt((v1 * v1) + (v2 * v2));
+            return (float)Math.Sqrt(v1 * v1 + v2 * v2);
         }
 
         public static void Distance(ref Vector2 value1, ref Vector2 value2, out float result)
         {
             float v1 = value1.X - value2.X, v2 = value1.Y - value2.Y;
-            result = (float)System.Math.Sqrt((v1 * v1) + (v2 * v2));
+            result = (float)Math.Sqrt(v1 * v1 + v2 * v2);
         }
 
         public static float DistanceSquared(Vector2 value1, Vector2 value2)
         {
             float v1 = value1.X - value2.X, v2 = value1.Y - value2.Y;
-            return (v1 * v1) + (v2 * v2);
+            return v1 * v1 + v2 * v2;
         }
 
         public static void DistanceSquared(ref Vector2 value1, ref Vector2 value2, out float result)
         {
             float v1 = value1.X - value2.X, v2 = value1.Y - value2.Y;
-            result = (v1 * v1) + (v2 * v2);
+            result = v1 * v1 + v2 * v2;
         }
 
         public static Vector2 Divide(Vector2 value1, Vector2 value2)
@@ -160,7 +145,7 @@ namespace Mono.Game
 
         public static Vector2 Divide(Vector2 value1, float divider)
         {
-            float factor = 1 / divider;
+            var factor = 1 / divider;
             value1.X *= factor;
             value1.Y *= factor;
             return value1;
@@ -168,50 +153,47 @@ namespace Mono.Game
 
         public static void Divide(ref Vector2 value1, float divider, out Vector2 result)
         {
-            float factor = 1 / divider;
+            var factor = 1 / divider;
             result.X = value1.X * factor;
             result.Y = value1.Y * factor;
         }
 
         public static float Dot(Vector2 value1, Vector2 value2)
         {
-            return (value1.X * value2.X) + (value1.Y * value2.Y);
+            return value1.X * value2.X + value1.Y * value2.Y;
         }
 
         public static void Dot(ref Vector2 value1, ref Vector2 value2, out float result)
         {
-            result = (value1.X * value2.X) + (value1.Y * value2.Y);
+            result = value1.X * value2.X + value1.Y * value2.Y;
         }
 
         public override bool Equals(object obj)
         {
-            if (obj is Vector2)
-            {
-                return Equals((Vector2)this);
-            }
+            if (obj is Vector2) return Equals(this);
 
             return false;
         }
 
         public bool Equals(Vector2 other)
         {
-            return (X == other.X) && (Y == other.Y);
+            return X == other.X && Y == other.Y;
         }
 
         public static Vector2 Reflect(Vector2 vector, Vector2 normal)
         {
             Vector2 result;
-            float val = 2.0f * ((vector.X * normal.X) + (vector.Y * normal.Y));
-            result.X = vector.X - (normal.X * val);
-            result.Y = vector.Y - (normal.Y * val);
+            var val = 2.0f * (vector.X * normal.X + vector.Y * normal.Y);
+            result.X = vector.X - normal.X * val;
+            result.Y = vector.Y - normal.Y * val;
             return result;
         }
 
         public static void Reflect(ref Vector2 vector, ref Vector2 normal, out Vector2 result)
         {
-            float val = 2.0f * ((vector.X * normal.X) + (vector.Y * normal.Y));
-            result.X = vector.X - (normal.X * val);
-            result.Y = vector.Y - (normal.Y * val);
+            var val = 2.0f * (vector.X * normal.X + vector.Y * normal.Y);
+            result.X = vector.X - normal.X * val;
+            result.Y = vector.Y - normal.Y * val;
         }
 
         public override int GetHashCode()
@@ -221,18 +203,18 @@ namespace Mono.Game
 
         public float Length()
         {
-            return (float)System.Math.Sqrt((X * X) + (Y * Y));
+            return (float)Math.Sqrt(X * X + Y * Y);
         }
 
         public float LengthSquared()
         {
-            return (X * X) + (Y * Y);
+            return X * X + Y * Y;
         }
 
         public static Vector2 Max(Vector2 value1, Vector2 value2)
         {
             return new Vector2(value1.X > value2.X ? value1.X : value2.X,
-                               value1.Y > value2.Y ? value1.Y : value2.Y);
+                value1.Y > value2.Y ? value1.Y : value2.Y);
         }
 
         public static void Max(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
@@ -244,7 +226,7 @@ namespace Mono.Game
         public static Vector2 Min(Vector2 value1, Vector2 value2)
         {
             return new Vector2(value1.X < value2.X ? value1.X : value2.X,
-                               value1.Y < value2.Y ? value1.Y : value2.Y);
+                value1.Y < value2.Y ? value1.Y : value2.Y);
         }
 
         public static void Min(ref Vector2 value1, ref Vector2 value2, out Vector2 result)
@@ -294,16 +276,16 @@ namespace Mono.Game
 
         public void Normalize()
         {
-            float d = (float)System.Math.Sqrt((X * X) + (Y * Y));
+            var d = (float)Math.Sqrt(X * X + Y * Y);
             if (d == 0) return;
-            float val = 1.0f / d;
+            var val = 1.0f / d;
             X *= val;
             Y *= val;
         }
 
         public static Vector2 Normalize(Vector2 value)
         {
-            float val = 1.0f / (float)System.Math.Sqrt((value.X * value.X) + (value.Y * value.Y));
+            var val = 1.0f / (float)Math.Sqrt(value.X * value.X + value.Y * value.Y);
             value.X *= val;
             value.Y *= val;
             return value;
@@ -311,7 +293,7 @@ namespace Mono.Game
 
         public static void Normalize(ref Vector2 value, out Vector2 result)
         {
-            float val = 1.0f / (float)System.Math.Sqrt((value.X * value.X) + (value.Y * value.Y));
+            var val = 1.0f / (float)Math.Sqrt(value.X * value.X + value.Y * value.Y);
             result.X = value.X * val;
             result.Y = value.Y * val;
         }
@@ -331,9 +313,11 @@ namespace Mono.Game
 
         public override string ToString()
         {
-            CultureInfo currentCulture = CultureInfo.CurrentCulture;
-            return string.Format(currentCulture, "{{X:{0} Y:{1}}}", new object[] {
-                this.X.ToString(currentCulture), this.Y.ToString(currentCulture) });
+            var currentCulture = CultureInfo.CurrentCulture;
+            return string.Format(currentCulture, "{{X:{0} Y:{1}}}", new object[]
+            {
+                X.ToString(currentCulture), Y.ToString(currentCulture)
+            });
         }
 
         #endregion Public Methods
@@ -411,7 +395,7 @@ namespace Mono.Game
 
         public static Vector2 operator /(Vector2 value1, float divider)
         {
-            float factor = 1 / divider;
+            var factor = 1 / divider;
             value1.X *= factor;
             value1.Y *= factor;
             return value1;
