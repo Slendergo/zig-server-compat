@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using NLog.Targets;
 using wServer.networking;
 using wServer.networking.server;
 using wServer.realm;
@@ -29,11 +30,23 @@ namespace wServer
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.Name = "Entry";
 
-            Config = args.Length > 0 ?
-                ServerConfig.ReadFile(args[0]) :
-                ServerConfig.ReadFile("wServer.json");
+            Config = ServerConfig.ReadFile("wServer.json");
 
-            LogManager.Configuration.Variables["logDirectory"] = Config.serverSettings.logFolder + "/wServer";
+            var logConfig = new NLog.Config.LoggingConfiguration();
+            var consoleTarget = new ColoredConsoleTarget("consoleTarget")
+            {
+                Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}"
+            };
+            logConfig.AddTarget(consoleTarget);
+            logConfig.AddRule(LogLevel.Info, LogLevel.Fatal, consoleTarget);
+            
+            var fileTarget = new FileTarget("fileTarget")
+            {
+                FileName = "${var:logDirectory}/log.txt",
+                Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}"
+            };
+            logConfig.AddTarget(fileTarget);
+            LogManager.Configuration = logConfig;
             LogManager.Configuration.Variables["buildConfig"] = Utils.GetBuildConfiguration();
 
             using (Resources = new Resources(Config.serverSettings.resourceFolder, true))
@@ -43,9 +56,6 @@ namespace wServer
 
                 var manager = new RealmManager(Resources, Database, Config);
                 manager.Run();
-
-                var policy = new PolicyServer();
-                policy.Start();
 
                 var server = new Server(manager,
                     Config.serverInfo.port,
@@ -62,7 +72,6 @@ namespace wServer
                 Log.Info("Terminating...");
                 manager.Stop();
                 server.Stop();
-                policy.Stop();
                 Log.Info("Server terminated.");
             }
         }

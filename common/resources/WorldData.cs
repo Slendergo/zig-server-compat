@@ -70,7 +70,14 @@ namespace common.resources
                     else
                     {
                         var jm = File.ReadAllText(mapFile);
-                        world.wmap[j] = Json2Wmap.Convert(gameData, jm);
+                        var converted = Json2Wmap.Convert(gameData, jm);
+                        if (converted == null)
+                        {
+                            Log.Error("Failed to convert map {0} to wmap", world.maps[j]);
+                            continue;
+                        }
+                        
+                        world.wmap[j] = converted;
                     }
                 }
                 worlds.Add(world.name, world);

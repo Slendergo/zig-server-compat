@@ -1,1 +1,1003 @@
-{"data":"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","width":216,"dict":[{},{"objs":[{"id":"Castle Brick Wall2"}]},{"ground":"Grey Closed"},{"objs":[{"id":"md placer3"}],"ground":"Grey Open"},{"ground":"Grey Open"},{"objs":[{"id":"md placer2"}],"ground":"Grey Open"},{"objs":[{"id":"md placer1"}],"ground":"Grey Open"},{"objs":[{"id":"md Janus the Doorwarden"}],"ground":"Grey Open"},{"objs":[{"id":"md placer4"}],"ground":"Grey Open"},{"ground":"Black Water"},{"objs":[{"id":"Castle Brick Wall2"}],"ground":"Black Water"},{"objs":[{"id":"md dwGenerator"}],"ground":"Grey Open"},{"objs":[{"name":"","id":"Castle Brick Wall2"}]},{"objs":[{"name":"","id":"Castle Brick Wall3"}],"ground":"Grey Closed"},{"objs":[{"name":"","id":"Castle Brick Wall3"}],"ground":"Grey Open"},{"objs":[{"name":"size:120;","id":"Oryx Stone Guardian Left"}],"ground":"Grey Open"},{"objs":[{"name":"size:120;","id":"Oryx Stone Guardian Right"}],"ground":"Grey Open"},{"ground":"Grey Circle"},{"ground":"Grey Quad"},{"objs":[{"name":"size:120;","id":"Oryx Suit of Armor"}],"ground":"Grey Circle"},{"objs":[{"name":"name:{oryxCastle.OryxAPOSs_Chamber_Portal};","id":"Oryx Guardian TaskMaster"}],"ground":"Grey Circle"},{"objs":[{"name":"","id":"Oryx's Living Floor"}],"ground":"Grey Quad"},{"objs":[{"name":"","id":"Castle Brick Wall3"}]},{"objs":[{"name":"","id":"Destructible Castle Wall"}],"ground":"Grey Quad"},{"objs":[{"id":"Castle Brick Wall3"}]},{"objs":[{"id":"Destructible Castle Wall"}],"ground":"Grey Quad"},{"objs":[{"name":"size:90;","id":"Destructible Castle Wall"}],"ground":"Grey Quad"},{"objs":[{"name":"","id":"Grey Pillar"}],"ground":"Grey Quad"},{"objs":[{"name":"","id":"Oryx Knight"}],"ground":"Grey Quad"},{"objs":[{"name":"","id":"Oryx Pet"}],"ground":"Grey Quad"},{"objs":[{"name":"","id":"Oryx Insect Minion"}],"ground":"Grey Quad"},{"objs":[{"name":"","id":"Oryx Insect Commander"}],"ground":"Grey Quad"},{"ground":"Black Water Light"},{"ground":"Dark Grass"},{"ground":"Blue Grass"},{"objs":[{"id":"Oryx Suit of Armor"}],"ground":"Grey Quad"},{"objs":[{"name":"size:120;","id":"Oryx Suit of Armor"}],"ground":"Grey Quad"},{"objs":[{"id":"Oryx Suit of Armor"}],"ground":"Dark Grass"},{"objs":[{"name":"","id":"Oryx Eye Warrior"}],"ground":"Grey Quad"},{"objs":[{"name":"","id":"Oryx Eye Warrior"}],"ground":"Dark Grass"},{"objs":[{"name":"size:120;","id":"Oryx Suit of Armor"}],"ground":"Grey Squares"},{"objs":[{"name":"","id":"Oryx Brute"}],"ground":"Dark Grass"},{"objs":[{"name":"","id":"Oryx Eye Warrior"}],"ground":"Blue Grass"},{"objs":[{"name":"size:120;","id":"Oryx Suit of Armor"}],"ground":"Dark Grass"},{"ground":"Castle Stone Floor Tile Dark"},{"ground":"Grey Squares"},{"objs":[{"name":"size:80;","id":"Suit of Armor"}],"ground":"Grey Squares"},{"objs":[{"name":"","id":"Oryx Pet"}],"ground":"Dark Grass"},{"objs":[{"id":"Suit of Armor"}],"ground":"Grey Squares"},{"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Oryx Pet"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Oryx Eye Warrior"}],"ground":"Black Water Light"},{"objs":[{"name":"","id":"Oryx Pet"}],"ground":"Castle Stone Floor Tile Dark"},{"objs":[{"name":"","id":"Oryx Pet"}],"ground":"Grey Closed"},{"objs":[{"name":"","id":"Oryx Insect Minion"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Oryx Knight"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"id":"Oryx Insect Commander"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Grey Pillar"}],"ground":"Black Water Light"},{"objs":[{"name":"","id":"Grey Pillar"}],"ground":"Blue Grass"},{"objs":[{"name":"","id":"Grey Pillar"}],"ground":"Dark Grass"},{"objs":[{"name":"","id":"Oryx Insect Minion"}],"ground":"Grey Closed"},{"objs":[{"name":"size:120;","id":"Oryx Insect Commander"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Oryx Knight"}],"ground":"Dark Grass"},{"ground":"Oryx Castle Rug"},{"objs":[{"name":"","id":"Oryx Knight"}],"ground":"Oryx Castle Rug"},{"objs":[{"name":"","id":"Oryx Pet"}],"ground":"Oryx Castle Rug"},{"objs":[{"name":"","id":"Destructible Castle Wall"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Destructible Castle Wall"}],"ground":"Oryx Castle Rug"},{"objs":[{"id":"Destructible Castle Wall"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Castle Wall Blank"}]},{"objs":[{"id":"Destructible Castle Wall"}],"ground":"Oryx Castle Rug"},{"objs":[{"name":"","id":"Oryx Brute"}],"ground":"Grey Quad"},{"objs":[{"id":"Castle Wall Blank"}]},{"objs":[{"name":"","id":"CastleArch Wall"}]},{"objs":[{"name":"","id":"Oryx Eye Warrior"}],"ground":"Oryx Castle Rug"},{"objs":[{"name":"","id":"Oryx Eye Warrior"}],"ground":"Castle Stone Floor Tile Dark"},{"objs":[{"name":"","id":"Oryx Eye Warrior"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Oryx Brute"}],"ground":"Oryx Castle Rug"},{"objs":[{"name":"","id":"Oryx Brute"}],"ground":"Blue Grass"},{"objs":[{"name":"","id":"Oryx Knight"}],"ground":"Castle Stone Floor Tile Dark"},{"objs":[{"name":"","id":"Oryx Pet"}],"ground":"Blue Grass"},{"objs":[{"name":"","id":"Destructible Castle Wall"}],"ground":"Castle Stone Floor Tile Dark"},{"objs":[{"name":"size:90;","id":"Oryx's Living Floor"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Oryx Knight"}],"ground":"Blue Grass"},{"objs":[{"name":"","id":"Oryx's Living Floor"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Oryx Brute"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Oryx Pet"}],"ground":"Grey Squares"},{"objs":[{"name":"","id":"Suit of Armor"}],"ground":"Grey Squares"},{"objs":[{"id":"Destructible Castle Wall"}],"ground":"Castle Stone Floor Tile Dark"},{"objs":[{"name":"","id":"Destructible Castle Wall"}],"ground":"Cracked Purple Stone"},{"ground":"Cracked Purple Stone"},{"objs":[{"name":"","id":"Oryx Eye Warrior"}],"ground":"Cracked Purple Stone"},{"objs":[{"name":"","id":"Oryx Knight"}],"ground":"Cracked Purple Stone"},{"objs":[{"name":"","id":"Castle Brick Wall2"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"id":"Oryx Eye Warrior"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"id":"Oryx's Living Floor"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Oryx Pet"}],"ground":"Cracked Purple Stone"},{"objs":[{"name":"","id":"Oryx Brute"}],"ground":"Cracked Purple Stone"},{"objs":[{"id":"Castle Brick Wall2"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Castle Wall Blank"}],"ground":"Blue Quad"},{"objs":[{"id":"Oryx Knight"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"id":"Oryx Pet"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"CastleArch Wall"}],"ground":"Blue Quad"},{"objs":[{"id":"Oryx Eye Warrior"}],"ground":"Oryx Castle Rug"},{"objs":[{"id":"Oryx Pet"}],"ground":"Oryx Castle Rug"},{"objs":[{"id":"Oryx Knight"}],"ground":"Oryx Castle Rug"},{"objs":[{"id":"Oryx Brute"}],"ground":"Castle Stone Floor Tile"},{"ground":"Brown Lines"},{"objs":[{"name":"","id":"Oryx Knight"}],"ground":"Brown Lines"},{"objs":[{"name":"","id":"Oryx Pet"}],"ground":"Brown Lines"},{"objs":[{"name":"","id":"Castle Brick Wall2"}],"ground":"Castle Stone Floor Tile Dark"},{"objs":[{"name":"","id":"Destructible Castle Wall"}],"ground":"Brown Lines"},{"objs":[{"name":"","id":"CastleArch Wall Flame"}]},{"objs":[{"name":"","id":"Oryx Insect Minion"}],"ground":"Castle Stone Floor Tile Dark"},{"objs":[{"id":"Oryx Insect Minion"}],"ground":"Castle Stone Floor Tile"},{"objs":[{"name":"","id":"Oryx Insect Minion"}],"ground":"Grey Squares"},{"objs":[{"id":"Oryx Eye Warrior"}],"ground":"Cracked Purple Stone"},{"objs":[{"id":"Oryx Knight"}],"ground":"Cracked Purple Stone"},{"objs":[{"id":"Oryx Pet"}],"ground":"Cracked Purple Stone"},{"objs":[{"id":"Oryx Brute"}],"ground":"Cracked Purple Stone"},{"objs":[{"id":"Destructible Castle Wall"}],"ground":"Cracked Purple Stone"},{"objs":[{"id":"Oryx Pet"}],"ground":"Brown Lines"},{"objs":[{"id":"Oryx Knight"}],"ground":"Brown Lines"},{"ground":"Dark Grass","regions":[{"id":"Spawn"}]},{"objs":[{"id":"Destructible Castle Wall"}],"ground":"Brown Lines"},{"ground":"Blue Grass","regions":[{"id":"Spawn"}]}],"height":237}
+{
+  "data": "eNrtnY\u002BfHTURwLdYlOqhUuVaPYrXx4/CAcIdUH6pcCenXnn\u002BqFa0VLEqVbQ9rQgVFf93XzY7LzPJJJvsZt9m782bz929n3mT\u002BWaSySTZq6rp305Fi9xKuJ2q7osS4VUOr8\u002B1ivAqidfpFlqnhVdRvO4PEjtdfV54FcbLT0zREl7l8eKJaVrCq0ReLjGgJbzK5EWJGVrCq1RehhimJbzK5aWJUVrCq2Re91dfsGgJr7L96wHxrwmNXw/UIuPXNOJDTcsmJvnDMudfhhYlJrxKzG9QWpiY8Covf\u002BjSMsSEV2n5eZ4WEBNeZa1/\u002BWlpYsKrJF5hWkqEV3n7N06zcpL2b5w5AQK7n/y89OtfHF1TEUwtxEssVZoFhNfYBITX2DYVXmNbaUrxhoxipfBStzAv/Y6xNRXx8fqS8CqodXDnTjaqB6svs/Lg4jVNlMrYtVgf4TIVG4H\u002BUPOiN\u002BElvMZux6WK9pcNS7R/fQV51leX/kVF/GscXg/VcrYRf38I79DvF15j\u002BddD1deE14T9yyfGvxRf8a8yeLWL9Icl\u002BZfwmtb4FcPL9Icbo9difSTkX/o5EH9/KLxK4cXfF16l\u002Bhf4kfCawvilOX3dw0vGL/GvsVtv\u002BSLj10niJfFhubxk/rUu\u002BQ2ZfwmvsdtxqSL\u002BdZLGr4etvzL/KoeXjF9T4rVpCR9l2O\u002BSeGPVvDaZ/WnV4tlzjWhO8Mj37rFb3foIT\u002BB89Y0FnW8uOZ1bPFZyXniNzouXcw0vzcn4Fy9j10Jki/SDul/cErsUawHF5xEn3hhbK5EQL1fEXmX3h0aUr0l/ODYVv4h/jU1AeI1t09XEhw9LfDg6jXaR/nBqvC4gZo9KfDg6kfb\u002B8AJhJvHh2ExCogldQL4l86\u002BxmYTkHNMbnhtdKxGfBbaaqPDR6lvLSFHmy9PwL/Aw8a\u002BxqcSMX5I/HJPD5mLNEYtvRcvOH\u002Br40L6agxF8tRvZj5iTV8xt07Oewl3dxr0Jr3F42fMv4VUuLz1ftvOH4l\u002Bl8nJXv8S/psNL\u002BsPSeW0xEYf0h\u002BXywpxM1CHjV9m8LlgxovAquT80uw91hCj94appbUfzMpzwruxY/9peec1Ommw3ksILn/p6OJGXlrFrPVXZri7WMkuMD938YRyv2ULU9wmxPryUFX35Xf7812PN38eX8UacCK\u002B\u002B/qUtqH4rP9He4v99cfHzhOVdj1VPRn4aaIl/9eMFoiyqiCiL\u002Bn9zoj\u002BtX78U\u002BDSI9Ic5eEHrD8nZhTdRUsArtgTh1bc/dIlpFsabnmR9S/WDM4scFduvhNcQvCgran2ah6KZRPVZeGw\u002Bv3687P8iky46OovhhT0GrO0So\u002B95ZPnOS05/Gc\u002BL30OQKiX8x9M8/yXXz8vEDJSXb/TB45R/1OJKgcc8rxy3U2vBS/8oeYrweoplBfJ0/XiHYfV4M3LpUp5Z0lI/szXhFTuj5aSNlx3h\u002BfzL7jlV7E7FPOPG8aZMP6\u002B\u002BtSyJ17NLea769uIn9nEbLy7e8POCHKARzel5tk/ke9QQL1OHF6w6hR\u002BXyGu3kfsWmt63fOR7vFffT\u002BF1cZG9wLyecHgpPi\u002BSEl5cZiGNb\u002BnPAXMoJZzfAF4voTq8HKjjy\u002BRxibyoviCXmedoLWN4hSMF89jNroOHcT5Jn9Hfc6mFF1/LkOyhWpbES/VxoOMrS1qYFzxrRPWMqbwgIqf9Wjsvu//zx5ghXqqXUwy4lrjH1lHV8oUCebktT9F6NehjYf96raH1OunJzjo92dnqjeae\u002BkvL0M\u002Bp92wte8Rn2FLgnYrXa15ez1Xfqeul5bsWrb2WWpY5fqWIf/yi0RXX\u002B4GErgoVLgWXE766lIk3oCVe9tAJ1bJsXrQ3TOdlbryloZ\u002Bk74wrxeVO10TbeLUz2iucV/pITPvD7QhL4/hwtuzJUnnpGTJkirlS7HK2e8QbuxOINzjhR2ITb9C9E9utnmGikC7\u002BxfWHlBfoovWi8UaoVq9MNt6gPQM3HlP/wjLrPPLYvGgp34sev\u002Bjc\u002B\u002BT5Fxdv4FmkPaO0xy\u002BYBZm80utW3GYiuwtW5u\u002BNxvKvLz5FtdPPKYH34PgQl6K\u002BR71vp/5mexZBx6\u002B0OpY5fkHmBWsJmaeX0H3jYzQfBZbBc65ZYmZd\u002BQS/Z4efY9NS\u002BNVRm5dbR5N5gvumV1lVPiplVUfXBGS3erOWXaeHMa\u002B/RV7neLmcQpYOzXS3o0sJ7T2g\u002BV5dx/1gHW0bqFvoLG94PhHnNem3zeqg\u002Bn4tb1sjuL4dLp7Xrx8s7psb8Nph8\u002BrY00L53hAvU6qJD3F/yOX1zbfi9ZTDZR1pHVwbHLA2iLPjKnn9YCE\u002BXgdeXspWemcZXe/X2Qlo9z5eOjvf1b/Mt/2w\u002BUb6jmnw\u002BtFCHyVHCX9NX2Ce17XUslddWbx6pX7dvKp57dTWwmv7RsK8Ztl42XsGMC/QeLeug66jXUOwwRXLBrF/D3vwOkQrOO46Fv\u002Bc4QXPQG2erd6pX98nrwMvHZnZlCgv3I\u002Bl8Zpl4sXX0dTQZwNuTcx9TtmnLy8\u002Bcg09B7pCBGVq476Oedm7aVzvMv7FRwlt/mWPgk\u002ByvFxamNe81vtK4z98DW0bxNhPl9uP11GnLK7N68jhtV/3hyFeeleajsT1jmp\u002BfXmWyAvvYeT8rZ2Xv80dtfCKEbBWDv/qygtaH7SkH9evz5uVPMoLEwM76v6J68lmUbzofilcis2LksM8N6w6qBroNmfqcJiFVzf/2sjO66jJMM6XY7XOHx4RXltNL2W3860svHzj19Pksblvj19Hy/whrsMLTg8yHi/c42odYmXXaX24bSr/wq8Cr58E58rYmrMEXrRM7MXh7wr715veGnazFS6rGy/wie46GA\u002BC1jcPxhuzSF6Qr1oFr53o8ctk78O2ueLhZXy1BP/6aU3LrauSjepntR13WolBZGeziuVFR8l2WpfqfMdGo\u002Bc7yBZvLXOEpfgXHb9o2ak98uFyLxgtR9X5oLpqWd62L9cf2p\u002BI4WVHNT5G\u002BK9619WFjr4xmovnYwXKmQ8Qb/TlRft\u002B1T7Nu642/kXHeiATmpFhnhyvFxlaoXm5HXNoubq0KPYduwexeZnPzFt4wXv68TrKwuvIGgtN7w3v\u002BXnN60L1C\u002BtUiXstQ0OTy6eH51\u002BUcIiY2f0GxK5W1yw7wHzZjDldZqu6rHnv\u002BRcfzxud29pNu3/t1\u002BsRxr92ouxoz44wLb0ibNPiefkp4fkenEN6fqHfbgf/ihFq0/79ob1Cp0tNEb42mPTBkhc\u002Bw\u002Br2gDYtW7rzwn2g62Xu\u002BIVHXzd/GCe8TfvxgtwxtXRqztnf\u002Bkx8yMV7rijbcWcXeA/DtNzov33uYD4J8SGsHePWZnilrWVQS/TLz9PzThuL1nXQ6KjudTkNZXjhvCc3/2rj5bPprDOv7wViROAFdfhlU4d3nTqk3dQqGfisuhfe/5jK61pdppZrnXlxazDxvMIe0M5LCYySeNRr9y7MC\u002BrwK6cOqbyoTfvy0md14dQuHXPMWd62a8ZgXqH1OXj/1aXEXpXGFbsWXURp8OuFGD3a6wCWbju3Z3Z5KHvOG6var6fxUi3zei3vIblR//5N80i/HrpC1m8T25xaaZ8v2trcs9Iec6O8ut2UHu9Xv6t7qlQ9NiNtqqx4s/4Be8bZNFw2puVKfl5m/B2XV3c92nlxlvx9tE39pXOlag/DEio5npfZ\u002BWDsxMeZ4b6G49X2Ca6Pw3roZ/rz4m3KSZcrgOQo\u002Bw8JvGB3h1kZh7gE/gIvuu/B3PPzCn/iED0Hf9\u002B35kV/FF4OL3tupmPmeRP/Y154TgD3wrxCn1DfDc/5do2viteNLP6le13oC2kfnM\u002B/\u002BCwlzlwr8Z0MbOPFfwLPgncDGfj8vKgV420aX/bNOp4ZhpfOlarsjs6l2tYzc3XO8t14KXl7IXBf9YEfVLdYXn\u002BaFC9DzC45n3/RbLC9Aqv3LKo9s/wqAX8SOnQKSJejdiLre3/2riSqsvP6F233N5Ns6i/bjTzBwzDHXLz0assrlr3UyQgjipfZ6dJ\u002BJo6esjMxhLpvSjTlf8jyUmXn4mXPZ217tts0VLZNzI7m9VxhCP8C0fsywds4/5oHzsSFzhJyvLCX/aX5nltZ/cs3/9LcoP/Kw\u002BvGgLzwWh8\u002BhamzqyAx4xfHyz9\u002B4RL/Gig71/iFbaqsecOi1Z0XnNylhHDupP1q7V3iQy7OSIkP43nZ8SHuL29Z78zjX7xN6cjV5wr47WWfGZgXthnMv\u002BLPnLad1d2M/u54XucHtmlb6aqU247ERTFpvOLWqd0z\u002Bt14mQgl5rvz8epr0xgfc8uOawcpvGLXqYfwr9jvzsOL2vROok1jSud4ncnKK/7WZv3Y\u002BNAQzns7P7BNY0SXd4zKjvvc3wawR1vvxvEK96Bj8AKbYslF60z191p0qfp\u002B3Of4Vdm7LY/t5\u002BEv9If/qK/fdDmbf/lWjYc9ydrVprFt4U6HtmDverBPgXInRNvjDXVNu1eTx6\u002BPrJidxodxEtY7jdeQ/mV6wzsdebmjjX/1whdTm/jwn0vvmmeKD\u002BN0COmdzot6wJ3MvLq0Bc3rbrQ9wtekuztQfNhdP/r9aTupbztRQSm8DjPZQ\u002BU2NjvnN/S1QD\u002ByPqGkn36QCTE789JtejwAr2MyQq6e1zD5Q7z\u002B1U\u002B68dI2HYJXn3ij/RybXt9qE5yfnyfHh5cj8vP\u002BlRWfmO9P43VszZDy8qK0uLLp9QsxL3VO9N2mXnQ9y13h0o/3Pe/zr1fGzb8uoxgxzCtezPfDyXnXHrxNDa072Xmp0pXobzlmeZndsZRX93Oi\u002B8Tz9qPWl0PzL\u002BxhHC\u002B95sV5m\u002BtvH7b4l7HHdtCmw41f4fwGXIMTX4uXG78g5sO1jb3S9LDrX9xKii0fOO3lg\u002BX3u7yoNcrKb8Tyou07jlOO\u002BJD/RHp86NPb5XUqyAtsejxQfqN9/PLxupuJV975l/mEf/51K4mXPX7BaZDV\u002B5c9U7idOH7x9rjW0g/iV/d6r3\u002BF94vytPi\u002B0T0VzPtXW7xhR915eUHJx8nxoZufs2uamj9Uu31dCfFq248dJ2G9u8\u002BXS8tvxJ0Ejc1/h08vcLxizjt0P8Fqn2QrhVfX/IZ906drd3udrvXfXF65bnF6d8lvlOVfbo36n64dh5fWW\u002BWw/HqX419dePFiogmVVYo/pRp3fXXMq9v/Fg7pbaT9PG6bTWlOanxedP\u002BW2SuJdzHCI/Nqrn0n/YTT\u002B\u002BPlb32Pvp6mt509zD1fNuWmze1ovbn94u9NhNcn1b3mmU9YzVN5DZ3fwJJWc//\u002BSH7P5KqY9NH7Xz317uMDbWIiGfiW9HrfPCG87mXSu58PDOm7pt7uafVcp0GHkGH7hX4\u002BsApeN9gTf\u002BoR5Vgqr08XQvXW9z7uzKu0eB7qTc8l6WuCmNMz163rT5TD67rD69OmR3SvJXP9RPGCumFPsnvHG71OP\u002BWXmCvG4DZYCq\u002B\u002Be725k3\u002B\u002B6KNUXvdQz3cvg95D7Z/X2Xau7JTZhsnbh0br0OrDODKM3nls6i97xpTNXcszpizsV9THyiJl6x3mlV7eRcam3PVsu5RsX30QrtXfRVO7tjeLi\u002BL9ett5KODVxaa\u002B6yz2I\u002BYvOwcv279Wz6Gb3iXzCl91sxsvtyeYBi\u002Bs8b876x22KX9N9tiS23l1aV0mMw17DModu6jeSv5jRQg5baqkuy2GKXvYk6DDSR69TUSwCl7/zVL2kDP7IcXuDW93jrfxFZ/z2HRI3x3yJOiQkkNvsCl3ze9ZRl5cRL\u002B\u002B/gVe1semvmu097u\u002BDW4LbvndSsaxRu6TGUMK7gm7tzNjUz6KyzH/4q\u002Bx37UlTNe/KK3bA4wyeebLNq18vHKfpBlScCRfJi8az\u002BQq\u002BXjAnZJDCmWl6HUrxz\u002BG5cn3amY2q768htl5N6SYWL57PE9tCv/jtr9NufK5Ew1dxJzJSLuax9iSc9zNbdPQN\u002BSs9/HaxYdYSlzzO0nxIc1uTEXvvjLkSdBV6D21vMy6\u002B9fU9M5Tb3O9Ae7qECXKevPS0eE04w2I6cfWaHX1nmI7nareeeo91fzGZwuZlt556g2zL/UzFb3tDOLYGq2q3tPsV4y\u002B/fJRU5Pp85qW3uta76nq3VeGPAkqeg/Da6iToEPzUvLZxPTuK0OeBF2F3p9NTO91HQemqve61nuqeq9rvaeqdz9Z7/3z05IhT4KK3sPwmg1yEnR4XlPUO0et3Z2n\u002Bqfcmhu97b3T/U9Elizc3lO4X3K9zV5Bd7d7yXr3rzd3bgJ49dvpP7ze7ukc42FjazhMrXle\u002BGRGiTW3dze7p7bK1DtfvX1nQcusNz0FN512lqPetL75ToIOrbcdY\u002BBzVSeZl9s28b1p8LpY/c/qH8vUO3\u002B9p9GvuO3MxLQnO0K0\u002B0M8dpccZ3HXZKIR/dgarnIk6Hd2fVV6\u002B07zn1zvsuedU\u002BQ1nV48Z81tXuWPATyx8vXOUW9gRlmVXW96ghXPP8rWO2fdhzsJKnoPSW1sDuuht4hYQCwgFhALnBERC4gFxAJiAbGAWEAsIBYQC4gFxAJiAbGAWEAsUJUk/weMl9BF",
+  "width": 216,
+  "dict": [
+    {},
+    {
+      "objs": [
+        {
+          "id": "Castle Brick Wall2"
+        }
+      ]
+    },
+    {
+      "ground": "Grey Closed"
+    },
+    {
+      "objs": [
+        {
+          "id": "md placer3"
+        }
+      ],
+      "ground": "Grey Open"
+    },
+    {
+      "ground": "Grey Open"
+    },
+    {
+      "objs": [
+        {
+          "id": "md placer2"
+        }
+      ],
+      "ground": "Grey Open"
+    },
+    {
+      "objs": [
+        {
+          "id": "md placer1"
+        }
+      ],
+      "ground": "Grey Open"
+    },
+    {
+      "objs": [
+        {
+          "id": "md Janus the Doorwarden"
+        }
+      ],
+      "ground": "Grey Open"
+    },
+    {
+      "objs": [
+        {
+          "id": "md placer4"
+        }
+      ],
+      "ground": "Grey Open"
+    },
+    {
+      "ground": "Black Water"
+    },
+    {
+      "objs": [
+        {
+          "id": "Castle Brick Wall2"
+        }
+      ],
+      "ground": "Black Water"
+    },
+    {
+      "objs": [
+        {
+          "id": "md dwGenerator"
+        }
+      ],
+      "ground": "Grey Open"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Castle Brick Wall2"
+        }
+      ]
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Castle Brick Wall3"
+        }
+      ],
+      "ground": "Grey Closed"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Castle Brick Wall3"
+        }
+      ],
+      "ground": "Grey Open"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:120;",
+          "id": "Oryx Stone Guardian Left"
+        }
+      ],
+      "ground": "Grey Open"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:120;",
+          "id": "Oryx Stone Guardian Right"
+        }
+      ],
+      "ground": "Grey Open"
+    },
+    {
+      "ground": "Grey Circle"
+    },
+    {
+      "ground": "Grey Quad"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:120;",
+          "id": "Oryx Suit of Armor"
+        }
+      ],
+      "ground": "Grey Circle"
+    },
+    {
+      "objs": [
+        {
+          "name": "name:{oryxCastle.OryxAPOSs_Chamber_Portal};",
+          "id": "Oryx Guardian TaskMaster"
+        }
+      ],
+      "ground": "Grey Circle"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx\u0027s Living Floor"
+        }
+      ],
+      "ground": "Grey Quad"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Castle Brick Wall3"
+        }
+      ]
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Destructible Castle Wall"
+        }
+      ],
+      "ground": "Grey Quad"
+    },
+    {
+      "objs": [
+        {
+          "id": "Castle Brick Wall3"
+        }
+      ]
+    },
+    {
+      "objs": [
+        {
+          "id": "Destructible Castle Wall"
+        }
+      ],
+      "ground": "Grey Quad"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:90;",
+          "id": "Destructible Castle Wall"
+        }
+      ],
+      "ground": "Grey Quad"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Grey Pillar"
+        }
+      ],
+      "ground": "Grey Quad"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Knight"
+        }
+      ],
+      "ground": "Grey Quad"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Grey Quad"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Insect Minion"
+        }
+      ],
+      "ground": "Grey Quad"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Insect Commander"
+        }
+      ],
+      "ground": "Grey Quad"
+    },
+    {
+      "ground": "Black Water Light"
+    },
+    {
+      "ground": "Dark Grass"
+    },
+    {
+      "ground": "Blue Grass"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Suit of Armor"
+        }
+      ],
+      "ground": "Grey Quad"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:120;",
+          "id": "Oryx Suit of Armor"
+        }
+      ],
+      "ground": "Grey Quad"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Suit of Armor"
+        }
+      ],
+      "ground": "Dark Grass"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Eye Warrior"
+        }
+      ],
+      "ground": "Grey Quad"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Eye Warrior"
+        }
+      ],
+      "ground": "Dark Grass"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:120;",
+          "id": "Oryx Suit of Armor"
+        }
+      ],
+      "ground": "Grey Squares"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Brute"
+        }
+      ],
+      "ground": "Dark Grass"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Eye Warrior"
+        }
+      ],
+      "ground": "Blue Grass"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:120;",
+          "id": "Oryx Suit of Armor"
+        }
+      ],
+      "ground": "Dark Grass"
+    },
+    {
+      "ground": "Castle Stone Floor Tile Dark"
+    },
+    {
+      "ground": "Grey Squares"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:80;",
+          "id": "Suit of Armor"
+        }
+      ],
+      "ground": "Grey Squares"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Dark Grass"
+    },
+    {
+      "objs": [
+        {
+          "id": "Suit of Armor"
+        }
+      ],
+      "ground": "Grey Squares"
+    },
+    {
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Eye Warrior"
+        }
+      ],
+      "ground": "Black Water Light"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile Dark"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Grey Closed"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Insect Minion"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Knight"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Insect Commander"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Grey Pillar"
+        }
+      ],
+      "ground": "Black Water Light"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Grey Pillar"
+        }
+      ],
+      "ground": "Blue Grass"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Grey Pillar"
+        }
+      ],
+      "ground": "Dark Grass"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Insect Minion"
+        }
+      ],
+      "ground": "Grey Closed"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:120;",
+          "id": "Oryx Insect Commander"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Knight"
+        }
+      ],
+      "ground": "Dark Grass"
+    },
+    {
+      "ground": "Oryx Castle Rug"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Knight"
+        }
+      ],
+      "ground": "Oryx Castle Rug"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Oryx Castle Rug"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Destructible Castle Wall"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Destructible Castle Wall"
+        }
+      ],
+      "ground": "Oryx Castle Rug"
+    },
+    {
+      "objs": [
+        {
+          "id": "Destructible Castle Wall"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Castle Wall Blank"
+        }
+      ]
+    },
+    {
+      "objs": [
+        {
+          "id": "Destructible Castle Wall"
+        }
+      ],
+      "ground": "Oryx Castle Rug"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Brute"
+        }
+      ],
+      "ground": "Grey Quad"
+    },
+    {
+      "objs": [
+        {
+          "id": "Castle Wall Blank"
+        }
+      ]
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "CastleArch Wall"
+        }
+      ]
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Eye Warrior"
+        }
+      ],
+      "ground": "Oryx Castle Rug"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Eye Warrior"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile Dark"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Eye Warrior"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Brute"
+        }
+      ],
+      "ground": "Oryx Castle Rug"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Brute"
+        }
+      ],
+      "ground": "Blue Grass"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Knight"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile Dark"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Blue Grass"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Destructible Castle Wall"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile Dark"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:90;",
+          "id": "Oryx\u0027s Living Floor"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Knight"
+        }
+      ],
+      "ground": "Blue Grass"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx\u0027s Living Floor"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Brute"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Grey Squares"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Suit of Armor"
+        }
+      ],
+      "ground": "Grey Squares"
+    },
+    {
+      "objs": [
+        {
+          "id": "Destructible Castle Wall"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile Dark"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Destructible Castle Wall"
+        }
+      ],
+      "ground": "Cracked Purple Stone"
+    },
+    {
+      "ground": "Cracked Purple Stone"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Eye Warrior"
+        }
+      ],
+      "ground": "Cracked Purple Stone"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Knight"
+        }
+      ],
+      "ground": "Cracked Purple Stone"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Castle Brick Wall2"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Eye Warrior"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx\u0027s Living Floor"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Cracked Purple Stone"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Brute"
+        }
+      ],
+      "ground": "Cracked Purple Stone"
+    },
+    {
+      "objs": [
+        {
+          "id": "Castle Brick Wall2"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Castle Wall Blank"
+        }
+      ],
+      "ground": "Blue Quad"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Knight"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "CastleArch Wall"
+        }
+      ],
+      "ground": "Blue Quad"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Eye Warrior"
+        }
+      ],
+      "ground": "Oryx Castle Rug"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Oryx Castle Rug"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Knight"
+        }
+      ],
+      "ground": "Oryx Castle Rug"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Brute"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "ground": "Brown Lines"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Knight"
+        }
+      ],
+      "ground": "Brown Lines"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Brown Lines"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Castle Brick Wall2"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile Dark"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Destructible Castle Wall"
+        }
+      ],
+      "ground": "Brown Lines"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "CastleArch Wall Flame"
+        }
+      ]
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Insect Minion"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile Dark"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Insect Minion"
+        }
+      ],
+      "ground": "Castle Stone Floor Tile"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Oryx Insect Minion"
+        }
+      ],
+      "ground": "Grey Squares"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Eye Warrior"
+        }
+      ],
+      "ground": "Cracked Purple Stone"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Knight"
+        }
+      ],
+      "ground": "Cracked Purple Stone"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Cracked Purple Stone"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Brute"
+        }
+      ],
+      "ground": "Cracked Purple Stone"
+    },
+    {
+      "objs": [
+        {
+          "id": "Destructible Castle Wall"
+        }
+      ],
+      "ground": "Cracked Purple Stone"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Pet"
+        }
+      ],
+      "ground": "Brown Lines"
+    },
+    {
+      "objs": [
+        {
+          "id": "Oryx Knight"
+        }
+      ],
+      "ground": "Brown Lines"
+    },
+    {
+      "ground": "Dark Grass",
+      "regions": [
+        {
+          "id": "Spawn"
+        }
+      ]
+    },
+    {
+      "objs": [
+        {
+          "id": "Destructible Castle Wall"
+        }
+      ],
+      "ground": "Brown Lines"
+    },
+    {
+      "ground": "Blue Grass",
+      "regions": [
+        {
+          "id": "Spawn"
+        }
+      ]
+    }
+  ],
+  "height": 237
+}

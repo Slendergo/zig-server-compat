@@ -7,6 +7,7 @@ using System.IO;
 using System.IO.Compression;
 using common;
 using common.resources;
+using NLog.Fluent;
 
 namespace terrain
 {
@@ -58,14 +59,22 @@ namespace terrain
                     Region = o.regions == null ? TileRegion.None : (TileRegion)Enum.Parse(typeof(TileRegion), o.regions[0].id.Replace(' ', '_'))
                 };
             }
-
+            
             var tiles = new TerrainTile[obj.width, obj.height];
-            using (NReader rdr = new NReader(new MemoryStream(dat.ToArray())))
-                for (int y = 0; y < obj.height; y++)
+            try
+            {
+                using (NReader rdr = new NReader(new MemoryStream(dat.ToArray())))
+                    for (int y = 0; y < obj.height; y++)
                     for (int x = 0; x < obj.width; x++)
                     {
                         tiles[x, y] = tileDict[rdr.ReadInt16()];
                     }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
             return WorldMapExporter.Export(tiles);
         }
     }

@@ -124,16 +124,7 @@ namespace wServer.networking.server
                 // set packet length when prefix read
                 if (r.BytesRead == _prefixLength)
                 {
-                    r.PacketLength = IPAddress.NetworkToHostOrder(
-                        BitConverter.ToInt32(r.PacketBytes, 0));
-
-                    // check for policy file (kinda hackish code)
-                    if (r.PacketLength == 1014001516)
-                    {
-                        SendPolicyFile();
-                        r.Reset();
-                        break;
-                    }
+                    r.PacketLength =BitConverter.ToInt32(r.PacketBytes, 0);
 
                     // discard invalid packets
                     if (r.PacketLength < _prefixLength ||
@@ -262,28 +253,6 @@ namespace wServer.networking.server
                 return false;
 
             return true;
-        }
-
-        private void SendPolicyFile()
-        { // temporary
-            if (_client.Skt == null)
-                return;
-
-            try
-            {
-                var s = new NetworkStream(_client.Skt);
-                var wtr = new NWriter(s);
-                wtr.WriteNullTerminatedString(
-                    @"<cross-domain-policy>" +
-                    @"<allow-access-from domain=""*"" to-ports=""*"" />" +
-                    @"</cross-domain-policy>");
-                wtr.Write((byte)'\r');
-                wtr.Write((byte)'\n');
-            }
-            catch (Exception e)
-            {
-                Log.Error(e.ToString());
-            }
         }
     }
 }
