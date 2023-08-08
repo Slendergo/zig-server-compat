@@ -18,29 +18,28 @@
 
 */
 
-using System;
 using DungeonGenerator.Dungeon;
 using RotMG.Common.Rasterizer;
 
-namespace DungeonGenerator.Templates.Lab {
-	internal class StartRoom : FixedRoom {
-		static readonly Rect template = new Rect(0, 96, 26, 128);
+namespace DungeonGenerator.Templates.Lab;
 
-		public override RoomType Type { get { return RoomType.Start; } }
+internal class StartRoom : FixedRoom {
+	static readonly Rect template = new(0, 96, 26, 128);
 
-		public override int Width { get { return template.MaxX - template.X; } }
+	public override RoomType Type { get { return RoomType.Start; } }
 
-		public override int Height { get { return template.MaxY - template.Y; } }
+	public override int Width { get { return template.MaxX - template.X; } }
 
-		static readonly Tuple<Direction, int>[] connections = {
-			Tuple.Create(Direction.North, 11)
-		};
+	public override int Height { get { return template.MaxY - template.Y; } }
 
-		public override Tuple<Direction, int>[] ConnectionPoints { get { return connections; } }
+	static readonly Tuple<Direction, int>[] connections = {
+		Tuple.Create(Direction.North, 11)
+	};
 
-		public override void Rasterize(BitmapRasterizer<DungeonTile> rasterizer, Random rand) {
-			rasterizer.Copy(LabTemplate.MapTemplate, template, Pos);
-			LabTemplate.DrawSpiderWeb(rasterizer, Bounds, rand);
-		}
+	public override Tuple<Direction, int>[] ConnectionPoints { get { return connections; } }
+
+	public override void Rasterize(BitmapRasterizer<DungeonTile> rasterizer, Random rand) {
+		rasterizer.Copy(LabTemplate.MapTemplate, template, Pos);
+		LabTemplate.DrawSpiderWeb(rasterizer, Bounds, rand);
 	}
 }

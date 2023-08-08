@@ -18,47 +18,46 @@
 
 */
 
-using System;
 using DungeonGenerator.Dungeon;
 using RotMG.Common.Rasterizer;
 
-namespace DungeonGenerator.Templates.Abyss {
-	internal class StartRoom : Room {
-		readonly int len;
-		internal Point portalPos;
+namespace DungeonGenerator.Templates.Abyss;
 
-		public StartRoom(int len) {
-			this.len = len;
-		}
+internal class StartRoom : Room {
+	readonly int len;
+	internal Point portalPos;
 
-		public override RoomType Type { get { return RoomType.Start; } }
+	public StartRoom(int len) {
+		this.len = len;
+	}
 
-		public override int Width { get { return len; } }
+	public override RoomType Type { get { return RoomType.Start; } }
 
-		public override int Height { get { return len; } }
+	public override int Width { get { return len; } }
 
-		public override void Rasterize(BitmapRasterizer<DungeonTile> rasterizer, Random rand) {
-			rasterizer.FillRect(Bounds, new DungeonTile {
-				TileType = AbyssTemplate.RedSmallChecks
-			});
+	public override int Height { get { return len; } }
 
-			var buf = rasterizer.Bitmap;
-			var bounds = Bounds;
+	public override void Rasterize(BitmapRasterizer<DungeonTile> rasterizer, Random rand) {
+		rasterizer.FillRect(Bounds, new DungeonTile {
+			TileType = AbyssTemplate.RedSmallChecks
+		});
 
-			bool portalPlaced = false;
-			while (!portalPlaced) {
-				int x = rand.Next(bounds.X + 2, bounds.MaxX - 4);
-				int y = rand.Next(bounds.Y + 2, bounds.MaxY - 4);
-				if (buf[x, y].Object != null)
-					continue;
+		var buf = rasterizer.Bitmap;
+		var bounds = Bounds;
 
-				buf[x, y].Region = "Spawn";
-				buf[x, y].Object = new DungeonObject {
-					ObjectType = AbyssTemplate.CowardicePortal
-				};
-				portalPos = new Point(x, y);
-				portalPlaced = true;
-			}
+		bool portalPlaced = false;
+		while (!portalPlaced) {
+			int x = rand.Next(bounds.X + 2, bounds.MaxX - 4);
+			int y = rand.Next(bounds.Y + 2, bounds.MaxY - 4);
+			if (buf[x, y].Object != null)
+				continue;
+
+			buf[x, y].Region = "Spawn";
+			buf[x, y].Object = new DungeonObject {
+				ObjectType = AbyssTemplate.CowardicePortal
+			};
+			portalPos = new Point(x, y);
+			portalPlaced = true;
 		}
 	}
 }

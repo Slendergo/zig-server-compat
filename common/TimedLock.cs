@@ -1,7 +1,6 @@
 ﻿// code from: http://www.interact-sw.co.uk/iangblog/2004/04/26/yetmoretimedlocking
 
-using System;
-using System.Threading;
+
 
 // Thanks to Eric Gunnerson for recommending this be a struct rather
 // than a class - avoids a heap allocation.

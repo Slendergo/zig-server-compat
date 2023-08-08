@@ -1,63 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Ionic.Zlib;
+﻿using System.IO.Compression;
 
-namespace terrain
+namespace terrain;
+
+public class WorldMapExporter
 {
-    public class WorldMapExporter
+    public static void Export(TerrainTile[,] tiles, string path)
     {
-        public static void Export(TerrainTile[,] tiles, string path)
-        {
-            File.WriteAllBytes(path, Export(tiles));
-        }
-        public static byte[] Export(TerrainTile[,] tiles)
-        {
-            List<TerrainTile> dict = new List<TerrainTile>();
+        File.WriteAllBytes(path, Export(tiles));
+    }
+    public static byte[] Export(TerrainTile[,] tiles)
+    {
+        List<TerrainTile> dict = new List<TerrainTile>();
 
-            int w = tiles.GetLength(0);
-            int h = tiles.GetLength(1);
-            byte[] dat = new byte[w * h * 3];
-            int idx = 0;
-            for (int y = 0; y < h; y++)
-                for (int x = 0; x < w; x++)
-                {
-                    TerrainTile tile = tiles[x, y];
-                    short i = (short)dict.IndexOf(tile);
-                    if (i == -1)
-                    {
-                        i = (short)dict.Count;
-                        dict.Add(tile);
-                    }
-                    dat[idx] = (byte)(i & 0xff);
-                    dat[idx + 1] = (byte)(i >> 8);
-                    dat[idx + 2] = (byte)tile.Elevation;
-                    idx += 3;
-                }
-
-            MemoryStream ms = new MemoryStream();
-            using (BinaryWriter wtr = new BinaryWriter(ms))
+        int w = tiles.GetLength(0);
+        int h = tiles.GetLength(1);
+        byte[] dat = new byte[w * h * 3];
+        int idx = 0;
+        for (int y = 0; y < h; y++)
+        for (int x = 0; x < w; x++)
+        {
+            TerrainTile tile = tiles[x, y];
+            short i = (short)dict.IndexOf(tile);
+            if (i == -1)
             {
-                wtr.Write((short)dict.Count);
-                foreach (var i in dict)
-                {
-                    wtr.Write(i.TileId);
-                    wtr.Write(i.TileObj ?? "");
-                    wtr.Write(i.Name ?? "");
-                    wtr.Write((byte)i.Terrain);
-                    wtr.Write((byte)i.Region);
-                }
-                wtr.Write(w);
-                wtr.Write(h);
-                wtr.Write(dat);
+                i = (short)dict.Count;
+                dict.Add(tile);
             }
-            byte[] buff = ZlibStream.CompressBuffer(ms.ToArray());
-            byte[] ret = new byte[buff.Length + 1];
-            Buffer.BlockCopy(buff, 0, ret, 1, buff.Length);
-            ret[0] = 2;
-            return ret;
+            dat[idx] = (byte)(i & 0xff);
+            dat[idx + 1] = (byte)(i >> 8);
+            dat[idx + 2] = (byte)tile.Elevation;
+            idx += 3;
         }
+
+        MemoryStream ms = new MemoryStream();
+        using (BinaryWriter wtr = new BinaryWriter(ms))
+        {
+            wtr.Write((short)dict.Count);
+            foreach (var i in dict)
+            {
+                wtr.Write(i.TileId);
+                wtr.Write(i.TileObj ?? "");
+                wtr.Write(i.Name ?? "");
+                wtr.Write((byte)i.Terrain);
+                wtr.Write((byte)i.Region);
+            }
+            wtr.Write(w);
+            wtr.Write(h);
+            wtr.Write(dat);
+        }
+        Span<byte> buff = new(); 
+        int length = 0;
+        using (var compressor = new ZLibStream(ms, CompressionMode.Compress))
+            length = compressor.Read(buff);
+        byte[] ret = new byte[length + 1];
+        Buffer.BlockCopy(buff.ToArray(), 0, ret, 1, length);
+        ret[0] = 2;
+        return ret;
     }
 }

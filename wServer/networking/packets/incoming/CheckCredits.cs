@@ -1,14 +1,13 @@
 ﻿using common;
 
-namespace wServer.networking.packets.incoming
+namespace wServer.networking.packets.incoming;
+
+public class CheckCredits : IncomingMessage
 {
-    public class CheckCredits : IncomingMessage
-    {
-        public override PacketId ID => PacketId.CHECKCREDITS;
-        public override Packet CreateInstance() { return new CheckCredits(); }
+    public override C2SPacketId C2SId => C2SPacketId.CheckCredits;
+    public override Packet CreateInstance() { return new CheckCredits(); }
 
-        protected override void Read(NReader rdr) { }
+    protected override void Read(NReader rdr) { }
 
-        protected override void Write(NWriter wtr) { }
-    }
+    protected override void Write(NWriter wtr) { }
 }

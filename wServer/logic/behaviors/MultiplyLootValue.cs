@@ -1,38 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using wServer.realm;
-using wServer.realm.entities;
+﻿using wServer.realm;
 
-namespace wServer.logic.behaviors
+namespace wServer.logic.behaviors;
+
+class MultiplyLootValue : Behavior
 {
-    class MultiplyLootValue : Behavior
+    //State storage: cooldown timer
+
+    int multiplier;
+
+    public MultiplyLootValue(int multiplier)
     {
-        //State storage: cooldown timer
+        this.multiplier = multiplier;
+    }
 
-        int multiplier;
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
+    {
+        state = false;
+    }
 
-        public MultiplyLootValue(int multiplier)
+    protected override void TickCore(Entity host, RealmTime time, ref object state)
+    {
+        bool multiplied = (bool)state;
+        if (!multiplied)
         {
-            this.multiplier = multiplier;
+            var newLootValue = host.LootValue * multiplier;
+            host.LootValue = newLootValue;
+            multiplied = true;
         }
-
-        protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-        {
-            state = false;
-        }
-
-        protected override void TickCore(Entity host, RealmTime time, ref object state)
-        {
-            bool multiplied = (bool)state;
-            if (!multiplied)
-            {
-                var newLootValue = host.LootValue * multiplier;
-                host.LootValue = newLootValue;
-                multiplied = true;
-            }
-            state = multiplied;
-        }
+        state = multiplied;
     }
 }

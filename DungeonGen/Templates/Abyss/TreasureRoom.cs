@@ -18,34 +18,33 @@
 
 */
 
-using System;
 using DungeonGenerator.Dungeon;
 using RotMG.Common.Rasterizer;
 
-namespace DungeonGenerator.Templates.Abyss {
-	internal class TreasureRoom : FixedRoom {
-		public override RoomType Type { get { return RoomType.Special; } }
+namespace DungeonGenerator.Templates.Abyss;
 
-		public override int Width { get { return 15; } }
+internal class TreasureRoom : FixedRoom {
+	public override RoomType Type { get { return RoomType.Special; } }
 
-		public override int Height { get { return 21; } }
+	public override int Width { get { return 15; } }
 
-		static readonly Tuple<Direction, int>[] connections = {
-			Tuple.Create(Direction.South, 6)
-		};
+	public override int Height { get { return 21; } }
 
-		public override Tuple<Direction, int>[] ConnectionPoints { get { return connections; } }
+	static readonly Tuple<Direction, int>[] connections = {
+		Tuple.Create(Direction.South, 6)
+	};
 
-		public override void Rasterize(BitmapRasterizer<DungeonTile> rasterizer, Random rand) {
-			rasterizer.Copy(AbyssTemplate.MapTemplate, new Rect(70, 10, 85, 31), Pos, tile => tile.TileType.Name == "Space");
+	public override Tuple<Direction, int>[] ConnectionPoints { get { return connections; } }
 
-			var bounds = Bounds;
-			var buf = rasterizer.Bitmap;
-			for (int x = bounds.X; x < bounds.MaxX; x++)
-				for (int y = bounds.Y; y < bounds.MaxY; y++) {
-					if (buf[x, y].TileType != AbyssTemplate.Space)
-						buf[x, y].Region = "Treasure";
-				}
+	public override void Rasterize(BitmapRasterizer<DungeonTile> rasterizer, Random rand) {
+		rasterizer.Copy(AbyssTemplate.MapTemplate, new Rect(70, 10, 85, 31), Pos, tile => tile.TileType.Name == "Space");
+
+		var bounds = Bounds;
+		var buf = rasterizer.Bitmap;
+		for (int x = bounds.X; x < bounds.MaxX; x++)
+		for (int y = bounds.Y; y < bounds.MaxY; y++) {
+			if (buf[x, y].TileType != AbyssTemplate.Space)
+				buf[x, y].Region = "Treasure";
 		}
 	}
 }

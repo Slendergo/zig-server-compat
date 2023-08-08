@@ -18,17 +18,16 @@
 
 */
 
-using System;
 using DungeonGenerator.Dungeon;
 
-namespace DungeonGenerator.Templates.PirateCave {
-	internal class Background : MapRender {
-		public override void Rasterize() {
-			var tile = new DungeonTile {
-				TileType = PirateCaveTemplate.ShallowWater
-			};
+namespace DungeonGenerator.Templates.PirateCave;
 
-			Rasterizer.Clear(tile);
-		}
+internal class Background : MapRender {
+	public override void Rasterize() {
+		var tile = new DungeonTile {
+			TileType = PirateCaveTemplate.ShallowWater
+		};
+
+		Rasterizer.Clear(tile);
 	}
 }

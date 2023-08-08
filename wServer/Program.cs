@@ -1,83 +1,88 @@
 ﻿using common;
 using common.resources;
 using NLog;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using wServer.networking;
+using NLog.Targets;
 using wServer.networking.server;
 using wServer.realm;
 
-namespace wServer
+namespace wServer;
+
+class Program
 {
-    class Program
+    static readonly Logger Log = LogManager.GetCurrentClassLogger();
+    static readonly ManualResetEvent Shutdown = new(false);
+
+    internal static ServerConfig Config;
+    internal static Resources Resources;
+    internal static Database Database;
+
+    static void Main(string[] args)
     {
-        static readonly Logger Log = LogManager.GetCurrentClassLogger();
-        static readonly ManualResetEvent Shutdown = new ManualResetEvent(false);
+        AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        Thread.CurrentThread.Name = "Entry";
 
-        internal static ServerConfig Config;
-        internal static Resources Resources;
-        internal static Database Database;
+        Config = ServerConfig.ReadFile("wServer.json");
 
-        static void Main(string[] args)
+        var logConfig = new NLog.Config.LoggingConfiguration();
+        var consoleTarget = new ColoredConsoleTarget("consoleTarget")
         {
-            AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            Thread.CurrentThread.Name = "Entry";
+            Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}"
+        };
+        logConfig.AddTarget(consoleTarget);
+        logConfig.AddRule(LogLevel.Info, LogLevel.Fatal, consoleTarget);
+            
+        var fileTarget = new FileTarget("fileTarget")
+        {
+            FileName = "${var:logDirectory}/log.txt",
+            Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}"
+        };
+        logConfig.AddTarget(fileTarget);
+        LogManager.Configuration = logConfig;
+        LogManager.Configuration.Variables["buildConfig"] = Utils.GetBuildConfiguration();
 
-            Config = args.Length > 0 ?
-                ServerConfig.ReadFile(args[0]) :
-                ServerConfig.ReadFile("wServer.json");
+        using (Resources = new Resources(Config.serverSettings.resourceFolder, true))
+        using (Database = new Database(Config.dbInfo.host,
+                   Config.dbInfo.port,
+                   Config.dbInfo.index,
+                   Config.dbInfo.auth, 
+                   Resources))
+        {
+            Config.serverInfo.instanceId = Guid.NewGuid().ToString();
 
-            LogManager.Configuration.Variables["logDirectory"] = Config.serverSettings.logFolder + "/wServer";
-            LogManager.Configuration.Variables["buildConfig"] = Utils.GetBuildConfiguration();
+            var manager = new RealmManager(Resources, Database, Config);
+            manager.Run();
 
-            using (Resources = new Resources(Config.serverSettings.resourceFolder, true))
-            using (Database = new Database(Resources, Config))
+            var server = new Server(manager,
+                Config.serverInfo.port,
+                Config.serverSettings.maxConnections,
+                StringUtils.StringToByteArray(Config.serverSettings.key));
+            server.Start();
+
+            Console.CancelKeyPress += delegate
             {
-                Config.serverInfo.instanceId = Guid.NewGuid().ToString();
+                Shutdown.Set();
+            };
 
-                var manager = new RealmManager(Resources, Database, Config);
-                manager.Run();
-
-                var policy = new PolicyServer();
-                policy.Start();
-
-                var server = new Server(manager,
-                    Config.serverInfo.port,
-                    Config.serverSettings.maxConnections,
-                    StringUtils.StringToByteArray(Config.serverSettings.key));
-                server.Start();
-
-                Console.CancelKeyPress += delegate
-                {
-                    Shutdown.Set();
-                };
-
-                Shutdown.WaitOne();
-                Log.Info("Terminating...");
-                manager.Stop();
-                server.Stop();
-                policy.Stop();
-                Log.Info("Server terminated.");
-            }
+            Shutdown.WaitOne();
+            Log.Info("Terminating...");
+            manager.Stop();
+            server.Stop();
+            Log.Info("Server terminated.");
         }
+    }
 
-        public static void Stop(Task task = null)
-        {
-            if (task != null)
-                Log.Fatal(task.Exception);
+    public static void Stop(Task task = null)
+    {
+        if (task != null)
+            Log.Fatal(task.Exception);
 
-            Shutdown.Set();
-        }
+        Shutdown.Set();
+    }
 
-        private static void LogUnhandledException(object sender, UnhandledExceptionEventArgs args)
-        {
-            Log.Fatal((Exception)args.ExceptionObject);
-        }
+    private static void LogUnhandledException(object sender, UnhandledExceptionEventArgs args)
+    {
+        Log.Fatal((Exception)args.ExceptionObject);
     }
 }

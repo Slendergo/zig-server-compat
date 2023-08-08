@@ -1,1 +1,76 @@
-{"data":"eNqtlgkSgzAIRSFE2t7/wl2mKiCQzTDTqW18fsAAAM2FH+v5rWehuRcVr03VO/BvkiU52CDi8VxJs1cI5aD28EZMR8FGamfSf3f9fa/i6vtZlM5IJSofakNXFRwdJRu5NktT/bzYaO+2ORbHUXtKasfWsF0hhTzp69ZhsUJQueijSY1R9OoQTWsE92TN8DjMCi7ok+cSJr2VCsH4PqPuVFgcVl3gsamSq/pQvNdacXTfoyPD4FSUiPfsyLBXRWf93WvAyeSF94XC3jCv7778sumeqLK0dt4kkW6uB7xUr2xFLZP1NPJWdrYRGh8n7NorR/sRNs8HD/VLFtPM2uQi84rJpHfu5JREKQ2ck2fZBC/1lJLOa1cSuf0gnzW8aTLLuv9fNi1fJ109sYLwdWwux3CWx+n5HpKJ1l1vxysNKQ==","width":40,"height":40,"dict":[{},{"ground":"Ghost Water Beach"},{"objs":[{"name":"size:160;","id":"Palm Tree"}],"ground":"Ghost Water Beach"},{"objs":[{"name":"size:140;","id":"Palm Tree"}],"ground":"Ghost Water Beach"},{"objs":[{"id":"Beach Spectre Spawner"}],"ground":"Ghost Water Beach"},{"ground":"GhostWater"},{"objs":[{"name":"size:0;","id":"Beach Spectre Spawner"}],"ground":"Ghost Water Beach"},{"objs":[{"name":"name:{objects.Davy_JonesAPOS_Locker_Portal};","id":"Ghost Ship Anchor"}],"ground":"GhostWater"},{"objs":[{"name":"size:130;","id":"Ghost Ship"}],"ground":"GhostWater"},{"objs":[{"name":"","id":"Beach Spectre Spawner"}],"ground":"Ghost Water Beach"}]}
+{
+  "data": "eNqtloEWgiAMRUGJ6v9/uAzX9mAThsA5pgK3tzdAQuiV\u002BK0j70ZKrMbSXXnXp2KP44nflF/Jka0WrfSXtPophu1PHeF5KrqALGbuZ\u002B/0u0/i6bhuoNNSyQ7zWLtye\u002B1S7VyfhVQ9L7XbVB9KtX3ESMk1m9RS0znKci4N0lqdbXbHtdUaLfeSi4YatfzGKV42szLHQw/reeehSYW43ufUsUKes3eywbzi4d1sSAd5XqNia9yz4x/S\u002Bivj1dHH8cYl8dIewMw8zctiL1mVj5X55fkseZSlWXXtflBcWLcf\u002BDOiaSMer8E10covm4dG8W5A885r7G2vj\u002Bz6XmZxmtF35/HKebXOL9gzX5Lk11or7cqr2Xt4w7\u002BQL3ppSXKNX8VtFWzVSXqbTeQ77okn1nItsfrO5Xj2xhYP54rdLx/UUw0p",
+  "width": 40,
+  "height": 40,
+  "dict": [
+    {},
+    {
+      "ground": "Ghost Water Beach"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:160;",
+          "id": "Palm Tree"
+        }
+      ],
+      "ground": "Ghost Water Beach"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:140;",
+          "id": "Palm Tree"
+        }
+      ],
+      "ground": "Ghost Water Beach"
+    },
+    {
+      "objs": [
+        {
+          "id": "Beach Spectre Spawner"
+        }
+      ],
+      "ground": "Ghost Water Beach"
+    },
+    {
+      "ground": "GhostWater"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:0;",
+          "id": "Beach Spectre Spawner"
+        }
+      ],
+      "ground": "Ghost Water Beach"
+    },
+    {
+      "objs": [
+        {
+          "name": "name:{objects.Davy_JonesAPOS_Locker_Portal};",
+          "id": "Ghost Ship Anchor"
+        }
+      ],
+      "ground": "GhostWater"
+    },
+    {
+      "objs": [
+        {
+          "name": "size:130;",
+          "id": "Ghost Ship"
+        }
+      ],
+      "ground": "GhostWater"
+    },
+    {
+      "objs": [
+        {
+          "name": "",
+          "id": "Beach Spectre Spawner"
+        }
+      ],
+      "ground": "Ghost Water Beach"
+    }
+  ]
+}

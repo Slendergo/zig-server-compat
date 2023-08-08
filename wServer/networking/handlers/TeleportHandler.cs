@@ -3,23 +3,22 @@ using wServer.realm.entities;
 using wServer.networking.packets;
 using wServer.networking.packets.incoming;
 
-namespace wServer.networking.handlers
+namespace wServer.networking.handlers;
+
+class TeleportHandler : PacketHandlerBase<Teleport>
 {
-    class TeleportHandler : PacketHandlerBase<Teleport>
+    public override C2SPacketId C2SId => C2SPacketId.Teleport;
+
+    protected override void HandlePacket(Client client, Teleport packet)
     {
-        public override PacketId ID => PacketId.TELEPORT;
+        client.Manager.Logic.AddPendingAction(t => Handle(client.Player, t, packet.ObjectId));
+    }
 
-        protected override void HandlePacket(Client client, Teleport packet)
-        {
-            client.Manager.Logic.AddPendingAction(t => Handle(client.Player, t, packet.ObjectId));
-        }
+    void Handle(Player player, RealmTime time, int objId)
+    {
+        if (player == null || player.Owner == null)
+            return;
 
-        void Handle(Player player, RealmTime time, int objId)
-        {
-            if (player == null || player.Owner == null)
-                return;
-
-            player.Teleport(time, objId);
-        }
+        player.Teleport(time, objId);
     }
 }

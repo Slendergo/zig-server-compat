@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace wServer;
 
-namespace wServer
+internal static class Empty<T>
 {
-    static class Empty<T>
-    {
-        public static T[] Array = new T[0];
-    }
+    public static readonly T[] Array = System.Array.Empty<T>();
 }

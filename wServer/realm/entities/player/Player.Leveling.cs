@@ -1,48 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using wServer.networking.packets.outgoing;
+﻿using wServer.networking.packets.outgoing;
 
-namespace wServer.realm.entities
+namespace wServer.realm.entities;
+
+public partial class Player
 {
-    public partial class Player
+    public static int GetExpGoal(int level)
     {
-        public static int GetExpGoal(int level)
-        {
-            return 50 + (level - 1) * 100;
-        }
-        public static int GetLevelExp(int level)
-        {
-            if (level == 1) return 0;
-            return 50 * (level - 1) + (level - 2) * (level - 1) * 50;
-        }
-        public static int GetFameGoal(int fame)
-        {
-            if (fame >= 2000) return 0;
-            else if (fame >= 800) return 2000;
-            else if (fame >= 400) return 800;
-            else if (fame >= 150) return 400;
-            else if (fame >= 20) return 150;
-            else return 20;
-        }
+        return 50 + (level - 1) * 100;
+    }
+    public static int GetLevelExp(int level)
+    {
+        if (level == 1) return 0;
+        return 50 * (level - 1) + (level - 2) * (level - 1) * 50;
+    }
+    public static int GetFameGoal(int fame)
+    {
+        if (fame >= 2000) return 0;
+        else if (fame >= 800) return 2000;
+        else if (fame >= 400) return 800;
+        else if (fame >= 150) return 400;
+        else if (fame >= 20) return 150;
+        else return 20;
+    }
 
-        public int GetStars()
+    public int GetStars()
+    {
+        int ret = 0;
+        foreach (var i in FameCounter.ClassStats.AllKeys)
         {
-            int ret = 0;
-            foreach (var i in FameCounter.ClassStats.AllKeys)
-            {
-                var entry = FameCounter.ClassStats[ushort.Parse(i)];
-                if (entry.BestFame >= 2000) ret += 5;
-                else if (entry.BestFame >= 800) ret += 4;
-                else if (entry.BestFame >= 400) ret += 3;
-                else if (entry.BestFame >= 150) ret += 2;
-                else if (entry.BestFame >= 20) ret += 1;
-            }
-            return ret;
+            var entry = FameCounter.ClassStats[ushort.Parse(i)];
+            if (entry.BestFame >= 2000) ret += 5;
+            else if (entry.BestFame >= 800) ret += 4;
+            else if (entry.BestFame >= 400) ret += 3;
+            else if (entry.BestFame >= 150) ret += 2;
+            else if (entry.BestFame >= 20) ret += 1;
         }
+        return ret;
+    }
 
-        static readonly Dictionary<string, Tuple<int, int, int>> QuestDat =
-            new Dictionary<string, Tuple<int, int, int>>()  //Priority, Min, Max
+    static readonly Dictionary<string, Tuple<int, int, int>> QuestDat =
+        new()  //Priority, Min, Max
         {
             // wandering quest enemies
             { "Scorpion Queen",                 Tuple.Create(1, 1, 6) },
@@ -76,7 +73,7 @@ namespace wServer.realm.entities
             { "Kage Kami",                      Tuple.Create(12,10, 20) },
             { "Red Demon",                      Tuple.Create(13,15, 20) },
 
-                // events
+            // events
             { "shtrs Defense System",           Tuple.Create(14,15, 20) },
             { "Fanatic of Chaos",               Tuple.Create(14,15, 20) },
             { "Skull Shrine",                   Tuple.Create(14,15, 20) },
@@ -91,7 +88,7 @@ namespace wServer.realm.entities
             { "Lucky Djinn",                    Tuple.Create(14,15, 20) },
             { "Zombie Horde",                   Tuple.Create(14,15, 20) },
 
-                // dungeon bosses
+            // dungeon bosses
             { "Evil Chicken God",               Tuple.Create(15,1, 20) },
             { "Bonegrind the Butcher",          Tuple.Create(15,1, 20) },
             { "Dreadstump the Pirate King",     Tuple.Create(15,1, 20) },
@@ -170,148 +167,147 @@ namespace wServer.realm.entities
 
         };
 
-        Entity FindQuest(Position? destination = null)
+    Entity FindQuest(Position? destination = null)
+    {
+        Entity ret = null;
+        double? bestScore = null;
+        var pX = !destination.HasValue ? X : destination.Value.X;
+        var pY = !destination.HasValue ? Y : destination.Value.Y;
+
+        foreach (var i in Owner.Quests.Values
+                     .OrderBy(quest => MathsUtils.DistSqr(quest.X, quest.Y, pX, pY)))
         {
-            Entity ret = null;
-            double? bestScore = null;
-            var pX = !destination.HasValue ? X : destination.Value.X;
-            var pY = !destination.HasValue ? Y : destination.Value.Y;
+            if (i.ObjectDesc == null || !i.ObjectDesc.Quest) continue;
 
-            foreach (var i in Owner.Quests.Values
-                .OrderBy(quest => MathsUtils.DistSqr(quest.X, quest.Y, pX, pY)))
+            Tuple<int, int, int> x;
+            if (!QuestDat.TryGetValue(i.ObjectDesc.ObjectId, out x))
+                continue;
+
+            if ((Level >= x.Item2 && Level <= x.Item3))
             {
-                if (i.ObjectDesc == null || !i.ObjectDesc.Quest) continue;
-
-                Tuple<int, int, int> x;
-                if (!QuestDat.TryGetValue(i.ObjectDesc.ObjectId, out x))
-                    continue;
-
-                if ((Level >= x.Item2 && Level <= x.Item3))
-                {
-                    var score = (20 - Math.Abs(i.ObjectDesc.Level - Level)) * x.Item1 -   //priority * level diff
+                var score = (20 - Math.Abs(i.ObjectDesc.Level - Level)) * x.Item1 -   //priority * level diff
                             this.Dist(i) / 100;    //minus 1 for every 100 tile distance
-                    if (bestScore == null || score > bestScore)
+                if (bestScore == null || score > bestScore)
+                {
+                    bestScore = score;
+                    ret = i;
+                }
+            }
+        }
+        return ret;
+    }
+
+    Entity questEntity;
+    public Entity Quest { get { return questEntity; } }
+    public void HandleQuest(RealmTime time, bool force = false, Position? destination = null)
+    {
+        if (force || time.TickCount % 500 == 0 || questEntity == null || questEntity.Owner == null)
+        {
+            var newQuest = FindQuest(destination);
+            if (newQuest != null && newQuest != questEntity)
+            {
+                Owner.Timers.Add(new WorldTimer(100, (w, t) =>
+                {
+                    _client.SendPacket(new QuestObjId()
                     {
-                        bestScore = score;
-                        ret = i;
-                    }
-                }
+                        ObjectId = newQuest.Id
+                    });
+                }));
+                questEntity = newQuest;
             }
-            return ret;
         }
+    }
 
-        Entity questEntity;
-        public Entity Quest { get { return questEntity; } }
-        public void HandleQuest(RealmTime time, bool force = false, Position? destination = null)
+    public void CalculateFame()
+    {
+        var newFame = (Experience < 200 * 1000) ?
+            Experience / 1000 :
+            200 + (Experience - 200 * 1000) / 1000;
+
+        if (newFame == Fame)
+            return;
+
+        var stats = FameCounter.ClassStats[ObjectType];
+        var newGoal = GetFameGoal(stats.BestFame > newFame ? stats.BestFame : newFame);
+
+        if (newGoal > FameGoal)
         {
-            if (force || time.TickCount % 500 == 0 || questEntity == null || questEntity.Owner == null)
+            BroadcastSync(new Notification()
             {
-                var newQuest = FindQuest(destination);
-                if (newQuest != null && newQuest != questEntity)
-                {
-                    Owner.Timers.Add(new WorldTimer(100, (w, t) =>
-                    {
-                        _client.SendPacket(new QuestObjId()
-                        {
-                            ObjectId = newQuest.Id
-                        });
-                    }));
-                    questEntity = newQuest;
-                }
-            }
+                ObjectId = Id,
+                Color = new ARGB(0xFF00FF00),
+                Message = "Class Quest Complete!"
+            }, p => this.DistSqr(p) < RadiusSqr);
+            Stars = GetStars();
         }
+        //else if (newFame != Fame)
+        //{
+        //    BroadcastSync(new Notification()
+        //    {
+        //        ObjectId = Id,
+        //        Color = new ARGB(0xFFE25F00),
+        //        Message = "+" + (newFame - Fame) + "Fame"
+        //    }, p => this.DistSqr(p) < RadiusSqr);
+        //}
 
-        public void CalculateFame()
+        Fame = newFame;
+        FameGoal = newGoal;
+    }
+
+    bool CheckLevelUp()
+    {
+        if (Experience - GetLevelExp(Level) >= ExperienceGoal && Level < 20)
         {
-            var newFame = (Experience < 200 * 1000) ?
-                Experience / 1000 :
-                200 + (Experience - 200 * 1000) / 1000;
-
-            if (newFame == Fame)
-                return;
-
-            var stats = FameCounter.ClassStats[ObjectType];
-            var newGoal = GetFameGoal(stats.BestFame > newFame ? stats.BestFame : newFame);
-
-            if (newGoal > FameGoal)
+            Level++;
+            ExperienceGoal = GetExpGoal(Level);
+            var statInfo = Manager.Resources.GameData.Classes[ObjectType].Stats;
+            var rand = new Random();
+            for (var i = 0; i < statInfo.Length; i++)
             {
-                BroadcastSync(new Notification()
-                {
-                    ObjectId = Id,
-                    Color = new ARGB(0xFF00FF00),
-                    Message = "Class Quest Complete!"
-                }, p => this.DistSqr(p) < RadiusSqr);
-                Stars = GetStars();
+                var min = statInfo[i].MinIncrease;
+                var max = statInfo[i].MaxIncrease + 1;
+                Stats.Base[i] += rand.Next(min, max);
+                if (Stats.Base[i] > statInfo[i].MaxValue)
+                    Stats.Base[i] = statInfo[i].MaxValue;
             }
-            //else if (newFame != Fame)
-            //{
-            //    BroadcastSync(new Notification()
-            //    {
-            //        ObjectId = Id,
-            //        Color = new ARGB(0xFFE25F00),
-            //        Message = "+" + (newFame - Fame) + "Fame"
-            //    }, p => this.DistSqr(p) < RadiusSqr);
-            //}
+            HP = Stats[0];
+            MP = Stats[1];
 
-            Fame = newFame;
-            FameGoal = newGoal;
+            if (Level == 20)
+            {
+                foreach (var i in Owner.Players.Values)
+                {
+                    i.SendInfo(Name + " achieved level 20");
+                }
+            }
+            else
+            {
+                // to get exp scaled to new exp goal
+                InvokeStatChange(StatsType.Experience, Experience - GetLevelExp(Level), true);
+            }
+
+            questEntity = null;
+
+            return true;
         }
+        CalculateFame();
+        return false;
+    }
 
-        bool CheckLevelUp()
+    public bool EnemyKilled(Enemy enemy, int exp, bool killer)
+    {
+        if (enemy == questEntity)
+            BroadcastSync(new Notification()
+            {
+                ObjectId = Id,
+                Color = new ARGB(0xFF00FF00),
+                Message = "Quest Complete!"
+            }, p => this.DistSqr(p) < RadiusSqr);
+        if (exp != 0)
         {
-            if (Experience - GetLevelExp(Level) >= ExperienceGoal && Level < 20)
-            {
-                Level++;
-                ExperienceGoal = GetExpGoal(Level);
-                var statInfo = Manager.Resources.GameData.Classes[ObjectType].Stats;
-                var rand = new Random();
-                for (var i = 0; i < statInfo.Length; i++)
-                {
-                    var min = statInfo[i].MinIncrease;
-                    var max = statInfo[i].MaxIncrease + 1;
-                    Stats.Base[i] += rand.Next(min, max);
-                    if (Stats.Base[i] > statInfo[i].MaxValue)
-                        Stats.Base[i] = statInfo[i].MaxValue;
-                }
-                HP = Stats[0];
-                MP = Stats[1];
-
-                if (Level == 20)
-                {
-                    foreach (var i in Owner.Players.Values)
-                    {
-                        i.SendInfo(Name + " achieved level 20");
-                    }
-                }
-                else
-                {
-                    // to get exp scaled to new exp goal
-                    InvokeStatChange(StatsType.Experience, Experience - GetLevelExp(Level), true);
-                }
-
-                questEntity = null;
-
-                return true;
-            }
-            CalculateFame();
-            return false;
+            Experience += exp;
         }
-
-        public bool EnemyKilled(Enemy enemy, int exp, bool killer)
-        {
-            if (enemy == questEntity)
-                BroadcastSync(new Notification()
-                {
-                    ObjectId = Id,
-                    Color = new ARGB(0xFF00FF00),
-                    Message = "Quest Complete!"
-                }, p => this.DistSqr(p) < RadiusSqr);
-            if (exp != 0)
-            {
-                Experience += exp;
-            }
-            FameCounter.Killed(enemy, killer);
-            return CheckLevelUp();
-        }
+        FameCounter.Killed(enemy, killer);
+        return CheckLevelUp();
     }
 }

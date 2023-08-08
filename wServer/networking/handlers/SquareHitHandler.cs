@@ -1,14 +1,13 @@
 ﻿using wServer.networking.packets;
 using wServer.networking.packets.incoming;
 
-namespace wServer.networking.handlers
-{
-    class SquareHitHandler : PacketHandlerBase<SquareHit>
-    {
-        public override PacketId ID => PacketId.SQUAREHIT;
+namespace wServer.networking.handlers;
 
-        protected override void HandlePacket(Client client, SquareHit packet)
-        {
-        }
+class SquareHitHandler : PacketHandlerBase<SquareHit>
+{
+    public override C2SPacketId C2SId => C2SPacketId.SquareHit;
+
+    protected override void HandlePacket(Client client, SquareHit packet)
+    {
     }
 }

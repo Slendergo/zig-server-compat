@@ -1,34 +1,32 @@
-﻿using System.Linq;
-using wServer.networking.packets;
+﻿using wServer.networking.packets;
 using wServer.networking.packets.incoming;
 using wServer.realm;
 using wServer.realm.entities;
 
-namespace wServer.networking.handlers
+namespace wServer.networking.handlers;
+
+class PlayerHitHandler : PacketHandlerBase<PlayerHit>
 {
-    class PlayerHitHandler : PacketHandlerBase<PlayerHit>
+    public override C2SPacketId C2SId => C2SPacketId.PlayerHit;
+
+    protected override void HandlePacket(Client client, PlayerHit packet)
     {
-        public override PacketId ID => PacketId.PLAYERHIT;
+        client.Manager.Logic.AddPendingAction(t => Handle(client.Player, t, packet.ObjectId, packet.BulletId));
+    }
 
-        protected override void HandlePacket(Client client, PlayerHit packet)
-        {
-            client.Manager.Logic.AddPendingAction(t => Handle(client.Player, t, packet.ObjectId, packet.BulletId));
-        }
+    private void Handle(Player player, RealmTime time, int objectId, byte bulletId)
+    {
+        if (player?.Owner == null)
+            return;
 
-        private void Handle(Player player, RealmTime time, int objectId, byte bulletId)
-        {
-            if (player?.Owner == null)
-                return;
+        var entity = player.Owner.GetEntity(objectId);
 
-            var entity = player.Owner.GetEntity(objectId);
+        var prj = entity != null ?
+            ((IProjectileOwner)entity).Projectiles[bulletId] :
+            player.Owner.Projectiles
+                .Where(p => p.Value.ProjectileOwner.Self.Id == objectId)
+                .SingleOrDefault(p => p.Value.ProjectileId == bulletId).Value;
 
-            var prj = entity != null ?
-                ((IProjectileOwner)entity).Projectiles[bulletId] :
-                player.Owner.Projectiles
-                    .Where(p => p.Value.ProjectileOwner.Self.Id == objectId)
-                    .SingleOrDefault(p => p.Value.ProjectileId == bulletId).Value;
-
-            prj?.ForceHit(player, time);
-        }
+        prj?.ForceHit(player, time);
     }
 }

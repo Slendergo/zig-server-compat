@@ -1,28 +1,27 @@
 ﻿using wServer.realm;
 
-namespace wServer.logic.transitions
+namespace wServer.logic.transitions;
+
+class GroundTransition : Transition
 {
-    class GroundTransition : Transition
+    //State storage: none
+
+    private readonly string _ground;
+    private ushort? _groundType;
+
+    public GroundTransition(string ground, string targetState)
+        : base(targetState)
     {
-        //State storage: none
+        _ground = ground;
+    }
 
-        private readonly string _ground;
-        private ushort? _groundType;
+    protected override bool TickCore(Entity host, RealmTime time, ref object state)
+    {
+        if (_groundType == null)
+            _groundType = host.Manager.Resources.GameData.IdToTileType[_ground];
 
-        public GroundTransition(string ground, string targetState)
-            : base(targetState)
-        {
-            _ground = ground;
-        }
+        var tile = host.Owner.Map[(int) host.X, (int) host.Y];
 
-        protected override bool TickCore(Entity host, RealmTime time, ref object state)
-        {
-            if (_groundType == null)
-                _groundType = host.Manager.Resources.GameData.IdToTileType[_ground];
-
-            var tile = host.Owner.Map[(int) host.X, (int) host.Y];
-
-            return tile.TileId == _groundType;
-        }
+        return tile.TileId == _groundType;
     }
 }

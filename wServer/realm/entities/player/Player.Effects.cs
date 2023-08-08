@@ -1,110 +1,108 @@
-﻿using System;
-using common.resources;
+﻿using common.resources;
 
-namespace wServer.realm.entities
+namespace wServer.realm.entities;
+
+partial class Player
 {
-    partial class Player
+    float _healing;
+    float _bleeding;
+
+    int _newbieTime;
+    int _canTpCooldownTime;
+
+    void HandleEffects(RealmTime time)
     {
-        float _healing;
-        float _bleeding;
-
-        int _newbieTime;
-        int _canTpCooldownTime;
-
-        void HandleEffects(RealmTime time)
+        if (HasConditionEffect(ConditionEffects.Healing) && !HasConditionEffect(ConditionEffects.Sick))
         {
-            if (HasConditionEffect(ConditionEffects.Healing) && !HasConditionEffect(ConditionEffects.Sick))
+            if (_healing > 1)
             {
-                if (_healing > 1)
-                {
-                    HP = Math.Min(Stats[0], HP + (int)_healing);
-                    _healing -= (int)_healing;
-                }
-                _healing += 28 * (time.ElaspedMsDelta / 1000f);
+                HP = Math.Min(Stats[0], HP + (int)_healing);
+                _healing -= (int)_healing;
             }
+            _healing += 28 * (time.ElaspedMsDelta / 1000f);
+        }
 
-            if (HasConditionEffect(ConditionEffects.Quiet) && MP > 0)
-                MP = 0;
+        if (HasConditionEffect(ConditionEffects.Quiet) && MP > 0)
+            MP = 0;
 
-            if (HasConditionEffect(ConditionEffects.Bleeding) && HP > 1)
+        if (HasConditionEffect(ConditionEffects.Bleeding) && HP > 1)
+        {
+            if (_bleeding > 1)
             {
-                if (_bleeding > 1)
-                {
-                    HP -= (int)_bleeding;
-                    if (HP < 1)
-                        HP = 1;
-                    _bleeding -= (int)_bleeding;
-                }
-                _bleeding += 28 * (time.ElaspedMsDelta / 1000f);
+                HP -= (int)_bleeding;
+                if (HP < 1)
+                    HP = 1;
+                _bleeding -= (int)_bleeding;
             }
-
-            if (HasConditionEffect(ConditionEffects.NinjaSpeedy))
-            {
-                MP = Math.Max(0, (int)(MP - 10 * time.ElaspedMsDelta / 1000f));
-
-                if (MP == 0)
-                    ApplyConditionEffect(ConditionEffectIndex.NinjaSpeedy, 0);
-            }
-
-            if (_newbieTime > 0)
-            {
-                _newbieTime -= time.ElaspedMsDelta;
-                if (_newbieTime < 0)
-                    _newbieTime = 0;
-            }
-
-            if (_canTpCooldownTime > 0)
-            {
-                _canTpCooldownTime -= time.ElaspedMsDelta;
-                if (_canTpCooldownTime < 0)
-                    _canTpCooldownTime = 0;
-            }
+            _bleeding += 28 * (time.ElaspedMsDelta / 1000f);
         }
 
-        bool CanHpRegen()
+        if (HasConditionEffect(ConditionEffects.NinjaSpeedy))
         {
-            if (HasConditionEffect(ConditionEffects.Sick))
-                return false;
-            if (HasConditionEffect(ConditionEffects.Bleeding))
-                return false;
-            return true;
+            MP = Math.Max(0, (int)(MP - 10 * time.ElaspedMsDelta / 1000f));
+
+            if (MP == 0)
+                ApplyConditionEffect(ConditionEffectIndex.NinjaSpeedy, 0);
         }
 
-        bool CanMpRegen()
+        if (_newbieTime > 0)
         {
-            if (HasConditionEffect(ConditionEffects.Quiet) ||
-                HasConditionEffect(ConditionEffects.NinjaSpeedy))
-                return false;
-
-            return true;
+            _newbieTime -= time.ElaspedMsDelta;
+            if (_newbieTime < 0)
+                _newbieTime = 0;
         }
 
-        internal void SetNewbiePeriod()
+        if (_canTpCooldownTime > 0)
         {
-            _newbieTime = 3000;
+            _canTpCooldownTime -= time.ElaspedMsDelta;
+            if (_canTpCooldownTime < 0)
+                _canTpCooldownTime = 0;
         }
+    }
 
-        internal void SetTPDisabledPeriod()
-        {
-            _canTpCooldownTime = 10 * 1000; // 10 seconds
-        }
+    bool CanHpRegen()
+    {
+        if (HasConditionEffect(ConditionEffects.Sick))
+            return false;
+        if (HasConditionEffect(ConditionEffects.Bleeding))
+            return false;
+        return true;
+    }
 
-        public bool IsVisibleToEnemy()
-        {
-            if (HasConditionEffect(ConditionEffects.Paused))
-                return false;
-            if (HasConditionEffect(ConditionEffects.Invisible))
-                return false;
-            if (_newbieTime > 0)
-                return false;
-            return true;
-        }
+    bool CanMpRegen()
+    {
+        if (HasConditionEffect(ConditionEffects.Quiet) ||
+            HasConditionEffect(ConditionEffects.NinjaSpeedy))
+            return false;
 
-        public bool TPCooledDown()
-        {
-            if (_canTpCooldownTime > 0)
-                return false;
-            return true;
-        }
+        return true;
+    }
+
+    internal void SetNewbiePeriod()
+    {
+        _newbieTime = 3000;
+    }
+
+    internal void SetTPDisabledPeriod()
+    {
+        _canTpCooldownTime = 10 * 1000; // 10 seconds
+    }
+
+    public bool IsVisibleToEnemy()
+    {
+        if (HasConditionEffect(ConditionEffects.Paused))
+            return false;
+        if (HasConditionEffect(ConditionEffects.Invisible))
+            return false;
+        if (_newbieTime > 0)
+            return false;
+        return true;
+    }
+
+    public bool TPCooledDown()
+    {
+        if (_canTpCooldownTime > 0)
+            return false;
+        return true;
     }
 }

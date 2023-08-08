@@ -1,46 +1,45 @@
 ﻿using common;
 
-namespace wServer.networking.packets.outgoing
+namespace wServer.networking.packets.outgoing;
+
+public class MapInfo : OutgoingMessage
 {
-    public class MapInfo : OutgoingMessage
+    public int Width { get; set; }
+    public int Height { get; set; }
+    public string Name { get; set; }
+    public string DisplayName { get; set; }
+    public int Difficulty { get; set; }
+    public uint Seed { get; set; }
+    public int Background { get; set; }
+    public bool AllowPlayerTeleport { get; set; }
+    public bool ShowDisplays { get; set; }
+
+    public override S2CPacketId S2CId => S2CPacketId.MapInfo;
+    public override Packet CreateInstance() { return new MapInfo(); }
+
+    protected override void Read(NReader rdr)
     {
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public string Name { get; set; }
-        public string DisplayName { get; set; }
-        public int Difficulty { get; set; }
-        public uint Seed { get; set; }
-        public int Background { get; set; }
-        public bool AllowPlayerTeleport { get; set; }
-        public bool ShowDisplays { get; set; }
+        Width = rdr.ReadInt32();
+        Height = rdr.ReadInt32();
+        Name = rdr.ReadUTF();
+        DisplayName = rdr.ReadUTF();
+        Seed = rdr.ReadUInt32();
+        Background = rdr.ReadInt32();
+        Difficulty = rdr.ReadInt32();
+        AllowPlayerTeleport = rdr.ReadBoolean();
+        ShowDisplays = rdr.ReadBoolean();
+    }
 
-        public override PacketId ID => PacketId.MAPINFO;
-        public override Packet CreateInstance() { return new MapInfo(); }
-
-        protected override void Read(NReader rdr)
-        {
-            Width = rdr.ReadInt32();
-            Height = rdr.ReadInt32();
-            Name = rdr.ReadUTF();
-            DisplayName = rdr.ReadUTF();
-            Seed = rdr.ReadUInt32();
-            Background = rdr.ReadInt32();
-            Difficulty = rdr.ReadInt32();
-            AllowPlayerTeleport = rdr.ReadBoolean();
-            ShowDisplays = rdr.ReadBoolean();
-        }
-
-        protected override void Write(NWriter wtr)
-        {
-            wtr.Write(Width);
-            wtr.Write(Height);
-            wtr.WriteUTF(Name);
-            wtr.WriteUTF(DisplayName);
-            wtr.Write(Seed);
-            wtr.Write(Background);
-            wtr.Write(Difficulty);
-            wtr.Write(AllowPlayerTeleport);
-            wtr.Write(ShowDisplays);
-        }
+    protected override void Write(NWriter wtr)
+    {
+        wtr.Write(Width);
+        wtr.Write(Height);
+        wtr.WriteUTF(Name);
+        wtr.WriteUTF(DisplayName);
+        wtr.Write(Seed);
+        wtr.Write(Background);
+        wtr.Write(Difficulty);
+        wtr.Write(AllowPlayerTeleport);
+        wtr.Write(ShowDisplays);
     }
 }
