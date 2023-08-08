@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using common.resources;
 using NLog;
+using NLog.Fluent;
 using wServer.realm.terrain;
 using wServer.realm.worlds;
 
@@ -140,8 +141,14 @@ namespace wServer.realm.setpieces
                 var rnd = new Random();
                 map = rnd.Next(0, proto.maps.Length);
             }
+            
+            if (proto.wmap[map] == null)
+            {
+                log.Error("Map {0} not found in proto.", map);
+                return;
+            }
+            
             var ms = new MemoryStream(proto.wmap[map]);
-
             var sp = new Wmap(manager.Resources.GameData);
             sp.Load(ms, 0);
             sp.ProjectOntoWorld(world, pos);

@@ -167,9 +167,6 @@
     <None Update="resources\worlds\map.jm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="resources\worlds\Nexus.jm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="resources\worlds\Nexus.jw">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -753,6 +750,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="resources\data\init.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\worlds\nexus.wmap">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

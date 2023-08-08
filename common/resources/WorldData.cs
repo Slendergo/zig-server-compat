@@ -84,9 +84,6 @@ namespace common.resources
             }
         }
 
-        public ProtoWorld this[string name]
-        {
-            get { return Data[name]; }
-        }
+        public ProtoWorld this[string name] => Data[name];
     }
 }
