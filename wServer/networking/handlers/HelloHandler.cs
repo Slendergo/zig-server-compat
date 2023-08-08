@@ -47,18 +47,8 @@ namespace wServer.networking.handlers
                 return null;
             }
 
-            DbAccount acc;
-            var s1 = client.Manager.Database.Verify(packet.GUID, packet.Password, out acc);
-            if (s1 == LoginStatus.AccountNotExists)
-            {
-                var s2 = client.Manager.Database.Register(packet.GUID, packet.Password, true, out acc);
-                if (s2 != RegisterStatus.OK)
-                {
-                    client.SendFailure("Bad Login", Failure.MessageWithDisconnect);
-                    return null;
-                }
-            }
-            else if (s1 == LoginStatus.InvalidCredentials)
+            var s1 = client.Manager.Database.Verify(packet.GUID, packet.Password, out var acc);
+            if (s1 is LoginStatus.AccountNotExists or LoginStatus.InvalidCredentials)
             {
                 client.SendFailure("Bad Login", Failure.MessageWithDisconnect);
                 return null;

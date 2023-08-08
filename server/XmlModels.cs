@@ -542,7 +542,7 @@ namespace server
         public Account Account { get; private set; }
 
         public IEnumerable<NewsItem> News { get; private set; }
-        public IEnumerable<ServerItem> Servers { get; set; }
+        public List<ServerItem> Servers { get; set; }
 
         public ClassAvailability ClassesAvailable { get; private set; }
 

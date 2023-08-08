@@ -50,7 +50,11 @@ namespace wServer
             LogManager.Configuration.Variables["buildConfig"] = Utils.GetBuildConfiguration();
 
             using (Resources = new Resources(Config.serverSettings.resourceFolder, true))
-            using (Database = new Database(Resources, Config))
+            using (Database = new Database(Config.dbInfo.host,
+                       Config.dbInfo.port,
+                       Config.dbInfo.index,
+                       Config.dbInfo.auth, 
+                       Resources))
             {
                 Config.serverInfo.instanceId = Guid.NewGuid().ToString();
 

@@ -26,21 +26,19 @@ namespace common
 
         private ISManager _isManager;
         private readonly Resources _resources;
-        private readonly ServerConfig _config;
 
         public IDatabase Conn => _db;
         public readonly ISubscriber Sub;
 
-        public Database(Resources resources, ServerConfig config)
+        public Database(string host, int port, int index, string auth, Resources resources)
         {
             Log.Info("Initializing Database...");
             _resources = resources;
-            _config = config;
 
-            DatabaseIndex = config.dbInfo.index;
-            var conString = config.dbInfo.host + ":" + config.dbInfo.port + ",syncTimeout=60000";
-            if (!string.IsNullOrWhiteSpace(config.dbInfo.auth))
-                conString += ",password=" + config.dbInfo.auth;
+            DatabaseIndex = index;
+            var conString = host + ":" + port + ",syncTimeout=60000";
+            if (!string.IsNullOrWhiteSpace(auth))
+                conString += ",password=" + auth;
 
             _redis = ConnectionMultiplexer.Connect(conString);
             _server = _redis.GetServer(_redis.GetEndPoints(true)[0]);
@@ -312,7 +310,7 @@ namespace common
             acc.FlushAsync();
         }
 
-        public RegisterStatus Register(string uuid, string password, bool isGuest, out DbAccount acc)
+        public RegisterStatus Register(string uuid, string password, string name, out DbAccount acc)
         {
             var newAccounts = _resources.Settings.NewAccounts;
 
@@ -325,16 +323,16 @@ namespace common
             acc = new DbAccount(_db, newAccId)
             {
                 UUID = uuid,
-                Name = GuestNames[(uint)uuid.GetHashCode() % GuestNames.Length],
+                Name = name,
                 Admin = false,
-                NameChosen = false,
+                NameChosen = true,
                 FirstDeath = true,
                 GuildId = 0,
                 GuildRank = 0,
                 VaultCount = newAccounts.VaultCount,
                 MaxCharSlot = newAccounts.MaxCharSlot,
                 RegTime = DateTime.Now,
-                Guest = isGuest,
+                Guest = false,
                 Fame = newAccounts.Fame,
                 TotalFame = newAccounts.Fame,
                 Credits = newAccounts.Credits,
