@@ -1,83 +1,81 @@
-﻿using System;
-using common;
+﻿using common;
 using NLog;
 using wServer.realm;
 
-namespace wServer.logic
+namespace wServer.logic;
+
+public abstract class Behavior : IStateChildren
 {
-    public abstract class Behavior : IStateChildren
+    protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
+    public void Tick(Entity host, RealmTime time)
     {
-        protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        object state;
+        if (!host.StateStorage.TryGetValue(this, out state))
+            state = null;
 
-        public void Tick(Entity host, RealmTime time)
+        TickCore(host, time, ref state);
+
+        if (state == null)
+            host.StateStorage.Remove(this);
+        else
+            host.StateStorage[this] = state;
+    }
+    protected abstract void TickCore(Entity host, RealmTime time, ref object state);
+
+    public void OnStateEntry(Entity host, RealmTime time)
+    {
+        object state;
+        if (!host.StateStorage.TryGetValue(this, out state))
+            state = null;
+
+        OnStateEntry(host, time, ref state);
+
+        if (state == null)
+            host.StateStorage.Remove(this);
+        else
+            host.StateStorage[this] = state;
+    }
+
+    protected virtual void OnStateEntry(Entity host, RealmTime time, ref object state) { }
+
+    public void OnStateExit(Entity host, RealmTime time)
+    {
+        object state;
+        if (!host.StateStorage.TryGetValue(this, out state))
+            state = null;
+
+        OnStateExit(host, time, ref state);
+
+        if (state == null)
+            host.StateStorage.Remove(this);
+        else
+            host.StateStorage[this] = state;
+    }
+
+    protected virtual void OnStateExit(Entity host, RealmTime time, ref object state) { }
+
+    protected internal virtual void Resolve(State parent) { }
+
+    public static ushort GetObjType(string id)
+    {
+        ushort ret;
+        if (!BehaviorDb.InitGameData.IdToObjectType.TryGetValue(id, out ret))
         {
-            object state;
-            if (!host.StateStorage.TryGetValue(this, out state))
-                state = null;
-
-            TickCore(host, time, ref state);
-
-            if (state == null)
-                host.StateStorage.Remove(this);
-            else
-                host.StateStorage[this] = state;
+            ret = BehaviorDb.InitGameData.IdToObjectType["Pirate"];
+            Log.Warn($"Object type '{id}' not found. Using Pirate ({ret.To4Hex()}).");
         }
-        protected abstract void TickCore(Entity host, RealmTime time, ref object state);
+        return ret;
+    }
 
-        public void OnStateEntry(Entity host, RealmTime time)
+    [ThreadStatic]
+    private static Random rand;
+    protected static Random Random
+    {
+        get
         {
-            object state;
-            if (!host.StateStorage.TryGetValue(this, out state))
-                state = null;
-
-            OnStateEntry(host, time, ref state);
-
-            if (state == null)
-                host.StateStorage.Remove(this);
-            else
-                host.StateStorage[this] = state;
-        }
-
-        protected virtual void OnStateEntry(Entity host, RealmTime time, ref object state) { }
-
-        public void OnStateExit(Entity host, RealmTime time)
-        {
-            object state;
-            if (!host.StateStorage.TryGetValue(this, out state))
-                state = null;
-
-            OnStateExit(host, time, ref state);
-
-            if (state == null)
-                host.StateStorage.Remove(this);
-            else
-                host.StateStorage[this] = state;
-        }
-
-        protected virtual void OnStateExit(Entity host, RealmTime time, ref object state) { }
-
-        protected internal virtual void Resolve(State parent) { }
-
-        public static ushort GetObjType(string id)
-        {
-            ushort ret;
-            if (!BehaviorDb.InitGameData.IdToObjectType.TryGetValue(id, out ret))
-            {
-                ret = BehaviorDb.InitGameData.IdToObjectType["Pirate"];
-                Log.Warn($"Object type '{id}' not found. Using Pirate ({ret.To4Hex()}).");
-            }
-            return ret;
-        }
-
-        [ThreadStatic]
-        private static Random rand;
-        protected static Random Random
-        {
-            get
-            {
-                if (rand == null) rand = new Random();
-                return rand;
-            }
+            if (rand == null) rand = new Random();
+            return rand;
         }
     }
 }

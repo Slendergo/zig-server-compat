@@ -1,38 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using wServer.realm;
-using wServer.realm.entities;
+﻿using wServer.realm;
 
-namespace wServer.logic.behaviors
+namespace wServer.logic.behaviors;
+
+class Duration : Behavior
 {
-    class Duration : Behavior
+
+    Behavior child;
+    int duration;
+    public Duration(Behavior child, int duration)
     {
+        this.child = child;
+        this.duration = duration;
+    }
 
-        Behavior child;
-        int duration;
-        public Duration(Behavior child, int duration)
-        {
-            this.child = child;
-            this.duration = duration;
-        }
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
+    {
+        child.OnStateEntry(host, time);
+        state = 0;
+    }
 
-        protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
+    protected override void TickCore(Entity host, RealmTime time, ref object state)
+    {
+        int timeElapsed = (int)state;
+        if (timeElapsed <= duration)
         {
-             child.OnStateEntry(host, time);
-             state = 0;
+            child.Tick(host, time);
+            timeElapsed += time.ElaspedMsDelta;
         }
-
-        protected override void TickCore(Entity host, RealmTime time, ref object state)
-        {
-            int timeElapsed = (int)state;
-            if (timeElapsed <= duration)
-            {
-                child.Tick(host, time);
-                timeElapsed += time.ElaspedMsDelta;
-            }
-            state = timeElapsed;
-        }
+        state = timeElapsed;
     }
 }

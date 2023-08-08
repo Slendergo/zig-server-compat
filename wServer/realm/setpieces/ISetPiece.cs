@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using wServer.realm.worlds;
+﻿using wServer.realm.worlds;
 
-namespace wServer.realm.setpieces
+namespace wServer.realm.setpieces;
+
+interface ISetPiece
 {
-    interface ISetPiece
-    {
-        int Size { get; }
-        void RenderSetPiece(World world, IntPoint pos);
-    }
+    int Size { get; }
+    void RenderSetPiece(World world, IntPoint pos);
 }

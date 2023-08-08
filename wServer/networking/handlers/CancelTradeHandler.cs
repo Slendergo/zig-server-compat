@@ -1,25 +1,24 @@
 ﻿using wServer.networking.packets;
 using wServer.networking.packets.incoming;
 
-namespace wServer.networking.handlers
+namespace wServer.networking.handlers;
+
+class CancelTradeHandler : PacketHandlerBase<CancelTrade>
 {
-    class CancelTradeHandler : PacketHandlerBase<CancelTrade>
+    public override C2SPacketId C2SId => C2SPacketId.CancelTrade;
+
+    protected override void HandlePacket(Client client, CancelTrade packet)
     {
-        public override PacketId ID => PacketId.CANCELTRADE;
+        //client.Manager.Logic.AddPendingAction(t => Handle(client, packet));
+        Handle(client, packet);
+    }
 
-        protected override void HandlePacket(Client client, CancelTrade packet)
-        {
-            //client.Manager.Logic.AddPendingAction(t => Handle(client, packet));
-            Handle(client, packet);
-        }
+    private void Handle(Client client, CancelTrade packet)
+    {
+        var player = client.Player;
+        if (player == null || IsTest(client))
+            return;
 
-        private void Handle(Client client, CancelTrade packet)
-        {
-            var player = client.Player;
-            if (player == null || IsTest(client))
-                return;
-
-            player.CancelTrade();
-        }
+        player.CancelTrade();
     }
 }

@@ -1,27 +1,26 @@
 ﻿using wServer.realm;
 
-namespace wServer.logic.behaviors
+namespace wServer.logic.behaviors;
+
+class MutePlayer : Behavior
 {
-    class MutePlayer : Behavior
+    private readonly int _timeout; 
+
+    public MutePlayer(int durationMin = 0)
     {
-        private readonly int _timeout; 
+        _timeout = durationMin;
+    }
 
-        public MutePlayer(int durationMin = 0)
-        {
-            _timeout = durationMin;
-        }
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
+    {
+        if (host.AttackTarget?.Owner == null || host.AttackTarget.Muted)
+            return;
 
-        protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-        {
-            if (host.AttackTarget?.Owner == null || host.AttackTarget.Muted)
-                return;
-
-            var muteCmd = host.Manager.Commands.Commands["mute"];
-            muteCmd.Execute(null, time, $"{host.AttackTarget.Name} {_timeout}", true);
-        }
+        var muteCmd = host.Manager.Commands.Commands["mute"];
+        muteCmd.Execute(null, time, $"{host.AttackTarget.Name} {_timeout}", true);
+    }
         
-        protected override void TickCore(Entity host, RealmTime time, ref object state)
-        {
-        }
+    protected override void TickCore(Entity host, RealmTime time, ref object state)
+    {
     }
 }

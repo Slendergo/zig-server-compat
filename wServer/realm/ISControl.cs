@@ -1,78 +1,76 @@
-﻿using System;
-using common;
+﻿using common;
 using NLog;
 
-namespace wServer.realm
+namespace wServer.realm;
+
+public class ISControl
 {
-    public class ISControl
+    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
+    private readonly RealmManager _manager;
+    private bool _rebooting;
+
+    public ISControl(RealmManager manager)
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        _manager = manager;
 
-        private readonly RealmManager _manager;
-        private bool _rebooting;
+        // listen to control communications
+        _manager.InterServer.AddHandler<ControlMsg>(Channel.Control, HandleControl);
+    }
 
-        public ISControl(RealmManager manager)
+    private void HandleControl(object sender, InterServerEventArgs<ControlMsg> e)
+    {
+        var c = e.Content;
+        var serverInfo = _manager.InterServer.GetServerInfo(e.InstanceId);
+        switch (c.Type)
         {
-            _manager = manager;
-
-            // listen to control communications
-            _manager.InterServer.AddHandler<ControlMsg>(Channel.Control, HandleControl);
+            case ControlType.Reboot:
+                if (c.TargetInst.Equals(_manager.InstanceId))
+                {
+                    Log.Info($"Server received control message to reboot from {c.Issuer} on {serverInfo?.name}.");
+                    Reboot();
+                }
+                break;
         }
+    }
 
-        private void HandleControl(object sender, InterServerEventArgs<ControlMsg> e)
-        {
-            var c = e.Content;
-            var serverInfo = _manager.InterServer.GetServerInfo(e.InstanceId);
-            switch (c.Type)
-            {
-                case ControlType.Reboot:
-                    if (c.TargetInst.Equals(_manager.InstanceId))
-                    {
-                        Log.Info($"Server received control message to reboot from {c.Issuer} on {serverInfo?.name}.");
-                        Reboot();
-                    }
-                    break;
-            }
-        }
+    private void Reboot()
+    {
+        if (_rebooting)
+            return;
 
-        private void Reboot()
-        {
-            if (_rebooting)
-                return;
+        _rebooting = true;
 
-            _rebooting = true;
+        //WorldTimer tmr = null;
+        //var s = 30;
+        //Func<World, RealmTime, bool> rebootTick = (w, t) =>
+        //{
+        //    s -= 1;
 
-            //WorldTimer tmr = null;
-            //var s = 30;
-            //Func<World, RealmTime, bool> rebootTick = (w, t) =>
-            //{
-            //    s -= 1;
-
-            //    if (s == 15)
-            //        _manager.Chat.Announce("Server rebooting in 15 seconds...", true);
-            //    else if (s == 5)
-            //        _manager.Chat.Announce("Server rebooting in 5 seconds...", true);
-            //    else if (s == 0)
-            //    {
-            //        // this could help avoid unfinished transactions when rebooting
-            //        foreach (var world in _manager.Worlds.Values)
-            //        {
-            //            world.Closed = true;
-            //            foreach (var p in world.Players.Values)
-            //                p.Client?.Disconnect();
-            //        }
-            //        Program.Stop();
-            //        return true;
-            //    }
+        //    if (s == 15)
+        //        _manager.Chat.Announce("Server rebooting in 15 seconds...", true);
+        //    else if (s == 5)
+        //        _manager.Chat.Announce("Server rebooting in 5 seconds...", true);
+        //    else if (s == 0)
+        //    {
+        //        // this could help avoid unfinished transactions when rebooting
+        //        foreach (var world in _manager.Worlds.Values)
+        //        {
+        //            world.Closed = true;
+        //            foreach (var p in world.Players.Values)
+        //                p.Client?.Disconnect();
+        //        }
+        //        Program.Stop();
+        //        return true;
+        //    }
 
 
-            //    tmr.Reset();
-            //    return false;
-            //};
+        //    tmr.Reset();
+        //    return false;
+        //};
 
-            //tmr = new WorldTimer(1000, rebootTick);
-            //_manager.Chat.Announce("Server rebooting in 30 seconds...", true);
-            //_manager.GetWorld(World.Nexus).Timers.Add(tmr);
-        }
+        //tmr = new WorldTimer(1000, rebootTick);
+        //_manager.Chat.Announce("Server rebooting in 30 seconds...", true);
+        //_manager.GetWorld(World.Nexus).Timers.Add(tmr);
     }
 }

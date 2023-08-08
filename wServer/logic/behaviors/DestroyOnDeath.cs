@@ -1,40 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using wServer.realm;
+﻿using wServer.realm;
 
-namespace wServer.logic.behaviors
+namespace wServer.logic.behaviors;
+
+class DestroyOnDeath : Behavior
 {
-    class DestroyOnDeath : Behavior
+    private readonly string _target;
+
+    public DestroyOnDeath(string target)
     {
-        private readonly string _target;
+        _target = target;
+    }
 
-        public DestroyOnDeath(string target)
+    protected internal override void Resolve(State parent)
+    {
+        parent.Death += (sender, e) =>
         {
-            _target = target;
-        }
+            var owner = e.Host.Owner;
+            var entities = e.Host.GetNearestEntitiesByName(250, _target);
 
-        protected internal override void Resolve(State parent)
-        {
-            parent.Death += (sender, e) =>
+            if (entities != null)
             {
-                var owner = e.Host.Owner;
-                var entities = e.Host.GetNearestEntitiesByName(250, _target);
-
-                if (entities != null)
+                foreach (Entity ent in entities)
                 {
-                    foreach (Entity ent in entities)
-                    {
-                        owner.LeaveWorld(ent);
-                    }
+                    owner.LeaveWorld(ent);
                 }
-            };
-        }
+            }
+        };
+    }
 
-        protected override void TickCore(Entity host, RealmTime time, ref object state)
-        {
-        }
+    protected override void TickCore(Entity host, RealmTime time, ref object state)
+    {
     }
 }

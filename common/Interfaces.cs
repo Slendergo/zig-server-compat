@@ -1,10 +1,9 @@
 ﻿
-namespace common
+namespace common;
+
+public interface ISellableItem
 {
-    public interface ISellableItem
-    {
-        ushort ItemId { get; }
-        int Price { get; }
-        int Count { get; }
-    }
+    ushort ItemId { get; }
+    int Price { get; }
+    int Count { get; }
 }

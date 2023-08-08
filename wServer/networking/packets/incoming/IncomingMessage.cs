@@ -1,10 +1,9 @@
-﻿namespace wServer.networking.packets.incoming
+﻿namespace wServer.networking.packets.incoming;
+
+public abstract class IncomingMessage : Packet
 {
-    public abstract class IncomingMessage : Packet
+    public override void Crypt(Client client, byte[] dat, int offset, int len)
     {
-        public override void Crypt(Client client, byte[] dat, int offset, int len)
-        {
-            client.ReceiveKey.Crypt(dat, offset, len);
-        }
+        client.ReceiveKey.Crypt(dat, offset, len);
     }
 }

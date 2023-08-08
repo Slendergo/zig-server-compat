@@ -1,24 +1,23 @@
 ﻿using wServer.networking.packets;
 using wServer.networking.packets.incoming;
 
-namespace wServer.networking.handlers
+namespace wServer.networking.handlers;
+
+class RequestTradeHandler : PacketHandlerBase<RequestTrade>
 {
-    class RequestTradeHandler : PacketHandlerBase<RequestTrade>
+    public override C2SPacketId C2SId => C2SPacketId.RequestTrade;
+
+    protected override void HandlePacket(Client client, RequestTrade packet)
     {
-        public override PacketId ID => PacketId.REQUESTTRADE;
+        //client.Manager.Logic.AddPendingAction(t => Handle(client, packet));
+        Handle(client, packet);
+    }
 
-        protected override void HandlePacket(Client client, RequestTrade packet)
-        {
-            //client.Manager.Logic.AddPendingAction(t => Handle(client, packet));
-            Handle(client, packet);
-        }
+    private void Handle(Client client, RequestTrade packet)
+    {
+        if (client.Player == null || IsTest(client))
+            return;
 
-        private void Handle(Client client, RequestTrade packet)
-        {
-            if (client.Player == null || IsTest(client))
-                return;
-
-            client.Player.RequestTrade(packet.Name);
-        }
+        client.Player.RequestTrade(packet.Name);
     }
 }

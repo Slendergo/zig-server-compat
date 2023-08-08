@@ -1,89 +1,83 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.IO;
+﻿using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 using terrain;
 using NLog;
 
-namespace common.resources
+namespace common.resources;
+
+public struct ProtoWorld
 {
-    public struct ProtoWorld
+    public String name;
+    public String sbName;
+    public int id;
+    public int difficulty;
+    public int background;
+    public bool isLimbo;
+    public bool restrictTp;
+    public bool showDisplays;
+    public bool persist;
+    public int blocking;
+    public bool setpiece;
+    public int[] portals;
+    public string[] maps;
+    public byte[][] wmap;
+}
+
+public class WorldData
+{
+    static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
+    public IDictionary<string, ProtoWorld> Data { get; private set; }
+
+    public WorldData(string dir, XmlData gameData)
     {
-        public String name;
-        public String sbName;
-        public int id;
-        public int difficulty;
-        public int background;
-        public bool isLimbo;
-        public bool restrictTp;
-        public bool showDisplays;
-        public bool persist;
-        public int blocking;
-        public bool setpiece;
-        public int[] portals;
-        public string[] maps;
-        public byte[][] wmap;
-    }
+        Dictionary<string, ProtoWorld> worlds;
+        Data =
+            new ReadOnlyDictionary<string, ProtoWorld>(
+                worlds = new Dictionary<string, ProtoWorld>());
 
-    public class WorldData
-    {
-        static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
-        public IDictionary<string, ProtoWorld> Data { get; private set; }
-
-        public WorldData(string dir, XmlData gameData)
+        // load up worlds
+        string basePath = Path.GetFullPath(dir);
+        var jwFiles = Directory.EnumerateFiles(basePath, "*.jw", SearchOption.TopDirectoryOnly).ToArray();
+        for (var i = 0; i < jwFiles.Length; i++)
         {
-            Dictionary<string, ProtoWorld> worlds;
-            Data =
-                new ReadOnlyDictionary<string, ProtoWorld>(
-                    worlds = new Dictionary<string, ProtoWorld>());
+            Log.Info("Initializing world data: " + Path.GetFileName(jwFiles[i]) + " {0}/{1}...", i + 1, jwFiles.Length);
 
-            // load up worlds
-            string basePath = Path.GetFullPath(dir);
-            var jwFiles = Directory.EnumerateFiles(basePath, "*.jw", SearchOption.TopDirectoryOnly).ToArray();
-            for (var i = 0; i < jwFiles.Length; i++)
+            var jw = File.ReadAllText(jwFiles[i]);
+            var world = JsonConvert.DeserializeObject<ProtoWorld>(jw);
+
+            if (world.maps == null)
             {
-                Log.Info("Initializing world data: " + Path.GetFileName(jwFiles[i]) + " {0}/{1}...", i + 1, jwFiles.Length);
-
-                var jw = File.ReadAllText(jwFiles[i]);
-                var world = JsonConvert.DeserializeObject<ProtoWorld>(jw);
-
-                if (world.maps == null)
-                {
-                    var jm = File.ReadAllText(jwFiles[i].Substring(0, jwFiles[i].Length - 1) + "m");
-                    world.wmap = new byte[1][];
-                    world.wmap[0] = Json2Wmap.Convert(gameData, jm);
-                    worlds.Add(world.name, world);
-                    continue;
-                }
-
-                world.wmap = new byte[world.maps.Length][];
-                var di = Directory.GetParent(jwFiles[i]);
-                for (var j = 0; j < world.maps.Length; j++)
-                {
-                    var mapFile = Path.Combine(di.FullName, world.maps[j]);
-                    if (world.maps[j].EndsWith(".wmap"))
-                        world.wmap[j] = File.ReadAllBytes(mapFile);
-                    else
-                    {
-                        var jm = File.ReadAllText(mapFile);
-                        var converted = Json2Wmap.Convert(gameData, jm);
-                        if (converted == null)
-                        {
-                            Log.Error("Failed to convert map {0} to wmap", world.maps[j]);
-                            continue;
-                        }
-                        
-                        world.wmap[j] = converted;
-                    }
-                }
+                var jm = File.ReadAllText(jwFiles[i].Substring(0, jwFiles[i].Length - 1) + "m");
+                world.wmap = new byte[1][];
+                world.wmap[0] = Json2Wmap.Convert(gameData, jm);
                 worlds.Add(world.name, world);
+                continue;
             }
-        }
 
-        public ProtoWorld this[string name] => Data[name];
+            world.wmap = new byte[world.maps.Length][];
+            var di = Directory.GetParent(jwFiles[i]);
+            for (var j = 0; j < world.maps.Length; j++)
+            {
+                var mapFile = Path.Combine(di.FullName, world.maps[j]);
+                if (world.maps[j].EndsWith(".wmap"))
+                    world.wmap[j] = File.ReadAllBytes(mapFile);
+                else
+                {
+                    var jm = File.ReadAllText(mapFile);
+                    var converted = Json2Wmap.Convert(gameData, jm);
+                    if (converted == null)
+                    {
+                        Log.Error("Failed to convert map {0} to wmap", world.maps[j]);
+                        continue;
+                    }
+                        
+                    world.wmap[j] = converted;
+                }
+            }
+            worlds.Add(world.name, world);
+        }
     }
+
+    public ProtoWorld this[string name] => Data[name];
 }

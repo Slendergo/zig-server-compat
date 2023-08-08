@@ -50,10 +50,8 @@
 #define SIMPLE_JSON_TYPEINFO
 #endif
 
-using System;
 using System.CodeDom.Compiler;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -526,7 +524,7 @@ namespace Json
 
 		private static readonly char[] EscapeTable;
 		private static readonly char[] EscapeCharacters = { '"', '\\', '\b', '\f', '\n', '\r', '\t' };
-		private static readonly string EscapeCharactersString = new string(EscapeCharacters);
+		private static readonly string EscapeCharactersString = new(EscapeCharacters);
 
 		static SimpleJson()
 		{
@@ -2039,7 +2037,7 @@ namespace Json
 
 			public sealed class ThreadSafeDictionary<TKey, TValue> : IDictionary<TKey, TValue>
 			{
-				private readonly object _lock = new object();
+				private readonly object _lock = new();
 				private readonly ThreadSafeDictionaryValueFactory<TKey, TValue> _valueFactory;
 				private Dictionary<TKey, TValue> _dictionary;
 

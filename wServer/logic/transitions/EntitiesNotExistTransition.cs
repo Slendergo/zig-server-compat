@@ -1,34 +1,32 @@
-﻿using System.Linq;
-using wServer.realm;
+﻿using wServer.realm;
 
-namespace wServer.logic.transitions
+namespace wServer.logic.transitions;
+
+class EntitiesNotExistsTransition : Transition
 {
-    class EntitiesNotExistsTransition : Transition
+    //State storage: none
+
+    private readonly double _dist;
+    private readonly ushort[] _targets;
+
+    public EntitiesNotExistsTransition(double dist, string targetState, params string[] targets)
+        : base(targetState)
     {
-        //State storage: none
+        _dist = dist;
 
-        private readonly double _dist;
-        private readonly ushort[] _targets;
+        if (targets.Length <= 0)
+            return;
 
-        public EntitiesNotExistsTransition(double dist, string targetState, params string[] targets)
-            : base(targetState)
-        {
-            _dist = dist;
+        _targets = targets
+            .Select(Behavior.GetObjType)
+            .ToArray();
+    }
 
-            if (targets.Length <= 0)
-                return;
+    protected override bool TickCore(Entity host, RealmTime time, ref object state)
+    {
+        if (_targets == null)
+            return false;
 
-            _targets = targets
-                .Select(Behavior.GetObjType)
-                .ToArray();
-        }
-
-        protected override bool TickCore(Entity host, RealmTime time, ref object state)
-        {
-            if (_targets == null)
-                return false;
-
-            return _targets.All(t => host.GetNearestEntity(_dist, t) == null);
-        }
+        return _targets.All(t => host.GetNearestEntity(_dist, t) == null);
     }
 }

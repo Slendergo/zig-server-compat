@@ -3,19 +3,19 @@ using wServer.logic.behaviors;
 using wServer.logic.loot;
 using wServer.logic.transitions;
 
-namespace wServer.logic
+namespace wServer.logic;
+
+partial class BehaviorDb
 {
-    partial class BehaviorDb
-    {
-        private _ Pentaract = () => Behav()
+    private _ Pentaract = () => Behav()
             .Init("Pentaract Eye",
                 new State(
                     new Prioritize(
                         new Swirl(2, 8, 20, true),
                         new Protect(2, "Pentaract Tower", 20, 6, 4)
-                        ),
+                    ),
                     new Shoot(9, 1, coolDown: 1000)
-                    )
+                )
             )
             .Init("Pentaract Tower",
                 new State(
@@ -25,18 +25,18 @@ namespace wServer.logic
                     new TransferDamageOnDeath("Pentaract"),
                     // needed to avoid crash, Oryx.cs needs player name otherwise hangs server (will patch that later)
                     new TransferDamageOnDeath("Pentaract Tower Corpse")
-                    )
+                )
             )
             .Init("Pentaract",
                 new State(
                     new ConditionalEffect(ConditionEffectIndex.Invincible),
                     new State("Waiting",
                         new EntityNotExistsTransition("Pentaract Tower", 50, "Die")
-                        ),
+                    ),
                     new State("Die",
                         new Suicide()
-                        )
                     )
+                )
             )
             .Init("Pentaract Tower Corpse",
                 new State(
@@ -44,14 +44,14 @@ namespace wServer.logic
                     new State("Waiting",
                         new TimedTransition(15000, "Spawn"),
                         new EntityNotExistsTransition("Pentaract Tower", 50, "Die")
-                        ),
+                    ),
                     new State("Spawn",
                         new Transform("Pentaract Tower")
-                        ),
+                    ),
                     new State("Die",
                         new Suicide()
-                        )
-                    ),
+                    )
+                ),
                 new Threshold(0.01,
                     new TierLoot(8, ItemType.Weapon, .15),
                     new TierLoot(9, ItemType.Weapon, .1),
@@ -74,8 +74,7 @@ namespace wServer.logic
                     new ItemLoot("Potion of Speed", .1),
                     new ItemLoot("Potion of Dexterity", .1),
                     new ItemLoot("Seal of Blasphemous Prayer", .004)
-                    )
+                )
             )
-            ;
-    }
+        ;
 }

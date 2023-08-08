@@ -3,34 +3,33 @@ using wServer.networking.packets;
 using wServer.networking.packets.incoming;
 using wServer.realm;
 
-namespace wServer.networking.handlers
+namespace wServer.networking.handlers;
+
+class MoveHandler : PacketHandlerBase<Move>
 {
-    class MoveHandler : PacketHandlerBase<Move>
+    public override C2SPacketId C2SId => C2SPacketId.Move;
+
+    protected override void HandlePacket(Client client, Move packet)
     {
-        public override PacketId ID => PacketId.MOVE;
+        client.Manager.Logic.AddPendingAction(t => Handle(client.Player, t, packet));
+    }
 
-        protected override void HandlePacket(Client client, Move packet)
+    void Handle(Player player, RealmTime time, Move packet)
+    {
+        if (player?.Owner == null)
+            return;
+
+        player.MoveReceived(time, packet);
+
+        var newX = packet.NewPosition.X;
+        var newY = packet.NewPosition.Y;
+
+        if (newX != -1 && newX != player.X ||
+            newY != -1 && newY != player.Y)
         {
-            client.Manager.Logic.AddPendingAction(t => Handle(client.Player, t, packet));
+            player.Move(newX, newY);
         }
 
-        void Handle(Player player, RealmTime time, Move packet)
-        {
-            if (player?.Owner == null)
-                return;
-
-            player.MoveReceived(time, packet);
-
-            var newX = packet.NewPosition.X;
-            var newY = packet.NewPosition.Y;
-
-            if (newX != -1 && newX != player.X ||
-                newY != -1 && newY != player.Y)
-            {
-                player.Move(newX, newY);
-            }
-
-            //player.SendUpdate(time);
-        }
+        //player.SendUpdate(time);
     }
 }

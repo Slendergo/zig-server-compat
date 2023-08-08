@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace wServer.logic;
 
-namespace wServer.logic
+enum CycleStatus
 {
-    enum CycleStatus
-    {
-        NotStarted,
-        InProgress,
-        Completed
-    }
-    abstract class CycleBehavior : Behavior
-    {
-        public CycleStatus Status { get; protected set; }
-    }
+    NotStarted,
+    InProgress,
+    Completed
+}
+abstract class CycleBehavior : Behavior
+{
+    public CycleStatus Status { get; protected set; }
 }

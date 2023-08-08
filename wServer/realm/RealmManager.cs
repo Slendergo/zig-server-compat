@@ -1,13 +1,7 @@
 ﻿using common;
 using common.resources;
 using NLog;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using wServer.logic;
 using wServer.networking;
 using wServer.realm.commands;
@@ -15,268 +9,267 @@ using wServer.realm.entities.vendors;
 using wServer.realm.worlds;
 using wServer.realm.worlds.logic;
 
-namespace wServer.realm
+namespace wServer.realm;
+
+public struct RealmTime
 {
-    public struct RealmTime
+    public long TickCount;
+    public long TotalElapsedMs;
+    public int TickDelta;
+    public int ElaspedMsDelta;
+}
+
+public enum PendingPriority
+{
+    Emergent,
+    Destruction,
+    Normal,
+    Creation,
+}
+
+public class RealmManager
+{
+    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
+    private readonly bool _initialized;
+    public string InstanceId { get; private set; }
+    public bool Terminating { get; private set; }
+
+    public Resources Resources { get; private set; }
+    public Database Database { get; private set; }
+    public ServerConfig Config { get; private set; }
+    public int TPS { get; private set; }
+
+    public ConnectManager ConMan { get; private set; }
+    public BehaviorDb Behaviors { get; private set; }
+    public ISManager InterServer { get; private set; }
+    public ISControl ISControl { get; private set; }
+    public ChatManager Chat { get; private set; }
+    public DbServerManager DbServerController { get; private set; }
+    public CommandManager Commands { get; private set; }
+    public PortalMonitor Monitor { get; private set; }
+    public DbEvents DbEvents { get; private set; }
+
+    private Thread _network;
+    private Thread _logic;
+    public NetworkTicker Network { get; private set; }
+    public FLLogicTicker Logic { get; private set; }
+
+    public readonly ConcurrentDictionary<int, World> Worlds = new();
+    public readonly ConcurrentDictionary<Client, PlayerInfo> Clients = new();
+
+    private int _nextWorldId = 0;
+    private int _nextClientId = 0;
+
+    public RealmManager(Resources resources, Database db, ServerConfig config)
     {
-        public long TickCount;
-        public long TotalElapsedMs;
-        public int TickDelta;
-        public int ElaspedMsDelta;
+        Log.Info("Initalizing Realm Manager...");
+
+        Resources = resources;
+        Database = db;
+        Config = config;
+        TPS = config.serverSettings.tps;
+        InstanceId = config.serverInfo.instanceId;
+
+        // all these deal with db pub/sub... probably should put more thought into their structure...
+        InterServer = new ISManager(Database, config);
+        ISControl = new ISControl(this);
+        Chat = new ChatManager(this);
+        DbServerController = new DbServerManager(this); // probably could integrate this with ChatManager and rename...
+        DbEvents = new DbEvents(this);
+
+        // basic server necessities
+        ConMan = new ConnectManager(this,
+            config.serverSettings.maxPlayers,
+            config.serverSettings.maxPlayersWithPriority);
+        Behaviors = new BehaviorDb(this);
+        Commands = new CommandManager(this);
+
+        // some necessities that shouldn't be (will work this out later)
+        MerchantLists.Init(this);
+
+        InitializeNexusHub();
+        AddWorld("Realm");
+
+        // add portal monitor to nexus and initialize worlds
+        if (Worlds.ContainsKey(World.Nexus))
+            Monitor = new PortalMonitor(this, Worlds[World.Nexus]);
+        foreach (var world in Worlds.Values)
+            OnWorldAdded(world);
+
+        _initialized = true;
+
+        Log.Info("Realm Manager initialized.");
     }
 
-    public enum PendingPriority
+    private void InitializeNexusHub()
     {
-        Emergent,
-        Destruction,
-        Normal,
-        Creation,
+        // load world data
+        foreach (var wData in Resources.Worlds.Data.Values)
+            if (wData.id < 0)
+                AddWorld(wData);
     }
 
-    public class RealmManager
+    public void Run()
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        Log.Info("Starting Realm Manager...");
 
-        private readonly bool _initialized;
-        public string InstanceId { get; private set; }
-        public bool Terminating { get; private set; }
+        // start server logic management
+        Logic = new FLLogicTicker(this);
+        var logic = new Task(() => Logic.TickLoop(), TaskCreationOptions.LongRunning);
+        logic.ContinueWith(Program.Stop, TaskContinuationOptions.OnlyOnFaulted);
+        logic.Start();
 
-        public Resources Resources { get; private set; }
-        public Database Database { get; private set; }
-        public ServerConfig Config { get; private set; }
-        public int TPS { get; private set; }
+        // start received packet processor
+        Network = new NetworkTicker(this);
+        var network = new Task(() => Network.TickLoop(), TaskCreationOptions.LongRunning);
+        network.ContinueWith(Program.Stop, TaskContinuationOptions.OnlyOnFaulted);
+        network.Start();
 
-        public ConnectManager ConMan { get; private set; }
-        public BehaviorDb Behaviors { get; private set; }
-        public ISManager InterServer { get; private set; }
-        public ISControl ISControl { get; private set; }
-        public ChatManager Chat { get; private set; }
-        public DbServerManager DbServerController { get; private set; }
-        public CommandManager Commands { get; private set; }
-        public PortalMonitor Monitor { get; private set; }
-        public DbEvents DbEvents { get; private set; }
+        Log.Info("Realm Manager started.");
+    }
 
-        private Thread _network;
-        private Thread _logic;
-        public NetworkTicker Network { get; private set; }
-        public FLLogicTicker Logic { get; private set; }
+    public void Stop()
+    {
+        Log.Info("Stopping Realm Manager...");
 
-        public readonly ConcurrentDictionary<int, World> Worlds = new ConcurrentDictionary<int, World>();
-        public readonly ConcurrentDictionary<Client, PlayerInfo> Clients = new ConcurrentDictionary<Client, PlayerInfo>();
+        Terminating = true;
+        InterServer.Dispose();
+        Resources.Dispose();
+        Network.Shutdown();
 
-        private int _nextWorldId = 0;
-        private int _nextClientId = 0;
+        Log.Info("Realm Manager stopped.");
+    }
 
-        public RealmManager(Resources resources, Database db, ServerConfig config)
+    public bool TryConnect(Client client)
+    {
+        if (client?.Account == null)
+            return false;
+
+        client.Id = Interlocked.Increment(ref _nextClientId);
+        var plrInfo = new PlayerInfo()
         {
-            Log.Info("Initalizing Realm Manager...");
+            AccountId = client.Account.AccountId,
+            GuildId = client.Account.GuildId,
+            Name = client.Account.Name,
+            WorldInstance = -1
+        };
+        Clients[client] = plrInfo;
 
-            Resources = resources;
-            Database = db;
-            Config = config;
-            TPS = config.serverSettings.tps;
-            InstanceId = config.serverInfo.instanceId;
+        // recalculate usage statistics
+        Config.serverInfo.players = ConMan.GetPlayerCount();
+        Config.serverInfo.maxPlayers = Config.serverSettings.maxPlayers;
+        Config.serverInfo.playerList.Add(plrInfo);
+        return true;
+    }
 
-            // all these deal with db pub/sub... probably should put more thought into their structure...
-            InterServer = new ISManager(Database, config);
-            ISControl = new ISControl(this);
-            Chat = new ChatManager(this);
-            DbServerController = new DbServerManager(this); // probably could integrate this with ChatManager and rename...
-            DbEvents = new DbEvents(this);
+    public void Disconnect(Client client)
+    {
+        var player = client.Player;
+        player?.Owner?.LeaveWorld(player);
 
-            // basic server necessities
-            ConMan = new ConnectManager(this,
-                config.serverSettings.maxPlayers,
-                config.serverSettings.maxPlayersWithPriority);
-            Behaviors = new BehaviorDb(this);
-            Commands = new CommandManager(this);
+        PlayerInfo plrInfo;
+        Clients.TryRemove(client, out plrInfo);
 
-            // some necessities that shouldn't be (will work this out later)
-            MerchantLists.Init(this);
+        // recalculate usage statistics
+        Config.serverInfo.players = ConMan.GetPlayerCount();
+        Config.serverInfo.playerList.Remove(plrInfo);
+    }
 
-            InitializeNexusHub();
-            AddWorld("Realm");
+    private void AddWorld(string name, bool actAsNexus = false)
+    {
+        AddWorld(Resources.Worlds.Data[name], actAsNexus);
+    }
 
-            // add portal monitor to nexus and initialize worlds
-            if (Worlds.ContainsKey(World.Nexus))
-                Monitor = new PortalMonitor(this, Worlds[World.Nexus]);
-            foreach (var world in Worlds.Values)
-                OnWorldAdded(world);
-
-            _initialized = true;
-
-            Log.Info("Realm Manager initialized.");
+    private void AddWorld(ProtoWorld proto, bool actAsNexus = false)
+    {
+        int id;
+        if (actAsNexus)
+        {
+            id = World.Nexus;
+        }
+        else
+        {
+            id = (proto.id < 0)
+                ? proto.id
+                : Interlocked.Increment(ref _nextWorldId);
         }
 
-        private void InitializeNexusHub()
+        World world;
+        DynamicWorld.TryGetWorld(proto, null, out world);
+        if (world != null)
         {
-            // load world data
-            foreach (var wData in Resources.Worlds.Data.Values)
-                if (wData.id < 0)
-                    AddWorld(wData);
+            AddWorld(id, world);
+            return;
         }
 
-        public void Run()
+        AddWorld(id, new World(proto));
+    }
+
+    private void AddWorld(int id, World world)
+    {
+        if (world.Manager != null)
+            throw new InvalidOperationException("World already added.");
+        world.Id = id;
+        Worlds[id] = world;
+        if (_initialized)
+            OnWorldAdded(world);
+    }
+
+    public World AddWorld(World world)
+    {
+        if (world.Manager != null)
+            throw new InvalidOperationException("World already added.");
+        world.Id = Interlocked.Increment(ref _nextWorldId);
+        Worlds[world.Id] = world;
+        if (_initialized)
+            OnWorldAdded(world);
+        return world;
+    }
+
+    public World GetWorld(int id)
+    {
+        World ret;
+        if (!Worlds.TryGetValue(id, out ret)) return null;
+        if (ret.Id == 0) return null;
+        return ret;
+    }
+
+    public bool RemoveWorld(World world)
+    {
+        if (world.Manager == null)
+            throw new InvalidOperationException("World is not added.");
+        if (Worlds.TryRemove(world.Id, out world))
         {
-            Log.Info("Starting Realm Manager...");
-
-            // start server logic management
-            Logic = new FLLogicTicker(this);
-            var logic = new Task(() => Logic.TickLoop(), TaskCreationOptions.LongRunning);
-            logic.ContinueWith(Program.Stop, TaskContinuationOptions.OnlyOnFaulted);
-            logic.Start();
-
-            // start received packet processor
-            Network = new NetworkTicker(this);
-            var network = new Task(() => Network.TickLoop(), TaskCreationOptions.LongRunning);
-            network.ContinueWith(Program.Stop, TaskContinuationOptions.OnlyOnFaulted);
-            network.Start();
-
-            Log.Info("Realm Manager started.");
-        }
-
-        public void Stop()
-        {
-            Log.Info("Stopping Realm Manager...");
-
-            Terminating = true;
-            InterServer.Dispose();
-            Resources.Dispose();
-            Network.Shutdown();
-
-            Log.Info("Realm Manager stopped.");
-        }
-
-        public bool TryConnect(Client client)
-        {
-            if (client?.Account == null)
-                return false;
-
-            client.Id = Interlocked.Increment(ref _nextClientId);
-            var plrInfo = new PlayerInfo()
-            {
-                AccountId = client.Account.AccountId,
-                GuildId = client.Account.GuildId,
-                Name = client.Account.Name,
-                WorldInstance = -1
-            };
-            Clients[client] = plrInfo;
-
-            // recalculate usage statistics
-            Config.serverInfo.players = ConMan.GetPlayerCount();
-            Config.serverInfo.maxPlayers = Config.serverSettings.maxPlayers;
-            Config.serverInfo.playerList.Add(plrInfo);
+            OnWorldRemoved(world);
             return true;
         }
+        else
+            return false;
+    }
 
-        public void Disconnect(Client client)
-        {
-            var player = client.Player;
-            player?.Owner?.LeaveWorld(player);
+    void OnWorldAdded(World world)
+    {
+        world.Manager = this;
+        Log.Info("World {0}({1}) added. {2} Worlds existing.", world.Id, world.Name, Worlds.Count);
+    }
 
-            PlayerInfo plrInfo;
-            Clients.TryRemove(client, out plrInfo);
+    void OnWorldRemoved(World world)
+    {
+        //world.Manager = null;
+        Monitor.RemovePortal(world.Id);
+        Log.Info("World {0}({1}) removed.", world.Id, world.Name);
+    }
 
-            // recalculate usage statistics
-            Config.serverInfo.players = ConMan.GetPlayerCount();
-            Config.serverInfo.playerList.Remove(plrInfo);
-        }
+    public World GetRandomGameWorld()
+    {
+        var realms = Worlds.Values
+            .OfType<Realm>()
+            .Where(w => !w.Closed)
+            .ToArray();
 
-        private void AddWorld(string name, bool actAsNexus = false)
-        {
-            AddWorld(Resources.Worlds.Data[name], actAsNexus);
-        }
-
-        private void AddWorld(ProtoWorld proto, bool actAsNexus = false)
-        {
-            int id;
-            if (actAsNexus)
-            {
-                id = World.Nexus;
-            }
-            else
-            {
-                id = (proto.id < 0)
-                    ? proto.id
-                    : Interlocked.Increment(ref _nextWorldId);
-            }
-
-            World world;
-            DynamicWorld.TryGetWorld(proto, null, out world);
-            if (world != null)
-            {
-                AddWorld(id, world);
-                return;
-            }
-
-            AddWorld(id, new World(proto));
-        }
-
-        private void AddWorld(int id, World world)
-        {
-            if (world.Manager != null)
-                throw new InvalidOperationException("World already added.");
-            world.Id = id;
-            Worlds[id] = world;
-            if (_initialized)
-                OnWorldAdded(world);
-        }
-
-        public World AddWorld(World world)
-        {
-            if (world.Manager != null)
-                throw new InvalidOperationException("World already added.");
-            world.Id = Interlocked.Increment(ref _nextWorldId);
-            Worlds[world.Id] = world;
-            if (_initialized)
-                OnWorldAdded(world);
-            return world;
-        }
-
-        public World GetWorld(int id)
-        {
-            World ret;
-            if (!Worlds.TryGetValue(id, out ret)) return null;
-            if (ret.Id == 0) return null;
-            return ret;
-        }
-
-        public bool RemoveWorld(World world)
-        {
-            if (world.Manager == null)
-                throw new InvalidOperationException("World is not added.");
-            if (Worlds.TryRemove(world.Id, out world))
-            {
-                OnWorldRemoved(world);
-                return true;
-            }
-            else
-                return false;
-        }
-
-        void OnWorldAdded(World world)
-        {
-            world.Manager = this;
-            Log.Info("World {0}({1}) added. {2} Worlds existing.", world.Id, world.Name, Worlds.Count);
-        }
-
-        void OnWorldRemoved(World world)
-        {
-            //world.Manager = null;
-            Monitor.RemovePortal(world.Id);
-            Log.Info("World {0}({1}) removed.", world.Id, world.Name);
-        }
-
-        public World GetRandomGameWorld()
-        {
-            var realms = Worlds.Values
-                .OfType<Realm>()
-                .Where(w => !w.Closed)
-                .ToArray();
-
-            return realms.Length == 0 ?
-                Worlds[World.Nexus] :
-                realms[Environment.TickCount % realms.Length];
-        }
+        return realms.Length == 0 ?
+            Worlds[World.Nexus] :
+            realms[Environment.TickCount % realms.Length];
     }
 }

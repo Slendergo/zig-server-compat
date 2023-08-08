@@ -1,56 +1,54 @@
-﻿using System;
-using common;
+﻿using common;
 using wServer.networking.packets;
 using wServer.networking.packets.incoming;
 
-namespace wServer.networking.handlers
+namespace wServer.networking.handlers;
+
+class JoinGuildHandler : PacketHandlerBase<JoinGuild>
 {
-    class JoinGuildHandler : PacketHandlerBase<JoinGuild>
+    public override C2SPacketId C2SId => C2SPacketId.JoinGuild;
+
+    protected override void HandlePacket(Client client, JoinGuild packet)
     {
-        public override PacketId ID => PacketId.JOINGUILD;
+        //client.Manager.Logic.AddPendingAction(t => Handle(client, packet.GuildName));
+        Handle(client, packet.GuildName);
+    }
 
-        protected override void HandlePacket(Client client, JoinGuild packet)
+    private void Handle(Client src, string guildName)
+    {
+        if (src.Player == null || IsTest(src))
+            return;
+
+        if (src.Player.GuildInvite == null)
         {
-            //client.Manager.Logic.AddPendingAction(t => Handle(client, packet.GuildName));
-            Handle(client, packet.GuildName);
+            src.Player.SendError("You have not been invited to a guild.");
+            return;
         }
 
-        private void Handle(Client src, string guildName)
+        var guild = src.Manager.Database.GetGuild((int)src.Player.GuildInvite);
+
+        if (guild == null)
         {
-            if (src.Player == null || IsTest(src))
-                return;
-
-            if (src.Player.GuildInvite == null)
-            {
-                src.Player.SendError("You have not been invited to a guild.");
-                return;
-            }
-
-            var guild = src.Manager.Database.GetGuild((int)src.Player.GuildInvite);
-
-            if (guild == null)
-            {
-                src.Player.SendError("Internal server error.");
-                return;
-            }
-
-            if (!guild.Name.Equals(guildName, StringComparison.InvariantCultureIgnoreCase))
-            {
-                src.Player.SendError("You have not been invited to join " + guildName + ".");
-                return;
-            }
-
-            var result = src.Manager.Database.AddGuildMember(guild, src.Account);
-            if (result != AddGuildMemberStatus.OK)
-            {
-                src.Player.SendError("Could not join guild. (" + result + ")");
-                return;
-            }
-
-            src.Player.Guild = guild.Name;
-            src.Player.GuildRank = 0;
-
-            src.Manager.Chat.Guild(src.Player, src.Player.Name + " has joined the guild!", true);
+            src.Player.SendError("Internal server error.");
+            return;
         }
+
+        if (!guild.Name.Equals(guildName, StringComparison.InvariantCultureIgnoreCase))
+        {
+            src.Player.SendError("You have not been invited to join " + guildName + ".");
+            return;
+        }
+
+        var result = src.Manager.Database.AddGuildMember(guild, src.Account);
+        if (result != AddGuildMemberStatus.OK)
+        {
+            src.Player.SendError("Could not join guild. (" + result + ")");
+            return;
+        }
+
+        src.Player.Guild = guild.Name;
+        src.Player.GuildRank = 0;
+
+        src.Manager.Chat.Guild(src.Player, src.Player.Name + " has joined the guild!", true);
     }
 }

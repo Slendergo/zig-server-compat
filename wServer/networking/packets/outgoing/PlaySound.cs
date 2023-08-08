@@ -1,25 +1,24 @@
 ﻿using common;
 
-namespace wServer.networking.packets.outgoing
+namespace wServer.networking.packets.outgoing;
+
+public class PlaySound : OutgoingMessage
 {
-    public class PlaySound : OutgoingMessage
+    public int OwnerId { get; set; }
+    public int SoundId { get; set; }
+
+    public override S2CPacketId S2CId => S2CPacketId.PlaySound;
+    public override Packet CreateInstance() { return new PlaySound(); }
+
+    protected override void Read(NReader rdr)
     {
-        public int OwnerId { get; set; }
-        public int SoundId { get; set; }
+        OwnerId = rdr.ReadInt32();
+        SoundId = rdr.ReadByte();
+    }
 
-        public override PacketId ID => PacketId.PLAYSOUND;
-        public override Packet CreateInstance() { return new PlaySound(); }
-
-        protected override void Read(NReader rdr)
-        {
-            OwnerId = rdr.ReadInt32();
-            SoundId = rdr.ReadByte();
-        }
-
-        protected override void Write(NWriter wtr)
-        {
-            wtr.Write(OwnerId);
-            wtr.Write((byte)SoundId);
-        }
+    protected override void Write(NWriter wtr)
+    {
+        wtr.Write(OwnerId);
+        wtr.Write((byte)SoundId);
     }
 }

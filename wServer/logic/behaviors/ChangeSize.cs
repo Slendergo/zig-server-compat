@@ -1,51 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using wServer.realm;
+﻿using wServer.realm;
 
-namespace wServer.logic.behaviors
+namespace wServer.logic.behaviors;
+
+class ChangeSize : Behavior
 {
-    class ChangeSize : Behavior
+    //State storage: cooldown timer
+
+    int rate;
+    int target;
+
+    public ChangeSize(int rate, int target)
     {
-        //State storage: cooldown timer
+        this.rate = rate;
+        this.target = target;
+    }
 
-        int rate;
-        int target;
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
+    {
+        state = 0;
+    }
 
-        public ChangeSize(int rate, int target)
+    protected override void TickCore(Entity host, RealmTime time, ref object state)
+    {
+        int cool = (int)state;
+
+        if (cool <= 0)
         {
-            this.rate = rate;
-            this.target = target;
-        }
-
-        protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-        {
-            state = 0;
-        }
-
-        protected override void TickCore(Entity host, RealmTime time, ref object state)
-        {
-            int cool = (int)state;
-
-            if (cool <= 0)
+            var size = host.Size;
+            if (size != target)
             {
-                var size = host.Size;
-                if (size != target)
-                {
-                    size += rate;
-                    if ((rate > 0 && size > target) ||
-                        (rate < 0 && size < target))
-                        size = target;
+                size += rate;
+                if ((rate > 0 && size > target) ||
+                    (rate < 0 && size < target))
+                    size = target;
 
-                    host.Size = size;
-                }
-                cool = 150;
+                host.Size = size;
             }
-            else
-                cool -= time.ElaspedMsDelta;
-
-            state = cool;
+            cool = 150;
         }
+        else
+            cool -= time.ElaspedMsDelta;
+
+        state = cool;
     }
 }

@@ -2,59 +2,58 @@
 using wServer.networking.packets.incoming;
 using wServer.networking.packets.outgoing;
 
-namespace wServer.networking.handlers
+namespace wServer.networking.handlers;
+
+class GuildInviteHandler : PacketHandlerBase<GuildInvite>
 {
-    class GuildInviteHandler : PacketHandlerBase<GuildInvite>
+    public override C2SPacketId C2SId => C2SPacketId.GuildInvite;
+
+    protected override void HandlePacket(Client client, GuildInvite packet)
     {
-        public override PacketId ID => PacketId.GUILDINVITE;
+        //client.Manager.Logic.AddPendingAction(t => Handle(client, packet.Name));
+        Handle(client, packet.Name);
+    }
 
-        protected override void HandlePacket(Client client, GuildInvite packet)
+    private void Handle(Client src, string playerName)
+    {
+        if (src.Player == null || IsTest(src))
+            return;
+
+        if (src.Account.GuildRank < 20)
         {
-            //client.Manager.Logic.AddPendingAction(t => Handle(client, packet.Name));
-            Handle(client, packet.Name);
+            src.Player.SendError("Insufficient privileges.");
+            return;
         }
 
-        private void Handle(Client src, string playerName)
+        foreach (var client in src.Manager.Clients.Keys)
         {
-            if (src.Player == null || IsTest(src))
-                return;
+            if (client.Player == null ||
+                client.Account == null ||
+                !client.Account.Name.Equals(playerName))
+                continue;
 
-            if (src.Account.GuildRank < 20)
+            if (!client.Account.NameChosen)
             {
-                src.Player.SendError("Insufficient privileges.");
+                src.Player.SendError("Player needs to choose a name first.");
                 return;
             }
 
-            foreach (var client in src.Manager.Clients.Keys)
+            if (client.Account.GuildId > 0)
             {
-                if (client.Player == null ||
-                    client.Account == null ||
-                    !client.Account.Name.Equals(playerName))
-                    continue;
-
-                if (!client.Account.NameChosen)
-                {
-                    src.Player.SendError("Player needs to choose a name first.");
-                    return;
-                }
-
-                if (client.Account.GuildId > 0)
-                {
-                    src.Player.SendError("Player is already in a guild.");
-                    return;
-                }
-
-                client.Player.GuildInvite = src.Account.GuildId;
-
-                client.SendPacket(new InvitedToGuild()
-                {
-                    Name = src.Account.Name,
-                    GuildName = src.Player.Guild
-                });
+                src.Player.SendError("Player is already in a guild.");
                 return;
             }
 
-            src.Player.SendError("Could not find the player to invite.");
+            client.Player.GuildInvite = src.Account.GuildId;
+
+            client.SendPacket(new InvitedToGuild()
+            {
+                Name = src.Account.Name,
+                GuildName = src.Player.Guild
+            });
+            return;
         }
+
+        src.Player.SendError("Could not find the player to invite.");
     }
 }

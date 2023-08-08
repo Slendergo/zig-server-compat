@@ -1,21 +1,20 @@
 ﻿using common;
 
-namespace wServer.networking.packets.outgoing
+namespace wServer.networking.packets.outgoing;
+
+public class InvResult : OutgoingMessage
 {
-    public class InvResult : OutgoingMessage
+    public int Result { get; set; }
+
+    public override S2CPacketId S2CId => S2CPacketId.InvResult;
+    public override Packet CreateInstance() { return new InvResult(); }
+
+    protected override void Read(NReader rdr)
     {
-        public int Result { get; set; }
-
-        public override PacketId ID => PacketId.INVRESULT;
-        public override Packet CreateInstance() { return new InvResult(); }
-
-        protected override void Read(NReader rdr)
-        {
-            Result = rdr.ReadInt32();
-        }
-        protected override void Write(NWriter wtr)
-        {
-            wtr.Write(Result);
-        }
+        Result = rdr.ReadInt32();
+    }
+    protected override void Write(NWriter wtr)
+    {
+        wtr.Write(Result);
     }
 }

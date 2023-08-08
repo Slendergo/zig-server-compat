@@ -1,18 +1,17 @@
 ﻿using common;
 
-namespace wServer.networking.packets.incoming
+namespace wServer.networking.packets.incoming;
+
+public class UpdateAck : IncomingMessage
 {
-    public class UpdateAck : IncomingMessage
+    public override C2SPacketId C2SId => C2SPacketId.UpdateAck;
+    public override Packet CreateInstance() { return new UpdateAck(); }
+
+    protected override void Read(NReader rdr)
     {
-        public override PacketId ID => PacketId.UPDATEACK;
-        public override Packet CreateInstance() { return new UpdateAck(); }
+    }
 
-        protected override void Read(NReader rdr)
-        {
-        }
-
-        protected override void Write(NWriter wtr)
-        {
-        }
+    protected override void Write(NWriter wtr)
+    {
     }
 }

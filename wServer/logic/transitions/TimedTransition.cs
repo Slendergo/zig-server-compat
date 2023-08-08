@@ -1,42 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using wServer.realm;
+﻿using wServer.realm;
 
-namespace wServer.logic.transitions
+namespace wServer.logic.transitions;
+
+class TimedTransition : Transition
 {
-    class TimedTransition : Transition
+    //State storage: cooldown timer
+
+    int time;
+    bool randomized;
+
+    public TimedTransition(int time, string targetState, bool randomized = false)
+        : base(targetState)
     {
-        //State storage: cooldown timer
+        this.time = time;
+        this.randomized = randomized;
+    }
 
-        int time;
-        bool randomized;
+    protected override bool TickCore(Entity host, RealmTime time, ref object state)
+    {
+        int cool;
+        if (state == null) cool = randomized ? Random.Next(this.time) : this.time;
+        else cool = (int)state;
 
-        public TimedTransition(int time, string targetState, bool randomized = false)
-            : base(targetState)
+        bool ret = false;
+        if (cool <= 0)
         {
-            this.time = time;
-            this.randomized = randomized;
+            ret = true;
+            cool = this.time;
         }
+        else
+            cool -= time.ElaspedMsDelta;
 
-        protected override bool TickCore(Entity host, RealmTime time, ref object state)
-        {
-            int cool;
-            if (state == null) cool = randomized ? Random.Next(this.time) : this.time;
-            else cool = (int)state;
-
-            bool ret = false;
-            if (cool <= 0)
-            {
-                ret = true;
-                cool = this.time;
-            }
-            else
-                cool -= time.ElaspedMsDelta;
-
-            state = cool;
-            return ret;
-        }
+        state = cool;
+        return ret;
     }
 }

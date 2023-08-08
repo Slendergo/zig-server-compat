@@ -1,84 +1,79 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using common.resources;
+﻿using common.resources;
 using wServer.networking.packets.outgoing;
 using wServer.realm;
 using wServer.realm.entities;
 
-namespace wServer.logic.behaviors
+namespace wServer.logic.behaviors;
+
+class HealGroup : Behavior
 {
-    class HealGroup : Behavior
+    //State storage: cooldown timer
+
+    double range;
+    string group;
+    Cooldown coolDown;
+    int? amount;
+
+    public HealGroup(double range, string group, Cooldown coolDown = new(), int? healAmount = null)
     {
-        //State storage: cooldown timer
+        this.range = (float)range;
+        this.group = group;
+        this.coolDown = coolDown.Normalize();
+        this.amount = healAmount;
+    }
 
-        double range;
-        string group;
-        Cooldown coolDown;
-        int? amount;
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
+    {
+        state = 0;
+    }
 
-        public HealGroup(double range, string group, Cooldown coolDown = new Cooldown(), int? healAmount = null)
+    protected override void TickCore(Entity host, RealmTime time, ref object state)
+    {
+        int cool = (int)state;
+
+        if (cool <= 0)
         {
-            this.range = (float)range;
-            this.group = group;
-            this.coolDown = coolDown.Normalize();
-            this.amount = healAmount;
-        }
+            if (host.HasConditionEffect(ConditionEffects.Stunned)) return;
 
-        protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-        {
-            state = 0;
-        }
-
-        protected override void TickCore(Entity host, RealmTime time, ref object state)
-        {
-            int cool = (int)state;
-
-            if (cool <= 0)
+            foreach (var entity in host.GetNearestEntitiesByGroup(range, group).OfType<Enemy>())
             {
-                if (host.HasConditionEffect(ConditionEffects.Stunned)) return;
-
-                foreach (var entity in host.GetNearestEntitiesByGroup(range, group).OfType<Enemy>())
+                int newHp = entity.ObjectDesc.MaxHP;
+                if (amount != null)
                 {
-                    int newHp = entity.ObjectDesc.MaxHP;
-                    if (amount != null)
-                    {
-                        var newHealth = (int) amount + entity.HP;
-                        if (newHp > newHealth)
-                            newHp = newHealth;
-                    }
-                    if (newHp != entity.HP)
-                    {
-                        int n = newHp - entity.HP;
-                        entity.HP = newHp;
-                        entity.Owner.BroadcastPacketNearby(new ShowEffect()
-                        {
-                            EffectType = EffectType.Potion,
-                            TargetObjectId = entity.Id,
-                            Color = new ARGB(0xffffffff)
-                        }, entity, null);
-                        entity.Owner.BroadcastPacketNearby(new ShowEffect()
-                        {
-                            EffectType = EffectType.Trail,
-                            TargetObjectId = host.Id,
-                            Pos1 = new Position() { X = entity.X, Y = entity.Y },
-                            Color = new ARGB(0xffffffff)
-                        }, host, null);
-                        entity.Owner.BroadcastPacketNearby(new Notification()
-                        {
-                            ObjectId = entity.Id,
-                            Message = "+" + n,
-                            Color = new ARGB(0xff00ff00)
-                        }, entity, null);
-                    }
+                    var newHealth = (int) amount + entity.HP;
+                    if (newHp > newHealth)
+                        newHp = newHealth;
                 }
-                cool = coolDown.Next(Random);
+                if (newHp != entity.HP)
+                {
+                    int n = newHp - entity.HP;
+                    entity.HP = newHp;
+                    entity.Owner.BroadcastPacketNearby(new ShowEffect()
+                    {
+                        EffectType = EffectType.Potion,
+                        TargetObjectId = entity.Id,
+                        Color = new ARGB(0xffffffff)
+                    }, entity, null);
+                    entity.Owner.BroadcastPacketNearby(new ShowEffect()
+                    {
+                        EffectType = EffectType.Trail,
+                        TargetObjectId = host.Id,
+                        Pos1 = new Position() { X = entity.X, Y = entity.Y },
+                        Color = new ARGB(0xffffffff)
+                    }, host, null);
+                    entity.Owner.BroadcastPacketNearby(new Notification()
+                    {
+                        ObjectId = entity.Id,
+                        Message = "+" + n,
+                        Color = new ARGB(0xff00ff00)
+                    }, entity, null);
+                }
             }
-            else
-                cool -= time.ElaspedMsDelta;
-
-            state = cool;
+            cool = coolDown.Next(Random);
         }
+        else
+            cool -= time.ElaspedMsDelta;
+
+        state = cool;
     }
 }

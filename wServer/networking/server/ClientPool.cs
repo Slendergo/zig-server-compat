@@ -1,41 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace wServer.networking.server;
 
-namespace wServer.networking.server
+class ClientPool
 {
-    class ClientPool
+    readonly Queue<Client> _pool;
+
+    internal ClientPool(Int32 capacity)
     {
-        readonly Queue<Client> _pool;
+        _pool = new Queue<Client>(capacity);
+    }
 
-        internal ClientPool(Int32 capacity)
+    internal Int32 Count
+    {
+        get { return _pool.Count; }
+    }
+
+    internal Client Pop()
+    {
+        using (TimedLock.Lock(_pool))
         {
-            _pool = new Queue<Client>(capacity);
+            return _pool.Dequeue();
         }
+    }
 
-        internal Int32 Count
+    internal void Push(Client client)
+    {
+        if (client == null)
         {
-            get { return _pool.Count; }
+            throw new ArgumentNullException("Clients added to a ClientPool cannot be null");
         }
-
-        internal Client Pop()
+        using (TimedLock.Lock(_pool))
         {
-            using (TimedLock.Lock(_pool))
-            {
-                return _pool.Dequeue();
-            }
-        }
-
-        internal void Push(Client client)
-        {
-            if (client == null)
-            {
-                throw new ArgumentNullException("Clients added to a ClientPool cannot be null");
-            }
-            using (TimedLock.Lock(_pool))
-            {
-                if (!_pool.Contains(client))
-                    _pool.Enqueue(client);
-            }
+            if (!_pool.Contains(client))
+                _pool.Enqueue(client);
         }
     }
 }

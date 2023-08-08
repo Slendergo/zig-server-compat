@@ -3,38 +3,37 @@ using wServer.networking.packets.incoming;
 using wServer.networking.packets.outgoing;
 using wServer.realm.worlds;
 
-namespace wServer.networking.handlers
+namespace wServer.networking.handlers;
+
+class EscapeHandler : PacketHandlerBase<Escape>
 {
-    class EscapeHandler : PacketHandlerBase<Escape>
+    public override C2SPacketId C2SId => C2SPacketId.Escape;
+
+    protected override void HandlePacket(Client client, Escape packet)
     {
-        public override PacketId ID => PacketId.ESCAPE;
+        //client.Manager.Logic.AddPendingAction(t => Handle(client, packet));
+        Handle(client, packet);
+    }
 
-        protected override void HandlePacket(Client client, Escape packet)
+    private void Handle(Client client, Escape packet)
+    {
+        if (client.Player == null || client.Player.Owner == null)
+            return;
+
+        var map = client.Player.Owner;
+        if (map.Id == World.Nexus)
         {
-            //client.Manager.Logic.AddPendingAction(t => Handle(client, packet));
-            Handle(client, packet);
+            //client.Player.SendInfo("Already in Nexus!");
+            client.Disconnect();
+            return;
         }
 
-        private void Handle(Client client, Escape packet)
+        client.Reconnect(new Reconnect()
         {
-            if (client.Player == null || client.Player.Owner == null)
-                return;
-
-            var map = client.Player.Owner;
-            if (map.Id == World.Nexus)
-            {
-                //client.Player.SendInfo("Already in Nexus!");
-                client.Disconnect();
-                return;
-            }
-
-            client.Reconnect(new Reconnect()
-            {
-                Host = "",
-                Port = 2050,
-                GameId = World.Nexus,
-                Name = "Nexus"
-            });
-        }
+            Host = "",
+            Port = 2050,
+            GameId = World.Nexus,
+            Name = "Nexus"
+        });
     }
 }

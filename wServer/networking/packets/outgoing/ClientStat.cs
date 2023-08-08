@@ -1,25 +1,24 @@
 ﻿using common;
 
-namespace wServer.networking.packets.outgoing
+namespace wServer.networking.packets.outgoing;
+
+public class ClientStat : OutgoingMessage
 {
-    public class ClientStat : OutgoingMessage
+    public string Name { get; set; }
+    public int Value { get; set; }
+
+    public override S2CPacketId S2CId => S2CPacketId.ClientStat;
+    public override Packet CreateInstance() { return new ClientStat(); }
+
+    protected override void Read(NReader rdr)
     {
-        public string Name { get; set; }
-        public int Value { get; set; }
+        Name = rdr.ReadUTF();
+        Value = rdr.ReadInt32();
+    }
 
-        public override PacketId ID => PacketId.CLIENTSTAT;
-        public override Packet CreateInstance() { return new ClientStat(); }
-
-        protected override void Read(NReader rdr)
-        {
-            Name = rdr.ReadUTF();
-            Value = rdr.ReadInt32();
-        }
-
-        protected override void Write(NWriter wtr)
-        {
-            wtr.WriteUTF(Name);
-            wtr.Write(Value);
-        }
+    protected override void Write(NWriter wtr)
+    {
+        wtr.WriteUTF(Name);
+        wtr.Write(Value);
     }
 }

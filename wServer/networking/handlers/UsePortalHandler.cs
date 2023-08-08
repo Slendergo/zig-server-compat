@@ -1,99 +1,96 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using wServer.realm.entities;
+﻿using wServer.realm.entities;
 using wServer.networking.packets;
 using wServer.networking.packets.incoming;
 using wServer.realm.worlds.logic;
 
-namespace wServer.networking.handlers
+namespace wServer.networking.handlers;
+
+class UsePortalHandler : PacketHandlerBase<UsePortal>
 {
-    class UsePortalHandler : PacketHandlerBase<UsePortal>
+    private readonly int[] _realmPortals = { 0x0704, 0x070e, 0x071c, 0x703, 0x070d, 0x0d40 };
+
+    public override C2SPacketId C2SId => C2SPacketId.UsePortal;
+
+    protected override void HandlePacket(Client client, UsePortal packet)
     {
-        private readonly int[] _realmPortals = new int[] { 0x0704, 0x070e, 0x071c, 0x703, 0x070d, 0x0d40 };
+        //client.Manager.Logic.AddPendingAction(t => Handle(client, packet));
+        Handle(client, packet);
+    }
 
-        public override PacketId ID => PacketId.USEPORTAL;
+    private void Handle(Client client, UsePortal packet)
+    {
+        var player = client.Player;
+        if (player?.Owner == null || IsTest(client))
+            return;
 
-        protected override void HandlePacket(Client client, UsePortal packet)
+        var entity = player.Owner.GetEntity(packet.ObjectId);
+        if (entity == null) return;
+
+        if (entity is GuildHallPortal)
         {
-            //client.Manager.Logic.AddPendingAction(t => Handle(client, packet));
-            Handle(client, packet);
+            HandleGuildPortal(player, entity as GuildHallPortal);
+            return;
         }
 
-        private void Handle(Client client, UsePortal packet)
+        HandlePortal(player, entity as Portal);
+    }
+
+    private void HandleGuildPortal(Player player, GuildHallPortal portal)
+    {
+        if (string.IsNullOrEmpty(player.Guild))
         {
-            var player = client.Player;
-            if (player?.Owner == null || IsTest(client))
-                return;
-
-            var entity = player.Owner.GetEntity(packet.ObjectId);
-            if (entity == null) return;
-
-            if (entity is GuildHallPortal)
-            {
-                HandleGuildPortal(player, entity as GuildHallPortal);
-                return;
-            }
-
-            HandlePortal(player, entity as Portal);
+            player.SendError("You are not in a guild.");
+            return;
         }
 
-        private void HandleGuildPortal(Player player, GuildHallPortal portal)
+        if (portal.ObjectType == 0x072f)
         {
-            if (string.IsNullOrEmpty(player.Guild))
+            var proto = player.Manager.Resources.Worlds["GuildHall"];
+            var world = player.Manager.GetWorld(proto.id);
+            player.Reconnect(world);
+            return;
+        }
+
+        player.SendInfo("Portal not implemented.");
+    }
+
+    private void HandlePortal(Player player, Portal portal)
+    {
+        if (portal == null || !portal.Usable)
+            return;
+
+        using (TimedLock.Lock(portal.CreateWorldLock))
+        {
+            var world = portal.WorldInstance;
+
+            // special portal case lookup
+            if (world == null && _realmPortals.Contains(portal.ObjectType))
             {
-                player.SendError("You are not in a guild.");
-                return;
+                world = player.Manager.GetRandomGameWorld();
+                if (world == null)
+                    return;
             }
 
-            if (portal.ObjectType == 0x072f)
+            if (world is Realm && !player.Manager.Resources.GameData.ObjectTypeToId[portal.ObjectDesc.ObjectType].Contains("Cowardice"))
             {
-                var proto = player.Manager.Resources.Worlds["GuildHall"];
-                var world = player.Manager.GetWorld(proto.id);
+                player.FameCounter.CompleteDungeon(player.Owner.Name);
+            }
+
+            if (world != null)
+            {
                 player.Reconnect(world);
                 return;
             }
 
-            player.SendInfo("Portal not implemented.");
-        }
-
-        private void HandlePortal(Player player, Portal portal)
-        {
-            if (portal == null || !portal.Usable)
-                return;
-
-            using (TimedLock.Lock(portal.CreateWorldLock))
-            {
-                var world = portal.WorldInstance;
-
-                // special portal case lookup
-                if (world == null && _realmPortals.Contains(portal.ObjectType))
-                {
-                    world = player.Manager.GetRandomGameWorld();
-                    if (world == null)
-                        return;
-                }
-
-                if (world is Realm && !player.Manager.Resources.GameData.ObjectTypeToId[portal.ObjectDesc.ObjectType].Contains("Cowardice"))
-                {
-                    player.FameCounter.CompleteDungeon(player.Owner.Name);
-                }
-
-                if (world != null)
-                {
-                    player.Reconnect(world);
-                    return;
-                }
-
-                // dynamic case lookup
-                if (portal.CreateWorldTask == null || portal.CreateWorldTask.IsCompleted)
-                    portal.CreateWorldTask = Task.Factory
-                        .StartNew(() => portal.CreateWorld(player))
-                        .ContinueWith(e =>
+            // dynamic case lookup
+            if (portal.CreateWorldTask == null || portal.CreateWorldTask.IsCompleted)
+                portal.CreateWorldTask = Task.Factory
+                    .StartNew(() => portal.CreateWorld(player))
+                    .ContinueWith(e =>
                             Log.Error(e.Exception.InnerException.ToString()),
-                            TaskContinuationOptions.OnlyOnFaulted);
+                        TaskContinuationOptions.OnlyOnFaulted);
 
-                portal.WorldInstanceSet += player.Reconnect;
-            }
+            portal.WorldInstanceSet += player.Reconnect;
         }
     }
 }

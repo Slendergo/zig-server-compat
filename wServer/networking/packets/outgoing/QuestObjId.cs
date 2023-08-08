@@ -1,22 +1,21 @@
 ﻿using common;
 
-namespace wServer.networking.packets.outgoing
+namespace wServer.networking.packets.outgoing;
+
+public class QuestObjId : OutgoingMessage
 {
-    public class QuestObjId : OutgoingMessage
+    public int ObjectId { get; set; }
+
+    public override S2CPacketId S2CId => S2CPacketId.QuestObjId;
+    public override Packet CreateInstance() { return new QuestObjId(); }
+
+    protected override void Read(NReader rdr)
     {
-        public int ObjectId { get; set; }
+        ObjectId = rdr.ReadInt32();
+    }
 
-        public override PacketId ID => PacketId.QUESTOBJID;
-        public override Packet CreateInstance() { return new QuestObjId(); }
-
-        protected override void Read(NReader rdr)
-        {
-            ObjectId = rdr.ReadInt32();
-        }
-
-        protected override void Write(NWriter wtr)
-        {
-            wtr.Write(ObjectId);
-        }
+    protected override void Write(NWriter wtr)
+    {
+        wtr.Write(ObjectId);
     }
 }
