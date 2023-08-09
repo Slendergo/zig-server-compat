@@ -23,12 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="RotMG.Common">
-      <HintPath>..\RotMG.Common.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="Templates\Abyss\template.jm" />
   </ItemGroup>
   <ItemGroup>
