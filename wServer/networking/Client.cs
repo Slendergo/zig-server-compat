@@ -161,7 +161,7 @@ public partial class Client
         }
     }
 
-    public void Reconnect(Reconnect pkt)
+    public void Reconnect(string name, int gameId)
     {
         if (Account == null)
         {
@@ -169,8 +169,8 @@ public partial class Client
             return;
         }
 
-        Log.Trace("Reconnecting client ({0}) @ {1} to {2}...", Account.Name, IP, pkt.Name);
-        SendPacket(pkt);
+        Log.Trace("Reconnecting client ({0}) @ {1} to {2}...", Account.Name, IP, name);
+        ConnectManager.Reconnect(this, gameId);
     }
 
     public async void SendFailure(string text, int errorId = Failure.MessageWithDisconnect)

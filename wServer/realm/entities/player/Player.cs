@@ -689,13 +689,7 @@ public partial class Player : Character, IContainer, IPlayer
     private void ReconnectToNexus()
     {
         HP = 1;
-        _client.Reconnect(new Reconnect()
-        {
-            Host = "",
-            Port = 2050,
-            GameId = World.Nexus,
-            Name = "Nexus"
-        });
+        _client.Reconnect("Nexus", World.Nexus);
     }
 
     private void AnnounceDeath(string killer)
@@ -747,17 +741,6 @@ public partial class Player : Character, IContainer, IPlayer
         }));
     }
 
-    public void Reconnect(World world)
-    {
-        Client.Reconnect(new Reconnect()
-        {
-            Host = "",
-            Port = 2050,
-            GameId = world.Id,
-            Name = world.Name
-        });
-    }
-
     public void Reconnect(object portal, World world)
     {
         ((Portal)portal).WorldInstanceSet -= Reconnect;
@@ -765,13 +748,7 @@ public partial class Player : Character, IContainer, IPlayer
         if (world == null)
             SendError("Portal Not Implemented!");
         else
-            Client.Reconnect(new Reconnect()
-            {
-                Host = "",
-                Port = 2050,
-                GameId = world.Id,
-                Name = world.Name
-            });
+            Client.Reconnect(world.Name, world.Id);
     }
 
     public int GetCurrency(CurrencyType currency)

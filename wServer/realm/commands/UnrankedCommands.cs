@@ -46,13 +46,7 @@ class TutorialCommand : Command
 
     protected override bool Process(Player player, RealmTime time, string args)
     {
-        player.Client.Reconnect(new Reconnect()
-        {
-            Host = "",
-            Port = 2050,
-            GameId = World.Tutorial,
-            Name = "Tutorial"
-        });
+        player.Client.Reconnect("Tutorial", World.Tutorial);
         return true;
     }
 }
@@ -525,13 +519,8 @@ class RealmCommand : Command
 
     protected override bool Process(Player player, RealmTime time, string args)
     {
-        player.Client.Reconnect(new Reconnect()
-        {
-            Host = "",
-            Port = 2050,
-            GameId = World.Realm,
-            Name = "Realm"
-        });
+        player.Client.Reconnect("Realm", World.Realm);
+
         return true;
     }
 }
@@ -542,13 +531,7 @@ class NexusCommand : Command
 
     protected override bool Process(Player player, RealmTime time, string args)
     {
-        player.Client.Reconnect(new Reconnect()
-        {
-            Host = "",
-            Port = 2050,
-            GameId = World.Nexus,
-            Name = "Nexus"
-        });
+        player.Client.Reconnect("Nexus", World.Nexus);
         return true;
     }
 }
@@ -559,13 +542,7 @@ class VaultCommand : Command
 
     protected override bool Process(Player player, RealmTime time, string args)
     {
-        player.Client.Reconnect(new Reconnect()
-        {
-            Host = "",
-            Port = 2050,
-            GameId = World.Vault,
-            Name = "Vault"
-        });
+        player.Client.Reconnect("Vault", World.Vault);
         return true;
     }
 }
@@ -581,13 +558,7 @@ class GhallCommand : Command
             player.SendError("You need to be in a guild.");
             return false;
         }
-        player.Client.Reconnect(new Reconnect()
-        {
-            Host = "",
-            Port = 2050,
-            GameId = World.GuildHall,
-            Name = "Guild Hall"
-        });
+        player.Client.Reconnect("Guild Hall", World.GuildHall);
         return true;
     }
 }

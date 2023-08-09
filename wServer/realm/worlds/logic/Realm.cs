@@ -103,11 +103,10 @@ public class Realm : World
             _overseer.OnEnemyKilled(enemy, killer);
     }
 
-    public override int EnterWorld(Entity entity)
+    public override int EnterWorld(Entity entity, bool noIdChange = false)
     {
-        var ret = base.EnterWorld(entity);
-        var player = entity as Player;
-        if (player != null)
+        var ret = base.EnterWorld(entity, noIdChange);
+        if (entity is Player player)
             _overseer?.OnPlayerEntered(player);
         return ret;
     }

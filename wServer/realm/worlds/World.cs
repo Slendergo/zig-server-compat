@@ -9,6 +9,7 @@ using wServer.networking.packets;
 using wServer.networking.packets.outgoing;
 using wServer.realm.entities;
 using wServer.realm.entities.vendors;
+using wServer.realm.setpieces;
 using wServer.realm.terrain;
 using wServer.realm.worlds.logic;
 
@@ -543,33 +544,21 @@ public class World
         if (!Persist || this is Realm)
             Closed = true;
 
-        BroadcastPacket(new ShowEffect()
+        BroadcastPacket(new ShowEffect
         {
             EffectType = EffectType.Earthquake
         }, null);
 
         Timers.Add(new WorldTimer(8000, (w, t) =>
         {
-            var rcpNotPaused = new Reconnect()
-            {
-                Host = "",
-                Port = 2050,
-                GameId = newWorld.Id,
-                Name = newWorld.SBName
-            };
-
-            var rcpPaused = new Reconnect()
-            {
-                Host = "",
-                Port = 2050,
-                GameId = World.Nexus,
-                Name = "Nexus"
-            };
-
             foreach (var plr in w.Players.Values)
-                plr.Client.Reconnect(
-                    plr.HasConditionEffect(ConditionEffects.Paused) ?
-                        rcpPaused : rcpNotPaused);
+            {
+                if (plr.HasConditionEffect(ConditionEffects.Paused))
+                    plr.Client.Reconnect("Nexus", Nexus);
+                else
+                    plr.Client.Reconnect(newWorld.Name, newWorld.Id);
+
+            }
         }));
 
         if (!Persist)

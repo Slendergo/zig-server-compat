@@ -1362,12 +1362,7 @@ class VisitCommand : Command
         }
 
         var owner = target.Player.Owner;
-        player.Client.Reconnect(new Reconnect()
-        {
-            Host = "",
-            GameId = owner.Id,
-            Name = owner.SBName
-        });
+        player.Client.Reconnect(owner.Name, owner.Id);
         return true;
     }
 }
