@@ -20,8 +20,6 @@
 
 using DungeonGenerator.Dungeon;
 using DungeonGenerator.Templates;
-using RotMG.Common;
-using RotMG.Common.Rasterizer;
 
 namespace DungeonGenerator;
 
@@ -211,7 +209,8 @@ public class Generator {
 		var targetDir = ((Direction)connPt).Reverse();
 
 		var connPts = (Tuple<Direction, int>[])target.ConnectionPoints.Clone();
-		rand.Shuffle(connPts);
+		connPts = connPts.OrderBy((item) => rand.NextDouble()).ToArray();
+
 		Tuple<Direction, int> conn = null;
 		foreach (var pt in connPts) {
 			if (pt.Item1 == targetDir) {
@@ -274,7 +273,7 @@ public class Generator {
 
 		var targetDirection = conn.Item1.Reverse();
 		var targetConns = (Tuple<Direction, int>[])target.ConnectionPoints.Clone();
-		rand.Shuffle(targetConns);
+		targetConns = targetConns.OrderBy((item) => rand.NextDouble()).ToArray();
 		Tuple<Direction, int> targetConnPt = null;
 		foreach (var targetConn in targetConns)
 			if (targetConn.Item1 == targetDirection) {
@@ -353,7 +352,7 @@ public class Generator {
 	bool GenerateTargetInternal(Room prev, int depth, int targetDepth) {
 		var connPtNum = GetMaxConnectionPoints(prev);
 		var seq = Enumerable.Range(0, connPtNum).ToList();
-		rand.Shuffle(seq);
+		seq = seq.OrderBy((item) => rand.NextDouble()).ToList();
 
 		bool targetPlaced;
 		do {
@@ -413,7 +412,7 @@ public class Generator {
 	bool GenerateSpecialInternal(Room prev, int depth, int targetDepth) {
 		var connPtNum = GetMaxConnectionPoints(prev);
 		var seq = Enumerable.Range(0, connPtNum).ToList();
-		rand.Shuffle(seq);
+		seq = seq.OrderBy((item) => rand.NextDouble()).ToList();
 
 		bool specialPlaced;
 		do {
@@ -455,7 +454,7 @@ public class Generator {
 		List<Room> copy;
 		while (rooms.Count < numRooms) {
 			copy = new List<Room>(rooms);
-			rand.Shuffle(copy);
+			copy = copy.OrderBy((item) => rand.NextDouble()).ToList();
 
 			bool worked = false;
 			foreach (var room in copy) {
@@ -476,7 +475,7 @@ public class Generator {
 
 		var connPtNum = GetMaxConnectionPoints(prev);
 		var seq = Enumerable.Range(0, connPtNum).ToList();
-		rand.Shuffle(seq);
+		seq = seq.OrderBy((item) => rand.NextDouble()).ToList();
 
 		if (doBranch) {
 			var numBranch = prev.NumBranches.Random(rand);

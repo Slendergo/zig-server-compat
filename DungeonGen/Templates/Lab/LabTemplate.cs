@@ -19,8 +19,8 @@
 */
 
 using DungeonGenerator.Dungeon;
-using RotMG.Common;
-using RotMG.Common.Rasterizer;
+
+
 
 namespace DungeonGenerator.Templates.Lab;
 
