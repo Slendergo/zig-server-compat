@@ -104,22 +104,21 @@ public class ConnectManager
     }
 
 
-    public static void Connect(Client client, int gameId, int charId)
+    public static void Connect(Client client, Hello pkt)
     {
         var acc = client.Account;
         if (!client.Manager.Database.AcquireLock(acc))
         {
             // disconnect current connected client (if any)
-            var otherClients = client.Manager.Clients.Keys
-                .Where(c => c == client || c.Account != null && (c.Account.AccountId == acc.AccountId));
+
+            var otherClients = client.Manager.Clients.Keys.Where(c => c == client || c.Account != null && (c.Account.AccountId == acc.AccountId));
             foreach (var otherClient in otherClients)
                 otherClient.Disconnect();
 
             // try again...
             if (!client.Manager.Database.AcquireLock(acc))
             {
-                client.SendFailure("Account in Use (" +
-                                   client.Manager.Database.GetLockTime(acc)?.ToString("%s") + " seconds until timeout)");
+                client.SendFailure($"Account in Use ({client.Manager.Database.GetLockTime(acc)?.ToString("%s")} seconds until timeout)");
                 return;
             }
         }
@@ -134,7 +133,7 @@ public class ConnectManager
             return;
         }
 
-        var world = client.Manager.GetWorld(gameId);
+        var world = client.Manager.GetWorld(pkt.GameId);
         if (world == null || world.Deleted)
         {
             client.SendPacket(new Text
@@ -215,28 +214,60 @@ public class ConnectManager
                 .Select(i => i.ToString())
                 .ToArray()
         });
-        
-        client.Character = client.Manager.Database.LoadCharacter(acc, charId);
-        if (client.Character == null)
+
+
+        // either create or load the character
+
+        DbChar character = null;
+
+        if (pkt.CreateCharacter)
+        {
+            var status = client.Manager.Database.CreateCharacter(acc, pkt.SkinType, pkt.CharacterType, out character);
+            switch (status)
+            {
+                case CreateStatus.ReachCharLimit:
+                    client.SendFailure("Too many characters");
+                    return;
+                case CreateStatus.SkinUnavailable:
+                    client.SendFailure("Skin unavailable");
+                    return;
+                case CreateStatus.Locked:
+                    client.SendFailure("Class locked");
+                    return;
+            }
+        }
+        else
+        {
+            character = client.Manager.Database.LoadCharacter(acc, pkt.CharId);
+        }
+
+        // didnt load then disconnect
+        if(character == null)
         {
             client.SendFailure("Failed to load character");
             return;
         }
 
-        if (client.Character.Dead)
+        // dead? then disconnect
+        if (character.Dead)
         {
             client.SendFailure("Character is dead");
             return;
         }
 
+        // make the player
+
+        client.Character = character;
+
         if (client.Player?.Owner == null)
             client.Player = new Player(client);
 
-        client.SendPacket(new CreateSuccess
+        client.SendPacket(new CreateSuccess()
         {
             CharId = client.Character.CharId,
             ObjectId = client.Player.Id
         });
+
         client.Manager.Clients[client].WorldInstance = client.Player.Owner.Id;
         client.Manager.Clients[client].WorldName = client.Player.Owner.Name;
 

@@ -16,12 +16,6 @@ class HelloHandler : PacketHandlerBase<Hello>
 
     protected override void HandlePacket(Client client, Hello packet)
     {
-        //client.Manager.Logic.AddPendingAction(t => Handle(client, packet));
-        Handle(client, packet);
-    }
-
-    private void Handle(Client client, Hello packet)
-    {
         // validate connection eligibility and get acc info
         var acc = VerifyConnection(client, packet);
         if (acc == null)
@@ -33,27 +27,8 @@ class HelloHandler : PacketHandlerBase<Hello>
         acc.FlushAsync();
 
         client.Account = acc;
-        if (packet.CreateCharacter) {
-            var status = client.Manager.Database.CreateCharacter(acc, packet.SkinType, packet.CharacterType,
-                out var character);
-            switch (status) {
-                case CreateStatus.ReachCharLimit:
-                    client.SendFailure("Too many characters");
-                    return;
-                case CreateStatus.SkinUnavailable:
-                    client.SendFailure("Skin unavailable");
-                    return;
-                case CreateStatus.Locked:
-                    client.SendFailure("Class locked");
-                    return;
-            }
 
-            client.Character = character;
-            client.Player = new Player(client);
-            packet.CharId = (short) character.CharId;
-        }
-        
-        ConnectManager.Connect(client, packet.GameId, packet.CharId);
+        ConnectManager.Connect(client, packet);
     }
 
     private static DbAccount VerifyConnection(Client client, Hello packet)
@@ -83,8 +58,7 @@ class HelloHandler : PacketHandlerBase<Hello>
         if (client.Manager.Database.IsIpBanned(client.IP))
         {
             client.SendFailure("IP banned.");
-            Log.Info("{0} ({1}) tried to log in. IP Banned.",
-                acc.Name, client.IP);
+            Log.Info($"{acc.Name} ({client.IP}) tried to log in. IP Banned.");
             return null;
         }
 

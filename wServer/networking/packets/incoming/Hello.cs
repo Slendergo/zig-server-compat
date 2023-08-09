@@ -22,13 +22,23 @@ public class Hello : IncomingMessage
         GameId = rdr.ReadInt32();
         GUID = rdr.ReadUTF();
         Password = rdr.ReadUTF();
+
+        // could just send -1 for a charid instead of sending a createcharacter 
+        // would save u one byte lol
+        //CharId = rdr.ReadInt16();
+        //if (CharId != -1)
+        //{
+        //    CharacterType = rdr.ReadUInt16();
+        //    SkinType = rdr.ReadUInt16();
+        //}
+
         CharId = rdr.ReadInt16();
         CreateCharacter = rdr.ReadBoolean();
         if (CreateCharacter)
         {
             CharacterType = rdr.ReadUInt16();
             SkinType = rdr.ReadUInt16();
-        }
+        } // seems like it will be good to go
     }
 
     protected override void Write(NWriter wtr)
