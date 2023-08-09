@@ -55,7 +55,7 @@ public abstract class Packet
         Crypt(client, buff, offset + 5, bodyLength);
 
         Buffer.BlockCopy(
-            BitConverter.GetBytes(IPAddress.HostToNetworkOrder(packetLength)), 0,
+            BitConverter.GetBytes(packetLength), 0,
             buff, offset, 4);
 
         buff[offset + 4] = (byte)S2CId;

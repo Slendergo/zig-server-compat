@@ -116,7 +116,7 @@ public class CommHandler
             // set packet length when prefix read
             if (r.BytesRead == _prefixLength)
             {
-                r.PacketLength =BitConverter.ToInt32(r.PacketBytes, 0);
+                r.PacketLength = BitConverter.ToUInt16(r.PacketBytes, 0);
 
                 // discard invalid packets
                 if (r.PacketLength < _prefixLength ||

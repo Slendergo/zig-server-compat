@@ -19,7 +19,7 @@ class ReceiveToken
     public readonly int BufferOffset;
 
     public int BytesRead;
-    public int PacketLength;
+    public ushort PacketLength;
     public readonly byte[] PacketBytes;
 
     public ReceiveToken(int offset)
