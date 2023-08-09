@@ -19,8 +19,6 @@
 */
 
 using DungeonGenerator.Dungeon;
-using RotMG.Common;
-using RotMG.Common.Rasterizer;
 
 namespace DungeonGenerator.Templates;
 
@@ -41,13 +39,19 @@ public class MapCorridor {
 	protected void Default(Point srcPos, Point dstPos, DungeonTile tile) {
 		if (srcPos.X == dstPos.X) {
 			if (srcPos.Y > dstPos.Y)
-				Utils.Swap(ref srcPos, ref dstPos);
-			Rasterizer.FillRect(new Rect(srcPos.X, srcPos.Y, srcPos.X + Graph.Template.CorridorWidth, dstPos.Y), tile);
+			{
+                (dstPos, srcPos) = (srcPos, dstPos);
+            }
+
+            Rasterizer.FillRect(new Rect(srcPos.X, srcPos.Y, srcPos.X + Graph.Template.CorridorWidth, dstPos.Y), tile);
 		}
 		else if (srcPos.Y == dstPos.Y) {
 			if (srcPos.X > dstPos.X)
-				Utils.Swap(ref srcPos, ref dstPos);
-			Rasterizer.FillRect(new Rect(srcPos.X, srcPos.Y, dstPos.X, srcPos.Y + Graph.Template.CorridorWidth), tile);
+			{
+                (dstPos, srcPos) = (srcPos, dstPos);
+            }
+
+            Rasterizer.FillRect(new Rect(srcPos.X, srcPos.Y, dstPos.X, srcPos.Y + Graph.Template.CorridorWidth), tile);
 		}
 	}
 }
