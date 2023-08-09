@@ -19,8 +19,8 @@
 */
 
 using DungeonGenerator.Dungeon;
-using RotMG.Common;
-using RotMG.Common.Rasterizer;
+
+
 
 namespace DungeonGenerator;
 
@@ -46,7 +46,7 @@ public class RoomCollision {
 
 	void Add(int x, int y, Room rm) {
 		var key = new RoomKey(x, y);
-		var roomList = rooms.GetValueOrCreate(key, k => new HashSet<Room>());
+		var roomList = rooms.GetValueOrDefault(key, new HashSet<Room>());
 		roomList.Add(rm);
 	}
 

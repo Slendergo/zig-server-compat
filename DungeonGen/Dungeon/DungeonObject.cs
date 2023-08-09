@@ -18,8 +18,6 @@
 
 */
 
-using RotMG.Common;
-
 namespace DungeonGenerator.Dungeon;
 
 public struct ObjectType {
@@ -54,5 +52,5 @@ public struct ObjectType {
 
 public class DungeonObject {
 	public ObjectType ObjectType;
-	public KeyValuePair<string, string>[] Attributes = Empty<KeyValuePair<string, string>>.Array;
+	public KeyValuePair<string, string>[] Attributes = Array.Empty<KeyValuePair<string, string>>();
 }
