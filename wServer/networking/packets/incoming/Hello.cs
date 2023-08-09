@@ -41,18 +41,5 @@ public class Hello : IncomingMessage
         } // seems like it will be good to go
     }
 
-    protected override void Write(NWriter wtr)
-    {
-        wtr.WriteUTF(BuildVersion);
-        wtr.Write(GameId);
-        wtr.WriteUTF(GUID);
-        wtr.WriteUTF(Password);
-        wtr.Write(CharId);
-        wtr.Write(CreateCharacter);
-        if (CreateCharacter)
-        {
-            wtr.Write(CharacterType);
-            wtr.Write(SkinType);
-        }
-    }
+    protected override void Write(NWriter wtr) { }
 }
