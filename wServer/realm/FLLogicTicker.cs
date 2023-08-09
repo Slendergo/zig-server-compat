@@ -78,7 +78,6 @@ public class FLLogicTicker
                 }
         }
 
-        _manager.ConMan.Tick(t);
         _manager.Monitor.Tick(t);
         _manager.InterServer.Tick(t.ElaspedMsDelta);
 

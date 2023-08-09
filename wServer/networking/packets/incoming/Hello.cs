@@ -8,9 +8,10 @@ public class Hello : IncomingMessage
     public int GameId { get; set; }
     public string GUID { get; set; }
     public string Password { get; set; }
-    public int KeyTime { get; set; }
-    public byte[] Key { get; set; }
-    public string MapJSON { get; set; }
+    public short CharId { get; set; }
+    public bool CreateCharacter { get; set; }
+    public ushort CharacterType { get; set; }
+    public ushort SkinType { get; set; }
 
     public override C2SPacketId C2SId => C2SPacketId.Hello;
     public override Packet CreateInstance() { return new Hello(); }
@@ -19,22 +20,29 @@ public class Hello : IncomingMessage
     {
         BuildVersion = rdr.ReadUTF();
         GameId = rdr.ReadInt32();
-        GUID = RSA.Instance.Decrypt(rdr.ReadUTF());
-        Password = RSA.Instance.Decrypt(rdr.ReadUTF());
-        KeyTime = rdr.ReadInt32();
-        Key = rdr.ReadBytes(rdr.ReadInt16());
-        MapJSON = rdr.Read32UTF();
+        GUID = rdr.ReadUTF();
+        Password = rdr.ReadUTF();
+        CharId = rdr.ReadInt16();
+        CreateCharacter = rdr.ReadBoolean();
+        if (CreateCharacter)
+        {
+            CharacterType = rdr.ReadUInt16();
+            SkinType = rdr.ReadUInt16();
+        }
     }
 
     protected override void Write(NWriter wtr)
     {
         wtr.WriteUTF(BuildVersion);
         wtr.Write(GameId);
-        wtr.WriteUTF(RSA.Instance.Encrypt(GUID));
-        wtr.WriteUTF(RSA.Instance.Encrypt(Password));
-        wtr.Write(KeyTime);
-        wtr.Write((short)Key.Length);
-        wtr.Write(Key);
-        wtr.Write32UTF(MapJSON);
+        wtr.WriteUTF(GUID);
+        wtr.WriteUTF(Password);
+        wtr.Write(CharId);
+        wtr.Write(CreateCharacter);
+        if (CreateCharacter)
+        {
+            wtr.Write(CharacterType);
+            wtr.Write(SkinType);
+        }
     }
 }

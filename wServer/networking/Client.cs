@@ -49,6 +49,7 @@ public partial class Client
     public Player Player { get; internal set; }
 
     public wRandom Random { get; internal set; }
+    public uint Seed { get; set; }
 
     //Temporary connection state
     internal int TargetWorld = -1;
@@ -169,7 +170,6 @@ public partial class Client
         }
 
         Log.Trace("Reconnecting client ({0}) @ {1} to {2}...", Account.Name, IP, pkt.Name);
-        Manager.ConMan.AddReconnect(Account.AccountId, pkt);
         SendPacket(pkt);
     }
 

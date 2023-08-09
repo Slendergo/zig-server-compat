@@ -4,6 +4,7 @@ using wServer.networking.packets;
 using wServer.networking.packets.incoming;
 using wServer.networking.packets.outgoing;
 using wServer.realm;
+using wServer.realm.entities;
 
 namespace wServer.networking.handlers;
 
@@ -24,9 +25,7 @@ class HelloHandler : PacketHandlerBase<Hello>
         // validate connection eligibility and get acc info
         var acc = VerifyConnection(client, packet);
         if (acc == null)
-        {
             return;
-        }
 
         // log ip
         client.Manager.Database.LogAccountByIp(client.IP, acc.AccountId);
@@ -34,11 +33,30 @@ class HelloHandler : PacketHandlerBase<Hello>
         acc.FlushAsync();
 
         client.Account = acc;
-        client.Manager.Logic.AddPendingAction(t =>
-            client.Manager.ConMan.Add(new ConInfo(client, packet)));
+        if (packet.CreateCharacter) {
+            var status = client.Manager.Database.CreateCharacter(acc, packet.SkinType, packet.CharacterType,
+                out var character);
+            switch (status) {
+                case CreateStatus.ReachCharLimit:
+                    client.SendFailure("Too many characters");
+                    return;
+                case CreateStatus.SkinUnavailable:
+                    client.SendFailure("Skin unavailable");
+                    return;
+                case CreateStatus.Locked:
+                    client.SendFailure("Class locked");
+                    return;
+            }
+
+            client.Character = character;
+            client.Player = new Player(client);
+            packet.CharId = (short) character.CharId;
+        }
+        
+        ConnectManager.Connect(client, packet.GameId, packet.CharId);
     }
 
-    private DbAccount VerifyConnection(Client client, Hello packet)
+    private static DbAccount VerifyConnection(Client client, Hello packet)
     {
         var version = client.Manager.Config.serverSettings.version;
         if (!version.Equals(packet.BuildVersion))
@@ -50,13 +68,13 @@ class HelloHandler : PacketHandlerBase<Hello>
         var s1 = client.Manager.Database.Verify(packet.GUID, packet.Password, out var acc);
         if (s1 is LoginStatus.AccountNotExists or LoginStatus.InvalidCredentials)
         {
-            client.SendFailure("Bad Login", Failure.MessageWithDisconnect);
+            client.SendFailure("Bad Login");
             return null;
         }
 
         if (acc.Banned)
         {
-            client.SendFailure("Account banned.", Failure.MessageWithDisconnect);
+            client.SendFailure("Account banned.");
             Log.Info("{0} ({1}) tried to log in. Account Banned.",
                 acc.Name, client.IP);
             return null;
@@ -64,7 +82,7 @@ class HelloHandler : PacketHandlerBase<Hello>
 
         if (client.Manager.Database.IsIpBanned(client.IP))
         {
-            client.SendFailure("IP banned.", Failure.MessageWithDisconnect);
+            client.SendFailure("IP banned.");
             Log.Info("{0} ({1}) tried to log in. IP Banned.",
                 acc.Name, client.IP);
             return null;
@@ -72,7 +90,7 @@ class HelloHandler : PacketHandlerBase<Hello>
 
         if (!acc.Admin && client.Manager.Config.serverInfo.adminOnly)
         {
-            client.SendFailure("Admin Only Server", Failure.MessageWithDisconnect);
+            client.SendFailure("Admin Only Server");
             return null;
         }
 
