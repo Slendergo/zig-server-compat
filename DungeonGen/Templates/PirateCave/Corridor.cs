@@ -19,7 +19,6 @@
 */
 
 using DungeonGenerator.Dungeon;
-using RotMG.Common.Rasterizer;
 
 namespace DungeonGenerator.Templates.PirateCave;
 

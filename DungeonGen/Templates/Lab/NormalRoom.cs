@@ -19,8 +19,8 @@
 */
 
 using DungeonGenerator.Dungeon;
-using RotMG.Common;
-using RotMG.Common.Rasterizer;
+
+
 
 namespace DungeonGenerator.Templates.Lab;
 
@@ -199,7 +199,7 @@ internal class NormalRoom : FixedRoom {
 
 	public NormalRoom(NormalRoom prev, Random rand, bool noEvil) {
 		var indexes = Enumerable.Range(0, roomTemplates.Length).ToList();
-		rand.Shuffle(indexes);
+		indexes = indexes.OrderBy((item) => rand.NextDouble()).ToList();
 		foreach (var index in indexes) {
 			if (prev != null && index == prev.currentId)
 				continue;
