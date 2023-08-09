@@ -20,7 +20,7 @@
 
 using DungeonGenerator.Dungeon;
 using Json;
-using RotMG.Common;
+
 
 namespace DungeonGenerator;
 
@@ -49,8 +49,8 @@ public static class JsonMap {
 		ushort id = 0;
 		foreach (JsonObject tile in (JsonArray)map["dict"]) {
 			var mapTile = new DungeonTile();
-			var tileType = (string)tile.GetValueOrDefault("ground", "Space");
-			mapTile.TileType = new TileType(tileType == "Space" ? 0xfe : (uint)tileType.GetHashCode(), tileType);
+            tile.TryGetValue("ground", out object tileType);
+            mapTile.TileType = new TileType(tileType == "Space" ? 0xfe : (uint)tileType.GetHashCode(), tileType.ToString());
 
 			mapTile.Region = tile.ContainsKey("regions") ? (string)((JsonObject)((JsonArray)tile["regions"])[0])["id"] : null;
 			if (tile.ContainsKey("objs")) {
@@ -66,7 +66,7 @@ public static class JsonMap {
 						.ToArray();
 				}
 				else
-					tileObj.Attributes = Empty<KeyValuePair<string, string>>.Array;
+					tileObj.Attributes = Array.Empty<KeyValuePair<string, string>>();
 
 				mapTile.Object = tileObj;
 			}
@@ -75,11 +75,12 @@ public static class JsonMap {
 			tiles[id++] = mapTile;
 		}
 
-		byte[] data = RotMG.Common.IO.Zlib.Decompress(Convert.FromBase64String((string)map["data"]));
+		byte[] data = Zlib.Decompress(Convert.FromBase64String((string)map["data"]));
 		int index = 0;
-		for (int y = 0; y < h; y++)
-		for (int x = 0; x < w; x++) {
-			result[x, y] = tiles[(ushort)((data[index++] << 8) | data[index++])];
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				result[x, y] = tiles[(ushort)((data[index++] << 8) | data[index++])];
+			}
 		}
 
 		return result;
