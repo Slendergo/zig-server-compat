@@ -5,7 +5,19 @@ using wServer.networking.packets;
 
 namespace wServer.realm;
 
-using Work = Tuple<Client, int, C2SPacketId, byte[]>;
+class Work
+{
+    public Client client;
+    public C2SPacketId id;
+    public byte[] packet;
+
+    public Work(Client client, C2SPacketId packetId, byte[] packet)
+    {
+        this.client = client;
+        this.id = packetId;
+        this.packet = packet;
+    }
+}
 
 public class NetworkTicker
 {
@@ -20,7 +32,7 @@ public class NetworkTicker
 
     public static void AddPendingPacket(Client client, C2SPacketId id, byte[] packet)
     {
-        Pendings.Add(new Work(client, client.Id, id, packet));
+        Pendings.Add(new Work(client, id, packet));
     }
 
     public void TickLoop()
@@ -31,22 +43,24 @@ public class NetworkTicker
             if (_manager.Terminating)
                 break;
 
-            if (pending.Item1.Id != pending.Item2 || pending.Item1.State == ProtocolState.Disconnected)
+            if (pending.client.State == ProtocolState.Disconnected)
                 continue;
+
+            Log.Fatal("New pending packet id: {0}, length {1}", pending.id, pending.packet.Length);
 
             try
             {
-                var packet = Packet.C2SPackets[pending.Item3].CreateInstance();
-                packet.Read(pending.Item1, pending.Item4, 0, pending.Item4.Length);
-                pending.Item1.ProcessPacket(packet);
+                var packet = Packet.C2SPackets[pending.id].CreateInstance();
+                packet.Read(pending.client, pending.packet, 0, pending.packet.Length);
+                pending.client.ProcessPacket(packet);
             }
             catch (Exception e)
             {
                 Log.Error("Error processing packet ({0}, {1}, {2})\n{3}",
-                    (pending.Item1.Account != null) ? pending.Item1.Account.Name : "",
-                    pending.Item1.IP, pending.Item2, e);
+                    (pending.client.Account != null) ? pending.client.Account.Name : "<No account>",
+                    pending.client.IP, pending.client, e);
 
-                pending.Item1.SendFailure("An error occurred while processing data from your client.");
+                pending.client.SendFailure("An error occurred while processing data from your client.");
             }
         }
         Log.Info("Network loop stopped.");
@@ -57,6 +71,6 @@ public class NetworkTicker
         if (_manager.Terminating != true)
             throw new Exception("Must terminate realm manager before shutting down network ticker.");
 
-        Pendings.Add(new Work(null, 0, 0, null)); // dummy to allow loop to execute
+        Pendings.Add(new Work(null, 0, null)); // dummy to allow loop to execute
     }
 }
