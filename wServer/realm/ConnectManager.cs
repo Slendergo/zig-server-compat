@@ -222,7 +222,7 @@ public class ConnectManager
 
         if (pkt.CreateCharacter)
         {
-            var status = client.Manager.Database.CreateCharacter(acc, pkt.SkinType, pkt.CharacterType, out character);
+            var status = client.Manager.Database.CreateCharacter(acc, pkt.CharacterType, pkt.SkinType, out character);
             switch (status)
             {
                 case CreateStatus.ReachCharLimit:

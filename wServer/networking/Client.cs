@@ -155,7 +155,7 @@ public partial class Client
             }
             catch (Exception e)
             {
-                Log.Error("Error when handling packet '{{0}, {1}}'...", pkt.ToString(), e.ToString());
+                Log.Error("Error when handling packet '{0}, {1}'...", pkt.ToString(), e.ToString());
                 Disconnect("Packet handling error.");
             }
         }
