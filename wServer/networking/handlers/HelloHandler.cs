@@ -19,10 +19,7 @@ class HelloHandler : PacketHandlerBase<Hello>
         // validate connection eligibility and get acc info
         var acc = VerifyConnection(client, packet);
         if (acc == null)
-        {
-            client.Disconnect("Invalid Credentials");
             return;
-        }
 
         // log ip
         client.Manager.Database.LogAccountByIp(client.IP, acc.AccountId);
