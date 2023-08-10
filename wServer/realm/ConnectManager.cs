@@ -260,6 +260,8 @@ public class ConnectManager
         if (client.Player?.Owner == null)
             client.Player = new Player(client);
 
+        client.Manager.Worlds[world.Id].EnterWorld(client.Player);
+
         client.SendPacket(new CreateSuccess()
         {
             CharId = client.Character.CharId,
