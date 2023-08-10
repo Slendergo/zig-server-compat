@@ -31,8 +31,7 @@ public class NetworkTicker
             if (_manager.Terminating)
                 break;
 
-            if (pending.Item1.Id != pending.Item2 ||
-                pending.Item1.State == ProtocolState.Disconnected)
+            if (pending.Item1.Id != pending.Item2 || pending.Item1.State == ProtocolState.Disconnected)
                 continue;
 
             try

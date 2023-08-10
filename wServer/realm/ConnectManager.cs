@@ -237,9 +237,7 @@ public class ConnectManager
             }
         }
         else
-        {
             character = client.Manager.Database.LoadCharacter(acc, pkt.CharId);
-        }
 
         // didnt load then disconnect
         if(character == null)

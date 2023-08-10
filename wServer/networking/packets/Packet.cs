@@ -35,7 +35,7 @@ public abstract class Packet
 
     public void Read(Client client, byte[] body, int offset, int len)
     {
-        Crypt(client, body, offset, len);
+        //Crypt(client, body, offset, len);
         Read(new NReader(new MemoryStream(body)));
     }
 
@@ -52,7 +52,7 @@ public abstract class Packet
 
         Buffer.BlockCopy(s.GetBuffer(), 0, buff, offset + 5, bodyLength);
 
-        Crypt(client, buff, offset + 5, bodyLength);
+        //Crypt(client, buff, offset + 5, bodyLength);
 
         Buffer.BlockCopy(
             BitConverter.GetBytes(packetLength), 0,

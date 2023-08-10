@@ -78,9 +78,17 @@ public class Program
 		ISManager.Run();
 		var port = Config.serverInfo.port;
 		var address = Config.serverInfo.bindAddress;
+
 		using var server = new HttpListener();
-		server.Prefixes.Add($"http://{address}:{port}/");
-		server.Start();
+
+		// stupid admin prompting bai
+#if DEBUG
+        server.Prefixes.Add($"http://*:{port}/");
+#else
+        server.Prefixes.Add($"http://{address}:{port}/");
+#endif
+        server.Start();
+
 		Log.Info("Listening at address {0}:{1}...", address, port);
 		while (true) {
 			var ctx = server.GetContext();

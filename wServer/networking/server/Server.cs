@@ -44,7 +44,7 @@ class ReceiveToken
         if (BytesRead < PrefixLength)
             throw new Exception("Packet id not read yet.");
 
-        return (C2SPacketId)PacketBytes[4];
+        return (C2SPacketId)PacketBytes[2];
     }
 
     public void Reset()
