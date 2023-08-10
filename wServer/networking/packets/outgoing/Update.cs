@@ -13,9 +13,9 @@ public class Update : OutgoingMessage
     }
 
     public TileData[] Tiles { get; set; }
-    public ObjectDef[] NewObjs { get; set; }
     public int[] Drops { get; set; }
-
+    public ObjectDef[] NewObjs { get; set; }
+    
     public override S2CPacketId S2CId => S2CPacketId.Update;
     public override Packet CreateInstance() { return new Update(); }
 
@@ -32,13 +32,13 @@ public class Update : OutgoingMessage
             };
         }
 
-        NewObjs = new ObjectDef[rdr.ReadInt16()];
-        for (var i = 0; i < NewObjs.Length; i++)
-            NewObjs[i] = ObjectDef.Read(rdr);
-
         Drops = new int[rdr.ReadInt16()];
         for (var i = 0; i < Drops.Length; i++)
             Drops[i] = rdr.ReadInt32();
+        
+        NewObjs = new ObjectDef[rdr.ReadInt16()];
+        for (var i = 0; i < NewObjs.Length; i++)
+            NewObjs[i] = ObjectDef.Read(rdr);
     }
 
     protected override void Write(NWriter wtr)
@@ -50,15 +50,15 @@ public class Update : OutgoingMessage
             wtr.Write(i.Y);
             wtr.Write((ushort)i.Tile);
         }
-        wtr.Write((short)NewObjs.Length);
-        foreach (var i in NewObjs)
-        {
-            i.Write(wtr);
-        }
         wtr.Write((short)Drops.Length);
         foreach (var i in Drops)
         {
             wtr.Write(i);
+        }
+        wtr.Write((short)NewObjs.Length);
+        foreach (var i in NewObjs)
+        {
+            i.Write(wtr);
         }
     }
 }
