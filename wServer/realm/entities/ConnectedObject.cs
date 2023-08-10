@@ -104,7 +104,7 @@ public class ConnectedObject : StaticObject
     public ConnectionInfo Connection { get; set; }
     protected override void ExportStats(IDictionary<StatsType, object> stats)
     {
-        stats[StatsType.ObjectConnection] = (int)Connection.Bits;
+        stats[StatsType.ObjectConnection] = Connection.Bits;
         base.ExportStats(stats);
     }
 

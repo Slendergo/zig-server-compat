@@ -188,8 +188,7 @@ public partial class Player : Character, IContainer, IPlayer
         stats[StatsType.Guild] = Guild;
         stats[StatsType.GuildRank] = GuildRank;
         stats[StatsType.Credits] = Credits;
-        stats[StatsType.NameChosen] = // check from account in case ingame registration
-            (_client.Account?.NameChosen ?? NameChosen) ? 1 : 0;
+        stats[StatsType.NameChosen] = _client.Account?.NameChosen ?? NameChosen;
         stats[StatsType.Texture1] = Texture1;
         stats[StatsType.Texture2] = Texture2;
         stats[StatsType.Skin] = Skin;

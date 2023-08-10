@@ -323,6 +323,9 @@ public struct ObjectStats
                 case ushort value:
                     wtr.Write(value);
                     continue;
+                case uint value:
+                    wtr.Write(value);
+                    continue;
                 default:
                     throw new InvalidOperationException(
                         $"Stat '{i.Key}' of type '{i.Value?.GetType().ToString() ?? "null"}' not supported.");

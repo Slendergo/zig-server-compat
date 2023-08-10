@@ -41,7 +41,7 @@ public class Portal : StaticObject
 
     protected override void ExportStats(IDictionary<StatsType, object> stats)
     {
-        stats[StatsType.PortalUsable] = Usable ? 1 : 0;
+        stats[StatsType.PortalUsable] = Usable;
         base.ExportStats(stats);
     }
 
