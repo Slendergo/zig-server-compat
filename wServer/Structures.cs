@@ -309,33 +309,24 @@ public struct ObjectStats
         {
             wtr.Write((byte)i.Key);
 
-            if (i.Value is int)
+            switch (i.Value)
             {
-                wtr.Write((int)i.Value);
-                continue;
+                case int value:
+                    wtr.Write(value);
+                    continue;
+                case string value:
+                    wtr.WriteUTF(value);
+                    continue;
+                case bool value:
+                    wtr.Write(value);
+                    continue;
+                case ushort value:
+                    wtr.Write(value);
+                    continue;
+                default:
+                    throw new InvalidOperationException(
+                        $"Stat '{i.Key}' of type '{i.Value?.GetType().ToString() ?? "null"}' not supported.");
             }
-
-            if (i.Value is string)
-            {
-                //Console.WriteLine(i.Key);
-                wtr.WriteUTF(i.Value as string);
-                continue;
-            }
-
-            if (i.Value is bool)
-            {
-                wtr.Write((bool)i.Value ? 1 : 0);
-                continue;
-            }
-
-            if (i.Value is ushort)
-            {
-                wtr.Write((int)(ushort)i.Value);
-                continue;
-            }
-
-            throw new InvalidOperationException(
-                $"Stat '{i.Key}' of type '{i.Value?.GetType().ToString() ?? "null"}' not supported.");
         }
     }
 }
