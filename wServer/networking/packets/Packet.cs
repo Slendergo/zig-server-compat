@@ -45,20 +45,18 @@ public abstract class Packet
         Write(new NWriter(s));
 
         var bodyLength = (int)s.Position;
-        var packetLength = bodyLength + 5;
+        var packetLength = bodyLength + 3;
 
         if (packetLength > buff.Length - offset)
             return 0;
 
-        Buffer.BlockCopy(s.GetBuffer(), 0, buff, offset + 5, bodyLength);
+        Buffer.BlockCopy(s.GetBuffer(), 0, buff, offset + 3, bodyLength);
 
-        //Crypt(client, buff, offset + 5, bodyLength);
+        //Crypt(client, buff, offset + 3, bodyLength);
 
-        Buffer.BlockCopy(
-            BitConverter.GetBytes(packetLength), 0,
-            buff, offset, 4);
+        Buffer.BlockCopy(BitConverter.GetBytes(packetLength), 0, buff, offset, 2);
 
-        buff[offset + 4] = (byte)S2CId;
+        buff[offset + 2] = (byte)S2CId;
         return packetLength;
     }
 
