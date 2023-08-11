@@ -4,6 +4,7 @@ using wServer.networking.packets;
 using wServer.networking.packets.incoming;
 using wServer.networking.packets.outgoing;
 using wServer.realm;
+using wServer.realm.entities;
 
 namespace wServer.networking.handlers;
 
@@ -15,18 +16,10 @@ class HelloHandler : PacketHandlerBase<Hello>
 
     protected override void HandlePacket(Client client, Hello packet)
     {
-        //client.Manager.Logic.AddPendingAction(t => Handle(client, packet));
-        Handle(client, packet);
-    }
-
-    private void Handle(Client client, Hello packet)
-    {
         // validate connection eligibility and get acc info
         var acc = VerifyConnection(client, packet);
         if (acc == null)
-        {
             return;
-        }
 
         // log ip
         client.Manager.Database.LogAccountByIp(client.IP, acc.AccountId);
@@ -34,11 +27,11 @@ class HelloHandler : PacketHandlerBase<Hello>
         acc.FlushAsync();
 
         client.Account = acc;
-        client.Manager.Logic.AddPendingAction(t =>
-            client.Manager.ConMan.Add(new ConInfo(client, packet)));
+
+        ConnectManager.Connect(client, packet);
     }
 
-    private DbAccount VerifyConnection(Client client, Hello packet)
+    private static DbAccount VerifyConnection(Client client, Hello packet)
     {
         var version = client.Manager.Config.serverSettings.version;
         if (!version.Equals(packet.BuildVersion))
@@ -50,13 +43,13 @@ class HelloHandler : PacketHandlerBase<Hello>
         var s1 = client.Manager.Database.Verify(packet.GUID, packet.Password, out var acc);
         if (s1 is LoginStatus.AccountNotExists or LoginStatus.InvalidCredentials)
         {
-            client.SendFailure("Bad Login", Failure.MessageWithDisconnect);
+            client.SendFailure("Bad Login");
             return null;
         }
 
         if (acc.Banned)
         {
-            client.SendFailure("Account banned.", Failure.MessageWithDisconnect);
+            client.SendFailure("Account banned.");
             Log.Info("{0} ({1}) tried to log in. Account Banned.",
                 acc.Name, client.IP);
             return null;
@@ -64,15 +57,14 @@ class HelloHandler : PacketHandlerBase<Hello>
 
         if (client.Manager.Database.IsIpBanned(client.IP))
         {
-            client.SendFailure("IP banned.", Failure.MessageWithDisconnect);
-            Log.Info("{0} ({1}) tried to log in. IP Banned.",
-                acc.Name, client.IP);
+            client.SendFailure("IP banned.");
+            Log.Info($"{acc.Name} ({client.IP}) tried to log in. IP Banned.");
             return null;
         }
 
         if (!acc.Admin && client.Manager.Config.serverInfo.adminOnly)
         {
-            client.SendFailure("Admin Only Server", Failure.MessageWithDisconnect);
+            client.SendFailure("Admin Only Server");
             return null;
         }
 

@@ -188,8 +188,7 @@ public partial class Player : Character, IContainer, IPlayer
         stats[StatsType.Guild] = Guild;
         stats[StatsType.GuildRank] = GuildRank;
         stats[StatsType.Credits] = Credits;
-        stats[StatsType.NameChosen] = // check from account in case ingame registration
-            (_client.Account?.NameChosen ?? NameChosen) ? 1 : 0;
+        stats[StatsType.NameChosen] = _client.Account?.NameChosen ?? NameChosen;
         stats[StatsType.Texture1] = Texture1;
         stats[StatsType.Texture2] = Texture2;
         stats[StatsType.Skin] = Skin;
@@ -689,13 +688,7 @@ public partial class Player : Character, IContainer, IPlayer
     private void ReconnectToNexus()
     {
         HP = 1;
-        _client.Reconnect(new Reconnect()
-        {
-            Host = "",
-            Port = 2050,
-            GameId = World.Nexus,
-            Name = "Nexus"
-        });
+        _client.Reconnect("Nexus", World.Nexus);
     }
 
     private void AnnounceDeath(string killer)
@@ -747,17 +740,6 @@ public partial class Player : Character, IContainer, IPlayer
         }));
     }
 
-    public void Reconnect(World world)
-    {
-        Client.Reconnect(new Reconnect()
-        {
-            Host = "",
-            Port = 2050,
-            GameId = world.Id,
-            Name = world.Name
-        });
-    }
-
     public void Reconnect(object portal, World world)
     {
         ((Portal)portal).WorldInstanceSet -= Reconnect;
@@ -765,13 +747,7 @@ public partial class Player : Character, IContainer, IPlayer
         if (world == null)
             SendError("Portal Not Implemented!");
         else
-            Client.Reconnect(new Reconnect()
-            {
-                Host = "",
-                Port = 2050,
-                GameId = world.Id,
-                Name = world.Name
-            });
+            Client.Reconnect(world.Name, world.Id);
     }
 
     public int GetCurrency(CurrencyType currency)

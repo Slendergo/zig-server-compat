@@ -47,7 +47,7 @@ class UsePortalHandler : PacketHandlerBase<UsePortal>
         {
             var proto = player.Manager.Resources.Worlds["GuildHall"];
             var world = player.Manager.GetWorld(proto.id);
-            player.Reconnect(world);
+            player.Client.Reconnect(world.Name, world.Id);
             return;
         }
 
@@ -78,7 +78,7 @@ class UsePortalHandler : PacketHandlerBase<UsePortal>
 
             if (world != null)
             {
-                player.Reconnect(world);
+                player.Client.Reconnect(world.Name, world.Id);
                 return;
             }
 

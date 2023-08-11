@@ -42,7 +42,7 @@ public abstract class Merchant : SellableObject
 
     protected override void ExportStats(IDictionary<StatsType, object> stats)
     {
-        stats[StatsType.MerchantMerchandiseType] = (int)Item;
+        stats[StatsType.MerchantMerchandiseType] = Item;
         stats[StatsType.MerchantRemainingCount] = Count;
         stats[StatsType.MerchantRemainingMinute] = -1; //(int)(TimeLeft / 60000f);
         base.ExportStats(stats);

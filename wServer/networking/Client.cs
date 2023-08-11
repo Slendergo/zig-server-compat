@@ -49,6 +49,7 @@ public partial class Client
     public Player Player { get; internal set; }
 
     public wRandom Random { get; internal set; }
+    public uint Seed { get; set; }
 
     //Temporary connection state
     internal int TargetWorld = -1;
@@ -154,13 +155,13 @@ public partial class Client
             }
             catch (Exception e)
             {
-                Log.Error("Error when handling packet '{{0}, {1}}'...", pkt.ToString(), e.ToString());
+                Log.Error("Error when handling packet '{0}, {1}'...", pkt.ToString(), e.ToString());
                 Disconnect("Packet handling error.");
             }
         }
     }
 
-    public void Reconnect(Reconnect pkt)
+    public void Reconnect(string name, int gameId)
     {
         if (Account == null)
         {
@@ -168,9 +169,8 @@ public partial class Client
             return;
         }
 
-        Log.Trace("Reconnecting client ({0}) @ {1} to {2}...", Account.Name, IP, pkt.Name);
-        Manager.ConMan.AddReconnect(Account.AccountId, pkt);
-        SendPacket(pkt);
+        Log.Trace("Reconnecting client ({0}) @ {1} to {2}...", Account.Name, IP, name);
+        ConnectManager.Reconnect(this, gameId);
     }
 
     public async void SendFailure(string text, int errorId = Failure.MessageWithDisconnect)

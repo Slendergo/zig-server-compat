@@ -71,7 +71,11 @@ public class CommHandler
         e.SetBuffer(e.Offset, _bufferSize);
 
         // Post async receive operation on the socket.
-        try { e.AcceptSocket.ReceiveAsync(e); }
+        try
+        {
+            if(!e.AcceptSocket.ReceiveAsync(e))
+                ProcessReceive(this, e);
+        }
         catch (Exception exception)
         {
             _client.Disconnect($"[{_client.Account?.Name}:{_client.Account?.AccountId} {_client.IP}] {exception}");
@@ -116,7 +120,7 @@ public class CommHandler
             // set packet length when prefix read
             if (r.BytesRead == _prefixLength)
             {
-                r.PacketLength =BitConverter.ToInt32(r.PacketBytes, 0);
+                r.PacketLength = BitConverter.ToUInt16(r.PacketBytes, 0);
 
                 // discard invalid packets
                 if (r.PacketLength < _prefixLength ||

@@ -12,10 +12,10 @@ class EscapeHandler : PacketHandlerBase<Escape>
     protected override void HandlePacket(Client client, Escape packet)
     {
         //client.Manager.Logic.AddPendingAction(t => Handle(client, packet));
-        Handle(client, packet);
+        Handle(client);
     }
 
-    private void Handle(Client client, Escape packet)
+    private void Handle(Client client)
     {
         if (client.Player == null || client.Player.Owner == null)
             return;
@@ -28,12 +28,6 @@ class EscapeHandler : PacketHandlerBase<Escape>
             return;
         }
 
-        client.Reconnect(new Reconnect()
-        {
-            Host = "",
-            Port = 2050,
-            GameId = World.Nexus,
-            Name = "Nexus"
-        });
+        client.Reconnect("Nexus", World.Nexus);
     }
 }

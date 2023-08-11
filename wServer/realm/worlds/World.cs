@@ -9,6 +9,7 @@ using wServer.networking.packets;
 using wServer.networking.packets.outgoing;
 using wServer.realm.entities;
 using wServer.realm.entities.vendors;
+using wServer.realm.setpieces;
 using wServer.realm.terrain;
 using wServer.realm.worlds.logic;
 
@@ -310,48 +311,55 @@ public class World
             EnterWorld(i);
     }
 
-    public virtual int EnterWorld(Entity entity)
+    public virtual int EnterWorld(Entity entity, bool noIdChange = false)
     {
-        if (entity is Player)
+        switch (entity)
         {
-            entity.Id = GetNextEntityId();
-            entity.Init(this);
-            Players.TryAdd(entity.Id, entity as Player);
-            PlayersCollision.Insert(entity);
-            Interlocked.Increment(ref _totalConnects);
+            case Player player:
+                if (!noIdChange)
+                    player.Id = GetNextEntityId();
+                player.Id = GetNextEntityId();
+                player.Init(this);
+                Players.TryAdd(player.Id, player);
+                PlayersCollision.Insert(player);
+                Interlocked.Increment(ref _totalConnects);
+                break;
+            case Enemy enemy:
+            {
+                enemy.Id = GetNextEntityId();
+                enemy.Init(this);
+                Enemies.TryAdd(enemy.Id, enemy);
+                EnemiesCollision.Insert(enemy);
+                if (enemy.ObjectDesc.Quest)
+                    Quests.TryAdd(enemy.Id, enemy);
+                break;
+            }
+            case Projectile projectile:
+            {
+                projectile.Init(this);
+                var prj = projectile;
+                Projectiles[new Tuple<int, byte>(prj.ProjectileOwner.Self.Id, prj.ProjectileId)] = prj;
+                break;
+            }
+            case StaticObject staticObject:
+            {
+                staticObject.Id = GetNextEntityId();
+                staticObject.Init(this);
+                StaticObjects.TryAdd(staticObject.Id, staticObject);
+                if (staticObject is Decoy)
+                    PlayersCollision.Insert(staticObject);
+                else
+                    EnemiesCollision.Insert(staticObject);
+                break;
+            }
+            case Pet pet:
+                pet.Id = GetNextEntityId();
+                pet.Init(this);
+                Pets.TryAdd(pet.Id, pet);
+                PlayersCollision.Insert(pet);
+                break;
         }
-        else if (entity is Enemy)
-        {
-            entity.Id = GetNextEntityId();
-            entity.Init(this);
-            Enemies.TryAdd(entity.Id, entity as Enemy);
-            EnemiesCollision.Insert(entity);
-            if (entity.ObjectDesc.Quest)
-                Quests.TryAdd(entity.Id, entity as Enemy);
-        }
-        else if (entity is Projectile)
-        {
-            entity.Init(this);
-            var prj = entity as Projectile;
-            Projectiles[new Tuple<int, byte>(prj.ProjectileOwner.Self.Id, prj.ProjectileId)] = prj;
-        }
-        else if (entity is StaticObject)
-        {
-            entity.Id = GetNextEntityId();
-            entity.Init(this);
-            StaticObjects.TryAdd(entity.Id, entity as StaticObject);
-            if (entity is Decoy)
-                PlayersCollision.Insert(entity);
-            else
-                EnemiesCollision.Insert(entity);
-        }
-        else if (entity is Pet)
-        {
-            entity.Id = GetNextEntityId();
-            entity.Init(this);
-            Pets.TryAdd(entity.Id, entity as Pet);
-            PlayersCollision.Insert(entity);
-        }
+
         return entity.Id;
     }
 
@@ -536,33 +544,21 @@ public class World
         if (!Persist || this is Realm)
             Closed = true;
 
-        BroadcastPacket(new ShowEffect()
+        BroadcastPacket(new ShowEffect
         {
             EffectType = EffectType.Earthquake
         }, null);
 
         Timers.Add(new WorldTimer(8000, (w, t) =>
         {
-            var rcpNotPaused = new Reconnect()
-            {
-                Host = "",
-                Port = 2050,
-                GameId = newWorld.Id,
-                Name = newWorld.SBName
-            };
-
-            var rcpPaused = new Reconnect()
-            {
-                Host = "",
-                Port = 2050,
-                GameId = World.Nexus,
-                Name = "Nexus"
-            };
-
             foreach (var plr in w.Players.Values)
-                plr.Client.Reconnect(
-                    plr.HasConditionEffect(ConditionEffects.Paused) ?
-                        rcpPaused : rcpNotPaused);
+            {
+                if (plr.HasConditionEffect(ConditionEffects.Paused))
+                    plr.Client.Reconnect("Nexus", Nexus);
+                else
+                    plr.Client.Reconnect(newWorld.Name, newWorld.Id);
+
+            }
         }));
 
         if (!Persist)

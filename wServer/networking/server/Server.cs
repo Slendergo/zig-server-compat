@@ -14,12 +14,12 @@ namespace wServer.networking.server;
 
 class ReceiveToken
 {
-    public const int PrefixLength = 5;
+    public const int PrefixLength = 3;
 
     public readonly int BufferOffset;
 
     public int BytesRead;
-    public int PacketLength;
+    public ushort PacketLength;
     public readonly byte[] PacketBytes;
 
     public ReceiveToken(int offset)
@@ -44,7 +44,7 @@ class ReceiveToken
         if (BytesRead < PrefixLength)
             throw new Exception("Packet id not read yet.");
 
-        return (C2SPacketId)PacketBytes[4];
+        return (C2SPacketId)PacketBytes[PrefixLength - 1];
     }
 
     public void Reset()

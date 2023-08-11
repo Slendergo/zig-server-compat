@@ -30,12 +30,7 @@ public class Damage : OutgoingMessage
     protected override void Write(NWriter wtr)
     {
         wtr.Write(TargetId);
-        List<byte> eff = new List<byte>();
-        for (byte i = 1; i < 255; i++)
-            if ((Effects & (ConditionEffects)(1 << i)) != 0)
-                eff.Add(i);
-        wtr.Write((byte)eff.Count);
-        foreach (var i in eff) wtr.Write(i);
+        wtr.Write((ulong)Effects);
         wtr.Write(DamageAmount);
         wtr.Write(Kill);
         wtr.Write(BulletId);
