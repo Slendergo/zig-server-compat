@@ -45,7 +45,7 @@ public abstract class Packet
         Write(new NWriter(s));
 
         var bodyLength = (int)s.Position;
-        var packetLength = bodyLength + 3;
+        var packetLength = bodyLength;
 
         if (packetLength > buff.Length - offset)
             return 0;
