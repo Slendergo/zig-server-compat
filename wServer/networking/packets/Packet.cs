@@ -54,7 +54,7 @@ public abstract class Packet
 
         //Crypt(client, buff, offset + 3, bodyLength);
 
-        Buffer.BlockCopy(BitConverter.GetBytes(packetLength), 0, buff, offset, 2);
+        Buffer.BlockCopy(BitConverter.GetBytes((ushort)packetLength), 0, buff, offset, 2);
 
         buff[offset + 2] = (byte)S2CId;
         return packetLength;
