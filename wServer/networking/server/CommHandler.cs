@@ -180,7 +180,11 @@ public class CommHandler
         Buffer.BlockCopy(s.Data, s.BytesSent,
             e.Buffer, s.BufferOffset, bytesToSend);
 
-        try { e.AcceptSocket.SendAsync(e); }
+        try 
+        {
+            if (!e.AcceptSocket.SendAsync(e))
+                ProcessSend(this, e);
+        }
         catch (Exception exception)
         {
             _client.Disconnect($"[{_client.Account?.Name}:{_client.Account?.AccountId} {_client.IP}] {exception}");
