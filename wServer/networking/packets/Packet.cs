@@ -48,19 +48,30 @@ public abstract class Packet
         Write(new NWriter(s));
 
         var bodyLength = (int)s.Position;
-        var packetLength = bodyLength;
+        var packetLength = bodyLength + 3;
 
         if (packetLength > buff.Length - offset)
             return 0;
 
         Buffer.BlockCopy(s.GetBuffer(), 0, buff, offset + 3, bodyLength);
-
-        //Crypt(client, buff, offset + 3, bodyLength);
-
-        Buffer.BlockCopy(BitConverter.GetBytes((ushort)(packetLength - 3)), 0, buff, offset, 0);
+        Buffer.BlockCopy(BitConverter.GetBytes((ushort)packetLength), 0, buff, offset, 2);
 
         buff[offset + 2] = (byte)S2CId;
         return packetLength;
+
+        //var s = new MemoryStream();
+        //Write(new NWriter(s));
+
+        //var packetLength = (int)s.Position;
+
+        //if (packetLength > buff.Length - offset)
+        //    return 0;
+
+        //Buffer.BlockCopy(s.GetBuffer(), 0, buff, offset + 3, packetLength);
+        //Buffer.BlockCopy(BitConverter.GetBytes((ushort)(packetLength - 3)), 0, buff, offset, 0);
+
+        //buff[offset + 2] = (byte)S2CId;
+        //return packetLength;
     }
 
     protected abstract void Read(NReader rdr);
