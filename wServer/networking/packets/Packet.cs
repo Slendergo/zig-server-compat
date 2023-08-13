@@ -48,7 +48,8 @@ public abstract class Packet
         Write(new NWriter(s));
 
         var bodyLength = (int)s.Position;
-        var packetLength = bodyLength - 3;
+        var packetLength = bodyLength;
+
         if (packetLength > buff.Length - offset)
             return 0;
 
@@ -56,7 +57,7 @@ public abstract class Packet
 
         //Crypt(client, buff, offset + 3, bodyLength);
 
-        Buffer.BlockCopy(BitConverter.GetBytes((ushort)packetLength), 0, buff, offset, 0);
+        Buffer.BlockCopy(BitConverter.GetBytes((ushort)(packetLength - 3)), 0, buff, offset, 0);
 
         buff[offset + 2] = (byte)S2CId;
         return packetLength;
