@@ -2,11 +2,14 @@
 using common;
 using System.Net;
 using wServer.networking.packets.incoming;
+using NLog;
 
 namespace wServer.networking.packets;
 
 public abstract class Packet
 {
+    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
     public static readonly Dictionary<C2SPacketId, Packet> C2SPackets = new();
 
     public Client Owner { get; private set; }
@@ -54,7 +57,7 @@ public abstract class Packet
 
         //Crypt(client, buff, offset + 3, bodyLength);
 
-        Buffer.BlockCopy(BitConverter.GetBytes((ushort)packetLength), 0, buff, offset, 2);
+        Buffer.BlockCopy(BitConverter.GetBytes((ushort)packetLength), 0, buff, offset, 0);
 
         buff[offset + 2] = (byte)S2CId;
         return packetLength;

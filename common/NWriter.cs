@@ -17,7 +17,7 @@ public class NWriter : BinaryWriter
         else
         {
             var bytes = Encoding.UTF8.GetBytes(str);
-            Write((short)bytes.Length);
+            Write((ushort)bytes.Length);
             Write(bytes);
         }
     }

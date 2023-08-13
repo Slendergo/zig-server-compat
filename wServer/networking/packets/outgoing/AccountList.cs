@@ -13,7 +13,7 @@ public class AccountList : OutgoingMessage
     protected override void Read(NReader rdr)
     {
         AccountListId = rdr.ReadInt32();
-        AccountIds = new string[rdr.ReadInt16()];
+        AccountIds = new string[rdr.ReadUInt16()];
         for (int i = 0; i < AccountIds.Length; i++)
             AccountIds[i] = rdr.ReadUTF();
     }
@@ -21,7 +21,7 @@ public class AccountList : OutgoingMessage
     protected override void Write(NWriter wtr)
     {
         wtr.Write(AccountListId);
-        wtr.Write((short)AccountIds.Length);
+        wtr.Write((ushort)AccountIds.Length);
         foreach (var i in AccountIds)
             wtr.WriteUTF(i);
     }
