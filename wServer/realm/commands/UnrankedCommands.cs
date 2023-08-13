@@ -287,8 +287,6 @@ class IgnoreCommand : Command
         {
             AccountListId = 1, // ignore list
             AccountIds = srcAccount.IgnoreList
-                .Select(i => i.ToString())
-                .ToArray()
         });
 
         player.SendInfo(playerName + " has been added to your ignore list.");
@@ -333,8 +331,6 @@ class UnignoreCommand : Command
         {
             AccountListId = 1, // ignore list
             AccountIds = srcAccount.IgnoreList
-                .Select(i => i.ToString())
-                .ToArray()
         });
 
         player.SendInfo(playerName + " no longer ignored.");
@@ -379,8 +375,6 @@ class LockCommand : Command
         {
             AccountListId = 0, // locked list
             AccountIds = player.Client.Account.LockList
-                .Select(i => i.ToString())
-                .ToArray()
         });
 
         player.SendInfo(playerName + " has been locked.");
@@ -425,8 +419,6 @@ class UnlockCommand : Command
         {
             AccountListId = 0, // locked list
             AccountIds = player.Client.Account.LockList
-                .Select(i => i.ToString())
-                .ToArray()
         });
 
         player.SendInfo(playerName + " no longer locked.");

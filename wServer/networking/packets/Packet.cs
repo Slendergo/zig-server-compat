@@ -42,36 +42,19 @@ public abstract class Packet
         Read(new NReader(new MemoryStream(body)));
     }
 
-    public int Write(Client client, byte[] buff, int offset)
+    public int Write(byte[] buff, int offset)
     {
         var s = new MemoryStream();
         Write(new NWriter(s));
 
-        var bodyLength = (int)s.Position;
-        var packetLength = bodyLength + 3;
-
-        if (packetLength > buff.Length - offset)
+        var len = (int)s.Position + 3;
+        if (len > buff.Length - offset)
             return 0;
-
-        Buffer.BlockCopy(s.GetBuffer(), 0, buff, offset + 3, bodyLength);
-        Buffer.BlockCopy(BitConverter.GetBytes((ushort)packetLength), 0, buff, offset, 2);
-
+        
+        Buffer.BlockCopy(BitConverter.GetBytes((ushort)len - 2), 0, buff, offset, 2);
         buff[offset + 2] = (byte)S2CId;
-        return packetLength;
-
-        //var s = new MemoryStream();
-        //Write(new NWriter(s));
-
-        //var packetLength = (int)s.Position;
-
-        //if (packetLength > buff.Length - offset)
-        //    return 0;
-
-        //Buffer.BlockCopy(s.GetBuffer(), 0, buff, offset + 3, packetLength);
-        //Buffer.BlockCopy(BitConverter.GetBytes((ushort)(packetLength - 3)), 0, buff, offset, 0);
-
-        //buff[offset + 2] = (byte)S2CId;
-        //return packetLength;
+        Buffer.BlockCopy(s.GetBuffer(), 0, buff, offset + 3, len - 3);
+        return len;
     }
 
     protected abstract void Read(NReader rdr);

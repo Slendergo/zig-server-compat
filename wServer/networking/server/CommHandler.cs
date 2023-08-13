@@ -237,7 +237,7 @@ public class CommHandler
         Packet packet;
         while (_pendings.TryDequeue(out packet))
         {
-            var bytesWritten = packet.Write(_client, s.Data, s.BytesAvailable);
+            var bytesWritten = packet.Write(s.Data, s.BytesAvailable);
 
             if (bytesWritten == 0)
             {

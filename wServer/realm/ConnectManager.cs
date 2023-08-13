@@ -73,15 +73,11 @@ public class ConnectManager
         {
             AccountListId = 0, // locked list
             AccountIds = client.Account.LockList
-                .Select(i => i.ToString())
-                .ToArray()
         });
         client.SendPacket(new AccountList
         {
             AccountListId = 1, // ignore list
             AccountIds = client.Account.IgnoreList
-                .Select(i => i.ToString())
-                .ToArray()
         });
         if (client.Character != null) {
             if (client.Character.Dead) {
@@ -204,15 +200,11 @@ public class ConnectManager
         {
             AccountListId = 0, // locked list
             AccountIds = client.Account.LockList
-                .Select(i => i.ToString())
-                .ToArray()
         });
         client.SendPacket(new AccountList
         {
             AccountListId = 1, // ignore list
             AccountIds = client.Account.IgnoreList
-                .Select(i => i.ToString())
-                .ToArray()
         });
 
 
