@@ -25,9 +25,16 @@ public partial class BehaviorDb
         MobDrops.Init(manager);
 
         Definitions = new Dictionary<ushort, Tuple<State, Loot>>();
+
+        if (Interlocked.Exchange(ref _initializing, 1) == 1)
+        {
+            Log.Error("Attempted to initialize multiple BehaviorDb at the same time.");
+            throw new InvalidOperationException("Attempted to initialize multiple BehaviorDb at the same time.");
+        }
         InitDb = this;
 
         ResolveBehaviors();
+        _initializing = 0;
         Log.Info("Behavior database initialized...");
     }
 
@@ -77,6 +84,7 @@ public partial class BehaviorDb
                 Definitions.Add(id2ObjType[entry.Id], new Tuple<State, Loot>(rootState, null));
             }
         }
+        Log.Info($"Loaded {Definitions.Count} XML Behaviors.");
     }
 
     public void ResolveBehavior(Entity entity)
