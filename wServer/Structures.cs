@@ -277,6 +277,7 @@ public struct ObjectDef
 
 public struct ObjectStats
 {
+    public ushort ObjectType;
     public int Id;
     public Position Position;
     public KeyValuePair<StatsType, object>[] Stats;
@@ -284,6 +285,7 @@ public struct ObjectStats
     public static ObjectStats Read(NReader rdr)
     {
         ObjectStats ret = new ObjectStats();
+        ret.ObjectType = rdr.ReadUInt16();
         ret.Id = rdr.ReadInt32();
         ret.Position = Position.Read(rdr);
         ret.Stats = new KeyValuePair<StatsType, object>[rdr.ReadInt16()];
@@ -301,6 +303,7 @@ public struct ObjectStats
 
     public void Write(NWriter wtr)
     {
+        wtr.Write(ObjectType);
         wtr.Write(Id);
         Position.Write(wtr);
 
