@@ -1,5 +1,7 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
 using Mono.Game;
+using System.Xml.Linq;
 using wServer.networking.packets.outgoing;
 using wServer.realm;
 using wServer.realm.entities;
@@ -24,6 +26,22 @@ class Shoot : CycleBehavior
     private readonly bool _shootLowHp;
 
     private int _rotateCount;
+
+    public Shoot(XElement e)
+    {
+        _radius = e.ParseFloat("@radius", 5);
+        _count = e.ParseInt("@count", 1);
+        _shootAngle = _count == 1 ? 0 : (float)((e.ParseNFloat("@shootAngle") ?? 360.0 / _count) * Math.PI / 180);
+        _projectileIndex = e.ParseInt("@projectileIndex");
+        _fixedAngle = (float?)(e.ParseNFloat("@fixedAngle") * Math.PI / 180);
+        _rotateAngle = (float?)(e.ParseNFloat("@rotateAngle") * Math.PI / 180);
+        _angleOffset = (float)(e.ParseFloat("@angleOffset") * Math.PI / 180);
+        _defaultAngle = (float?)(e.ParseNFloat("@defaultAngle") * Math.PI / 180);
+        _predictive = e.ParseFloat("@predictive");
+        _coolDownOffset = e.ParseInt("@coolDownOffset");
+        _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
+        _shootLowHp = e.ParseBool("@shootLowHp");
+    }
 
     public Shoot(
         double radius, 

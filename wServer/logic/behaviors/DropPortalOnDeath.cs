@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
@@ -7,6 +9,13 @@ class DropPortalOnDeath : Behavior
     private readonly ushort _target;
     private readonly float _probability;
     private readonly int? _timeout;
+
+    public DropPortalOnDeath(XElement e)
+    {
+        _target = GetObjType(e.ParseString("@target"));
+        _probability = e.ParseFloat("@probability");
+        _timeout = e.ParseNInt("@timeout");
+    }
 
     public DropPortalOnDeath(string target, double probability = 1, int? timeout = null)
     {

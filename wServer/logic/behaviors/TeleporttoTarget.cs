@@ -1,11 +1,19 @@
 ﻿using wServer.realm;
 using Mono.Game;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
 class TeleporttoTarget : CycleBehavior
 {
     float range;
+
+    public TeleporttoTarget(XElement e)
+    {
+        range = e.ParseFloat("@range");
+    }
+
     public TeleporttoTarget(double range)
     {
         this.range = (float)range;

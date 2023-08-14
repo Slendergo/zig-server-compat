@@ -1,4 +1,7 @@
-﻿using wServer.networking.packets.outgoing;
+﻿using common;
+using DungeonGenerator;
+using System.Xml.Linq;
+using wServer.networking.packets.outgoing;
 using wServer.realm;
 using wServer.realm.entities;
 
@@ -9,6 +12,13 @@ class KillPlayer : Behavior
     private Cooldown _coolDown;
     private readonly string _killMessage;
     private readonly bool _killAll;
+
+    public KillPlayer(XElement e)
+    {
+        _killMessage = e.ParseString("@killMessage");
+        _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
+        _killAll = e.ParseBool("@killAll");
+    }
 
     public KillPlayer(string killMessage, Cooldown coolDown = new(), bool killAll = false)
     {

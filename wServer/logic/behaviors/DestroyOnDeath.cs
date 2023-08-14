@@ -1,10 +1,17 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
 class DestroyOnDeath : Behavior
 {
     private readonly string _target;
+
+    public DestroyOnDeath(XElement e)
+    {
+        _target = e.ParseString("@target");
+    }
 
     public DestroyOnDeath(string target)
     {

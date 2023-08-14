@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.realm;
 
 namespace wServer.logic.behaviors;
@@ -9,6 +11,13 @@ class BackAndForth : CycleBehavior
 
     float speed;
     int distance;
+
+    public BackAndForth(XElement e)
+    {
+        speed = e.ParseFloat("@speed");
+        distance = e.ParseInt("@distance");
+    }
+
     public BackAndForth(double speed, int distance = 5)
     {
         this.speed = (float)speed;

@@ -2,8 +2,8 @@
 using wServer.realm;
 using wServer.realm.entities;
 using wServer.logic.loot;
-using System.Reflection;
 using NLog;
+using common;
 
 namespace wServer.logic;
 
@@ -19,7 +19,7 @@ public partial class BehaviorDb
 
     public BehaviorDb(RealmManager manager)
     {
-        Log.Info("Initializing Behavior Database...");
+        Log.Info("Initializing behavior database...");
 
         Manager = manager;
         MobDrops.Init(manager);
@@ -33,22 +33,58 @@ public partial class BehaviorDb
         }
         InitDb = this;
 
-        var fields = GetType()
-            .GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
-            .Where(field => field.FieldType == typeof(_))
-            .ToArray();
-        for (int i = 0; i < fields.Length; i++)
-        {
-            var field = fields[i];
-            Log.Info("Loading behavior for '{0}'({1}/{2})...", field.Name, i + 1, fields.Length);
-            ((_)field.GetValue(this))();
-            field.SetValue(this, null);
-        }
-
-        InitDb = null;
+        ResolveBehaviors();
         _initializing = 0;
+        Log.Info("Behavior database initialized...");
+    }
 
-        Log.Info("Behavior Database initialized...");
+    public void ResolveBehaviors(bool loaded = false)
+    {
+        var dat = InitDb.Manager.Resources;
+        var id2ObjType = dat.GameData.IdToObjectType;
+        foreach (var xmlBehavior in dat.XmlBehaviors)
+        {
+            var entry = new XmlBehaviorEntry(xmlBehavior, xmlBehavior.GetAttribute<string>("id"));
+            var rootState = entry.Behaviors.OfType<State>()
+                .FirstOrDefault(x => x.Name == "root");
+            if (rootState == null)
+            {
+                Log.Error($"Error when adding \"{entry.Id}\": no root state.");
+                continue;
+            }
+
+            var d = new Dictionary<string, State>();
+            rootState.Resolve(d);
+            rootState.ResolveChildren(d);
+            if (!id2ObjType.ContainsKey(entry.Id))
+            {
+                Log.Error($"Error when adding \"{entry.Id}\": entity not found.");
+                continue;
+            }
+
+            if (entry.Loots.Length > 0)
+            {
+                var loot = new Loot(entry.Loots);
+                rootState.Death += (_, e) => loot.Handle((Enemy)e.Host);
+                if (loaded)
+                {
+                    Definitions[id2ObjType[entry.Id]] = new Tuple<State, Loot>(rootState, loot);
+                    continue;
+                }
+                Definitions.Add(id2ObjType[entry.Id], new Tuple<State, Loot>(rootState, loot));
+            }
+            else
+            {
+                if (loaded)
+                {
+                    Definitions[id2ObjType[entry.Id]] = new Tuple<State, Loot>(rootState, null);
+                    continue;
+                }
+
+                Definitions.Add(id2ObjType[entry.Id], new Tuple<State, Loot>(rootState, null));
+            }
+        }
+        Log.Info($"Loaded {Definitions.Count} XML Behaviors.");
     }
 
     public void ResolveBehavior(Entity entity)
@@ -56,51 +92,6 @@ public partial class BehaviorDb
         Tuple<State, Loot> def;
         if (Definitions.TryGetValue(entity.ObjectType, out def))
             entity.SwitchTo(def.Item1);
-    }
-
-    delegate ctor _();
-    struct ctor
-    {
-        public ctor Init(string id, State rootState, params MobDrops[] defs)
-        {
-            var d = new Dictionary<string, State>();
-            rootState.Resolve(d);
-            rootState.ResolveChildren(d);
-            var dat = InitDb.Manager.Resources.GameData;
-
-            if (!dat.IdToObjectType.ContainsKey(id))
-            {
-                Log.Error($"Failed to add behavior: {id}. Xml data not found.");
-                return this;
-            }
-
-            if (defs.Length > 0)
-            {
-                var loot = new Loot(defs);
-                rootState.Death += (sender, e) => loot.Handle((Enemy)e.Host, e.Time);
-                InitDb.Definitions.Add(dat.IdToObjectType[id], new Tuple<State, Loot>(rootState, loot));
-            }
-            else
-                InitDb.Definitions.Add(dat.IdToObjectType[id], new Tuple<State, Loot>(rootState, null));
-            return this;
-        }
-
-        public ctor InitMany(string objTypeMin, string objTypeMax, Func<string, State> rootState, params MobDrops[] defs)
-        {
-            XmlData dat = InitDb.Manager.Resources.GameData;
-            ushort idMin = dat.IdToObjectType[objTypeMin];
-            ushort idMax = dat.IdToObjectType[objTypeMax];
-            int count = idMax - idMin;
-            for (int i = 0; i <= count; i++)
-                if (!InitDb.Definitions.ContainsKey((ushort)(idMin + i)))
-                    Init(dat.ObjectTypeToId[(ushort)(idMin + i)],
-                        rootState(dat.ObjectTypeToId[(ushort)(idMin + i)]), defs);
-            return this;
-        }
-    }
-    static ctor Behav()
-    {
-        return new ctor();
     }
 
     public Dictionary<ushort, Tuple<State, Loot>> Definitions { get; private set; }

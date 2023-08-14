@@ -1,6 +1,8 @@
 ﻿using common.resources;
 using wServer.realm;
 using Mono.Game;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
@@ -16,6 +18,13 @@ class Charge : CycleBehavior
     private readonly float _speed;
     private readonly float _range;
     private Cooldown _coolDown;
+
+    public Charge(XElement e)
+    {
+        _speed = e.ParseFloat("@speed", 4);
+        _range = e.ParseFloat("@range", 10);
+        _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 2000));
+    }
 
     public Charge(double speed = 4, float range = 10, Cooldown coolDown = new())
     {

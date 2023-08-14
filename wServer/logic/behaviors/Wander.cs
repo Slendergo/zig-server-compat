@@ -1,6 +1,8 @@
 ﻿using common.resources;
 using wServer.realm;
 using Mono.Game;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
@@ -12,9 +14,13 @@ class Wander : CycleBehavior
         public Vector2 Direction;
         public float RemainingDistance;
     }
-
-
     float speed;
+
+    public Wander(XElement e)
+    {
+        speed = e.ParseFloat("@speed");
+    }
+
     public Wander(double speed)
     {
         this.speed = (float)speed;

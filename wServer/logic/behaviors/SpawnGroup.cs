@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.realm;
 using wServer.realm.entities;
 
@@ -18,6 +20,17 @@ class SpawnGroup : Behavior
     Cooldown coolDown;
     ushort[] children;
     double radius;
+
+    public SpawnGroup(XElement e)
+    {
+        children = BehaviorDb.InitGameData.ObjectDescs.Values
+            .Where(x => x.Group == e.ParseString("@group"))
+            .Select(x => x.ObjectType).ToArray();
+        maxChildren = e.ParseInt("@maxChildren");
+        initialSpawn = (int)(maxChildren * e.ParseFloat("@initialSpawn", 0.5f));
+        coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
+        radius = e.ParseFloat("@radius");
+    }
 
     public SpawnGroup(string group, int maxChildren = 5, double initialSpawn = 0.5, Cooldown coolDown = new(), double radius = 0)
     {

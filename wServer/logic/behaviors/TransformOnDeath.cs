@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.realm;
 using wServer.realm.entities;
 
@@ -10,6 +12,15 @@ class TransformOnDeath : Behavior
     int min;
     int max;
     float probability;
+
+    public TransformOnDeath(XElement e)
+    {
+        target = GetObjType(e.ParseString("@target"));
+        min = e.ParseInt("@min", 1);
+        max = e.ParseInt("@max", 1);
+        probability = e.ParseFloat("@probability", 1);
+    }
+
     public TransformOnDeath(string target, int min = 1, int max = 1, double probability = 1)
     {
         this.target = GetObjType(target);

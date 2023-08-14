@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
@@ -8,6 +10,12 @@ class ChangeSize : Behavior
 
     int rate;
     int target;
+
+    public ChangeSize(XElement e)
+    {
+        rate = e.ParseInt("@rate");
+        target = e.ParseInt("@target");
+    }
 
     public ChangeSize(int rate, int target)
     {
