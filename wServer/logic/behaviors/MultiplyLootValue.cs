@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
@@ -7,6 +9,11 @@ class MultiplyLootValue : Behavior
     //State storage: cooldown timer
 
     int multiplier;
+
+    public MultiplyLootValue(XElement e)
+    {
+        multiplier = e.ParseInt("@multiplier");
+    }
 
     public MultiplyLootValue(int multiplier)
     {

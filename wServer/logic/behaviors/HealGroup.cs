@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.networking.packets.outgoing;
 using wServer.realm;
 using wServer.realm.entities;
@@ -13,6 +15,14 @@ class HealGroup : Behavior
     string group;
     Cooldown coolDown;
     int? amount;
+
+    public HealGroup(XElement e)
+    {
+        range = e.ParseFloat("@range");
+        group = e.ParseString("@group");
+        amount = e.ParseNInt("@amount");
+        coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
+    }
 
     public HealGroup(double range, string group, Cooldown coolDown = new(), int? healAmount = null)
     {

@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
@@ -14,6 +16,14 @@ class SetAltTexture : Behavior
     private readonly int _indexMax;
     private Cooldown _cooldown;
     private readonly bool _loop;
+
+    public SetAltTexture(XElement e)
+    {
+        _indexMin = e.ParseInt("@minValue");
+        _indexMax = e.ParseInt("@maxValue", -1);
+        _cooldown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
+        _loop = e.ParseBool("@loop");
+    }
 
     public SetAltTexture(int minValue, int maxValue = -1, Cooldown cooldown = new(), bool loop = false)
     {
@@ -36,15 +46,15 @@ class SetAltTexture : Behavior
             (state as TextureState).currentTexture = _indexMin;
         }
     }
-        
+
     protected override void TickCore(Entity host, RealmTime time, ref object state)
     {
         var textState = state as TextureState;
 
-        if (_indexMax == -1||(textState.currentTexture==_indexMax&&!_loop))
+        if (_indexMax == -1 || (textState.currentTexture == _indexMax && !_loop))
             return;
 
-        if (textState.remainingTime<=0)
+        if (textState.remainingTime <= 0)
         {
             int newTexture = (textState.currentTexture >= _indexMax) ? _indexMin : textState.currentTexture + 1;
             host.AltTextureIndex = newTexture;

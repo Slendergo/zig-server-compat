@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
@@ -7,6 +9,11 @@ class Decay : Behavior
     //State storage: timer
 
     int time;
+
+    public Decay(XElement e)
+    {
+        time = e.ParseInt("@time", 10000);
+    }
 
     public Decay(int time = 10000)
     {

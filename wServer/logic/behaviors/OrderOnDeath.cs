@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
@@ -10,6 +12,14 @@ class OrderOnDeath : Behavior
     private readonly float _probability;
 
     private State _targetState;
+
+    public OrderOnDeath(XElement e)
+    {
+        _range = e.ParseFloat("@range");
+        _target = GetObjType(e.ParseString("@target"));
+        _stateName = e.ParseString("@targetState");
+        _probability = e.ParseFloat("@probability", 1);
+    }
 
     public OrderOnDeath(double range, string target, string state, double probability = 1)
     {

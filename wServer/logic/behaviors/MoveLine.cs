@@ -1,6 +1,8 @@
 using wServer.realm;
 using common.resources;
 using Mono.Game;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
@@ -8,6 +10,12 @@ class MoveLine : CycleBehavior
 {
     private readonly float _speed;
     private readonly float _direction;
+
+    public MoveLine(XElement e)
+    {
+        _speed = e.ParseFloat("@speed");
+        _direction = e.ParseFloat("@direction") * (float)Math.PI / 180;
+    }
 
     public MoveLine(double speed, double direction = 0)
     {

@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.networking.packets.outgoing;
 using wServer.realm;
 using wServer.realm.entities;
@@ -11,6 +13,12 @@ class HealSelf : Behavior
 
     private Cooldown _coolDown;
     readonly int? _amount;
+
+    public HealSelf(XElement e)
+    {
+        _amount = e.ParseNInt("@amount");
+        _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
+    }
 
     public HealSelf(Cooldown coolDown = new(), int? amount = null)
     {

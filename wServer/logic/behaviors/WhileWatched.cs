@@ -1,15 +1,25 @@
-﻿using wServer.realm;
+﻿using System.Xml.Linq;
 using wServer.realm.entities;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
-class WhileWatched : CycleBehavior
+internal class WhileWatched : CycleBehavior
 {
+    private Behavior[] children;
 
-    Behavior child;
-    public WhileWatched(Behavior child)
+    public WhileWatched(XElement e, IStateChildren[] behaviors)
     {
-        this.child = child;
+        children = new Behavior[behaviors.Length];
+        var filledIdx = 0;
+        for (var i = 0; i < behaviors.Length; i++)
+        {
+            var behav = behaviors[i];
+            if (behav is Behavior behavior)
+                children[filledIdx++] = behavior;
+        }
+
+        Array.Resize(ref children, filledIdx);
     }
 
     protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
@@ -17,13 +27,15 @@ class WhileWatched : CycleBehavior
         foreach (var player in host.GetNearestEntities(Player.Radius, null, true).OfType<Player>())
             if (player.clientEntities.Contains(host))
             {
-                child.OnStateEntry(host, time);
-                if (child is CycleBehavior)
-                    Status = (child as CycleBehavior).Status;
-                else
-                    Status = CycleStatus.InProgress;
+                foreach (var behav in children)
+                {
+                    behav.OnStateEntry(host, time);
+                    Status = behav is CycleBehavior behavior ? behavior.Status : CycleStatus.InProgress;
+                }
+
                 return;
             }
+
         Status = CycleStatus.NotStarted;
     }
 
@@ -32,13 +44,15 @@ class WhileWatched : CycleBehavior
         foreach (var player in host.GetNearestEntities(Player.Radius, null, true).OfType<Player>())
             if (player.clientEntities.Contains(host))
             {
-                child.Tick(host, time);
-                if (child is CycleBehavior)
-                    Status = (child as CycleBehavior).Status;
-                else
-                    Status = CycleStatus.InProgress;
+                foreach (var behav in children)
+                {
+                    behav.Tick(host, time);
+                    Status = behav is CycleBehavior behavior ? behavior.Status : CycleStatus.InProgress;
+                }
+
                 return;
             }
+
         Status = CycleStatus.NotStarted;
     }
 
@@ -47,13 +61,15 @@ class WhileWatched : CycleBehavior
         foreach (var player in host.GetNearestEntities(Player.Radius, null, true).OfType<Player>())
             if (player.clientEntities.Contains(host))
             {
-                child.OnStateExit(host, time);
-                if (child is CycleBehavior)
-                    Status = (child as CycleBehavior).Status;
-                else
-                    Status = CycleStatus.InProgress;
+                foreach (var behav in children)
+                {
+                    behav.OnStateExit(host, time);
+                    Status = behav is CycleBehavior behavior ? behavior.Status : CycleStatus.InProgress;
+                }
+
                 return;
             }
+
         Status = CycleStatus.NotStarted;
     }
 }

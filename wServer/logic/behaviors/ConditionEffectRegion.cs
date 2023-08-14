@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.realm;
 
 namespace wServer.logic.behaviors;
@@ -8,6 +10,14 @@ class ConditionEffectRegion : Behavior
     private readonly ConditionEffectIndex[] _effects;
     private readonly int _range;
     private readonly int _duration;
+
+    public ConditionEffectRegion(XElement e)
+    {
+        _effects = e.ParseStringArray("@effects", ',', new[] { "Dead" })
+            .Select(x => (ConditionEffectIndex)Enum.Parse(typeof(ConditionEffectIndex), x)).ToArray();
+        _range = e.ParseInt("@range", 2);
+        _duration = e.ParseInt("@duration", -1);
+    }
 
     public ConditionEffectRegion(ConditionEffectIndex[] effects, int range = 2, int duration = -1)
     {

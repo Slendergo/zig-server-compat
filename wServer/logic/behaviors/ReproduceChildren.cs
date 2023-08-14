@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.realm;
 using wServer.realm.entities;
 
@@ -17,6 +19,14 @@ class ReproduceChildren : Behavior
     private readonly int _initialSpawn;
     private Cooldown _coolDown;
     private readonly ushort[] _children;
+
+    public ReproduceChildren(XElement e)
+    {
+        _children = e.ParseStringArray("@children", ',', new string[0]).Select(x => GetObjType(x)).ToArray();
+        _maxChildren = e.ParseInt("@maxChildren", 5);
+        _initialSpawn = (int)(_maxChildren * e.ParseFloat("@initialSpawn", 0.5f));
+        _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
+    }
 
     public ReproduceChildren(int maxChildren = 5, double initialSpawn = 0.5, Cooldown coolDown = new(), params string[] children)
     {

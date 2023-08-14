@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.realm;
 using wServer.realm.entities;
 
@@ -17,12 +19,26 @@ class ReproduceGroup : Behavior
     private readonly double _regionRange;
     private List<IntPoint> _reproduceRegions;
 
+    public ReproduceGroup(XElement e)
+    {
+        _group = e.ParseString("@group");
+        _children = BehaviorDb.InitGameData.ObjectDescs.Values
+            .Where(x => x.Group == _group)
+            .Select(x => x.ObjectType).ToArray();
+
+        _densityMax = e.ParseInt("@densityMax", 5);
+        _region = (TileRegion)Enum.Parse(typeof(TileRegion), e.ParseString("@region", "None").Replace(' ', '_'));
+        _regionRange = e.ParseFloat("@regionRange", 10);
+        _densityRadius = e.ParseFloat("@densityRadius", 10);
+        _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
+    }
+
     public ReproduceGroup(
-        string group = null, 
-        double densityRadius = 10, 
+        string group = null,
+        double densityRadius = 10,
         int densityMax = 5,
-        Cooldown coolDown = new(), 
-        TileRegion region = TileRegion.None, 
+        Cooldown coolDown = new(),
+        TileRegion region = TileRegion.None,
         double regionRange = 10)
     {
         _children = BehaviorDb.InitGameData.ObjectDescs.Values
@@ -52,13 +68,13 @@ class ReproduceGroup : Behavior
         _reproduceRegions = new List<IntPoint>();
 
         for (var y = 0; y < h; y++)
-        for (var x = 0; x < w; x++)
-        {
-            if (map[x, y].Region != _region)
-                continue;
+            for (var x = 0; x < w; x++)
+            {
+                if (map[x, y].Region != _region)
+                    continue;
 
-            _reproduceRegions.Add(new IntPoint(x, y));
-        }
+                _reproduceRegions.Add(new IntPoint(x, y));
+            }
     }
 
     protected override void TickCore(Entity host, RealmTime time, ref object state)
@@ -77,10 +93,10 @@ class ReproduceGroup : Behavior
 
                 if (_reproduceRegions != null && _reproduceRegions.Count > 0)
                 {
-                    var sx = (int) host.X;
-                    var sy = (int) host.Y;
+                    var sx = (int)host.X;
+                    var sy = (int)host.Y;
                     var regions = _reproduceRegions
-                        .Where( p => Math.Abs(sx - host.X) <= _regionRange && 
+                        .Where(p => Math.Abs(sx - host.X) <= _regionRange &&
                                      Math.Abs(sy - host.Y) <= _regionRange).ToList();
                     var tile = regions[Random.Next(regions.Count)];
                     targetX = tile.X;
@@ -106,7 +122,7 @@ class ReproduceGroup : Behavior
                     state = _coolDown.Next(Random);
                     return;
                 }
-                        
+
                 var entity = Entity.Resolve(host.Manager, _children[Random.Next(_children.Length)]);
                 entity.GivesNoXp = true;
                 entity.Move((float)targetX, (float)targetY);

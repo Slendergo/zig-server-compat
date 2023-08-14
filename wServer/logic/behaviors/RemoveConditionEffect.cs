@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.realm;
 
 namespace wServer.logic.behaviors;
@@ -8,6 +10,11 @@ class RemoveConditionalEffect : Behavior
     //State storage: none
 
     readonly ConditionEffectIndex _effect;
+
+    public RemoveConditionalEffect(XElement e)
+    {
+        _effect = e.ParseConditionEffect("@effect");
+    }
 
     public RemoveConditionalEffect(ConditionEffectIndex effect)
     {

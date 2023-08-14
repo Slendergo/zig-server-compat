@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 using wServer.realm.entities;
 
 namespace wServer.logic.behaviors;
@@ -7,6 +9,12 @@ class TransferDamageOnDeath : Behavior
 {
     private readonly ushort _target;
     private readonly float _radius;
+
+    public TransferDamageOnDeath(XElement e)
+    {
+        _target = GetObjType(e.ParseString("@target"));
+        _radius = e.ParseFloat("@radius");
+    }
 
     public TransferDamageOnDeath(string target, float radius = 50)
     {

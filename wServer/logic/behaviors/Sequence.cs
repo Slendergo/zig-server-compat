@@ -1,4 +1,5 @@
-﻿using wServer.realm;
+﻿using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
@@ -8,6 +9,19 @@ class Sequence : Behavior
     //State storage: index
 
     CycleBehavior[] children;
+
+    public Sequence(XElement e, IStateChildren[] children)
+    {
+        var behaviors = new List<CycleBehavior>();
+        foreach (var child in children)
+        {
+            if (child is CycleBehavior cb)
+                behaviors.Add(cb);
+        }
+
+        this.children = behaviors.ToArray();
+    }
+
     public Sequence(params CycleBehavior[] children)
     {
         this.children = children;

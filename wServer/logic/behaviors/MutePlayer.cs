@@ -1,10 +1,17 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
 class MutePlayer : Behavior
 {
-    private readonly int _timeout; 
+    private readonly int _timeout;
+
+    public MutePlayer(XElement e)
+    {
+        _timeout = e.ParseInt("@durationMin");
+    }
 
     public MutePlayer(int durationMin = 0)
     {

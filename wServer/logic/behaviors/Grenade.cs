@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.networking.packets.outgoing;
 using wServer.realm;
 using wServer.realm.entities;
@@ -17,6 +19,18 @@ class Grenade : Behavior
     ConditionEffectIndex effect;
     int effectDuration;
     new uint color;
+
+    public Grenade(XElement e)
+    {
+        radius = e.ParseFloat("@radius");
+        damage = e.ParseInt("@damage");
+        range = e.ParseInt("@range", 5);
+        fixedAngle = (float?)(e.ParseNFloat("@fixedAngle") * Math.PI / 180);
+        coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
+        effect = e.ParseConditionEffect("@effect");
+        effectDuration = e.ParseInt("@effectDuration");
+        color = e.ParseUInt("@color", true, 0xffff0000);
+    }
 
     public Grenade(double radius, int damage, double range = 5,
         double? fixedAngle = null, Cooldown coolDown = new(), ConditionEffectIndex effect = 0, int effectDuration = 0, uint color = 0xffff0000)

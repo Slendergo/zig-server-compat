@@ -1,6 +1,8 @@
 ﻿using common.resources;
 using wServer.realm;
 using Mono.Game;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
@@ -11,6 +13,13 @@ class StayCloseToSpawn : CycleBehavior
 
     float speed;
     int range;
+
+    public StayCloseToSpawn(XElement e)
+    {
+        speed = e.ParseFloat("@speed");
+        range = e.ParseInt("@range", 5);
+    }
+
     public StayCloseToSpawn(double speed, int range = 5)
     {
         this.speed = (float)speed;

@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 using wServer.realm.entities;
 
 namespace wServer.logic.behaviors;
@@ -7,6 +9,12 @@ class RemoveTileObject : Behavior
 {
     private readonly string _objName;
     private readonly int _range;
+
+    public RemoveTileObject(XElement e)
+    {
+        _objName = e.ParseString("@type");
+        _range = e.ParseInt("@range");
+    }
 
     public RemoveTileObject(string objName, int range)
     {

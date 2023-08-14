@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.realm;
 using wServer.realm.entities;
 
@@ -18,6 +20,15 @@ class RelativeSpawn : Behavior
     private Cooldown _coolDown;
     private readonly ushort _children;
     private readonly IntPoint _relativeTargetLoc;
+
+    public RelativeSpawn(XElement e)
+    {
+        _maxChildren = e.ParseInt("@maxChildren", 5);
+        _initialSpawn = (int)(_maxChildren * e.ParseFloat("@initialSpawn", 0.5f));
+        _children = GetObjType(e.ParseString("@children"));
+        _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown"));
+        _relativeTargetLoc = new IntPoint(e.ParseInt("@x"), e.ParseInt("@y"));
+    }
 
     public RelativeSpawn(string children, int x = 0, int y = 0, int maxChildren = 5, double initialSpawn = 0.5, Cooldown coolDown = new())
     {

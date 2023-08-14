@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.realm;
 using wServer.realm.entities;
 
@@ -18,6 +20,15 @@ class Spawn : Behavior
     private Cooldown _coolDown;
     private readonly ushort _children;
     private readonly bool _givesNoXp;
+
+    public Spawn(XElement e)
+    {
+        _children = GetObjType(e.ParseString("@children"));
+        _maxChildren = e.ParseInt("@maxChildren", 5);
+        _initialSpawn = (int)(_maxChildren * e.ParseFloat("@initialSpawn", 0.5f));
+        _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown"));
+        _givesNoXp = e.ParseBool("@givesNoXp", true);
+    }
 
     public Spawn(string children, int maxChildren = 5, double initialSpawn = 0.5, Cooldown coolDown = new(), bool givesNoXp = true)
     {

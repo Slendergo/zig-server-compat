@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.networking.packets.outgoing;
 using wServer.realm;
 using wServer.realm.entities;
@@ -10,6 +12,13 @@ class HealPlayer : Behavior
     private double _range;
     private Cooldown _coolDown;
     private int _healAmount;
+
+    public HealPlayer(XElement e)
+    {
+        _range = e.ParseFloat("@range");
+        _healAmount = e.ParseInt("@amount", 100);
+        _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
+    }
 
     public HealPlayer(double range, Cooldown coolDown = new(), int healAmount = 100)
     {
