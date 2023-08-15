@@ -71,16 +71,20 @@ public class CommHandler
         e.SetBuffer(e.Offset, _bufferSize);
 
         // Post async receive operation on the socket.
+
+        bool willRaise;
         try
         {
-            if(!e.AcceptSocket.ReceiveAsync(e))
-                ProcessReceive(this, e);
+            willRaise = e.AcceptSocket.ReceiveAsync(e);
         }
         catch (Exception exception)
         {
             _client.Disconnect($"[{_client.Account?.Name}:{_client.Account?.AccountId} {_client.IP}] {exception}");
             return;
         }
+        
+        if(!willRaise)
+            ProcessReceive(this, e);
     }
 
     private void ProcessReceive(object sender, SocketAsyncEventArgs e)
@@ -180,16 +184,19 @@ public class CommHandler
         Buffer.BlockCopy(s.Data, s.BytesSent,
             e.Buffer, s.BufferOffset, bytesToSend);
 
-        try 
+        bool willRaise;
+        try
         {
-            if (!e.AcceptSocket.SendAsync(e))
-                ProcessSend(this, e);
+            willRaise = e.AcceptSocket.SendAsync(e);
         }
         catch (Exception exception)
         {
             _client.Disconnect($"[{_client.Account?.Name}:{_client.Account?.AccountId} {_client.IP}] {exception}");
             return;
         }
+
+        if (!willRaise)
+            ProcessSend(this, e);
     }
 
     private void ProcessSend(object sender, SocketAsyncEventArgs e)
