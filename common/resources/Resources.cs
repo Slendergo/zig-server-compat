@@ -1,4 +1,5 @@
 ﻿using NLog;
+using System.Xml.Linq;
 
 namespace common.resources;
 
@@ -11,6 +12,7 @@ public class Resources : IDisposable
     public readonly Dictionary<string, byte[]> WebFiles = new();
     public readonly WorldData Worlds;
     public readonly AppSettings Settings;
+    public IEnumerable<XElement> XmlBehaviors;
 
     public Resources(string resourcePath, bool wServer = false)
     {
@@ -18,6 +20,7 @@ public class Resources : IDisposable
         ResourcePath = resourcePath;
         GameData = new XmlData(resourcePath + "/xml");
         Settings = new AppSettings(resourcePath + "/data/init.xml");
+        XmlBehaviors = LoadBehaviors(resourcePath + "/behaviors");
 
         if (!wServer)
         {
@@ -40,6 +43,17 @@ public class Resources : IDisposable
                 .Replace("\\", "/");
 
             WebFiles[webPath] = File.ReadAllBytes(file);
+        }
+    }
+
+    private IEnumerable<XElement> LoadBehaviors(string path)
+    {
+        var xmls = Directory.EnumerateFiles(path, "*.xml", SearchOption.AllDirectories).ToArray();
+        for (var i = 0; i < xmls.Length; i++)
+        {
+            var xml = XElement.Parse(File.ReadAllText(xmls[i]));
+            foreach (var elem in xml.Elements().Where(x => x.Name == "BehaviorEntry"))
+                yield return elem;
         }
     }
 

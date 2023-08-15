@@ -26,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="resources\behaviors\Example.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="resources\xml\EmbeddedData_AbyssOfDemonsCXML.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

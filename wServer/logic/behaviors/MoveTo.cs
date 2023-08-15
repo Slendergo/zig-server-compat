@@ -1,6 +1,8 @@
 using wServer.realm;
 using common.resources;
 using Mono.Game;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
@@ -9,6 +11,13 @@ class MoveTo : CycleBehavior
     private readonly float _speed;
     private readonly float _x;
     private readonly float _y;
+
+    public MoveTo(XElement e)
+    {
+        _speed = e.ParseFloat("@speed");
+        _x = e.ParseFloat("@x");
+        _y = e.ParseFloat("@y");
+    }
 
     public MoveTo(float speed, float x, float y)
     {

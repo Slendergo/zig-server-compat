@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.networking.packets.outgoing;
 using wServer.realm;
 using wServer.realm.entities;
@@ -25,7 +27,33 @@ class TossObject : Behavior
     private readonly string _group;
     private readonly TileRegion _region;
     private readonly double _regionRange;
-    private List<IntPoint> _reproduceRegions; 
+    private List<IntPoint> _reproduceRegions;
+
+    public TossObject(XElement e)
+    {
+        _group = e.ParseString("@group");
+        if (_group == null)
+            _children = new[] { GetObjType(e.ParseString("@child")) };
+        else
+            _children = BehaviorDb.InitGameData.ObjectDescs.Values
+                .Where(x => x.Group == _group)
+                .Select(x => x.ObjectType).ToArray();
+
+        _range = e.ParseFloat("@range", 5);
+        _angle = e.ParseNFloat("@angle") * Math.PI / 180;
+        _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
+        _coolDownOffset = e.ParseInt("@coolDownOffset");
+        _tossInvis = e.ParseBool("@tossInvis");
+        _probability = e.ParseFloat("@probability", 1);
+        _minRange = e.ParseNFloat("@minRange");
+        _maxRange = e.ParseNFloat("@maxRange");
+        _minAngle = e.ParseNFloat("@minAngle") * Math.PI / 180;
+        _maxAngle = e.ParseNFloat("@maxAngle") * Math.PI / 180;
+        _densityRange = e.ParseNFloat("@densityRange");
+        _maxDensity = e.ParseNInt("@maxDensity");
+        _region = (TileRegion)Enum.Parse(typeof(TileRegion), e.ParseString("@region", "None"));
+        _regionRange = e.ParseFloat("@regionRange", 10);
+    }
 
     public TossObject(string child, double range = 5, double? angle = null,
         Cooldown coolDown = new(), int coolDownOffset = 0, 

@@ -1,4 +1,6 @@
-﻿using wServer.networking.packets.outgoing;
+﻿using common;
+using System.Xml.Linq;
+using wServer.networking.packets.outgoing;
 using wServer.realm;
 
 namespace wServer.logic.behaviors;
@@ -10,6 +12,14 @@ class Flash : Behavior
     uint color;
     float flashPeriod;
     int flashRepeats;
+
+    public Flash(XElement e)
+    {
+        color = e.ParseUInt("@color");
+        flashPeriod = e.ParseFloat("@flashPeriod");
+        flashRepeats = e.ParseInt("@flashRepeats");
+    }
+
     public Flash(uint color, double flashPeriod, int flashRepeats)
     {
         this.color = color;

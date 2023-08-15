@@ -1,6 +1,8 @@
 ﻿using common.resources;
 using wServer.realm;
 using Mono.Game;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
@@ -10,6 +12,13 @@ class StayAbove : CycleBehavior
 
     float speed;
     int altitude;
+
+    public StayAbove(XElement e)
+    {
+        speed = e.ParseFloat("@speed");
+        altitude = e.ParseInt("@altitude");
+    }
+
     public StayAbove(double speed, int altitude)
     {
         this.speed = (float)speed;

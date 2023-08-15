@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
@@ -10,6 +12,13 @@ class OrderOnce : Behavior
     private readonly ushort _children;
     private readonly string _targetStateName;
     private State _targetState;
+
+    public OrderOnce(XElement e)
+    {
+        _range = e.ParseFloat("@range");
+        _children = GetObjType(e.ParseString("@children"));
+        _targetStateName = e.ParseString("@targetState");
+    }
 
     public OrderOnce(double range, string children, string targetState)
     {

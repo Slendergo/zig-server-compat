@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
@@ -9,6 +11,20 @@ class Timed : CycleBehavior
 
     Behavior[] behaviors;
     int period;
+
+    public Timed(XElement e, IStateChildren[] children)
+    {
+        var behaviors = new List<Behavior>();
+        foreach (var child in children)
+        {
+            if (child is Behavior bh)
+                behaviors.Add(bh);
+        }
+
+        this.behaviors = behaviors.ToArray();
+        period = e.ParseInt("@period");
+    }
+
     public Timed(int period, params Behavior[] behaviors)
     {
         this.behaviors = behaviors;

@@ -10,6 +10,7 @@ using wServer.realm.entities;
 using wServer.realm.worlds;
 using wServer.realm.worlds.logic;
 using NLog;
+using wServer.logic;
 
 namespace wServer.realm.commands;
 
@@ -1557,6 +1558,17 @@ class UnnameCommand : Command
                 db.ReleaseLock(key, lockToken);
         }
 
+        return true;
+    }
+}
+
+internal class ReloadBehaviorsCommand : Command
+{
+    public ReloadBehaviorsCommand() : base("reloadbehaviors", true, "rlb", false) { }
+
+    protected override bool Process(Player player, RealmTime time, string args)
+    {
+        player.Manager.Behaviors.ResolveBehaviors(true);
         return true;
     }
 }

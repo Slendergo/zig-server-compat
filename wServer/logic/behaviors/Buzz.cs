@@ -1,6 +1,8 @@
 ﻿using common.resources;
 using wServer.realm;
 using Mono.Game;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
@@ -18,6 +20,14 @@ class Buzz : CycleBehavior
     float speed;
     float dist;
     Cooldown coolDown;
+
+    public Buzz(XElement e)
+    {
+        speed = e.ParseFloat("@speed");
+        dist = e.ParseFloat("@dist");
+        coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1));
+    }
+
     public Buzz(double speed = 2, double dist = 0.5, Cooldown coolDown = new())
     {
         this.speed = (float)speed;

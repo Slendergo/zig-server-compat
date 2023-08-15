@@ -1,0 +1,7 @@
+<BehaviorEntries>  
+	<BehaviorEntry id="Medusa">
+	  <Wander speed="0.5"/>
+	  <Shoot radius="16" count="5" shootAngle="10" projectileIndex="0" cooldown="1000"/>
+	  <Grenade radius="16" damage="100" range="4" cooldown="3000" color="0x00ff00"/>
+	</BehaviorEntry>
+</BehaviorEntries>

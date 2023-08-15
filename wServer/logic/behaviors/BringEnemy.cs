@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 using wServer.realm.entities;
 
 namespace wServer.logic.behaviors;
@@ -7,6 +9,13 @@ class BringEnemy : Behavior
 {
     string name;
     double range;
+
+    public BringEnemy(XElement e)
+    {
+        range = e.ParseFloat("@range");
+        name = e.ParseString("@name");
+    }
+
     public BringEnemy(string name, double range)
     {
         this.name = name;

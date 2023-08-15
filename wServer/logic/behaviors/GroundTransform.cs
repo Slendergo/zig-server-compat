@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
@@ -18,6 +20,15 @@ class GroundTransform : Behavior
     private readonly bool _persist;
     private readonly int? _relativeX;
     private readonly int? _relativeY;
+
+    public GroundTransform(XElement e)
+    {
+        _tileId = e.ParseString("@tileId");
+        _radius = e.ParseInt("@radius");
+        _persist = e.ParseBool("@persist");
+        _relativeX = e.ParseNInt("@relativeX");
+        _relativeY = e.ParseNInt("@relativeY");
+    }
 
     public GroundTransform(
         string tileId, 

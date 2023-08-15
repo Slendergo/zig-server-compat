@@ -1,6 +1,8 @@
 ﻿using common.resources;
 using wServer.realm;
 using Mono.Game;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
@@ -19,6 +21,15 @@ class Protect : CycleBehavior
     float acquireRange;
     float protectionRange;
     float reprotectRange;
+
+    public Protect(XElement e)
+    {
+        speed = e.ParseFloat("@speed");
+        acquireRange = e.ParseFloat("@acquireRange");
+        protectionRange = e.ParseFloat("@protectionRange");
+        reprotectRange = e.ParseFloat("@reprotectRange");
+    }
+
     public Protect(double speed, string protectee, double acquireRange = 10, double protectionRange = 2, double reprotectRange = 1)
     {
         this.speed = (float)speed;

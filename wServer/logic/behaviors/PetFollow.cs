@@ -1,11 +1,16 @@
 ﻿using Mono.Game;
+using System.Xml.Linq;
 using wServer.realm;
 using wServer.realm.entities;
 
 namespace wServer.logic.behaviors;
 
-internal class PetFollow : CycleBehavior
+class PetFollow : CycleBehavior
 {
+    public PetFollow(XElement e)
+    {
+    }
+
     protected override void TickCore(Entity host, RealmTime time, ref object state)
     {
         if ((host as Pet)?.PlayerOwner == null) return;

@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.realm;
 using wServer.realm.entities;
 
@@ -9,6 +11,12 @@ class Transform : Behavior
     //State storage: none
 
     ushort target;
+
+    public Transform(XElement e)
+    {
+        target = GetObjType(e.ParseString("@target"));
+    }
+
     public Transform(string target)
     {
         this.target = GetObjType(target);

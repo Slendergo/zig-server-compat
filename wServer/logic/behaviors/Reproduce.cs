@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.realm;
 using wServer.realm.entities;
 
@@ -14,7 +16,17 @@ class Reproduce : Behavior
     private Cooldown _coolDown;
     private readonly TileRegion _region;
     private readonly double _regionRange;
-    private List<IntPoint> _reproduceRegions; 
+    private List<IntPoint> _reproduceRegions;
+
+    public Reproduce(XElement e)
+    {
+        _children = GetObjType(e.ParseString("@children"));
+        _densityRadius = e.ParseFloat("@densityRadius", 10);
+        _densityMax = e.ParseInt("@densityMax", 5);
+        _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 60000));
+        _region = (TileRegion)Enum.Parse(typeof(TileRegion), e.ParseString("@region", "None"));
+        _regionRange = e.ParseInt("@regionRange", 10);
+    }
 
     public Reproduce(string children = null, 
         double densityRadius = 10, 

@@ -1,6 +1,8 @@
 ﻿using common.resources;
 using wServer.realm;
 using Mono.Game;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
@@ -18,6 +20,15 @@ class Swirl : CycleBehavior
     float acquireRange;
     float radius;
     bool targeted;
+
+    public Swirl(XElement e)
+    {
+        speed = e.ParseFloat("@speed", 1);
+        radius = e.ParseFloat("@radius", 8);
+        acquireRange = e.ParseFloat("@acquireRange", 10);
+        targeted = e.ParseBool("@targeted", true);
+    }
+
     public Swirl(double speed = 1, double radius = 8, double acquireRange = 10, bool targeted = true)
     {
         this.speed = (float)speed;

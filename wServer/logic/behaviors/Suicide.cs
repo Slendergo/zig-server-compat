@@ -1,4 +1,5 @@
-﻿using wServer.realm;
+﻿using System.Xml.Linq;
+using wServer.realm;
 using wServer.realm.entities;
 
 namespace wServer.logic.behaviors;
@@ -6,6 +7,10 @@ namespace wServer.logic.behaviors;
 class Suicide : Behavior
 {
     //State storage: timer
+
+    public Suicide(XElement e)
+    {
+    }
 
     public Suicide()
     {

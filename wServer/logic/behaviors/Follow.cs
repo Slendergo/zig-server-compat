@@ -1,6 +1,8 @@
 ﻿using common.resources;
 using wServer.realm;
 using Mono.Game;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
@@ -24,6 +26,16 @@ class Follow : CycleBehavior
     float range;
     int duration;
     Cooldown coolDown;
+
+    public Follow(XElement e)
+    {
+        speed = e.ParseFloat("@speed");
+        acquireRange = e.ParseFloat("@acquireRange", 10);
+        range = e.ParseFloat("@range", 6);
+        duration = e.ParseInt("@duration");
+        coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown"));
+    }
+
     public Follow(double speed, double acquireRange = 10, double range = 6,
         int duration = 0, Cooldown coolDown = new())
     {

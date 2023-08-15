@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using common;
+using System.Text;
+using System.Xml.Linq;
 using wServer.realm;
 using wServer.realm.worlds.logic;
 
@@ -9,6 +11,11 @@ class AnnounceOnDeath : Behavior
     public static readonly string PLAYER_COUNT = "{COUNT}";
     public static readonly string PLAYER_LIST = "{PL_LIST}";
     private readonly string _message;
+
+    public AnnounceOnDeath(XElement e)
+    {
+        _message = e.ParseString("@message");
+    }
 
     public AnnounceOnDeath(string msg)
     {

@@ -1,5 +1,7 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
 using Mono.Game;
+using System.Xml.Linq;
 using wServer.realm;
 using wServer.realm.entities;
 
@@ -9,6 +11,12 @@ class ReturnToSpawn : CycleBehavior
 {
     private readonly float _speed;
     private readonly float _returnWithinRadius;
+
+    public ReturnToSpawn(XElement e)
+    {
+        _speed = e.ParseFloat("@speed");
+        _returnWithinRadius = e.ParseFloat("@returnWithinRadius", 1);
+    }
 
     public ReturnToSpawn(double speed, double returnWithinRadius = 1)
     {

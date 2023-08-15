@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.realm;
 
 namespace wServer.logic.behaviors;
@@ -10,6 +12,14 @@ class ConditionalEffect : Behavior
     ConditionEffectIndex effect;
     bool perm;
     int duration;
+
+    public ConditionalEffect(XElement e)
+    {
+        effect = e.ParseConditionEffect("@effect");
+        perm = e.ParseBool("@perm");
+        duration = e.ParseInt("@duration", -1);
+    }
+
     public ConditionalEffect(ConditionEffectIndex effect, bool perm = false, int duration = -1)
     {
         this.effect = effect;

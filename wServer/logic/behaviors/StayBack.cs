@@ -1,6 +1,8 @@
 ﻿using common.resources;
 using wServer.realm;
 using Mono.Game;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
@@ -11,6 +13,13 @@ class StayBack : CycleBehavior
     float speed;
     float distance;
     string entity;
+
+    public StayBack(XElement e)
+    {
+        speed = e.ParseFloat("@speed");
+        distance = e.ParseFloat("@distance");
+        entity = e.ParseString("@entity");
+    }
 
     public StayBack(double speed, double distance = 8, string entity = null)
     {

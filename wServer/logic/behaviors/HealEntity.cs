@@ -1,4 +1,6 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
+using System.Xml.Linq;
 using wServer.networking.packets.outgoing;
 using wServer.realm;
 using wServer.realm.entities;
@@ -13,6 +15,14 @@ class HealEntity : Behavior
     private readonly string _name;
     private Cooldown _coolDown;
     private readonly int? _amount;
+
+    public HealEntity(XElement e)
+    {
+        _range = e.ParseFloat("@range");
+        _name = e.ParseString("@name");
+        _amount = e.ParseNInt("@amount");
+        _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
+    }
 
     public HealEntity(double range, string name = null, int? healAmount = null, Cooldown coolDown = new())
     {

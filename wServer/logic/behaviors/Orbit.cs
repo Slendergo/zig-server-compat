@@ -1,6 +1,8 @@
 ﻿using common.resources;
 using wServer.realm;
 using Mono.Game;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
@@ -21,7 +23,18 @@ class Orbit : CycleBehavior
     float speedVariance;
     float radiusVariance;
     bool? orbitClockwise;
-        
+
+    public Orbit(XElement e)
+    {
+        speed = e.ParseFloat("@speed");
+        radius = e.ParseFloat("@radius");
+        acquireRange = e.ParseFloat("@acquireRange");
+        target = GetObjType(e.ParseString("@target"));
+        speedVariance = e.ParseNFloat("@speedVariance") ?? speed * 0.1f;
+        radiusVariance = e.ParseNFloat("@radiusVariance") ?? speed * 0.1f;
+        orbitClockwise = e.ParseBool("@orbitClockwise");
+    }
+
     public Orbit(double speed, double radius, double acquireRange = 10,
         string target = null, double? speedVariance = null, double? radiusVariance = null,
         bool? orbitClockwise = false)

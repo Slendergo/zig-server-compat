@@ -68,7 +68,7 @@ public class Loot : List<MobDrops>
         return possibleDrops;
     }
 
-    public void Handle(Enemy enemy, RealmTime time)
+    public void Handle(Enemy enemy)
     {
         // enemies that shouldn't drop loot
         if (enemy.Spawned)

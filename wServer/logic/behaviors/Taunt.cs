@@ -1,6 +1,8 @@
 ﻿using wServer.realm;
 using wServer.realm.entities;
 using wServer.networking.packets.outgoing;
+using System.Xml.Linq;
+using common;
 
 namespace wServer.logic.behaviors;
 
@@ -13,6 +15,14 @@ class Taunt : Behavior
     Cooldown cooldown = new(0, 0);
     string[] text;
     int? ordered;
+
+    public Taunt(XElement e)
+    {
+        text = e.ParseStringArray("@text", '|', new[] { e.ParseString("@text") });
+        probability = e.ParseFloat("@probability", 1);
+        broadcast = e.ParseBool("@broadcast");
+        cooldown = new Cooldown(e.ParseInt("@cooldown"), 0);
+    }
 
     public Taunt(params string[] text)
     {
