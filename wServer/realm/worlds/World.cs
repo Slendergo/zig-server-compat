@@ -50,6 +50,11 @@ public class World
     public bool ShowDisplays { get; protected set; }
     public bool Persist { get; protected set; }
     public int Blocking { get; protected set; }
+    
+    public int BgLightColor { get; protected set; }
+    public float BgLightIntensity { get; protected set; }
+    public float DayLightIntensity { get; protected set; }
+    public float NightLightIntensity { get; protected set; }
 
     public Wmap Map { get; private set; }
     public bool Deleted { get; protected set; }
@@ -88,6 +93,11 @@ public class World
         AllowTeleport = !proto.restrictTp;
         ShowDisplays = proto.showDisplays;
         Blocking = proto.blocking;
+        
+        BgLightColor = proto.bgLightColor;
+        BgLightIntensity = proto.bgLightIntensity;
+        DayLightIntensity = proto.dayLightIntensity;
+        NightLightIntensity = proto.nightLightIntensity;
     }
 
     private void Setup()

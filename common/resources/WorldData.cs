@@ -17,6 +17,12 @@ public struct ProtoWorld
     public bool showDisplays;
     public bool persist;
     public int blocking;
+    
+    public int bgLightColor;
+    public float bgLightIntensity;
+    public float dayLightIntensity;
+    public float nightLightIntensity;
+    
     public bool setpiece;
     public int[] portals;
     public string[] maps;

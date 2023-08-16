@@ -66,6 +66,12 @@ public class ConnectManager
             Difficulty = world.Difficulty,
             AllowPlayerTeleport = world.AllowTeleport,
             ShowDisplays = world.ShowDisplays,
+            
+            BackgroundLightColor = world.BgLightColor,
+            BackgroundLightIntensity = world.BgLightIntensity,
+            DayLightIntensity = world.DayLightIntensity,
+            NightLightIntensity = world.NightLightIntensity,
+            GameTime = (int) world.Manager.Logic.WorldTime.TotalElapsedMs
         });
 
         // send out account lock/ignore list
@@ -193,6 +199,12 @@ public class ConnectManager
             Difficulty = world.Difficulty,
             AllowPlayerTeleport = world.AllowTeleport,
             ShowDisplays = world.ShowDisplays,
+            
+            BackgroundLightColor = world.BgLightColor,
+            BackgroundLightIntensity = world.BgLightIntensity,
+            DayLightIntensity = world.DayLightIntensity,
+            NightLightIntensity = world.NightLightIntensity,
+            GameTime = (int) world.Manager.Logic.WorldTime.TotalElapsedMs
         });
 
         // send out account lock/ignore list

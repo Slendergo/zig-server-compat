@@ -15,14 +15,14 @@ public class FLLogicTicker
     public readonly int MsPT;
 
     private readonly ManualResetEvent _mre;
-    private RealmTime _worldTime;
+    public RealmTime WorldTime;
 
     public FLLogicTicker(RealmManager manager)
     {
         _manager = manager;
         MsPT = 1000 / manager.TPS;
         _mre = new ManualResetEvent(false);
-        _worldTime = new RealmTime();
+        WorldTime = new RealmTime();
 
         _pendings = new ConcurrentQueue<Action<RealmTime>>[5];
         for (int i = 0; i < 5; i++)
@@ -90,7 +90,7 @@ public class FLLogicTicker
 
     void TickWorlds1(RealmTime t)    //Continous simulation
     {
-        _worldTime.TickDelta += t.TickDelta;
+        WorldTime.TickDelta += t.TickDelta;
 
         // tick essentials
         try
@@ -104,13 +104,13 @@ public class FLLogicTicker
         }
 
         // tick world every 200 ms
-        t.TickDelta = _worldTime.TickDelta;
+        t.TickDelta = WorldTime.TickDelta;
         t.ElaspedMsDelta = t.TickDelta * MsPT;
 
         if (t.ElaspedMsDelta < 200)
             return;
 
-        _worldTime.TickDelta = 0;
+        WorldTime.TickDelta = 0;
         foreach (var i in _manager.Worlds.Values.Distinct())
             i.Tick(t);
     }
