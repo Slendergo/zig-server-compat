@@ -23,8 +23,8 @@
         "tps": "20",
         "mode": "Single",
         "key": "B1A5ED",
-        "maxConnections": "512",
-        "maxPlayers": "160",
-        "maxPlayersWithPriority": "180"
+        "maxConnections": "10",
+        "maxPlayers": "10",
+        "maxPlayersWithPriority": "18"
     }
 }

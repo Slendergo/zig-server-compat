@@ -72,19 +72,15 @@ public class CommHandler
 
         // Post async receive operation on the socket.
 
-        bool willRaise;
         try
         {
-            willRaise = e.AcceptSocket.ReceiveAsync(e);
+            e.AcceptSocket.ReceiveAsync(e);
         }
         catch (Exception exception)
         {
             _client.Disconnect($"[{_client.Account?.Name}:{_client.Account?.AccountId} {_client.IP}] {exception}");
             return;
         }
-        
-        if(!willRaise)
-            ProcessReceive(this, e);
     }
 
     private void ProcessReceive(object sender, SocketAsyncEventArgs e)
@@ -112,7 +108,7 @@ public class CommHandler
         // Client has finished sending data?
         if (bytesNotRead == 0)
         {
-            _client.Disconnect();
+            _client.Disconnect("bytesNotRead == 0 WHUT?");
             return;
         }
 
@@ -184,19 +180,15 @@ public class CommHandler
         Buffer.BlockCopy(s.Data, s.BytesSent,
             e.Buffer, s.BufferOffset, bytesToSend);
 
-        bool willRaise;
         try
         {
-            willRaise = e.AcceptSocket.SendAsync(e);
+            e.AcceptSocket.SendAsync(e);
         }
         catch (Exception exception)
         {
             _client.Disconnect($"[{_client.Account?.Name}:{_client.Account?.AccountId} {_client.IP}] {exception}");
             return;
         }
-
-        if (!willRaise)
-            ProcessSend(this, e);
     }
 
     private void ProcessSend(object sender, SocketAsyncEventArgs e)

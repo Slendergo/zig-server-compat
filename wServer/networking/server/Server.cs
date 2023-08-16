@@ -196,7 +196,10 @@ public class Server
             if (!willRaiseEvent)
                 ProcessAccept(acceptEventArg);
         }
-        catch { }
+        catch(Exception e)
+        {
+            Console.WriteLine("Test: " + e);
+        }
     }
 
     private void ProcessAccept(SocketAsyncEventArgs acceptEventArgs)
@@ -210,7 +213,15 @@ public class Server
 
         // start up client
         acceptEventArgs.AcceptSocket.NoDelay = true;
-        (_clientPool.Pop()).BeginHandling(acceptEventArgs.AcceptSocket);
+        try
+        {
+            (_clientPool.Pop()).BeginHandling(acceptEventArgs.AcceptSocket);
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("FAILED TO BEGIN CLIENT HANDLING");
+        }
 
         // recycle acceptEventArgs object
         acceptEventArgs.AcceptSocket = null;

@@ -187,7 +187,7 @@ public partial class Client
             var t = Task.Delay(1000);
             await t;
 
-            Disconnect();
+            Disconnect($"Failure Message: {text}");
         }
     }
 
@@ -201,7 +201,7 @@ public partial class Client
             State = ProtocolState.Disconnected;
 
             if (!string.IsNullOrEmpty(reason))
-                Log.Trace("Disconnecting client ({0}) @ {1}... {2}",
+                Log.Warn("Disconnecting client ({0}) @ {1}... {2}",
                     Account?.Name ?? " ", IP, reason);
 
             if (Account != null)
