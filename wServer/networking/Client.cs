@@ -25,13 +25,7 @@ public partial class Client
     static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
     public RealmManager Manager { get; }
-
-    static readonly byte[] ServerKey = { 0x61, 0x2a, 0x80, 0x6c, 0xac, 0x78, 0x11, 0x4b, 0xa5, 0x01, 0x3c, 0xb5, 0x31 };
-    static byte[] _clientKey = { 0x81, 0x1f, 0x50, 0x39, 0x1f, 0xb4, 0x55, 0x89, 0x9c, 0xa9, 0xd7, 0x4b, 0x72 };
-
-    public RC4 ReceiveKey { get; private set; }
-    public RC4 SendKey { get; private set; }
-
+    
     private readonly Server _server;
     private readonly CommHandler _handler;
 
@@ -60,24 +54,16 @@ public partial class Client
     internal readonly object DcLock = new();
 
     public Client(Server server, RealmManager manager,
-        SocketAsyncEventArgs send, SocketAsyncEventArgs receive,
-        byte[] clientKey)
+        SocketAsyncEventArgs send, SocketAsyncEventArgs receive)
     {
         _server = server;
         Manager = manager;
-        _clientKey = clientKey;
-
-        ReceiveKey = new RC4(_clientKey);
-        SendKey = new RC4(ServerKey);
 
         _handler = new CommHandler(this, send, receive);
     }
 
     public void Reset()
     {
-        ReceiveKey = new RC4(_clientKey);
-        SendKey = new RC4(ServerKey);
-
         Id = 0; // needed so that inbound packets that are currently queued are discarded.
         Account = null;
         Character = null;

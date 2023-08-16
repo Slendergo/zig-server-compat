@@ -127,7 +127,7 @@ public class Server
         {
             var send = CreateNewSendEventArgs();
             var receive = CreateNewReceiveEventArgs();
-            _clientPool.Push(new Client(this, _manager, send, receive, _clientKey));
+            _clientPool.Push(new Client(this, _manager, send, receive));
         }
     }
 

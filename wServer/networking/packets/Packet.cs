@@ -33,9 +33,7 @@ public abstract class Packet
     {
         Owner = client;
     }
-
-    public abstract void Crypt(Client client, byte[] dat, int offset, int len);
-
+    
     public void Read(Client client, byte[] body, int offset, int len)
     {
         //Crypt(client, body, offset, len);
