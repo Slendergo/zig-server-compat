@@ -217,6 +217,7 @@ public partial class Client
         }
 
         Player.SaveToCharacter();
+        Player.Owner?.LeaveWorld(Player);
         acc.RefreshLastSeen();
         acc.FlushAsync();
         Manager.Database.SaveCharacter(acc, Character, Player.FameCounter.ClassStats, true)
