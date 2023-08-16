@@ -71,16 +71,20 @@ public class CommHandler
         e.SetBuffer(e.Offset, _bufferSize);
 
         // Post async receive operation on the socket.
-
+        bool willRaiseEvent;
         try
         {
-            e.AcceptSocket.ReceiveAsync(e);
+            willRaiseEvent = e.AcceptSocket.ReceiveAsync(e);
+
         }
         catch (Exception exception)
         {
             _client.Disconnect($"[{_client.Account?.Name}:{_client.Account?.AccountId} {_client.IP}] {exception}");
             return;
         }
+
+        if (!willRaiseEvent)
+            ProcessReceive(null, e);
     }
 
     private void ProcessReceive(object sender, SocketAsyncEventArgs e)
@@ -108,7 +112,7 @@ public class CommHandler
         // Client has finished sending data?
         if (bytesNotRead == 0)
         {
-            _client.Disconnect("bytesNotRead == 0 WHUT?");
+            _client.Disconnect();
             return;
         }
 
@@ -161,12 +165,16 @@ public class CommHandler
         return bytesNotRead - remainingBytes;
     }
 
-    private void StartSend(SocketAsyncEventArgs e)
+    private async void StartSend(SocketAsyncEventArgs e, int msDelay = 0)
     {
         if (_client.State == ProtocolState.Disconnected)
             return;
 
         var s = (SendToken)e.UserToken;
+
+        if (msDelay > 0)
+            await Task.Delay(msDelay);
+
         if (s.BytesAvailable <= 0)
         {
             s.Reset();
@@ -180,15 +188,19 @@ public class CommHandler
         Buffer.BlockCopy(s.Data, s.BytesSent,
             e.Buffer, s.BufferOffset, bytesToSend);
 
+        bool willRaiseEvent;
         try
         {
-            e.AcceptSocket.SendAsync(e);
+            willRaiseEvent = e.AcceptSocket.SendAsync(e);
         }
         catch (Exception exception)
         {
             _client.Disconnect($"[{_client.Account?.Name}:{_client.Account?.AccountId} {_client.IP}] {exception}");
             return;
         }
+
+        if (!willRaiseEvent)
+            ProcessSend(null, e);
     }
 
     private void ProcessSend(object sender, SocketAsyncEventArgs e)
@@ -210,12 +222,11 @@ public class CommHandler
         s.BytesSent += e.BytesTransferred;
         s.BytesAvailable -= s.BytesSent;
 
+        var delay = 0;
         if (s.BytesAvailable <= 0)
-        {
-            _reset.Reset();
-            _reset.WaitOne();
-        }
-        StartSend(e);
+            delay = _client.Manager.Logic.MsPT;
+
+        StartSend(e, delay);
     }
 
     public void SendPacket(Packet pkt)
