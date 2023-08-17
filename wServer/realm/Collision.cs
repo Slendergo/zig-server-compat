@@ -143,9 +143,9 @@ public class CollisionMap<T> where T : ICollidable<T>
             chunks[x, y] = obj.CollisionNode.Remove();
         else
             obj.CollisionNode.Remove();
-
-        obj.Parent = null;
+        
         obj.CollisionNode = null;
+        obj.Parent = null;
     }
 
     public IEnumerable<T> HitTest(Position pos, double radius)

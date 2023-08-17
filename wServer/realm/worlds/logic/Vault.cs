@@ -34,7 +34,8 @@ public class Vault : World
         if (IsLimbo)
             return;
 
-        FromWorldMap(new MemoryStream(Manager.Resources.Worlds[Name].wmap[0]));
+        //FromWorldMap(new MemoryStream(Manager.Resources.Worlds[Name].wmap[0]));
+        FromWorldMap(new MemoryStream(Manager.Resources.Worlds["Nexus"].wmap[0]));
         InitVault();
     }
 

@@ -100,6 +100,8 @@ public partial class Player
 
     private void SendNewTick(RealmTime time)
     {
+        TickId++;
+
         using (TimedLock.Lock(_statUpdateLock))
         {
             _updateStatuses = _statUpdates.Select(_ => new ObjectStats()
@@ -113,7 +115,7 @@ public partial class Player
 
         _client.SendPacket(new NewTick
         {
-            TickId = ++TickId,
+            TickId = TickId,
             TickTime = time.ElaspedMsDelta,
             Statuses = _updateStatuses
         });
@@ -122,6 +124,8 @@ public partial class Player
 
     private void SendUpdate(RealmTime time)
     {
+        Console.WriteLine($"UPDATE");
+
         // init sight circle
         var sCircle = Sight.GetSightCircle(Owner.Blocking);
 

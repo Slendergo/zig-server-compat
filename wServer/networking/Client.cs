@@ -147,8 +147,12 @@ public partial class Client
         }
     }
 
+    public bool Reconnecting;
+
     public void Reconnect(string name, int gameId)
     {
+        Reconnecting = true;
+
         if (Account == null)
         {
             Disconnect("Tried to reconnect an client with a null account...");

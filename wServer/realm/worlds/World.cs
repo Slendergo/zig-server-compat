@@ -328,7 +328,6 @@ public class World
             case Player player:
                 if (!noIdChange)
                     player.Id = GetNextEntityId();
-                player.Id = GetNextEntityId();
                 player.Init(this);
                 Players.TryAdd(player.Id, player);
                 PlayersCollision.Insert(player);

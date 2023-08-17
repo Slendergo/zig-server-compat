@@ -91,8 +91,9 @@ public class ConnectManager
                 return;
             }
 
+            currentWorld?.LeaveWorld(player);
             player.CleanupReconnect();
-            currentWorld.LeaveWorld(player);
+
             // dispose update
             var objectId = world.EnterWorld(player, true);
             client.SendPacket(new CreateSuccess
@@ -104,6 +105,8 @@ public class ConnectManager
         else {
             client.SendFailure("Failed to load character");
         }
+
+        client.Reconnecting = false;
     }
 
 

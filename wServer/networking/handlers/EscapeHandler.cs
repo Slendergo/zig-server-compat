@@ -1,6 +1,5 @@
 ﻿using wServer.networking.packets;
 using wServer.networking.packets.incoming;
-using wServer.networking.packets.outgoing;
 using wServer.realm.worlds;
 
 namespace wServer.networking.handlers;

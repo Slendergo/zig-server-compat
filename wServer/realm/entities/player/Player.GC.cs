@@ -1,8 +1,4 @@
-﻿using common.resources;
-using NLog;
-using System.Collections.Concurrent;
-
-namespace wServer.realm.entities;
+﻿namespace wServer.realm.entities;
 
 partial class Player
 {
@@ -10,6 +6,15 @@ partial class Player
 
     public void CleanupReconnect()
     {
+        _clientEntities.Dispose();
+        _clientStatic.Clear();
+        _newObjects = null;
+        _newStatics.Clear();
+        _removedObjects = null;
+        _statUpdates.Clear();
+        _tiles = null;
+        _updateStatuses = null;
+
         TickId = 0;
         _pingTime = -1;
         _pongTime = -1;

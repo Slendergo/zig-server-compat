@@ -218,7 +218,7 @@ public class Server
             (_clientPool.Pop()).BeginHandling(acceptEventArgs.AcceptSocket);
 
         }
-        catch (Exception e)
+        catch
         {
             Console.WriteLine("FAILED TO BEGIN CLIENT HANDLING");
         }
