@@ -145,7 +145,8 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
     {
         stats[StatsType.Name] = Name;
         stats[StatsType.Size] = Size;
-        stats[StatsType.AltTextureIndex] = AltTextureIndex;
+        if(AltTextureIndex != -1)
+            stats[StatsType.AltTextureIndex] = AltTextureIndex;
         stats[StatsType.Effects] = _conditionEffects1.GetValue();
     }
 

@@ -67,7 +67,7 @@ public abstract class SellableObject : StaticObject
     protected override void ExportStats(IDictionary<StatsType, object> stats)
     {
         stats[StatsType.SellablePrice] = Price;
-        stats[StatsType.SellablePriceCurrency] = (int)Currency;
+        stats[StatsType.SellablePriceCurrency] = Currency;
         stats[StatsType.SellableRankRequirement] = RankReq;
         base.ExportStats(stats);
     }

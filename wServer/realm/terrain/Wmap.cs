@@ -84,53 +84,53 @@ public class WmapTile
     public ObjectDef ToDef(int x, int y)
     {
         var stats = new List<KeyValuePair<StatsType, object>>();
-        if (!string.IsNullOrEmpty(ObjCfg))
-            foreach (var item in ObjCfg.Split(';'))
-            {
-                var kv = item.Split(':');
-                switch (kv[0])
-                {
-                    case "hp":
-                        var hp = Utils.GetInt(kv[1]);
-                        stats.Add(new KeyValuePair<StatsType, object>(StatsType.HP, hp));
-                        stats.Add(new KeyValuePair<StatsType, object>(StatsType.MaximumHP, hp));
-                        break;
-                    case "name":
-                        stats.Add(new KeyValuePair<StatsType, object>(StatsType.Name, kv[1]));
-                        break;
-                    case "size":
-                        stats.Add(new KeyValuePair<StatsType, object>(StatsType.Size, Math.Min(500, Utils.GetInt(kv[1]))));
-                        break;
-                    case "eff":
-                        stats.Add(new KeyValuePair<StatsType, object>(StatsType.Effects, Utils.GetInt(kv[1])));
-                        break;
-                    case "conn":
-                        stats.Add(new KeyValuePair<StatsType, object>(StatsType.ObjectConnection, Utils.GetInt(kv[1])));
-                        break;
-                    case "mtype":
-                        stats.Add(new KeyValuePair<StatsType, object>(StatsType.MerchantMerchandiseType, Utils.GetInt(kv[1])));
-                        break;
-                    case "mcost":
-                        stats.Add(new KeyValuePair<StatsType, object>(StatsType.SellablePrice, Math.Max(0, Utils.GetInt(kv[1]))));
-                        break;
-                    case "mcur":
-                        stats.Add(new KeyValuePair<StatsType, object>(StatsType.SellablePriceCurrency, Utils.GetInt(kv[1])));
-                        break;
-                    case "mamnt":
-                        stats.Add(new KeyValuePair<StatsType, object>(StatsType.MerchantRemainingCount, Utils.GetInt(kv[1])));
-                        break;
-                    case "mtime":
-                        stats.Add(new KeyValuePair<StatsType, object>(StatsType.MerchantRemainingMinute, Utils.GetInt(kv[1])));
-                        break;
-                    case "mdisc":
-                        stats.Add(new KeyValuePair<StatsType, object>(StatsType.MerchantDiscount, Utils.GetInt(kv[1])));
-                        break;
-                    case "mrank":
-                    case "stars":
-                        stats.Add(new KeyValuePair<StatsType, object>(StatsType.SellableRankRequirement, Utils.GetInt(kv[1])));
-                        break;
-                }
-            }
+        //if (!string.IsNullOrEmpty(ObjCfg))
+        //    foreach (var item in ObjCfg.Split(';'))
+        //    {
+        //        var kv = item.Split(':');
+        //        switch (kv[0])
+        //        {
+        //            case "hp":
+        //                var hp = Utils.GetInt(kv[1]);
+        //                stats.Add(new KeyValuePair<StatsType, object>(StatsType.HP, hp));
+        //                stats.Add(new KeyValuePair<StatsType, object>(StatsType.MaximumHP, hp));
+        //                break;
+        //            case "name":
+        //                stats.Add(new KeyValuePair<StatsType, object>(StatsType.Name, kv[1]));
+        //                break;
+        //            case "size":
+        //                stats.Add(new KeyValuePair<StatsType, object>(StatsType.Size, Math.Min(500, Utils.GetInt(kv[1]))));
+        //                break;
+        //            case "eff":
+        //                stats.Add(new KeyValuePair<StatsType, object>(StatsType.Effects, Utils.GetInt(kv[1])));
+        //                break;
+        //            case "conn":
+        //                stats.Add(new KeyValuePair<StatsType, object>(StatsType.ObjectConnection, Utils.GetInt(kv[1])));
+        //                break;
+        //            case "mtype":
+        //                stats.Add(new KeyValuePair<StatsType, object>(StatsType.MerchantMerchandiseType, Utils.GetInt(kv[1])));
+        //                break;
+        //            case "mcost":
+        //                stats.Add(new KeyValuePair<StatsType, object>(StatsType.SellablePrice, Math.Max(0, Utils.GetInt(kv[1]))));
+        //                break;
+        //            case "mcur":
+        //                stats.Add(new KeyValuePair<StatsType, object>(StatsType.SellablePriceCurrency, Utils.GetInt(kv[1])));
+        //                break;
+        //            case "mamnt":
+        //                stats.Add(new KeyValuePair<StatsType, object>(StatsType.MerchantRemainingCount, Utils.GetInt(kv[1])));
+        //                break;
+        //            case "mtime":
+        //                stats.Add(new KeyValuePair<StatsType, object>(StatsType.MerchantRemainingMinute, Utils.GetInt(kv[1])));
+        //                break;
+        //            case "mdisc":
+        //                stats.Add(new KeyValuePair<StatsType, object>(StatsType.MerchantDiscount, Utils.GetInt(kv[1])));
+        //                break;
+        //            case "mrank":
+        //            case "stars":
+        //                stats.Add(new KeyValuePair<StatsType, object>(StatsType.SellableRankRequirement, Utils.GetInt(kv[1])));
+        //                break;
+        //        }
+        //    }
         return new ObjectDef()
         {
             ObjectType = ObjType,

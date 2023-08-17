@@ -232,7 +232,7 @@ public partial class Player : Character, IContainer, IPlayer
         stats[StatsType.WisdomBonus] = Stats.Boost[7];
         stats[StatsType.HealthStackCount] = HealthPots.Count;
         stats[StatsType.MagicStackCount] = MagicPots.Count;
-        stats[StatsType.HasBackpack] = (HasBackpack) ? 1 : 0;
+        stats[StatsType.HasBackpack] = HasBackpack;
         stats[StatsType.OxygenBar] = OxygenBar;
     }
 

@@ -1,4 +1,5 @@
 ﻿using common;
+using common.resources;
 using wServer.realm;
 
 namespace wServer;
@@ -277,7 +278,6 @@ public struct ObjectDef
 
 public struct ObjectStats
 {
-    public ushort ObjectType;
     public int Id;
     public Position Position;
     public KeyValuePair<StatsType, object>[] Stats;
@@ -285,7 +285,6 @@ public struct ObjectStats
     public static ObjectStats Read(NReader rdr)
     {
         ObjectStats ret = new ObjectStats();
-        ret.ObjectType = rdr.ReadUInt16();
         ret.Id = rdr.ReadInt32();
         ret.Position = Position.Read(rdr);
         ret.Stats = new KeyValuePair<StatsType, object>[rdr.ReadInt16()];
@@ -303,16 +302,22 @@ public struct ObjectStats
 
     public void Write(NWriter wtr)
     {
-        wtr.Write(ObjectType);
         wtr.Write(Id);
         Position.Write(wtr);
 
-        wtr.Write((short)Stats.Length);
+        wtr.Write((ushort)Stats.Length);
         foreach (var i in Stats)
         {
             wtr.Write((byte)i.Key);
             switch (i.Value)
             {
+                //hack
+                case CurrencyType value:
+                    wtr.Write((byte)value);
+                    continue;
+                case byte value:
+                    wtr.Write(value);
+                    continue;
                 case bool value:
                     wtr.Write(value);
                     continue;
