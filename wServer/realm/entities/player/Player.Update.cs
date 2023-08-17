@@ -124,8 +124,6 @@ public partial class Player
 
     private void SendUpdate(RealmTime time)
     {
-        Console.WriteLine($"UPDATE");
-
         // init sight circle
         var sCircle = Sight.GetSightCircle(Owner.Blocking);
 

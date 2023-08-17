@@ -185,8 +185,6 @@ public partial class Player
 
     public void MoveReceived(RealmTime time, Move pkt)
     {
-        Console.WriteLine("MoveReceived");
-
         if (!_move.TryDequeue(out var tickId))
         {
             _client.Disconnect("One too many MovePackets");
