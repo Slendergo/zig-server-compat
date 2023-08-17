@@ -89,7 +89,7 @@ public class RealmManager
         MerchantLists.Init(this);
 
         InitializeNexusHub();
-        AddWorld("Realm");
+        //AddWorld("Realm");
 
         // add portal monitor to nexus and initialize worlds
         if (Worlds.ContainsKey(World.Nexus))

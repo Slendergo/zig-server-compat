@@ -14,7 +14,7 @@ public enum ItemType
     None
 }
 
-public enum CurrencyType
+public enum CurrencyType : byte
 {
     Gold = 0,
     Fame = 1,
