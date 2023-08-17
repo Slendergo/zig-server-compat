@@ -1,4 +1,6 @@
-﻿namespace wServer.realm;
+﻿using wServer.realm.entities;
+
+namespace wServer.realm;
 
 public class CollisionNode<T> where T : ICollidable<T>
 {
@@ -141,6 +143,9 @@ public class CollisionMap<T> where T : ICollidable<T>
             chunks[x, y] = obj.CollisionNode.Remove();
         else
             obj.CollisionNode.Remove();
+
+        obj.Parent = null;
+        obj.CollisionNode = null;
     }
 
     public IEnumerable<T> HitTest(Position pos, double radius)

@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using common;
+﻿using common;
 using NLog;
 using wServer.networking;
 using wServer.networking.packets.incoming;
@@ -7,7 +6,6 @@ using wServer.networking.packets.outgoing;
 using wServer.realm.entities;
 using wServer.realm.worlds;
 using wServer.realm.worlds.logic;
-using File = System.IO.File;
 
 namespace wServer.realm;
 
@@ -31,7 +29,8 @@ public class ConnectManager
         return _manager.Clients.Count;
     }
     
-    public static void Reconnect(Client client, int gameId) {
+    public static void Reconnect(Client client, int gameId) 
+    {
         var player = client.Player;
         var currentWorld = client.Player.Owner;
 
@@ -85,12 +84,14 @@ public class ConnectManager
             AccountListId = 1, // ignore list
             AccountIds = client.Account.IgnoreList
         });
+
         if (client.Character != null) {
             if (client.Character.Dead) {
                 client.SendFailure("Character is dead");
                 return;
             }
 
+            player.CleanupReconnect();
             currentWorld.LeaveWorld(player);
             // dispose update
             var objectId = world.EnterWorld(player, true);

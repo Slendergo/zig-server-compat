@@ -377,16 +377,16 @@ public class World
     {
         if (entity is Player)
         {
-            Player dummy;
-            Players.TryRemove(entity.Id, out dummy);
+            Player player;
+            Players.TryRemove(entity.Id, out player);
             PlayersCollision.Remove(entity);
 
             // if in trade, cancel it...
-            if (dummy.tradeTarget != null)
-                dummy.CancelTrade();
+            if (player.tradeTarget != null)
+                player.CancelTrade();
 
-            if (dummy.Pet != null)
-                LeaveWorld(dummy.Pet);
+            if (player.Pet != null)
+                LeaveWorld(player.Pet);
         }
         else if (entity is Enemy)
         {
