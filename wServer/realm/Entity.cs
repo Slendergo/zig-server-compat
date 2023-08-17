@@ -27,7 +27,7 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
 
     private readonly Position[] _posHistory;
     private byte _posIdx;
-    private readonly int[] _effects;
+    private int[] EffectDuration;
     private bool _tickingEffects;
 
     private readonly ObjectDesc _desc;
@@ -42,8 +42,7 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
     private readonly SV<int> _altTextureIndex;
     private readonly SV<float> _x;
     private readonly SV<float> _y;
-    private readonly SV<int> _conditionEffects1;
-    private readonly SV<int> _conditionEffects2;
+    private readonly SV<ulong> _conditionEffects1;
     private ConditionEffects _conditionEffects;
 
     public string Name
@@ -67,7 +66,7 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
         set
         {
             _conditionEffects = value;
-            _conditionEffects1?.SetValue((int)value);
+            _conditionEffects1?.SetValue((ulong)value);
         }
     }
 
@@ -111,7 +110,7 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
         _altTextureIndex = new SV<int>(this, StatsType.AltTextureIndex, -1);
         _x = new SV<float>(this, StatsType.None, 0);
         _y = new SV<float>(this, StatsType.None, 0);
-        _conditionEffects1 = new SV<int>(this, StatsType.Effects, 0);
+        _conditionEffects1 = new SV<ulong>(this, StatsType.Effects, 0);
 
         ObjectType = objType;
         Manager = manager;
@@ -124,20 +123,20 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
         {
             _posHistory = new Position[256];
             _projectiles = new Projectile[256];
-            _effects = new int[EffectCount];
+            EffectDuration = new int[EffectCount];
             return;
         }
 
         if (_desc.Enemy && !_desc.Static)
         {
             _projectiles = new Projectile[256];
-            _effects = new int[EffectCount];
+            EffectDuration = new int[EffectCount];
             return;
         }
 
         if (_desc.Character)
         {
-            _effects = new int[EffectCount];
+            EffectDuration = new int[EffectCount];
             return;
         }
     }
@@ -189,7 +188,7 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
         }
         if (_posHistory != null)
             _posHistory[++_posIdx] = new Position() { X = X, Y = Y };
-        if (_effects != null)
+        if (EffectDuration != null)
             ProcessConditionEffects(time);
     }
 
@@ -626,26 +625,26 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
 
     void ProcessConditionEffects(RealmTime time)
     {
-        if (_effects == null || !_tickingEffects) return;
+        if (EffectDuration == null || !_tickingEffects) return;
 
         ConditionEffects newEffects = 0;
         _tickingEffects = false;
-        for (int i = 0; i < _effects.Length; i++)
+        for (int i = 0; i < EffectDuration.Length; i++)
         {
-            if (_effects[i] > 0)
+            if (EffectDuration[i] > 0)
             {
-                _effects[i] -= time.ElaspedMsDelta;
-                if (_effects[i] > 0)
+                EffectDuration[i] -= time.ElaspedMsDelta;
+                if (EffectDuration[i] > 0)
                 {
                     newEffects |= (ConditionEffects)((ulong)1 << i);
                     _tickingEffects = true;
                 }
                 else
                 {
-                    _effects[i] = 0;
+                    EffectDuration[i] = 0;
                 }
             }
-            else if (_effects[i] == -1)
+            else if (EffectDuration[i] == -1)
             {
                 newEffects |= (ConditionEffects)((ulong)1 << i);
             }
@@ -669,7 +668,7 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
 
             var eff = (int)i.Effect;
 
-            _effects[eff] = i.DurationMS;
+            EffectDuration[eff] = i.DurationMS;
             if (i.DurationMS != 0)
                 ConditionEffects |= (ConditionEffects)((ulong)1 << eff);
         }
@@ -684,7 +683,7 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
 
         var eff = (int)effect;
 
-        _effects[eff] = durationMs;
+        EffectDuration[eff] = durationMs;
         if (durationMs != 0)
             ConditionEffects |= (ConditionEffects)((ulong)1 << eff);
 

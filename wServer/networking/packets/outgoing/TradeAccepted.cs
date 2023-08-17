@@ -23,10 +23,10 @@ public class TradeAccepted : OutgoingMessage
 
     protected override void Write(NWriter wtr)
     {
-        wtr.Write((short)MyOffer.Length);
+        wtr.Write((ushort)MyOffer.Length);
         foreach (var i in MyOffer)
             wtr.Write(i);
-        wtr.Write((short)YourOffer.Length);
+        wtr.Write((ushort)YourOffer.Length);
         foreach (var i in YourOffer)
             wtr.Write(i);
     }

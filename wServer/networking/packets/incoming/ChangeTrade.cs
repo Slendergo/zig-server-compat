@@ -18,7 +18,7 @@ public class ChangeTrade : IncomingMessage
 
     protected override void Write(NWriter wtr)
     {
-        wtr.Write((short)Offer.Length);
+        wtr.Write((ushort)Offer.Length);
         foreach (var i in Offer)
             wtr.Write(i);
     }

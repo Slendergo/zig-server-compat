@@ -311,22 +311,30 @@ public struct ObjectStats
         foreach (var i in Stats)
         {
             wtr.Write((byte)i.Key);
-
             switch (i.Value)
             {
-                case int value:
+                case bool value:
                     wtr.Write(value);
                     continue;
-                case string value:
-                    wtr.WriteUTF(value);
-                    continue;
-                case bool value:
+                case short value:
                     wtr.Write(value);
                     continue;
                 case ushort value:
                     wtr.Write(value);
                     continue;
+                case int value:
+                    wtr.Write(value);
+                    continue;
                 case uint value:
+                    wtr.Write(value);
+                    continue;
+                case string value:
+                    wtr.WriteUTF(value);
+                    continue;
+                case long value:
+                    wtr.Write(value);
+                    continue;
+                case ulong value:
                     wtr.Write(value);
                     continue;
                 default:

@@ -11,9 +11,7 @@ public class NWriter : BinaryWriter
     public void WriteUTF(string str)
     {
         if (str == null)
-        {
-            Write((short)0);
-        }
+            Write((ushort)0);
         else
         {
             var bytes = Encoding.UTF8.GetBytes(str);

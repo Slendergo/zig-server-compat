@@ -13,7 +13,6 @@ public class MapInfo : OutgoingMessage
     public int Background { get; set; }
     public bool AllowPlayerTeleport { get; set; }
     public bool ShowDisplays { get; set; }
-    
     public int BackgroundLightColor { get; set; }
     public float BackgroundLightIntensity { get; set; }
     public float DayLightIntensity { get; set; }

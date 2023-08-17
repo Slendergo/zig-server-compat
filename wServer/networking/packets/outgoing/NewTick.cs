@@ -26,7 +26,7 @@ public class NewTick : OutgoingMessage
         wtr.Write(TickId);
         wtr.Write(TickTime);
 
-        wtr.Write((short)Statuses.Length);
+        wtr.Write((ushort)Statuses.Length);
         foreach (var i in Statuses)
             i.Write(wtr);
     }

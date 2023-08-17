@@ -26,7 +26,7 @@ public class Move : IncomingMessage
         wtr.Write(TickId);
         wtr.Write(Time);
         NewPosition.Write(wtr);
-        wtr.Write((short)Records.Length);
+        wtr.Write((ushort)Records.Length);
         foreach (var i in Records)
             i.Write(wtr);
     }

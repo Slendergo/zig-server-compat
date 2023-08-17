@@ -9,7 +9,7 @@ public class Update : OutgoingMessage
     {
         public short X;
         public short Y;
-        public Tile Tile;
+        public ushort Tile;
     }
 
     public TileData[] Tiles { get; set; }
@@ -21,24 +21,6 @@ public class Update : OutgoingMessage
 
     protected override void Read(NReader rdr)
     {
-        Tiles = new TileData[rdr.ReadInt16()];
-        for (var i = 0; i < Tiles.Length; i++)
-        {
-            Tiles[i] = new TileData()
-            {
-                X = rdr.ReadInt16(),
-                Y = rdr.ReadInt16(),
-                Tile = (Tile)rdr.ReadUInt16(),
-            };
-        }
-
-        Drops = new int[rdr.ReadInt16()];
-        for (var i = 0; i < Drops.Length; i++)
-            Drops[i] = rdr.ReadInt32();
-        
-        NewObjs = new ObjectDef[rdr.ReadInt16()];
-        for (var i = 0; i < NewObjs.Length; i++)
-            NewObjs[i] = ObjectDef.Read(rdr);
     }
 
     protected override void Write(NWriter wtr)
@@ -48,14 +30,14 @@ public class Update : OutgoingMessage
         {
             wtr.Write(i.X);
             wtr.Write(i.Y);
-            wtr.Write((ushort)i.Tile);
+            wtr.Write(i.Tile);
         }
-        wtr.Write((short)Drops.Length);
+        wtr.Write((ushort)Drops.Length);
         foreach (var i in Drops)
         {
             wtr.Write(i);
         }
-        wtr.Write((short)NewObjs.Length);
+        wtr.Write((ushort)NewObjs.Length);
         foreach (var i in NewObjs)
         {
             i.Write(wtr);

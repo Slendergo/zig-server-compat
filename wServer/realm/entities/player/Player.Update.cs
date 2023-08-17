@@ -141,7 +141,7 @@ public partial class Player
             {
                 X = (short)x,
                 Y = (short)y,
-                Tile = (Tile)tile.TileId
+                Tile = tile.TileId
             });
             tiles[x, y] = tile.UpdateCount;
         }
