@@ -6,7 +6,7 @@ public class ServerPlayerShoot : OutgoingMessage
 {
     public byte BulletId { get; set; }
     public int OwnerId { get; set; }
-    public int ContainerType { get; set; }
+    public ushort ContainerType { get; set; }
     public Position StartingPos { get; set; }
     public float Angle { get; set; }
     public short Damage { get; set; }
@@ -18,7 +18,7 @@ public class ServerPlayerShoot : OutgoingMessage
     {
         BulletId = rdr.ReadByte();
         OwnerId = rdr.ReadInt32();
-        ContainerType = rdr.ReadInt16();
+        ContainerType = rdr.ReadUInt16();
         StartingPos = Position.Read(rdr);
         Angle = rdr.ReadSingle();
         Damage = rdr.ReadInt16();
@@ -27,7 +27,7 @@ public class ServerPlayerShoot : OutgoingMessage
     {
         wtr.Write(BulletId);
         wtr.Write(OwnerId);
-        wtr.Write((short)ContainerType);
+        wtr.Write(ContainerType);
         StartingPos.Write(wtr);
         wtr.Write(Angle);
         wtr.Write(Damage);
