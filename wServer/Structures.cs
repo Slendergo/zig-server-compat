@@ -183,20 +183,20 @@ public struct ObjectSlot
 {
     public int ObjectId;
     public byte SlotId;
-    public int ObjectType;
+    public ushort ObjectType;
     public static ObjectSlot Read(NReader rdr)
     {
         ObjectSlot ret = new ObjectSlot();
         ret.ObjectId = rdr.ReadInt32();
         ret.SlotId = rdr.ReadByte();
-        ret.ObjectType = rdr.ReadInt16();
+        ret.ObjectType = rdr.ReadUInt16();
         return ret;
     }
     public void Write(NWriter wtr)
     {
         wtr.Write(ObjectId);
         wtr.Write(SlotId);
-        wtr.Write((short)ObjectType);
+        wtr.Write(ObjectType);
     }
 
     public override string ToString()
