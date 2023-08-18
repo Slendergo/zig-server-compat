@@ -6,5 +6,9 @@
     "sbName": "Realm",
     "difficulty": -1,
     "background": 0,
-    "maps": [ "world1.wmap", "world2.wmap", "world3.wmap" ]
+    "maps": [ "world1.wmap", "world2.wmap", "world3.wmap" ],
+    "bgLightColor": 0,
+	"bgLightIntensity": 0.15,
+	"dayLightIntensity": 0.1,
+	"nightLightIntensity": 0.4,
 }

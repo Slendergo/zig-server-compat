@@ -10,5 +10,9 @@
     "showDisplays": true,
     "portals": [ 1821 ],
     "music": [ "" ],
-    "maps": [ "nexus.wmap" ]
+    "maps": [ "nexus.wmap" ],
+	"bgLightColor": 0,
+	"bgLightIntensity": 0.15,
+	"dayLightIntensity": 0.1,
+	"nightLightIntensity": 0.4,
 }

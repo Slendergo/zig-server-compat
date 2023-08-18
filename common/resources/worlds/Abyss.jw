@@ -10,5 +10,7 @@
     "restrictTp": false,
     "showDisplays": false,
     "portals": [ 1819 ],
-    "maps": []
+    "maps": [],
+	"bgLightColor": 0,
+	"bgLightIntensity": 0.55,
 }

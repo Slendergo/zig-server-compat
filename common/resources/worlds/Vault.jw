@@ -7,5 +7,9 @@
     "background": 0,
     "restrictTp": false,
     "showDisplays": false,
-    "portals": [ 0x0720 ]
+    "portals": [ 0x0720 ],
+    "bgLightColor": 0,
+	"bgLightIntensity": 0.15,
+	"dayLightIntensity": 0.1,
+	"nightLightIntensity": 0.4,
 }

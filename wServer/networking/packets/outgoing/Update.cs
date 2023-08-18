@@ -25,7 +25,7 @@ public class Update : OutgoingMessage
 
     protected override void Write(NWriter wtr)
     {
-        wtr.Write((short)Tiles.Length);
+        wtr.Write((ushort)Tiles.Length);
         foreach (var i in Tiles)
         {
             wtr.Write(i.X);

@@ -10,5 +10,7 @@
     "restrictTp": true,
     "showDisplays": false,
     "portals": [ 0x072f ],
-    "maps": [ "GuildHall0.wmap", "GuildHall1.wmap", "GuildHall2.wmap", "GuildHall3.wmap" ]
+    "maps": [ "GuildHall0.wmap", "GuildHall1.wmap", "GuildHall2.wmap", "GuildHall3.wmap" ],
+    "bgLightColor": 0,
+	"bgLightIntensity": 0.1,
 }
