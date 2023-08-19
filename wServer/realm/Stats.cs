@@ -61,7 +61,7 @@ public enum StatsType : byte
     Fame = 57,
     FameGoal = 58,
     Glow = 59,
-    SinkOffset = 60,
+    SinkLevel = 60,
     AltTextureIndex = 61,
     Guild = 62,
     GuildRank = 63,
