@@ -80,9 +80,7 @@ partial class Player
     private static readonly Logger CheatLog = LogManager.GetCurrentClassLogger();
     private const float MaxTimeDiff = 1.08f;
     private const float MinTimeDiff = 0.92f;
-    private readonly TimeCop _time = new();
-    private int _shotsLeft;
-    private int _lastShootTime;
+    private int Shots;
 
     private int LastAttackTime = -1;
 
@@ -93,37 +91,21 @@ partial class Player
 
         //start
 
-        // this should stop COOLDOWN_ACTIVE Issues
-        var attackPeriod = (int)(1.0 / Stats.GetAttackFrequency() * 1.0 / item.RateOfFire) - 1;
-        if (time < LastAttackTime + attackPeriod)
-            return PlayerShootStatus.COOLDOWN_STILL_ACTIVE;
-        LastAttackTime = time;
-
-        //end
-
-        if (time != _lastShootTime)
+        if (time == LastAttackTime)
         {
-            _lastShootTime = time;
-
-            if (_shotsLeft != 0 && _shotsLeft < item.NumProjectiles)
-            {
-                _shotsLeft = 0;
-                _time.Push(time, Environment.TickCount);
+            if (++Shots > item.NumProjectiles)
                 return PlayerShootStatus.NUM_PROJECTILE_MISMATCH;
-            }
-            _shotsLeft = 0;
+        }
+        else
+        {
+            var attackPeriod = (int)(1.0 / Stats.GetAttackFrequency() * 1.0 / item.RateOfFire);
+            if (time < LastAttackTime + attackPeriod)
+                return PlayerShootStatus.COOLDOWN_STILL_ACTIVE;
+            LastAttackTime = time;
+            Shots = 1;
         }
 
-        _shotsLeft++;
-        if (_shotsLeft >= item.NumProjectiles)
-            _time.Push(time, Environment.TickCount);
-
-        var timeDiff = _time.TimeDiff();
-        //Log.Info($"timeDiff: {timeDiff}");
-        if (timeDiff < MinTimeDiff)
-            return PlayerShootStatus.CLIENT_TOO_SLOW;
-        if (timeDiff > MaxTimeDiff)
-            return PlayerShootStatus.CLIENT_TOO_FAST;
+        //end
 
         return PlayerShootStatus.OK;
     }
