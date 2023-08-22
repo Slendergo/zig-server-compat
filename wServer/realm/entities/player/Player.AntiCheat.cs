@@ -84,14 +84,22 @@ partial class Player
     private int _shotsLeft;
     private int _lastShootTime;
 
+    private int LastAttackTime = -1;
+
     public PlayerShootStatus ValidatePlayerShoot(Item item, int time)
     {
         if (item != Inventory[0])
             return PlayerShootStatus.ITEM_MISMATCH;
 
-        var dt = (int)(1 / Stats.GetAttackFrequency() * 1 / item.RateOfFire);
-        if (time < _time.LastClientTime() + dt)
+        //start
+
+        // this should stop COOLDOWN_ACTIVE Issues
+        var attackPeriod = (int)(1.0 / Stats.GetAttackFrequency() * 1.0 / item.RateOfFire) - 1;
+        if (time < LastAttackTime + attackPeriod)
             return PlayerShootStatus.COOLDOWN_STILL_ACTIVE;
+        LastAttackTime = time;
+
+        //end
 
         if (time != _lastShootTime)
         {

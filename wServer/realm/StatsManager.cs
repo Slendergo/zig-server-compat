@@ -72,12 +72,9 @@ public class StatsManager
     {
         if (Owner.HasConditionEffect(ConditionEffects.Dazed))
             return MinAttackFreq;
-
-        var rof = MinAttackFreq + (this[5] / 75f) * (MaxAttackFreq - MinAttackFreq);
-
+        var rof = MinAttackFreq + (this[5] / 75.0f) * (MaxAttackFreq - MinAttackFreq);
         if (Owner.HasConditionEffect(ConditionEffects.Berserk))
             rof *= 1.5f;
-
         return rof;
     }
 
