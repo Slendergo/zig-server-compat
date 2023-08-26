@@ -90,6 +90,7 @@ public class RealmManager
         MerchantLists.Init(this);
 
         var nexus = CreateNewWorld("Nexus");
+
         Monitor = new PortalMonitor(this, nexus);
 
         CreateNewRealm();

@@ -40,7 +40,7 @@ public class World
     public int Background { get; protected set; }
     public bool AllowTeleport { get; protected set; }
     public bool ShowDisplays { get; protected set; }
-    public bool Persist { get; protected set; }
+    public bool Persists { get; protected set; }
     public VisibilityType VisibilityType { get; protected set; }
 
     public int BgLightColor { get; protected set; }
@@ -80,7 +80,7 @@ public class World
         DisplayName = template.DisplayName;
         Difficulty = template.Difficulty;
         Background = template.Background;
-        Persist = template.Persist;
+        Persists = template.Persists;
         MaxPlayers = template.MaxPlayers;
         AllowTeleport = !template.DisableTeleport;
         ShowDisplays = template.ShowDisplays;
@@ -505,7 +505,7 @@ public class World
 
     public void QuakeToWorld(World newWorld)
     {
-        if (!Persist || this is RealmOfTheMadGod)
+        if (!Persists || this is RealmOfTheMadGod)
             Closed = true;
 
         BroadcastPacket(new ShowEffect
@@ -525,7 +525,7 @@ public class World
             }
         }));
 
-        if (!Persist)
+        if (!Persists)
             Timers.Add(new WorldTimer(20000, (w2, t2) =>
             {
                 // to ensure people get kicked out of world
@@ -561,7 +561,7 @@ public class World
         {
             _elapsedTime += time.ElaspedMsDelta;
 
-            if (!Persist && _elapsedTime > 60000 && Players.Count <= 0)
+            if (!Persists && _elapsedTime > 60000 && Players.Count <= 0)
             {
                 Delete();
                 return;

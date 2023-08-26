@@ -24,7 +24,7 @@ public sealed class WorldTemplateData
     public string IdName;
     public string DisplayName;
     public int Difficulty;
-    public bool Persist;
+    public bool Persists;
     public bool Instanced;
     public bool DisableTeleport;
     public bool ShowDisplays;
@@ -50,7 +50,7 @@ public sealed class WorldTemplateData
         DisplayName = e.GetAttribute("displayName", IdName);
         Difficulty = e.GetAttribute("difficulty", -1);
         Instanced = e.GetAttribute("instanced", "false") == "true";
-        Persist = e.GetAttribute("persist", "false") == "true"; 
+        Persists = e.GetAttribute("persists", "false") == "true"; 
         DisableTeleport = e.GetAttribute("disableTeleport", "false") == "true";
         ShowDisplays = e.GetAttribute("showDisplays", "false") == "true";
         VisibilityType = Enum.Parse<VisibilityType>(e.GetAttribute("visibilityType", "full"), true);

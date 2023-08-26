@@ -162,7 +162,7 @@ public class ConnectManager
 
         if (!world.AllowedAccess(client))
         {
-            if (!world.Persist && world.TotalConnects <= 0)
+            if (!world.Persists && world.TotalConnects <= 0)
                 client.Manager.RemoveWorld(world);
 
             client.SendPacket(new Text
