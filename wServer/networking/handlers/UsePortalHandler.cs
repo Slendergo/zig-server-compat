@@ -26,40 +26,10 @@ class UsePortalHandler : PacketHandlerBase<UsePortal>
             return;
 
         var entity = player.Owner.GetEntity(packet.ObjectId);
-        if (entity == null) return;
-
-        if (entity is GuildHallPortal)
-        {
-            HandleGuildPortal(player, entity as GuildHallPortal);
+        if (entity == null)
             return;
-        }
 
         HandlePortal(player, entity as Portal);
-    }
-
-    private void HandleGuildPortal(Player player, GuildHallPortal portal)
-    {
-        if (string.IsNullOrEmpty(player.Guild))
-        {
-            player.SendError("You are not in a guild.");
-            return;
-        }
-
-        if (portal.ObjectType == 0x072f)
-        {
-            World world = null;
-            foreach (var w in portal.Manager.Worlds.Values)
-            {
-                if (w is not GuildHall || (w as GuildHall).GuildId != player.Client.Account.GuildId)
-                    continue;
-                world = w;
-            }
-            world ??= portal.Manager.CreateNewWorld("Guild Hall", player.Client);
-            player.Client.Reconnect(world.IdName, world.Id);
-            return;
-        }
-
-        player.SendInfo("Portal not implemented.");
     }
 
     private void HandlePortal(Player player, Portal portal)

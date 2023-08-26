@@ -86,7 +86,6 @@ namespace wServer.realm.worlds.parser
 #if DEBUG
             Console.WriteLine($"Caching: {map}");
 #endif
-            // load from proto cache because wack
             var path = $"{Program.Resources.ResourcePath}/worlds/{map}";
             if(!File.Exists(path))
                 return null;

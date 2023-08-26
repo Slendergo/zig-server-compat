@@ -8,6 +8,6 @@ class Hermit : ISetPiece
 
     public void RenderSetPiece(World world, IntPoint pos)
     {
-        SetPieces.RenderSetpiece(world, pos, "hermit.map");
+        SetPieces.RenderSetpiece(world, pos, "hermit.pmap");
     }
 }

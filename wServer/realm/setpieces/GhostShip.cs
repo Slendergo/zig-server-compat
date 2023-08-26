@@ -8,6 +8,6 @@ class GhostShip : ISetPiece
 
     public void RenderSetPiece(World world, IntPoint pos)
     {
-        SetPieces.RenderSetpiece(world, pos, "ghost_ship.map");
+        SetPieces.RenderSetpiece(world, pos, "ghost_ship.pmap");
     }
 }

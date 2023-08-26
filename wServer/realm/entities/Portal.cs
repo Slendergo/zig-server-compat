@@ -1,5 +1,7 @@
 ﻿using common;
+using common.resources;
 using wServer.realm.worlds;
+using wServer.realm.worlds.logic;
 
 namespace wServer.realm.entities;
 
@@ -55,9 +57,26 @@ public class Portal : StaticObject
         World world = null;
         foreach (var p in Program.Resources.GameData.WorldTemplates.Values.Where(p => p.Portals.Contains(ObjectId)))
         {
-            var w = player.Manager.CreateNewWorld(p, player.Client);
+            if(p.Specialized == SpeicalizedDungeonType.GuildHall)
+            {
+                if (string.IsNullOrEmpty(player.Guild))
+                {
+                    player.SendError("You are not in a guild.");
+                    return;
+                }
+
+                foreach (var w in Manager.Worlds.Values)
+                {
+                    if (w is not GuildHall || (w as GuildHall).GuildId != player.Client.Account.GuildId)
+                        continue;
+                    player.Client.Reconnect(w.IdName, w.Id);
+                    return;
+                }
+            }
+
+            var newWorld = player.Manager.CreateNewWorld(p, player.Client);
             if (!p.Instanced)
-                world = w;
+                world = newWorld;
             break;
         }
 

@@ -1,35 +1,35 @@
 ﻿<Worlds>
 	<World id="Tutorial" instanced="true" maxPlayers="1">
-		<Map files="nexus.map"/>
+		<Map files="tutorial.pmap"/>
 	</World>
 
 	<World id="Nexus" showDisplays="true" persists="true" maxPlayers="300" specialized="nexus">
 		<Music files="A.mp3;B.mp3"/>
-		<Map files="nexus.map"/>
+		<Map files="nexus.pmap"/>
 	</World>
 
 	<World id="Test" instanced="true" maxPlayers="1"/>
 
 	<World id="Vault" instanced="true" showDisplays="true" maxPlayers="1" specialized="vault">
-		<Map files="vault.map"/>
+		<Map files="vault.pmap"/>
 		<Portal idNames="Vault Portal"/>
 	</World>
 
 	<World id="Realm of the Mad God" persists="true" maxPlayers="85" specialized="realm">
-		<Map files="realm.map"/>
+		<Map files="realm.pmap"/>
 	</World>
 	
 	<World id="Oryx's Castle" specialized="oryxcastle">
-		<Map files="oryx_castle.map"/>
+		<Map files="oryxcastle.pmap"/>
 	</World>
 
 	<World id="Guild Hall" instanced="true" specialized="guildhall">
-		<Map files="GuildHall0.map,GuildHall1.map,GuildHall2.map,GuildHall3.map"/>
+		<Map files="guild/0.map,guild/1.map,guild/2.map,guild/3.map"/>
 		<Portal idNames="Guild Hall Portal"/>
 	</World>
 	
-	<World id="Sprite World" visibilityType="full">
-		<Map files="NexusA.map"/>
+	<World id="Sprite World">
+		<Map files="sprite_world.pmap"/>
 		<Portal idNames="Glowing Portal"/>
 	</World>
 </Worlds>

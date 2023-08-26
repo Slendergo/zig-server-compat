@@ -236,8 +236,7 @@ public class RealmManager
             OnWorldRemoved(world);
             return true;
         }
-        else
-            return false;
+        return false;
     }
 
     void OnWorldRemoved(World world)
