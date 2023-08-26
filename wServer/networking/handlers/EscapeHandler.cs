@@ -22,7 +22,7 @@ class EscapeHandler : PacketHandlerBase<Escape>
         var map = client.Player.Owner;
         if (map.Id == World.Nexus)
         {
-            client.Player.SendInfo("Already in Nexus!");
+            client.Disconnect();
             return;
         }
 
