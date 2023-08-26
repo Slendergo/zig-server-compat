@@ -330,81 +330,81 @@ partial class Player
 
     private void AEUnlockPortal(RealmTime time, Item item, Position target, ActivateEffect eff)
     {
-        var gameData = Manager.Resources.GameData;
+        //var gameData = Manager.Resources.GameData;
 
-        // find locked portal
-        var portals = Owner.StaticObjects.Values
-            .Where(s => s is Portal && s.ObjectDesc.ObjectId.Equals(eff.LockedName) && s.DistSqr(this) <= 9)
-            .Select(s => s as Portal);
-        if (!portals.Any())
-            return;
-        var portal = portals.Aggregate(
-            (curmin, x) => (curmin == null || x.DistSqr(this) < curmin.DistSqr(this) ? x : curmin));
-        if (portal == null)
-            return;
+        //// find locked portal
+        //var portals = Owner.StaticObjects.Values
+        //    .Where(s => s is Portal && s.ObjectDesc.ObjectId.Equals(eff.LockedName) && s.DistSqr(this) <= 9)
+        //    .Select(s => s as Portal);
+        //if (!portals.Any())
+        //    return;
+        //var portal = portals.Aggregate(
+        //    (curmin, x) => (curmin == null || x.DistSqr(this) < curmin.DistSqr(this) ? x : curmin));
+        //if (portal == null)
+        //    return;
 
-        // get proto of world
-        ProtoWorld proto;
-        if (!Manager.Resources.Worlds.Data.TryGetValue(eff.DungeonName, out proto))
-        {
-            Log.Error("Unable to unlock portal. \"" + eff.DungeonName + "\" does not exist.");
-            return;
-        }
+        //// get proto of world
+        //WorldTemplateData template;
+        //if (!Manager.Resources.Worlds.Data.TryGetValue(eff.DungeonName, out proto))
+        //{
+        //    Log.Error("Unable to unlock portal. \"" + eff.DungeonName + "\" does not exist.");
+        //    return;
+        //}
 
-        if (proto.portals == null || proto.portals.Length < 1)
-        {
-            Log.Error("World is not associated with any portals.");
-            return;
-        }
+        //if (proto.portals == null || proto.portals.Length < 1)
+        //{
+        //    Log.Error("World is not associated with any portals.");
+        //    return;
+        //}
 
-        // create portal of unlocked world
-        var portalType = (ushort)proto.portals[0];
-        var uPortal = Resolve(Manager, portalType) as Portal;
-        if (uPortal == null)
-        {
-            Log.Error("Error creating portal: {0}", portalType);
-            return;
-        }
+        //// create portal of unlocked world
+        //var portalType = (ushort)proto.portals[0];
+        //var uPortal = Resolve(Manager, portalType) as Portal;
+        //if (uPortal == null)
+        //{
+        //    Log.Error("Error creating portal: {0}", portalType);
+        //    return;
+        //}
 
-        var portalDesc = gameData.Portals[portal.ObjectType];
-        var uPortalDesc = gameData.Portals[portalType];
+        //var portalDesc = gameData.Portals[portal.ObjectType];
+        //var uPortalDesc = gameData.Portals[portalType];
 
-        // create world
-        World world;
-        if (proto.id < 0)
-            world = Manager.GetWorld(proto.id);
-        else
-        {
-            DynamicWorld.TryGetWorld(proto, Client, out world);
-            world = Manager.AddWorld(world ?? new World(proto));
-        }
-        uPortal.WorldInstance = world;
+        //// create world
+        //World world;
+        //if (proto.id < 0)
+        //    world = Manager.GetWorld(proto.id);
+        //else
+        //{
+        //    DynamicWorld.TryGetWorld(proto, Client, out world);
+        //    world = Manager.AddWorld(world ?? new World(template));
+        //}
+        //uPortal.WorldInstance = world;
 
-        // swap portals
-        if (!portalDesc.NexusPortal || !Manager.Monitor.RemovePortal(portal))
-            Owner.LeaveWorld(portal);
-        uPortal.Move(portal.X, portal.Y);
-        uPortal.Name = uPortalDesc.DisplayId;
-        var uPortalPos = new Position() { X = portal.X - .5f, Y = portal.Y - .5f };
-        if (!uPortalDesc.NexusPortal || !Manager.Monitor.AddPortal(world.Id, uPortal, uPortalPos))
-            Owner.EnterWorld(uPortal);
+        //// swap portals
+        //if (!portalDesc.NexusPortal || !Manager.Monitor.RemovePortal(portal))
+        //    Owner.LeaveWorld(portal);
+        //uPortal.Move(portal.X, portal.Y);
+        //uPortal.Name = uPortalDesc.DisplayId;
+        //var uPortalPos = new Position() { X = portal.X - .5f, Y = portal.Y - .5f };
+        //if (!uPortalDesc.NexusPortal || !Manager.Monitor.AddPortal(world.Id, uPortal, uPortalPos))
+        //    Owner.EnterWorld(uPortal);
 
-        // setup timeout
-        if (!uPortalDesc.NexusPortal)
-        {
-            var timeoutTime = gameData.Portals[portalType].Timeout;
-            Owner.Timers.Add(new WorldTimer(timeoutTime * 1000, (w, t) => w.LeaveWorld(uPortal)));
-        }
+        //// setup timeout
+        //if (!uPortalDesc.NexusPortal)
+        //{
+        //    var timeoutTime = gameData.Portals[portalType].Timeout;
+        //    Owner.Timers.Add(new WorldTimer(timeoutTime * 1000, (w, t) => w.LeaveWorld(uPortal)));
+        //}
 
-        // announce
-        Owner.BroadcastPacket(new Notification
-        {
-            Color = new ARGB(0xFF00FF00),
-            ObjectId = Id,
-            Message = "Unlocked by " + Name
-        }, null);
-        foreach (var player in Owner.Players.Values)
-            player.SendInfo(string.Format("{0} unlocked by {1}!", world.SBName, Name));
+        //// announce
+        //Owner.BroadcastPacket(new Notification
+        //{
+        //    Color = new ARGB(0xFF00FF00),
+        //    ObjectId = Id,
+        //    Message = "Unlocked by " + Name
+        //}, null);
+        //foreach (var player in Owner.Players.Values)
+        //    player.SendInfo(string.Format("{0} unlocked by {1}!", world.DispalyName, Name));
     }
     private void AEBulletNova(RealmTime time, Item item, Position target, ActivateEffect eff)
     {

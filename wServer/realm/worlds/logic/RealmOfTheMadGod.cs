@@ -6,7 +6,7 @@ using wServer.realm.setpieces;
 
 namespace wServer.realm.worlds.logic;
 
-public class Realm : World
+public class RealmOfTheMadGod : World
 {
     private static string[] _realmNames = 
     {
@@ -35,7 +35,8 @@ public class Realm : World
     private readonly int _mapId;
     private Task _overseerTask;
 
-    public Realm(ProtoWorld proto, Client client = null) : base(proto)
+    public RealmOfTheMadGod(RealmManager manager, WorldTemplateData template)
+        : base(manager, template)
     {
         _oryxPresent = true;
         _mapId = 1;
@@ -47,13 +48,15 @@ public class Realm : World
         return !Closed && base.AllowedAccess(client);
     }
 
-    protected override void Init()
+    public override void Init()
     {
-        Log.Info("Initializing Game World {0}({1}) from map {2}...", Id, Name, _mapId);
+        Log.Info("Initializing Game World {0}({1}) from map {2}...", Id, IdName, _mapId);
 
-        SBName = _realmNames[Environment.TickCount % _realmNames.Length];
-        FromWorldMap(new MemoryStream(Manager.Resources.Worlds["Realm"].wmap[_mapId - 1]));
-        SetPieces.ApplySetPieces(this);
+        DisplayName = _realmNames[Environment.TickCount % _realmNames.Length];
+
+        base.Init();
+        
+        //SetPieces.ApplySetPieces(this);
 
         if (_oryxPresent)
         {
@@ -73,7 +76,7 @@ public class Realm : World
 
         base.Tick(time);
 
-        if (IsLimbo || Deleted)
+        if (Deleted)
             return;
 
         if (_overseerTask == null || _overseerTask.IsCompleted)

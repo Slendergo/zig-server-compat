@@ -2,6 +2,7 @@
 using NLog;
 using wServer.realm.terrain;
 using wServer.realm.worlds;
+using wServer.realm.worlds.parser;
 
 namespace wServer.realm.setpieces;
 
@@ -90,7 +91,7 @@ partial class SetPieces
 
     public static void ApplySetPieces(World world)
     {
-        log.Info("Applying set pieces to world {0}({1}).", world.Id, world.Name);
+        log.Info("Applying set pieces to world {0}({1}).", world.Id, world.IdName);
 
         var map = world.Map;
         int w = map.Width, h = map.Height;
@@ -125,28 +126,15 @@ partial class SetPieces
         log.Info("Set pieces applied.");
     }
 
-    public static void RenderFromProto(World world, IntPoint pos, ProtoWorld proto)
+    public static void RenderSetpiece(World world, IntPoint pos, string map)
     {
-        var manager = world.Manager;
-
-        // get map stream
-        int map = 0;
-        if (proto.maps != null && proto.maps.Length > 1)
+        var mapData = MapParser.GetOrLoad(map);
+        if (mapData == null)
         {
-            var rnd = new Random();
-            map = rnd.Next(0, proto.maps.Length);
-        }
-            
-        // TODO: figure out whats wrong with this
-        if (proto.wmap[map] == null)
-        {
-            log.Error("Map {0} not found in proto.", map);
+            log.Error("MapData: {0} not found.", map);
             return;
         }
-            
-        var ms = new MemoryStream(proto.wmap[map]);
-        var sp = new Wmap(manager.Resources.GameData);
-        sp.Load(ms, 0);
-        sp.ProjectOntoWorld(world, pos);
+
+        // todo
     }
 }

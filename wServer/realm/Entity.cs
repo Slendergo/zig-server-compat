@@ -18,6 +18,7 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
     public World Owner { get; private set; }
     public int Id { get; internal set; }
     public ushort ObjectType { get; protected set; }
+    public string ObjectId { get; protected set; }
     public Player AttackTarget { get; set; }
     public int LootValue { get; set; } = 1;
     public Player Controller;
@@ -104,6 +105,8 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
 
     protected Entity(RealmManager manager, ushort objType)
     {
+        ObjectId = manager.Resources.GameData.ObjectTypeToId[objType];
+
         _name = new SV<string>(this, StatsType.Name, "");
         _size = new SV<int>(this, StatsType.Size, 100);
         _originalSize = 100;
@@ -482,9 +485,9 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
         if (tileDesc?.NoWalk == true)
             return true;
 
-        if (tile.ObjType != 0)
+        if (tile.ObjectType != 0)
         {
-            var objDesc = Manager.Resources.GameData.ObjectDescs[tile.ObjType];
+            var objDesc = Manager.Resources.GameData.ObjectDescs[tile.ObjectType];
             if (objDesc?.EnemyOccupySquare == true)
                 return true;
         }
@@ -502,9 +505,9 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
 
         var tile = Owner.Map[xx, yy];
 
-        if (tile.ObjType != 0)
+        if (tile.ObjectType != 0)
         {
-            var objDesc = Manager.Resources.GameData.ObjectDescs[tile.ObjType];
+            var objDesc = Manager.Resources.GameData.ObjectDescs[tile.ObjectType];
             if (objDesc?.FullOccupy == true)
                 return true;
         }

@@ -53,17 +53,19 @@ public class Portal : StaticObject
     public void CreateWorld(Player player)
     {
         World world = null;
-        foreach (var p in Program.Resources.Worlds.Data.Values
-                     .Where(p => p.portals != null && p.portals.Contains(ObjectType)))
+        foreach (var p in Program.Resources.GameData.WorldTemplates.Values.Where(p => p.Portals.Contains(ObjectId)))
         {
-            if (p.id < 0)
-                world = player.Manager.GetWorld(p.id);
-            else
-            {
-                DynamicWorld.TryGetWorld(p, player.Client, out world);
-                world = player.Manager.AddWorld(world ?? new World(p));
-            }
+            var w = player.Manager.CreateNewWorld(p, player.Client);
+            if (!p.Instanced)
+                world = w;
             break;
+        }
+
+        // get nexus if failed to make a world 
+        if(world == null)
+        {
+            world = Manager.GetWorld(World.Nexus);
+            player.SendError("Unable to find world, sent to nexus");
         }
 
         WorldInstance = world;

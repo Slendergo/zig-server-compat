@@ -5,38 +5,21 @@ namespace wServer.realm.worlds.logic;
 
 public class Test : World
 {
-    private static ProtoWorld _testProto = new()
-    {
-        name = "Test World",
-        sbName = "Test World",
-        id = 0,
-        setpiece = false,
-        showDisplays = false,
-        background = 0,
-        blocking = 0,
-        difficulty = 0,
-        isLimbo = false,
-        maps = Empty<string>.Array,
-        persist = false,
-        portals = Empty<int>.Array,
-        restrictTp = false,
-        wmap = Empty<byte[]>.Array
-    };
-
     public bool JsonLoaded { get; private set; }
 
-    public Test() : base(_testProto) { }
+    public Test(RealmManager manager, WorldTemplateData template)
+        : base(manager, template)
+    {
+    }
 
-    protected override void Init() { }
+    public override void Init() { }
 
     public void LoadJson(string json)
     {
         if (!JsonLoaded)
         {
-            FromWorldMap(new MemoryStream(Json2Wmap.Convert(Manager.Resources.GameData, json)));
+            FromJson(json);
             JsonLoaded = true;
         }
-
-        InitShops();
     }
 }

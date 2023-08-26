@@ -32,7 +32,7 @@ class DropPortalOnDeath : Behavior
         {
             var owner = e.Host.Owner;
 
-            if (owner.Name.Contains("Arena") || e.Host.Spawned) 
+            if (owner.IdName.Contains("Arena") || e.Host.Spawned) 
                 return;
                 
             if (e.Host.CurrentState.Is(parent) &&

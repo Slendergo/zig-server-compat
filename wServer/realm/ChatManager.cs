@@ -86,7 +86,7 @@ public class ChatManager : IDisposable
     private void SendTextPacket(Player src, Text tp, Predicate<Player> conditional)
     {
         src.Owner.BroadcastPacketConditional(tp, conditional);
-        log.Info($"[{src.Owner.Name}({src.Owner.Id})] <{src.Name}> {tp.Txt}");
+        log.Info($"[{src.Owner.IdName}({src.Owner.Id})] <{src.Name}> {tp.Txt}");
     }
 
     public void Mob(Entity entity, string text)
@@ -105,7 +105,7 @@ public class ChatManager : IDisposable
             Name = $"#{name}",
             Txt = text
         }, null);
-        log.Info($"[{world.Name}({world.Id})] <{name}> {text}");
+        log.Info($"[{world.IdName}({world.Id})] <{name}> {text}");
     }
 
     public void Announce(string text, bool local = false)
@@ -160,7 +160,7 @@ public class ChatManager : IDisposable
             Name = "#Oryx the Mad God",
             Txt = text
         }, null);
-        log.Info("[{0}({1})] <Oryx the Mad God> {2}", world.Name, world.Id, text);
+        log.Info("[{0}({1})] <Oryx the Mad God> {2}", world.IdName, world.Id, text);
     }
 
     public bool Tell(Player src, string target, string text)

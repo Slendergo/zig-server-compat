@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using common.resources;
+using NLog;
 using wServer.realm.entities;
 using wServer.realm.terrain;
 
@@ -123,10 +124,8 @@ public class Sight
         UpdateCount++;
     }
 
-    public HashSet<IntPoint> GetSightCircle(int blocked = 0)
+    public HashSet<IntPoint> GetSightCircle(VisibilityType blocked)
     {
-        //var time = Stopwatch.StartNew();
-
         if (UpdateCount <= 0)
             return _sCircle;
 
@@ -141,25 +140,18 @@ public class Sight
         }
 
         var map = _player.Owner.Map;
-        //for (var i = 0; i < 150; i++)
-        //{
         switch (blocked)
         {
-            case 1:
-                CalcBlockedRoomSight(map);
-                break;
-            case 2:
-                CalcBlockedLineOfSight(map);
-                break;
-            case 3:
-                CalcRegionBlockSight(map);
-                break;
-            default:
+            case VisibilityType.Full:
                 CalcUnblockedSight(map);
                 break;
+            case VisibilityType.Path:
+                CalcBlockedRoomSight(map);
+                break;
+            case VisibilityType.LineOfSight:
+                CalcBlockedLineOfSight(map);
+                break;
         }
-        //}
-        //Log.InfoFormat(time.ElapsedMilliseconds.ToString());
         return _sCircle;
     }
 
@@ -175,25 +167,6 @@ public class Sight
                 continue;
 
             _sCircle.Add(_ip);
-        }
-    }
-
-    private void CalcRegionBlockSight(Wmap map)
-    {
-        var sRegion = map[LastX, LastY].SightRegion;
-
-        _sCircle.Clear();
-        foreach (var p in _unblockedView)
-        {
-            _ip.X = LastX + p.X;
-            _ip.Y = LastY + p.Y;
-
-            if (!map.Contains(_ip))
-                continue;
-
-            var t = map[_ip.X, _ip.Y];
-            if (t.SightRegion % sRegion == 0)
-                _sCircle.Add(_ip);
         }
     }
 
@@ -256,7 +229,7 @@ public class Sight
                 _sCircle.Add(_ip);
 
                 var t = map[_ip.X, _ip.Y];
-                if (t.ObjType != 0 && t.ObjDesc != null && t.ObjDesc.BlocksSight)
+                if (t.ObjectType != 0 && t.ObjectDesc != null && t.ObjectDesc.BlocksSight)
                     break;
                 foreach (var sPoint in SurroundingPoints)
                 {
@@ -267,126 +240,10 @@ public class Sight
             }
     }
 
-    public static void CalcRegionBlocks(Wmap map)
-    {
-        var i = 0;
-        for (var x = 0; x < map.Width; x++)
-        for (var y = 0; y < map.Height; y++)
-        {
-            var t = map[x, y];
-            if (t.SightRegion != 1 || IsBlocking(t))
-                continue;
-
-            CalcRegion(map, i++, x, y);
-        }
-    }
-
-    private static void CalcRegion(Wmap map, int pIndex, int sx, int sy)
-    {
-        VisibleTilesList.Clear();
-        VisibleTilesSet.Clear();
-
-        var p = new IntPoint(sx, sy);
-        var prime = Primes[pIndex];
-        map[p.X, p.Y].SightRegion = prime;
-
-        VisibleTilesList.Add(p);
-
-        for (var i = 0; i < VisibleTilesList.Count; i++)
-        {
-            var op = VisibleTilesList[i];
-            foreach (var sp in SurroundingPoints)
-            {
-                p.X = op.X + sp.X;
-                p.Y = op.Y + sp.Y;
-
-                if (!map.Contains(p) || VisibleTilesSet.Contains(p))
-                    continue;
-
-                VisibleTilesSet.Add(p);
-
-                var t = map[p.X, p.Y];
-
-                if (IsBlocking(t))
-                {
-                    checked { t.SightRegion *= prime; }
-                    continue;
-                }
-
-                t.SightRegion = prime;
-                VisibleTilesList.Add(p);
-            }
-        }
-    }
-
-    public static void UpdateRegion(Wmap map, int ox, int oy)
-    {
-        var op = new IntPoint(ox, oy);
-        var p = new IntPoint();
-        var connectRegions = new List<long>(4);
-
-        // get non blocked sight regions
-        foreach (var sp in SurroundingPoints)
-        {
-            p.X = op.X + sp.X;
-            p.Y = op.Y + sp.Y;
-
-            var t = map[p.X, p.Y];
-            if (!IsBlocking(t))
-                connectRegions.Add(t.SightRegion);
-        }
-
-        // shouldn't happen but just in case...
-        if (connectRegions.Count == 0)
-        {
-            map[op.X, op.Y].SightRegion = 1;
-            return;
-        }
-
-        // pick new binding region
-        var nr = connectRegions.Min();
-        map[op.X, op.Y].SightRegion = nr;
-
-        // make uninitialized blocked sight regions visible
-        foreach (var sp in SurroundingPoints)
-        {
-            p.X = op.X + sp.X;
-            p.Y = op.Y + sp.Y;
-
-            var t = map[p.X, p.Y];
-            if (IsBlocking(t))
-            {
-                foreach (var r in connectRegions)
-                    if (t.SightRegion % r == 0)
-                        t.SightRegion /= r;
-                checked { t.SightRegion *= nr; }
-            }
-        }
-
-        // connect sight regions
-        for (var i = 0; i < connectRegions.Count; i++)
-        {
-            var wr = connectRegions[i];
-            if (wr == nr)
-                continue;
-
-            for (var x = 0; x < map.Width; x++)
-            for (var y = 0; y < map.Height; y++)
-            {
-                var t = map[x, y];
-                if (t.SightRegion % wr != 0)
-                    continue;
-
-                t.SightRegion /= wr;
-                checked { t.SightRegion *= nr; }
-            }
-        }
-    }
-
     private static bool IsBlocking(WmapTile tile)
     {
-        return tile.ObjType != 0 &&
-               tile.ObjDesc != null &&
-               tile.ObjDesc.BlocksSight;
+        return tile.ObjectType != 0 &&
+               tile.ObjectDesc != null &&
+               tile.ObjectDesc.BlocksSight;
     }
 }

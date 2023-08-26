@@ -8,7 +8,6 @@ class GhostShip : ISetPiece
 
     public void RenderSetPiece(World world, IntPoint pos)
     {
-        var proto = world.Manager.Resources.Worlds["GhostShip"];
-        SetPieces.RenderFromProto(world, pos, proto);
+        SetPieces.RenderSetpiece(world, pos, "ghost_ship.map");
     }
 }

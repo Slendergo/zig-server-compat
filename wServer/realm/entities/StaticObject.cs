@@ -73,16 +73,13 @@ public class StaticObject : Entity
         {
             var x = (int)(X - 0.5);
             var y = (int)(Y - 0.5);
-            if (Owner.Map.Contains(new IntPoint(x, y)))
-                if (ObjectDesc != null &&
-                    Owner.Map[x, y].ObjType == ObjectType)
-                {
-                    var tile = Owner.Map[x, y];
-                    tile.ObjType = 0;
-                    tile.UpdateCount++;
-                }
-
-            Owner.LeaveWorld(this);
+            if (Owner?.Map?.Contains(x, y) ?? false)
+            {
+                var tile = Owner.Map[x, y];
+                tile.ObjectType = 0;
+                tile.UpdateCount++;
+            }
+            Owner?.LeaveWorld(this);
             return false;
         }
         return true;
@@ -95,7 +92,7 @@ public class StaticObject : Entity
             if (Dying)
                 HP -= time.ElaspedMsDelta;
 
-            CheckHP();
+            _ = CheckHP();
         }
 
         base.Tick(time);

@@ -74,46 +74,46 @@ class SkullShrine : ISetPiece
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Grass];
-                tile.ObjType = 0;
+                tile.ObjectType = 0;
                 tile.UpdateCount++;
             }
             else if (t[x, y] == 2)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[TileDark];
-                tile.ObjType = 0;
+                tile.ObjectType = 0;
                 tile.UpdateCount++;
             }
             else if (t[x, y] == 3)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Tile];
-                tile.ObjType = 0;
+                tile.ObjectType = 0;
                 tile.UpdateCount++;
             }
             else if (t[x, y] == 4)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Stone];
-                tile.ObjType = 0;
+                tile.ObjectType = 0;
                 tile.UpdateCount++;
             }
             else if (t[x, y] == 5)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Stone];
-                tile.ObjType = dat.IdToObjectType[PillarA];
-                tile.ObjDesc = dat.ObjectDescs[tile.ObjType];
-                if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
+                tile.ObjectType = dat.IdToObjectType[PillarA];
+                tile.ObjectDesc = dat.ObjectDescs[tile.ObjectType];
+                if (tile.ObjectId == 0) tile.ObjectId = world.GetNextEntityId();
                 tile.UpdateCount++;
             }
             else if (t[x, y] == 6)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Stone];
-                tile.ObjType = dat.IdToObjectType[PillarB];
-                tile.ObjDesc = dat.ObjectDescs[tile.ObjType];
-                if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
+                tile.ObjectType = dat.IdToObjectType[PillarB];
+                tile.ObjectDesc = dat.ObjectDescs[tile.ObjectType];
+                if (tile.ObjectId == 0) tile.ObjectId = world.GetNextEntityId();
                 tile.UpdateCount++;
             }
         }

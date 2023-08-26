@@ -8,7 +8,6 @@ class Hermit : ISetPiece
 
     public void RenderSetPiece(World world, IntPoint pos)
     {
-        var proto = world.Manager.Resources.Worlds["Hermit"];
-        SetPieces.RenderFromProto(world, pos, proto);
+        SetPieces.RenderSetpiece(world, pos, "hermit.map");
     }
 }

@@ -46,7 +46,7 @@ class Pyre : ISetPiece
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Floor];
-                tile.ObjType = 0;
+                tile.ObjectType = 0;
                 tile.UpdateCount++;
             }
         }

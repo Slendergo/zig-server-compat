@@ -2,6 +2,8 @@
 using wServer.networking.packets;
 using wServer.networking.packets.incoming;
 using wServer.realm.worlds.logic;
+using common;
+using wServer.realm.worlds;
 
 namespace wServer.networking.handlers;
 
@@ -45,9 +47,15 @@ class UsePortalHandler : PacketHandlerBase<UsePortal>
 
         if (portal.ObjectType == 0x072f)
         {
-            var proto = player.Manager.Resources.Worlds["GuildHall"];
-            var world = player.Manager.GetWorld(proto.id);
-            player.Client.Reconnect(world.Name, world.Id);
+            World world = null;
+            foreach (var w in portal.Manager.Worlds.Values)
+            {
+                if (w is not GuildHall || (w as GuildHall).GuildId != player.Client.Account.GuildId)
+                    continue;
+                world = w;
+            }
+            world ??= portal.Manager.CreateNewWorld("Guild Hall", player.Client);
+            player.Client.Reconnect(world.IdName, world.Id);
             return;
         }
 
@@ -66,30 +74,24 @@ class UsePortalHandler : PacketHandlerBase<UsePortal>
             // special portal case lookup
             if (world == null && _realmPortals.Contains(portal.ObjectType))
             {
-                world = player.Manager.GetRandomGameWorld();
+                world = player.Manager.GetRandomRealm();
                 if (world == null)
                     return;
             }
 
-            if (world is Realm && !player.Manager.Resources.GameData.ObjectTypeToId[portal.ObjectDesc.ObjectType].Contains("Cowardice"))
-            {
-                player.FameCounter.CompleteDungeon(player.Owner.Name);
-            }
+            if (world is RealmOfTheMadGod && !player.Manager.Resources.GameData.ObjectTypeToId[portal.ObjectDesc.ObjectType].Contains("Cowardice"))
+                player.FameCounter.CompleteDungeon(player.Owner.IdName);
 
             if (world != null)
             {
-                player.Client.Reconnect(world.Name, world.Id);
+                player.Client.Reconnect(world.IdName, world.Id);
                 return;
             }
 
             // dynamic case lookup
             if (portal.CreateWorldTask == null || portal.CreateWorldTask.IsCompleted)
-                portal.CreateWorldTask = Task.Factory
-                    .StartNew(() => portal.CreateWorld(player))
-                    .ContinueWith(e =>
-                            Log.Error(e.Exception.InnerException.ToString()),
-                        TaskContinuationOptions.OnlyOnFaulted);
-
+                portal.CreateWorldTask = Task.Factory.StartNew(() => portal.CreateWorld(player))
+                    .ContinueWith(e => Log.Error(e.Exception.InnerException.ToString()), TaskContinuationOptions.OnlyOnFaulted);
             portal.WorldInstanceSet += player.Reconnect;
         }
     }

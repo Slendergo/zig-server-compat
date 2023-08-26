@@ -46,63 +46,63 @@ abstract class Temple : ISetPiece
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[DarkGrass];
-                tile.ObjType = 0;
+                tile.ObjectType = 0;
                 tile.UpdateCount++;
             }
             else if (ground[x, y] == 2)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Floor];
-                tile.ObjType = 0;
+                tile.ObjectType = 0;
                 tile.UpdateCount++;
             }
 
             if (objs[x, y] == 1)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
-                tile.ObjType = dat.IdToObjectType[WallA];
-                tile.ObjDesc = dat.ObjectDescs[tile.ObjType];
-                if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
+                tile.ObjectType = dat.IdToObjectType[WallA];
+                tile.ObjectDesc = dat.ObjectDescs[tile.ObjectType];
+                if (tile.ObjectId == 0) tile.ObjectId = world.GetNextEntityId();
                 tile.UpdateCount++;
             }
             else if (objs[x, y] == 2)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
-                tile.ObjType = dat.IdToObjectType[WallB];
-                tile.ObjDesc = dat.ObjectDescs[tile.ObjType];
-                if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
+                tile.ObjectType = dat.IdToObjectType[WallB];
+                tile.ObjectDesc = dat.ObjectDescs[tile.ObjectType];
+                if (tile.ObjectId == 0) tile.ObjectId = world.GetNextEntityId();
                 tile.UpdateCount++;
             }
             else if (objs[x, y] == 3)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
-                tile.ObjType = dat.IdToObjectType[WallC];
-                tile.ObjDesc = dat.ObjectDescs[tile.ObjType];
-                if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
+                tile.ObjectType = dat.IdToObjectType[WallC];
+                tile.ObjectDesc = dat.ObjectDescs[tile.ObjectType];
+                if (tile.ObjectId == 0) tile.ObjectId = world.GetNextEntityId();
                 tile.UpdateCount++;
             }
             else if (objs[x, y] == 4)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
-                tile.ObjType = dat.IdToObjectType[Flower];
-                tile.ObjDesc = dat.ObjectDescs[tile.ObjType];
-                if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
+                tile.ObjectType = dat.IdToObjectType[Flower];
+                tile.ObjectDesc = dat.ObjectDescs[tile.ObjectType];
+                if (tile.ObjectId == 0) tile.ObjectId = world.GetNextEntityId();
                 tile.UpdateCount++;
             }
             else if (objs[x, y] == 5)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
-                tile.ObjType = dat.IdToObjectType[Grass];
-                tile.ObjDesc = dat.ObjectDescs[tile.ObjType];
-                if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
+                tile.ObjectType = dat.IdToObjectType[Grass];
+                tile.ObjectDesc = dat.ObjectDescs[tile.ObjectType];
+                if (tile.ObjectId == 0) tile.ObjectId = world.GetNextEntityId();
                 tile.UpdateCount++;
             }
             else if (objs[x, y] == 6)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
-                tile.ObjType = dat.IdToObjectType[Tree];
-                tile.ObjDesc = dat.ObjectDescs[tile.ObjType];
-                if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
+                tile.ObjectType = dat.IdToObjectType[Tree];
+                tile.ObjectDesc = dat.ObjectDescs[tile.ObjectType];
+                if (tile.ObjectId == 0) tile.ObjectId = world.GetNextEntityId();
                 tile.UpdateCount++;
             }
         }

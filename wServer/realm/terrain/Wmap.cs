@@ -1,11 +1,12 @@
-﻿using System.IO.Compression;
-using common;
+﻿using common;
 using common.resources;
+using DungeonGenerator.Dungeon;
 using NLog;
+using System.IO.Compression;
 using wServer.realm.entities;
 using wServer.realm.entities.vendors;
 using wServer.realm.worlds;
-using DungeonGenerator.Dungeon;
+using wServer.realm.worlds.parser;
 
 namespace wServer.realm.terrain;
 
@@ -18,18 +19,18 @@ public class WmapTile
     public ushort TileId;
     public TileDesc TileDesc;
 
-    public int ObjId;
-    public ushort ObjType;
-    public ObjectDesc ObjDesc;
-    public string ObjCfg;
+    public int ObjectId;
+    public ushort ObjectType;
+    public ObjectDesc ObjectDesc;
+    public string ObjectNameConfiguration;
 
-    public TerrainType Terrain;
     public TileRegion Region;
+    public TerrainType Terrain;
     public byte Elevation;
 
     public bool Spawned;
 
-    public long SightRegion = 1;
+    public WmapTile() { }
 
     public WmapTile(WmapDesc desc)
     {
@@ -42,9 +43,9 @@ public class WmapTile
         TileId = _originalDesc.TileId;
         TileDesc = _originalDesc.TileDesc;
 
-        ObjType = _originalDesc.ObjType;
-        ObjDesc = _originalDesc.ObjDesc;
-        ObjCfg = _originalDesc.ObjCfg;
+        ObjectType = _originalDesc.ObjType;
+        ObjectDesc = _originalDesc.ObjDesc;
+        ObjectNameConfiguration = _originalDesc.ObjCfg;
 
         Terrain = _originalDesc.Terrain;
         Region = _originalDesc.Region;
@@ -58,13 +59,13 @@ public class WmapTile
 
     public void InitConnection(Wmap map, int x, int y)
     {
-        if (ObjDesc == null || !ObjDesc.Connects || ObjCfg.Contains("conn:"))
+        if (ObjectDesc == null || !ObjectDesc.Connects || ObjectNameConfiguration.Contains("conn:"))
             return;
 
         var connStr = ConnectionComputer.GetConnString(
             (dx, dy) => map.Contains(x + dx, y + dy) &&
-                        map[x + dx, y + dy].ObjType == ObjDesc.ObjectType);
-        ObjCfg = $"{ObjCfg};{connStr};";
+                        map[x + dx, y + dy].ObjectType == ObjectDesc.ObjectType);
+        ObjectNameConfiguration = $"{ObjectNameConfiguration};{connStr};";
     }
 
     public void CopyTo(WmapTile tile)
@@ -72,9 +73,9 @@ public class WmapTile
         tile.TileId = TileId;
         tile.TileDesc = TileDesc;
 
-        tile.ObjType = ObjType;
-        tile.ObjDesc = ObjDesc;
-        tile.ObjCfg = ObjCfg;
+        tile.ObjectType = ObjectType;
+        tile.ObjectDesc = ObjectDesc;
+        tile.ObjectNameConfiguration = ObjectNameConfiguration;
 
         tile.Terrain = Terrain;
         tile.Region = Region;
@@ -84,8 +85,8 @@ public class WmapTile
     public ObjectDef ToDef(int x, int y)
     {
         var stats = new List<KeyValuePair<StatsType, object>>();
-        if (!string.IsNullOrEmpty(ObjCfg))
-            foreach (var item in ObjCfg.Split(';'))
+        if (!string.IsNullOrEmpty(ObjectNameConfiguration))
+            foreach (var item in ObjectNameConfiguration.Split(';'))
             {
                 var kv = item.Split(':');
                 switch (kv[0])
@@ -133,10 +134,10 @@ public class WmapTile
             }
         return new ObjectDef()
         {
-            ObjectType = ObjType,
+            ObjectType = ObjectType,
             Stats = new ObjectStats()
             {
-                Id = ObjId,
+                Id = ObjectId,
                 Position = new Position()
                 {
                     X = x + 0.5f,
@@ -174,11 +175,11 @@ public class Wmap
     public Dictionary<IntPoint, TileRegion> Regions { get; }
     private Tuple<IntPoint, ushort, string>[] _entities;
 
-    private WmapTile[,] _tiles;
+    private WmapTile[,] Tiles;
     public WmapTile this[int x, int y]
     {
-        get { return _tiles[x, y]; }
-        set { _tiles[x, y] = value; }
+        get { return Tiles[x, y]; }
+        set { Tiles[x, y] = value; }
     }
 
     public Wmap(XmlData dat)
@@ -208,7 +209,63 @@ public class Wmap
         return true;
     }
 
-    public int Load(Stream stream, int idBase)
+    public int LoadFromMapData(MapData data, int idBase)
+    {
+        Width = data.Width;
+        Height = data.Height;
+
+        Tiles = new WmapTile[Width, Height];
+
+        var enCount = 0;
+        var entities = new List<Tuple<IntPoint, ushort, string>>();
+        for (var y = 0; y < Height; y++)
+            for (var x = 0; x < Width; x++)
+            {
+                var tileData = data.Tiles[x, y];
+
+                var tile = new WmapTile();
+
+                tile.TileId = tileData.TileDesc.ObjectType;
+                tile.TileDesc = tileData.TileDesc;
+
+                tile.ObjectType = tileData.ObjectDesc?.ObjectType ?? 0;
+                tile.ObjectDesc = tileData.ObjectDesc;
+
+                tile.Region = tileData.Region;
+                tile.Terrain = tileData.Terrain;
+                tile.Elevation = tileData.Elevation;
+
+                tile.ObjectNameConfiguration = ""; // .pmap doesnt support this featuer
+                tile.UpdateCount = 1;
+
+                if (tile.Region != 0)
+                    Regions.Add(new IntPoint(x, y), tile.Region);
+
+                if (tile.ObjectType != 0 && (tileData.ObjectDesc == null || !tileData.ObjectDesc.Static || tileData.ObjectDesc.Enemy))
+                {
+                    entities.Add(new Tuple<IntPoint, ushort, string>(new IntPoint(x, y), tile.ObjectType, tile.ObjectNameConfiguration));
+                    if (tileData.ObjectDesc == null || !(tileData.ObjectDesc.Enemy && tileData.ObjectDesc.Static))
+                        tile.ObjectType = 0;
+                }
+
+                if (tile.ObjectType != 0 && (tileData.ObjectDesc == null || !(tileData.ObjectDesc.Enemy && tileData.ObjectDesc.Static)))
+                {
+                    enCount++;
+                    tile.ObjectId = idBase + enCount;
+                }
+
+                Tiles[x, y] = tile;
+            }
+
+        for (var x = 0; x < Width; x++)
+            for (var y = 0; y < Height; y++)
+                Tiles[x, y].InitConnection(this, x, y);
+
+        _entities = entities.ToArray();
+        return enCount;
+    }
+
+    public int LoadFromWmap(Stream stream, int idBase)
     {
         var ver = stream.ReadByte();
         if (ver < 0 || ver > 2)
@@ -240,40 +297,40 @@ public class Wmap
 
             Width = rdr.ReadInt32();
             Height = rdr.ReadInt32();
-            _tiles = new WmapTile[Width, Height];
+            Tiles = new WmapTile[Width, Height];
 
             var enCount = 0;
             var entities = new List<Tuple<IntPoint, ushort, string>>();
             for (var y = 0; y < Height; y++)
-            for (var x = 0; x < Width; x++)
-            {
-                var tile = new WmapTile(dict[rdr.ReadInt16()]);
-                if (ver == 2)
-                    tile.Elevation = rdr.ReadByte();
-
-                if (tile.Region != 0)
-                    Regions.Add(new IntPoint(x, y), tile.Region);
-
-                var desc = tile.ObjDesc;
-                if (tile.ObjType != 0 && (desc == null || !desc.Static || desc.Enemy))
+                for (var x = 0; x < Width; x++)
                 {
-                    entities.Add(new Tuple<IntPoint, ushort, string>(new IntPoint(x, y), tile.ObjType, tile.ObjCfg));
-                    if (desc == null || !(desc.Enemy && desc.Static))
-                        tile.ObjType = 0;
+                    var tile = new WmapTile(dict[rdr.ReadInt16()]);
+                    if (ver == 2)
+                        tile.Elevation = rdr.ReadByte();
+
+                    if (tile.Region != 0)
+                        Regions.Add(new IntPoint(x, y), tile.Region);
+
+                    var desc = tile.ObjectDesc;
+                    if (tile.ObjectType != 0 && (desc == null || !desc.Static || desc.Enemy))
+                    {
+                        entities.Add(new Tuple<IntPoint, ushort, string>(new IntPoint(x, y), tile.ObjectType, tile.ObjectNameConfiguration));
+                        if (desc == null || !(desc.Enemy && desc.Static))
+                            tile.ObjectType = 0;
+                    }
+
+                    if (tile.ObjectType != 0 && (desc == null || !(desc.Enemy && desc.Static)))
+                    {
+                        enCount++;
+                        tile.ObjectId = idBase + enCount;
+                    }
+
+                    Tiles[x, y] = tile;
                 }
 
-                if (tile.ObjType != 0 && (desc == null || !(desc.Enemy && desc.Static)))
-                {
-                    enCount++;
-                    tile.ObjId = idBase + enCount;
-                }
-
-                _tiles[x, y] = tile;
-            }
-
             for (var x = 0; x < Width; x++)
-            for (var y = 0; y < Height; y++)
-                _tiles[x, y].InitConnection(this, x, y);
+                for (var y = 0; y < Height; y++)
+                    Tiles[x, y].InitConnection(this, x, y);
 
             _entities = entities.ToArray();
             return enCount;
@@ -308,7 +365,7 @@ public class Wmap
             wTiles[i, j] = wTile;
         }
 
-        _tiles = new WmapTile[Width, Height];
+        Tiles = new WmapTile[Width, Height];
 
         var enCount = 0;
         var entities = new List<Tuple<IntPoint, ushort, string>>();
@@ -320,26 +377,26 @@ public class Wmap
             if (tile.Region != 0)
                 Regions.Add(new IntPoint(x, y), tile.Region);
 
-            var desc = tile.ObjDesc;
-            if (tile.ObjType != 0 && (desc == null || !desc.Static || desc.Enemy))
+            var desc = tile.ObjectDesc;
+            if (tile.ObjectType != 0 && (desc == null || !desc.Static || desc.Enemy))
             {
-                entities.Add(new Tuple<IntPoint, ushort, string>(new IntPoint(x, y), tile.ObjType, tile.ObjCfg));
+                entities.Add(new Tuple<IntPoint, ushort, string>(new IntPoint(x, y), tile.ObjectType, tile.ObjectNameConfiguration));
                 if (desc == null || !(desc.Enemy && desc.Static))
-                    tile.ObjType = 0;
+                    tile.ObjectType = 0;
             }
 
-            if (tile.ObjType != 0 && (desc == null || !(desc.Enemy && desc.Static)))
+            if (tile.ObjectType != 0 && (desc == null || !(desc.Enemy && desc.Static)))
             {
                 enCount++;
-                tile.ObjId = idBase + enCount;
+                tile.ObjectId = idBase + enCount;
             }
 
-            _tiles[x, y] = tile;
+            Tiles[x, y] = tile;
         }
 
         for (var x = 0; x < Width; x++)
         for (var y = 0; y < Height; y++)
-            _tiles[x, y].InitConnection(this, x, y);
+            Tiles[x, y].InitConnection(this, x, y);
 
         _entities = entities.ToArray();
         return enCount;
@@ -414,7 +471,7 @@ public class Wmap
         for (var y = 0; y < Height; y++)
         for (var x = 0; x < Width; x++)
         {
-            var t = _tiles[x, y];
+            var t = Tiles[x, y];
             t.Reset();
             if (t.Region != 0)
                 Regions.Add(new IntPoint(x, y), t.Region);
@@ -435,13 +492,13 @@ public class Wmap
 
             var tile = world.Map[projX, projY];
 
-            var spTile = _tiles[x, y];
+            var spTile = Tiles[x, y];
             if (spTile.TileId == 255)
                 continue;
             spTile.CopyTo(tile);
 
-            if (spTile.ObjId != 0)
-                tile.ObjId = world.GetNextEntityId();
+            if (spTile.ObjectId != 0)
+                tile.ObjectId = world.GetNextEntityId();
 
             if (tile.Region != 0)
                 world.Map.Regions.Add(new IntPoint(projX, projY), spTile.Region);

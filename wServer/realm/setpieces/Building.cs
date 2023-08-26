@@ -82,16 +82,16 @@ class Building : ISetPiece
             if (t[x, y] == 1)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
-                tile.ObjType = dat.IdToObjectType[Wall];
-                tile.ObjDesc = dat.ObjectDescs[tile.ObjType];
-                if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
+                tile.ObjectType = dat.IdToObjectType[Wall];
+                tile.ObjectDesc = dat.ObjectDescs[tile.ObjectType];
+                if (tile.ObjectId == 0) tile.ObjectId = world.GetNextEntityId();
                 tile.UpdateCount++;
             }
             else if (t[x, y] == 2)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Floor];
-                tile.ObjType = 0;
+                tile.ObjectType = 0;
                 tile.UpdateCount++;
             }
         }

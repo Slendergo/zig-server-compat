@@ -26,9 +26,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="resources\behaviors\Example.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+	<None Update="resources\worlds\nexus.map">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+	<None Update="resources\worlds\realm.map">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+	<None Update="resources\xml\Worlds.xml">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+	<None Update="resources\behaviors\Example.xml">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
     <None Update="resources\xml\EmbeddedData_AbyssOfDemonsCXML.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

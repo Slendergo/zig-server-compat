@@ -2,12 +2,14 @@
 using common.resources;
 using NLog;
 using System.Collections.Concurrent;
+using System.Security.AccessControl;
 using wServer.logic;
 using wServer.networking;
 using wServer.realm.commands;
 using wServer.realm.entities.vendors;
 using wServer.realm.worlds;
 using wServer.realm.worlds.logic;
+using wServer.realm.worlds.parser;
 
 namespace wServer.realm;
 
@@ -31,7 +33,6 @@ public class RealmManager
 {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-    private readonly bool _initialized;
     public string InstanceId { get; private set; }
     public bool Terminating { get; private set; }
 
@@ -88,26 +89,12 @@ public class RealmManager
         // some necessities that shouldn't be (will work this out later)
         MerchantLists.Init(this);
 
-        InitializeNexusHub();
-        //AddWorld("Realm");
+        var nexus = CreateNewWorld("Nexus");
+        Monitor = new PortalMonitor(this, nexus);
 
-        // add portal monitor to nexus and initialize worlds
-        if (Worlds.ContainsKey(World.Nexus))
-            Monitor = new PortalMonitor(this, Worlds[World.Nexus]);
-        foreach (var world in Worlds.Values)
-            OnWorldAdded(world);
-
-        _initialized = true;
+        CreateNewRealm();
 
         Log.Info("Realm Manager initialized.");
-    }
-
-    private void InitializeNexusHub()
-    {
-        // load world data
-        foreach (var wData in Resources.Worlds.Data.Values)
-            if (wData.id < 0)
-                AddWorld(wData);
     }
 
     public void Run()
@@ -176,69 +163,74 @@ public class RealmManager
         Config.serverInfo.playerList.Remove(plrInfo);
     }
 
-    private void AddWorld(string name, bool actAsNexus = false)
+    public void CreateNewRealm()
     {
-        AddWorld(Resources.Worlds.Data[name], actAsNexus);
+        var world = CreateNewWorld("Realm of the Mad God");
+        _ = Monitor.AddPortal(world.Id);
     }
 
-    private void AddWorld(ProtoWorld proto, bool actAsNexus = false)
+    public World CreateNewWorld(string name, Client client = null) => CreateNewWorld(Program.Resources.GameData.WorldTemplates.GetValueOrDefault(name), client);
+    public World CreateNewWorld(WorldTemplateData template, Client client = null)
     {
-        int id;
-        if (actAsNexus)
+        if(template == null)
         {
-            id = World.Nexus;
-        }
-        else
-        {
-            id = (proto.id < 0)
-                ? proto.id
-                : Interlocked.Increment(ref _nextWorldId);
+            Console.WriteLine($"Unable to find template: {template}");
+            return null;
         }
 
         World world;
-        DynamicWorld.TryGetWorld(proto, null, out world);
-        if (world != null)
+        switch (template.Specialized)
         {
-            AddWorld(id, world);
-            return;
+            case SpeicalizedDungeonType.Nexus:
+                // dont make two nexus's
+                if (Worlds.ContainsKey(World.Nexus))
+                    return null;
+                world = new Nexus(this, template);
+                world.Id = World.Nexus; // special case only for nexus
+                break;
+            //case SpeicalizedDungeonType.Test:
+            //    world = new Test(this, client, template);
+            //    break;
+            case SpeicalizedDungeonType.Vault:
+                world = new Vault(this, template, client);
+                break;
+            case SpeicalizedDungeonType.Realm:
+                world = new RealmOfTheMadGod(this, template);
+                break;
+            case SpeicalizedDungeonType.GuildHall:
+                world = new GuildHall(this, template, client);
+                break;
+            case SpeicalizedDungeonType.OryxCastle:
+                world = new OryxCastle(this, template);
+                break;
+            default:
+                world = new World(this, template);
+                break;
         }
 
-        AddWorld(id, new World(proto));
-    }
+        if (world.Id == 0)
+            world.Id = Interlocked.Increment(ref _nextWorldId);
 
-    private void AddWorld(int id, World world)
-    {
-        if (world.Manager != null)
-            throw new InvalidOperationException("World already added.");
-        world.Id = id;
-        Worlds[id] = world;
-        if (_initialized)
-            OnWorldAdded(world);
-    }
+        var selectedMapData = MapParser.GetOrLoad(world.SelectMap(template));
+        if (selectedMapData == null)
+        {
+            Console.WriteLine($"Unable to find MapData: {selectedMapData}");
+            return null;
+        }
+        world.LoadMapFromData(selectedMapData);
 
-    public World AddWorld(World world)
-    {
-        if (world.Manager != null)
-            throw new InvalidOperationException("World already added.");
-        world.Id = Interlocked.Increment(ref _nextWorldId);
+        Log.Info("World {0}({1}) added. {2} Worlds existing.", world.Id, world.IdName, Worlds.Count);
         Worlds[world.Id] = world;
-        if (_initialized)
-            OnWorldAdded(world);
         return world;
     }
 
-    public World GetWorld(int id)
-    {
-        World ret;
-        if (!Worlds.TryGetValue(id, out ret)) return null;
-        if (ret.Id == 0) return null;
-        return ret;
-    }
+    public World GetWorld(int id) => Worlds.GetValueOrDefault(id);
 
     public bool RemoveWorld(World world)
     {
         if (world.Manager == null)
             throw new InvalidOperationException("World is not added.");
+
         if (Worlds.TryRemove(world.Id, out world))
         {
             OnWorldRemoved(world);
@@ -248,23 +240,17 @@ public class RealmManager
             return false;
     }
 
-    void OnWorldAdded(World world)
-    {
-        world.Manager = this;
-        Log.Info("World {0}({1}) added. {2} Worlds existing.", world.Id, world.Name, Worlds.Count);
-    }
-
     void OnWorldRemoved(World world)
     {
         //world.Manager = null;
         Monitor.RemovePortal(world.Id);
-        Log.Info("World {0}({1}) removed.", world.Id, world.Name);
+        Log.Info("World {0}({1}) removed.", world.Id, world.IdName);
     }
 
-    public World GetRandomGameWorld()
+    public World GetRandomRealm()
     {
         var realms = Worlds.Values
-            .OfType<Realm>()
+            .OfType<RealmOfTheMadGod>()
             .Where(w => !w.Closed)
             .ToArray();
 

@@ -102,7 +102,7 @@ public class PortalMonitor
             _portals.Remove(worldId);
             Log.Info("Portal {0}({1}) removed.",
                 portal.WorldInstance.Id,
-                portal.WorldInstance.Name);
+                portal.WorldInstance.IdName);
             return true;
         }
     }
@@ -121,7 +121,7 @@ public class PortalMonitor
             _world.LeaveWorld(portal);
             _portals.Remove(worldId);
             Log.Info("Portal {0}({1}) removed.",
-                worldId, portal.WorldInstance.Name);
+                worldId, portal.WorldInstance.IdName);
             return true;
         }
     }
@@ -140,7 +140,7 @@ public class PortalMonitor
             _world.LeaveWorld(portal.Value);
             _portals.Remove(portal.Key);
             Log.Info("Portal {0}({1}) removed.",
-                portal.Key, portal.Value.WorldInstance.Name);
+                portal.Key, portal.Value.WorldInstance.IdName);
             return true;
         }
     }
@@ -230,7 +230,7 @@ public class PortalMonitor
                     continue;
 
                 var count = p.WorldInstance.Players.Count;
-                var updatedCount = p.WorldInstance.GetDisplayName() + $" ({count})";
+                var updatedCount = p.WorldInstance.GetDisplayName() + $" ({count}/{p.WorldInstance.MaxPlayers})";
                 if (p.Name.Equals(updatedCount))
                     continue;
 

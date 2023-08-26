@@ -31,6 +31,7 @@ class Json2Wmap
         var x = Convert(data, File.ReadAllText(from));
         File.WriteAllBytes(to, x);
     }
+
     public static byte[] Convert(XmlData data, string json)
     {
         var obj = JsonConvert.DeserializeObject<json_dat>(json);
@@ -56,10 +57,10 @@ class Json2Wmap
         var tiles = new TerrainTile[obj.width, obj.height];
         using (NReader rdr = new NReader(new MemoryStream(dat.ToArray())))
             for (int y = 0; y < obj.height; y++)
-            for (int x = 0; x < obj.width; x++)
-            {
-                tiles[x, y] = tileDict[rdr.ReadInt16()];
-            }
+                for (int x = 0; x < obj.width; x++)
+                {
+                    tiles[x, y] = tileDict[rdr.ReadInt16()];
+                }
         return WorldMapExporter.Export(tiles);
     }
 }

@@ -14,32 +14,17 @@ public class Vault : World
 
     private LinkedList<Container> vaults;
 
-    public Vault(ProtoWorld proto, Client client = null) : base(proto)
+    public Vault(RealmManager manager, WorldTemplateData template, Client client) 
+        : base(manager, template)
     {
-        if (client != null)
-        {
-            _client = client;
-            AccountId = _client.Account.AccountId;
-            vaults = new LinkedList<Container>();
-        }
+        _client = client;
+        AccountId = _client.Account.AccountId;
+        vaults = new LinkedList<Container>();
     }
 
-    public override bool AllowedAccess(Client client)
-    {
-        return base.AllowedAccess(client) && AccountId == client.Account.AccountId;
-    }
+    public override bool AllowedAccess(Client client) => base.AllowedAccess(client) && AccountId == client.Account.AccountId;
 
-    protected override void Init()
-    {
-        if (IsLimbo)
-            return;
-
-        //FromWorldMap(new MemoryStream(Manager.Resources.Worlds[Name].wmap[0]));
-        FromWorldMap(new MemoryStream(Manager.Resources.Worlds["Nexus"].wmap[0]));
-        InitVault();
-    }
-
-    void InitVault()
+    public void InitVault()
     {
         var vaultChestPosition = new List<IntPoint>();
         var spawn = new IntPoint(0, 0);
