@@ -20,7 +20,7 @@
         "logFolder": "./logs",
         "resourceFolder": "./resources",
         "version": "0.5",
-        "tps": "20",
+        "tps": "5",
         "mode": "Single",
         "key": "B1A5ED",
         "maxConnections": "10",
