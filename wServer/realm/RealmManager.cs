@@ -2,7 +2,6 @@
 using common.resources;
 using NLog;
 using System.Collections.Concurrent;
-using System.Security.AccessControl;
 using wServer.logic;
 using wServer.networking;
 using wServer.realm.commands;
@@ -17,7 +16,6 @@ public struct RealmTime
 {
     public long TickCount;
     public long TotalElapsedMs;
-    public int TickDelta;
     public int ElaspedMsDelta;
 }
 
@@ -39,7 +37,6 @@ public class RealmManager
     public Resources Resources { get; private set; }
     public Database Database { get; private set; }
     public ServerConfig Config { get; private set; }
-    public int TPS { get; private set; }
 
     public ConnectManager ConMan { get; private set; }
     public BehaviorDb Behaviors { get; private set; }
@@ -69,7 +66,6 @@ public class RealmManager
         Resources = resources;
         Database = db;
         Config = config;
-        TPS = config.serverSettings.tps;
         InstanceId = config.serverInfo.instanceId;
 
         // all these deal with db pub/sub... probably should put more thought into their structure...

@@ -51,7 +51,7 @@ public class World
     public Wmap Map { get; private set; }
     public bool Deleted { get; protected set; }
 
-    private long _elapsedTime;
+    private long ElapsedTime;
     private int _totalConnects;
     public int TotalConnects { get { return _totalConnects; } }
     public bool Closed { get; set; }
@@ -111,7 +111,7 @@ public class World
 
     public long GetAge()
     {
-        return _elapsedTime;
+        return ElapsedTime;
     }
 
     public virtual void Init()
@@ -557,81 +557,61 @@ public class World
         // make sure not to do anything after the call (or at least check)
         // as it is possible for the world to have been removed at that point.
 
-        try
+        ElapsedTime += time.ElaspedMsDelta;
+
+        if (!Persists && ElapsedTime > 60000 && Players.IsEmpty)
         {
-            _elapsedTime += time.ElaspedMsDelta;
+            _ = Delete();
+            return;
+        }
 
-            if (!Persists && _elapsedTime > 60000 && Players.Count <= 0)
+        for (var i = Timers.Count - 1; i >= 0; i--)
+            try
             {
-                Delete();
-                return;
-            }
-
-            for (var i = Timers.Count - 1; i >= 0; i--)
-                try
-                {
-                    if (Timers[i].Tick(this, time))
-                        Timers.RemoveAt(i);
-                }
-                catch (Exception e)
-                {
-                    var msg = e.Message + "\n" + e.StackTrace;
-                    Log.Error(msg);
+                if (Timers[i].Tick(this, time))
                     Timers.RemoveAt(i);
-                }
-
-            foreach (var i in Players)
-                i.Value.Tick(time);
-
-            /*(if (EnemiesCollision != null)
-            {
-                foreach (var i in EnemiesCollision.GetActiveChunks(PlayersCollision))
-                    i.Tick(time);
-                foreach (var i in StaticObjects.Where(x => x.Value is Decoy))
-                    i.Value.Tick(time);
             }
-            else
+            catch (Exception e)
             {
-                foreach (var i in Enemies)
-                    i.Value.Tick(time);
-                foreach (var i in StaticObjects)
-                    i.Value.Tick(time);
-            }*/
-            foreach (var i in Projectiles)
+                var msg = e.Message + "\n" + e.StackTrace;
+                Log.Error(msg);
+                Timers.RemoveAt(i);
+            }
+
+        // if player excepts we will not brick other players or entities
+        foreach (var i in Players)
+            try
+            {
                 i.Value.Tick(time);
-        }
-        catch (Exception e)
+            }
+            catch (Exception e)
+            {
+                var msg = "Player: " + e.Message + "\n" + e.StackTrace;
+                Log.Error(msg);
+            }
+
+        if (EnemiesCollision != null)
         {
-            var msg = e.Message + "\n" + e.StackTrace;
-            Log.Error(msg);
-        }
-    }
+            foreach (var i in EnemiesCollision.GetActiveChunks(PlayersCollision))
+                i.Tick(time);
 
-    public void TickLogic(RealmTime time)
-    {
-        using (TimedLock.Lock(_deleteLock))
-        {
-            if (Deleted)
-                return;
-
-            if (EnemiesCollision != null)
-            {
-                foreach (var i in EnemiesCollision.GetActiveChunks(PlayersCollision))
-                    i.Tick(time);
-                foreach (var i in StaticObjects.Where(x => x.Value is Decoy))
-                    i.Value.Tick(time);
-            }
-            else
-            {
-                foreach (var i in Enemies)
-                    i.Value.Tick(time);
-                foreach (var i in StaticObjects)
-                    i.Value.Tick(time);
-            }
-
-            foreach (var i in Pets)
+            foreach (var i in StaticObjects.Where(x => x.Value is Decoy))
                 i.Value.Tick(time);
         }
+        else
+        {
+            foreach (var i in Enemies)
+                i.Value.Tick(time);
+
+            foreach (var i in StaticObjects)
+                i.Value.Tick(time);
+        }
+
+        foreach (var i in Pets)
+            i.Value.Tick(time);
+
+        foreach (var i in Projectiles)
+            i.Value.Tick(time);
     }
 
     public Projectile GetProjectile(int objectId, int bulletId)

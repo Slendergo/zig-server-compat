@@ -66,7 +66,7 @@ public class ConnectManager
             BackgroundLightIntensity = world.BgLightIntensity,
             DayLightIntensity = world.DayLightIntensity,
             NightLightIntensity = world.NightLightIntensity,
-            GameTime = (int) world.Manager.Logic.WorldTime.TotalElapsedMs
+            GameTime = (int) world.Manager.Logic.RealmTime.TotalElapsedMs
         });
 
         // send out account lock/ignore list
@@ -213,7 +213,7 @@ public class ConnectManager
             BackgroundLightIntensity = world.BgLightIntensity,
             DayLightIntensity = world.DayLightIntensity,
             NightLightIntensity = world.NightLightIntensity,
-            GameTime = (int) world.Manager.Logic.WorldTime.TotalElapsedMs
+            GameTime = (int) world.Manager.Logic.RealmTime.TotalElapsedMs
         });
 
         // send out account lock/ignore list

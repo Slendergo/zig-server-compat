@@ -71,11 +71,6 @@ public class Vault : World
         }
     }
 
-    public override void Tick(RealmTime time)
-    {
-        base.Tick(time);
-    }
-
     public void AddChest(Entity original)
     {
         var vaultChest = new DbVaultSingle(_client.Account, _client.Account.VaultCount - 1);
