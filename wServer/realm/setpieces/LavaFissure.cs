@@ -74,16 +74,16 @@ class LavaFissure : ISetPiece
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Lava];
-                tile.ObjType = 0;
+                tile.ObjectType = 0;
                 tile.UpdateCount++;
             }
             else if (p[x, y] == 2)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Lava];
-                tile.ObjType = dat.IdToObjectType[Floor];
-                tile.ObjDesc = dat.ObjectDescs[tile.ObjType];
-                if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
+                tile.ObjectType = dat.IdToObjectType[Floor];
+                tile.ObjectDesc = dat.ObjectDescs[tile.ObjectType];
+                if (tile.ObjectId == 0) tile.ObjectId = world.GetNextEntityId();
                 tile.UpdateCount++;
             }
         }

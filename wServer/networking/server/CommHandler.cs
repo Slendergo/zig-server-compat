@@ -224,7 +224,7 @@ public class CommHandler
 
         var delay = 0;
         if (s.BytesAvailable <= 0)
-            delay = _client.Manager.Logic.MsPT;
+            delay = _client.Manager.Logic.MillisecondsPerTick;
 
         StartSend(e, delay);
     }

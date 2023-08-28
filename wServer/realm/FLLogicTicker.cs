@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Collections.Concurrent;
 using NLog;
+using wServer.networking;
 
 namespace wServer.realm;
 
@@ -8,116 +9,88 @@ public class FLLogicTicker
 {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-    private readonly RealmManager _manager;
-    private readonly ConcurrentQueue<Action<RealmTime>>[] _pendings;
-
     public readonly int TPS;
-    public readonly int MsPT;
+    public readonly int MillisecondsPerTick;
+    public RealmTime RealmTime;
 
-    private readonly ManualResetEvent _mre;
-    public RealmTime WorldTime;
+    private readonly RealmManager RealmManager;
+    private readonly ConcurrentQueue<Action<RealmTime>>[] PendingActions = new ConcurrentQueue<Action<RealmTime>>[5];
 
     public FLLogicTicker(RealmManager manager)
     {
-        _manager = manager;
-        MsPT = 1000 / manager.TPS;
-        _mre = new ManualResetEvent(false);
-        WorldTime = new RealmTime();
+        RealmManager = manager;
+        RealmTime = new RealmTime();
 
-        _pendings = new ConcurrentQueue<Action<RealmTime>>[5];
-        for (int i = 0; i < 5; i++)
-            _pendings[i] = new ConcurrentQueue<Action<RealmTime>>();
+        for (var i = 0; i < PendingActions.Length; i++)
+            PendingActions[i] = new ConcurrentQueue<Action<RealmTime>>();
+
+        TPS = manager.Config.serverSettings.tps;
+        MillisecondsPerTick = 1000 / TPS;
     }
 
     public void TickLoop()
     {
         Log.Info("Logic loop started.");
 
-        var loopTime = 0;
-        var t = new RealmTime();
         var watch = Stopwatch.StartNew();
-        do
+        var lastMS = 0L;
+
+        while (!RealmManager.Terminating)
         {
-            t.TotalElapsedMs = watch.ElapsedMilliseconds;
-            t.TickDelta = loopTime / MsPT;
-            t.TickCount += t.TickDelta;
-            t.ElaspedMsDelta = t.TickDelta * MsPT;
+            var currentMS = RealmTime.TotalElapsedMs = watch.ElapsedMilliseconds;
 
-            if (t.TickDelta > 3)
-                Log.Warn("LAGGED! | ticks:" + t.TickDelta +
-                         " ms: " + loopTime +
-                         " tps: " + t.TickCount / (t.TotalElapsedMs / 1000.0));
+            var delta = (int)(currentMS - lastMS);
+            if (delta >= MillisecondsPerTick)
+            {
+                RealmTime.TickCount++;
+                RealmTime.ElaspedMsDelta = delta;
 
-            if (_manager.Terminating)
-                break;
+                var start = watch.ElapsedMilliseconds;
 
-            DoLogic(t);
+                foreach (var i in PendingActions)
+                    while (i.TryDequeue(out var callback))
+                        try
+                        {
+                            callback.Invoke(RealmTime);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error(e);
+                        }
 
-            var logicTime = (int)(watch.ElapsedMilliseconds - t.TotalElapsedMs);
-            _mre.WaitOne(Math.Max(0, MsPT - logicTime));
-            loopTime += (int)(watch.ElapsedMilliseconds - t.TotalElapsedMs) - t.ElaspedMsDelta;
-        } while (true);
+                RealmManager.Monitor.Tick(RealmTime);
+                RealmManager.InterServer.Tick(RealmTime.ElaspedMsDelta);
+
+                // catch per world to keep other worlds ticking if a world fails to tick??
+                // though it ideally it wont and this can be removed because its just bad mindset
+                foreach (var w in RealmManager.Worlds.Values)
+                    try
+                    {
+                        w.Tick(RealmTime);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+
+                // wth is this lol why, yeet it if possible
+                foreach (var client in RealmManager.Clients.Keys)
+                    if (client.Player != null && client.Player.Owner != null)
+                        client.Player.Flush();
+
+                var end = watch.ElapsedMilliseconds;
+                var logicExecutionTime = (int)(end - start);
+
+                lastMS = currentMS + logicExecutionTime; // logic update time added ontop might not be neededx
+            }
+        }
+
         Log.Info("Logic loop stopped.");
-    }
-
-    private void DoLogic(RealmTime t)
-    {
-        var clients = _manager.Clients.Keys;
-
-        foreach (var i in _pendings)
-        {
-            Action<RealmTime> callback;
-            while (i.TryDequeue(out callback))
-                try
-                {
-                    callback(t);
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e);
-                }
-        }
-
-        _manager.Monitor.Tick(t);
-        _manager.InterServer.Tick(t.ElaspedMsDelta);
-
-        TickWorlds1(t);
-
-        foreach (var client in clients)
-            if (client.Player != null && client.Player.Owner != null)
-                client.Player.Flush();
-    }
-
-    void TickWorlds1(RealmTime t)    //Continous simulation
-    {
-        WorldTime.TickDelta += t.TickDelta;
-
-        // tick essentials
-        try
-        {
-            foreach (var w in _manager.Worlds.Values.Distinct())
-                w.TickLogic(t);
-        }
-        catch (Exception e)
-        {
-            Log.Error(e);
-        }
-
-        // tick world every 200 ms
-        t.TickDelta = WorldTime.TickDelta;
-        t.ElaspedMsDelta = t.TickDelta * MsPT;
-
-        if (t.ElaspedMsDelta < 200)
-            return;
-
-        WorldTime.TickDelta = 0;
-        foreach (var i in _manager.Worlds.Values.Distinct())
-            i.Tick(t);
     }
 
     public void AddPendingAction(Action<RealmTime> callback,
         PendingPriority priority = PendingPriority.Normal)
     {
-        _pendings[(int)priority].Enqueue(callback);
+        PendingActions[(int)priority].Enqueue(callback);
     }
 }

@@ -71,34 +71,34 @@ class Sphinx : ISetPiece
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Floor];
-                tile.ObjType = 0;
+                tile.ObjectType = 0;
                 tile.UpdateCount++;
             }
             else if (t[x, y] == 2)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Central];
-                tile.ObjType = 0;
+                tile.ObjectType = 0;
                 tile.UpdateCount++;
             }
             else if (t[x, y] == 3)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Central];
-                tile.ObjType = dat.IdToObjectType[Pillar];
-                tile.ObjDesc = dat.ObjectDescs[tile.ObjType];
-                tile.ObjCfg = ConnectionComputer.GetConnString((_x, _y) => t[x + _x, y + _y] == 3);
-                if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
+                tile.ObjectType = dat.IdToObjectType[Pillar];
+                tile.ObjectDesc = dat.ObjectDescs[tile.ObjectType];
+                tile.ObjectNameConfiguration = ConnectionComputer.GetConnString((_x, _y) => t[x + _x, y + _y] == 3);
+                if (tile.ObjectId == 0) tile.ObjectId = world.GetNextEntityId();
                 tile.UpdateCount++;
             }
             else if (t[x, y] == 4)
             {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Floor];
-                tile.ObjType = dat.IdToObjectType[Pillar];
-                tile.ObjDesc = dat.ObjectDescs[tile.ObjType];
-                tile.ObjCfg = ConnectionComputer.GetConnString((_x, _y) => t[x + _x, y + _y] == 4);
-                if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
+                tile.ObjectType = dat.IdToObjectType[Pillar];
+                tile.ObjectDesc = dat.ObjectDescs[tile.ObjectType];
+                tile.ObjectNameConfiguration = ConnectionComputer.GetConnString((_x, _y) => t[x + _x, y + _y] == 4);
+                if (tile.ObjectId == 0) tile.ObjectId = world.GetNextEntityId();
                 tile.UpdateCount++;
             }
 

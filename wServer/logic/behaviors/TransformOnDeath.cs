@@ -37,7 +37,7 @@ class TransformOnDeath : Behavior
                 Random.NextDouble() < probability)
             {
                 if (Entity.Resolve(e.Host.Manager, target) is Portal
-                    && e.Host.Owner.Name.Contains("Arena"))
+                    && e.Host.Owner.IdName.Contains("Arena"))
                 {
                     return;
                 }

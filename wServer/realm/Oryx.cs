@@ -13,7 +13,7 @@ class Oryx
 
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-    private readonly Realm _world;
+    private readonly RealmOfTheMadGod _world;
     private readonly Random _rand = new();
     private readonly int[] _enemyMaxCounts = new int[12];
     private readonly int[] _enemyCounts = new int[12];
@@ -492,7 +492,7 @@ class Oryx
         };
     #endregion
 
-    public Oryx(Realm world)
+    public Oryx(RealmOfTheMadGod world)
     {
         _world = world;
         Init();
@@ -594,7 +594,7 @@ class Oryx
 
     public void Init()
     {
-        Log.Info("Oryx is controlling world {0}({1})...", _world.Id, _world.Name);
+        Log.Info("Oryx is controlling world {0}({1})...", _world.Id, _world.IdName);
 
         var w = _world.Map.Width;
         var h = _world.Map.Height;
@@ -882,7 +882,7 @@ class Oryx
     public void InitCloseRealm()
     {
         Closing = true;
-        _world.Manager.Chat.Announce(string.Format("{0} closing in 1 minute.", _world.Name), true);
+        _world.Manager.Chat.Announce(string.Format("{0} closing in 1 minute.", _world.IdName), true);
         _world.Timers.Add(new WorldTimer(60000, (w, t) => CloseRealm()));
     }
 
@@ -904,8 +904,8 @@ class Oryx
         if (_world.Players.Count <= 0)
             return;
 
-        var castle = _world.Manager.AddWorld(
-            new worlds.logic.Castle(_world.Manager.Resources.Worlds.Data["Castle"], playersEntering: _world.Players.Count));
-        _world.QuakeToWorld(castle);
+        var world = (OryxCastle)_world.Manager.CreateNewWorld("Oryx's Castle");
+        world.SetPlayers(_world.Players.Count);
+        _world.QuakeToWorld(world);
     }
 }

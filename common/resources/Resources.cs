@@ -10,7 +10,6 @@ public class Resources : IDisposable
     public readonly string ResourcePath;
     public readonly XmlData GameData;
     public readonly Dictionary<string, byte[]> WebFiles = new();
-    public readonly WorldData Worlds;
     public readonly AppSettings Settings;
     public IEnumerable<XElement> XmlBehaviors;
 
@@ -23,13 +22,7 @@ public class Resources : IDisposable
         XmlBehaviors = LoadBehaviors(resourcePath + "/behaviors");
 
         if (!wServer)
-        {
             webFiles(resourcePath + "/web");
-        }
-        else
-        {
-            Worlds = new WorldData(resourcePath + "/worlds", GameData);
-        }
     }
 
     void webFiles(string dir)

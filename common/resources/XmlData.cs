@@ -24,6 +24,7 @@ public class XmlData
     public Dictionary<ushort, PlayerDesc> Classes = new();
     public Dictionary<ushort, PortalDesc> Portals = new();
     public Dictionary<ushort, SkinDesc> Skins = new();
+    public Dictionary<string, WorldTemplateData> WorldTemplates = new();
 
     public XmlData(string dir)
     {
@@ -36,6 +37,7 @@ public class XmlData
         Log.Info("Loaded {0} Players...", Classes.Count);
         Log.Info("Loaded {0} Portals...", Portals.Count);
         Log.Info("Loaded {0} Skins...", Skins.Count);
+        Log.Info("Loaded {0} WorldTemplates...", WorldTemplates.Count);
     }
 
     private void LoadXmls(string dir)
@@ -121,10 +123,19 @@ public class XmlData
             Tiles[type] = new TileDesc(type, e);
         }
     }
+    private void AddWorlds(XElement root)
+    {
+        foreach (var e in root.Elements("World"))
+        {
+            var template = new WorldTemplateData(e);
+            WorldTemplates[template.IdName] = template; 
+        }
+    }
 
     private void ProcessXml(XElement root)
     {
         AddObjects(root);
         AddGrounds(root);
+        AddWorlds(root);
     }
 }

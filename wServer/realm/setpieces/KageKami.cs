@@ -1,4 +1,5 @@
 ﻿using wServer.realm.worlds;
+using wServer.realm.worlds.parser;
 
 namespace wServer.realm.setpieces;
 
@@ -8,7 +9,6 @@ class KageKami : ISetPiece
 
     public void RenderSetPiece(World world, IntPoint pos)
     {
-        var proto = world.Manager.Resources.Worlds["KageKami"];
-        SetPieces.RenderFromProto(world, pos, proto);
+        SetPieces.RenderSetpiece(world, pos, "kage_kami.pmap");
     }
 }

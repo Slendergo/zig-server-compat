@@ -371,15 +371,10 @@ public partial class Player : Character, IContainer, IPlayer
         ExperienceGoal = GetExpGoal(_client.Character.Level);
         Stars = GetStars();
 
-        if (owner.Name.Equals("OceanTrench"))
+        if (owner.IdName.Equals("OceanTrench"))
             OxygenBar = 100;
 
         SetNewbiePeriod();
-
-        if (owner.IsNotCombatMapArea)
-        {
-            // do something
-        }
 
         base.Init(owner);
     }
@@ -747,7 +742,7 @@ public partial class Player : Character, IContainer, IPlayer
         if (world == null)
             SendError("Portal Not Implemented!");
         else
-            Client.Reconnect(world.Name, world.Id);
+            Client.Reconnect(world.IdName, world.Id);
     }
 
     public int GetCurrency(CurrencyType currency)

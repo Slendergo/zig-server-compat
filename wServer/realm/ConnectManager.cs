@@ -39,10 +39,6 @@ public class ConnectManager
             world = client.Manager.GetWorld(World.Nexus);
         }
 
-        if (world.IsLimbo) {
-            world = world.GetInstance(client);
-        }
-
         if (!world.AllowedAccess(client)) {
             if (gameId == World.Nexus) {
                 client.Disconnect();
@@ -58,8 +54,8 @@ public class ConnectManager
         {
             Width = mapSize,
             Height = mapSize,
-            Name = world.Name,
-            DisplayName = world.SBName,
+            Name = world.IdName,
+            DisplayName = world.DisplayName,
             Seed = client.Seed,
             Background = world.Background,
             Difficulty = world.Difficulty,
@@ -70,7 +66,7 @@ public class ConnectManager
             BackgroundLightIntensity = world.BgLightIntensity,
             DayLightIntensity = world.DayLightIntensity,
             NightLightIntensity = world.NightLightIntensity,
-            GameTime = (int) world.Manager.Logic.WorldTime.TotalElapsedMs
+            GameTime = (int) world.Manager.Logic.RealmTime.TotalElapsedMs
         });
 
         // send out account lock/ignore list
@@ -152,12 +148,21 @@ public class ConnectManager
             world = client.Manager.GetWorld(World.Nexus);
         }
 
-        if (world.IsLimbo)
-            world = world.GetInstance(client);
+        if(world == null)
+        {
+            client.SendPacket(new Text
+            {
+                BubbleTime = 0,
+                NumStars = -1,
+                Name = "*Error*",
+                Txt = "Failed to parse instance"
+            });
+            world = client.Manager.GetWorld(World.Nexus);
+        }
 
         if (!world.AllowedAccess(client))
         {
-            if (!world.Persist && world.TotalConnects <= 0)
+            if (!world.Persists && world.TotalConnects <= 0)
                 client.Manager.RemoveWorld(world);
 
             client.SendPacket(new Text
@@ -196,8 +201,8 @@ public class ConnectManager
         {
             Width = mapSize,
             Height = mapSize,
-            Name = world.Name,
-            DisplayName = world.SBName,
+            Name = world.IdName,
+            DisplayName = world.DisplayName,
             Seed = seed,
             Background = world.Background,
             Difficulty = world.Difficulty,
@@ -208,7 +213,7 @@ public class ConnectManager
             BackgroundLightIntensity = world.BgLightIntensity,
             DayLightIntensity = world.DayLightIntensity,
             NightLightIntensity = world.NightLightIntensity,
-            GameTime = (int) world.Manager.Logic.WorldTime.TotalElapsedMs
+            GameTime = (int) world.Manager.Logic.RealmTime.TotalElapsedMs
         });
 
         // send out account lock/ignore list
@@ -277,7 +282,7 @@ public class ConnectManager
         });
 
         client.Manager.Clients[client].WorldInstance = client.Player.Owner.Id;
-        client.Manager.Clients[client].WorldName = client.Player.Owner.Name;
+        client.Manager.Clients[client].WorldName = client.Player.Owner.IdName;
 
         client.State = ProtocolState.Handshaked;
     }

@@ -1,9 +1,11 @@
 ﻿using System.Collections.Concurrent;
+using System.Xml.Linq;
 using common;
 using common.resources;
 using DungeonGenerator;
 using DungeonGenerator.Templates;
 using NLog;
+using terrain;
 using wServer.networking;
 using wServer.networking.packets;
 using wServer.networking.packets.outgoing;
@@ -12,6 +14,7 @@ using wServer.realm.entities.vendors;
 using wServer.realm.setpieces;
 using wServer.realm.terrain;
 using wServer.realm.worlds.logic;
+using wServer.realm.worlds.parser;
 
 namespace wServer.realm.worlds;
 
@@ -20,37 +23,26 @@ public class World
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
     protected static readonly Random Rand = new((int)DateTime.Now.Ticks);
 
-    public const int Tutorial = -1;
+    //public const int Tutorial = -1;
     public const int Nexus = -2;
-    public const int NexusExplanation = -3;
-    public const int Vault = -4;
-    public const int Realm = -5;
-    public const int Test = -6;
-    public const int GuildHall = -7;
+    //public const int Test = -3;
+    //public const int Vault = -4;
+    //public const int Realm = -5;
+    //public const int GuildHall = -6;
 
-    private RealmManager _manager;
-    public RealmManager Manager
-    {
-        get { return _manager; }
-        internal set
-        {
-            _manager = value;
-            if (_manager != null)
-                Init();
-        }
-    }
+    public RealmManager Manager { get; private set; }
 
     public int Id { get; internal set; }
-    public string Name { get; set; }
-    public string SBName { get; set; }
+    public string IdName { get; set; }
+    public string DisplayName { get; set; }
     public int Difficulty { get; protected set; }
+    public int MaxPlayers { get; protected set; }
     public int Background { get; protected set; }
-    public bool IsLimbo { get; protected set; }
     public bool AllowTeleport { get; protected set; }
     public bool ShowDisplays { get; protected set; }
-    public bool Persist { get; protected set; }
-    public int Blocking { get; protected set; }
-    
+    public bool Persists { get; protected set; }
+    public VisibilityType VisibilityType { get; protected set; }
+
     public int BgLightColor { get; protected set; }
     public float BgLightIntensity { get; protected set; }
     public float DayLightIntensity { get; protected set; }
@@ -59,75 +51,53 @@ public class World
     public Wmap Map { get; private set; }
     public bool Deleted { get; protected set; }
 
-    private long _elapsedTime;
+    private long ElapsedTime;
     private int _totalConnects;
     public int TotalConnects { get { return _totalConnects; } }
     public bool Closed { get; set; }
 
-    public ConcurrentDictionary<int, Player> Players { get; private set; }
-    public ConcurrentDictionary<int, Enemy> Enemies { get; private set; }
-    public ConcurrentDictionary<int, Enemy> Quests { get; private set; }
-    public ConcurrentDictionary<int, Pet> Pets { get; private set; }
-    public ConcurrentDictionary<Tuple<int, byte>, Projectile> Projectiles { get; private set; }
-    public ConcurrentDictionary<int, StaticObject> StaticObjects { get; private set; }
+    public ConcurrentDictionary<int, Player> Players { get; private set; } = new();
+    public ConcurrentDictionary<int, Enemy> Enemies { get; private set; } = new();
+    public ConcurrentDictionary<int, Enemy> Quests { get; private set; } = new();
+    public ConcurrentDictionary<int, Pet> Pets { get; private set; } = new();
+    public ConcurrentDictionary<Tuple<int, byte>, Projectile> Projectiles { get; private set; } = new();
+    public ConcurrentDictionary<int, StaticObject> StaticObjects { get; private set; } = new();
+    public List<WorldTimer> Timers { get; private set; } = new();
 
     public CollisionMap<Entity> EnemiesCollision { get; private set; }
     public CollisionMap<Entity> PlayersCollision { get; private set; }
 
-    public List<WorldTimer> Timers { get; private set; }
 
     private static int _entityInc;
 
     private readonly object _deleteLock = new();
 
-    public World(ProtoWorld proto)
+    public World(RealmManager manager, WorldTemplateData template)
     {
-        Setup();
-        Id = proto.id;
-        Name = proto.name;
-        SBName = proto.sbName;
-        Difficulty = proto.difficulty;
-        Background = proto.background;
-        IsLimbo = proto.isLimbo;
-        Persist = proto.persist;
-        AllowTeleport = !proto.restrictTp;
-        ShowDisplays = proto.showDisplays;
-        Blocking = proto.blocking;
-        
-        BgLightColor = proto.bgLightColor;
-        BgLightIntensity = proto.bgLightIntensity;
-        DayLightIntensity = proto.dayLightIntensity;
-        NightLightIntensity = proto.nightLightIntensity;
-    }
+        Manager = manager;
 
-    private void Setup()
-    {
-        Players = new ConcurrentDictionary<int, Player>();
-        Enemies = new ConcurrentDictionary<int, Enemy>();
-        Quests = new ConcurrentDictionary<int, Enemy>();
-        Pets = new ConcurrentDictionary<int, Pet>();
-        Projectiles = new ConcurrentDictionary<Tuple<int, byte>, Projectile>();
-        StaticObjects = new ConcurrentDictionary<int, StaticObject>();
-        Timers = new List<WorldTimer>();
-        AllowTeleport = true;
-        ShowDisplays = true;
-        Persist = false; // if false, attempts to delete world with 0 players
-        Blocking = 0; // toggles sight block (0 disables sight block)
+        IdName = template.IdName;
+        DisplayName = template.DisplayName;
+        Difficulty = template.Difficulty;
+        Background = template.Background;
+        Persists = template.Persists;
+        MaxPlayers = template.MaxPlayers;
+        AllowTeleport = !template.DisableTeleport;
+        ShowDisplays = template.ShowDisplays;
+        VisibilityType = template.VisibilityType;
+
+        BgLightColor = template.BackgroundLightColor;
+        BgLightIntensity = template.BackgroundLightIntensity;
+        DayLightIntensity = template.DayLightIntensity;
+        NightLightIntensity = template.NightLightIntensity;
     }
 
     public string GetDisplayName()
     {
-        if (SBName != null && SBName.Length > 0)
-        {
-            return SBName;
-        }
-        else
-        {
-            return Name;
-        }
+        if (DisplayName != null && DisplayName.Length > 0)
+            return DisplayName;
+        return IdName;
     }
-
-    public bool IsNotCombatMapArea => Id == Nexus || Id == Vault || Id == GuildHall|| Id == NexusExplanation;
 
     public virtual bool AllowedAccess(Client client)
     {
@@ -139,46 +109,127 @@ public class World
         return Map.Regions.Where(t => t.Value == TileRegion.Spawn).ToArray();
     }
 
-    public virtual World GetInstance(Client client)
-    {
-        World world;
-        DynamicWorld.TryGetWorld(_manager.Resources.Worlds[Name], client, out world);
-
-        if (world == null)
-            world = new World(_manager.Resources.Worlds[Name]);
-
-        world.IsLimbo = false;
-        return Manager.AddWorld(world);
-    }
-
     public long GetAge()
     {
-        return _elapsedTime;
+        return ElapsedTime;
     }
 
-    protected virtual void Init()
+    public virtual void Init()
     {
-        if (IsLimbo) return;
+    }
 
-        var proto = Manager.Resources.Worlds[Name];
-
-        if (proto.maps != null && proto.maps.Length <= 0)
+    public bool Delete()
+    {
+        using (TimedLock.Lock(_deleteLock))
         {
-            var template = DungeonTemplates.GetTemplate(Name);
-            if (template == null)
-                throw new KeyNotFoundException($"Template for {Name} not found.");
-            FromDungeonGen(Rand.Next(), template);
-            return;
+            if (Players.Count > 0)
+                return false;
+
+            Deleted = true;
+            Manager.RemoveWorld(this);
+            Id = 0;
+
+            DisposeEntities(Players);
+            DisposeEntities(Enemies);
+            DisposeEntities(Projectiles);
+            DisposeEntities(StaticObjects);
+            DisposeEntities(Pets);
+
+            Players = null;
+            Enemies = null;
+            Projectiles = null;
+            StaticObjects = null;
+            Pets = null;
+
+            return true;
         }
-
-        var map = Rand.Next(0, (proto.maps == null) ? 1 : proto.maps.Length);
-        FromWorldMap(new MemoryStream(proto.wmap[map]));
-
-        InitShops();
     }
 
-    protected void InitShops()
+    private void DisposeEntities<T, TU>(ConcurrentDictionary<T, TU> dictionary)
     {
+        var entities = dictionary.Values.ToArray();
+        foreach (var entity in entities)
+            (entity as Entity).Dispose();
+    }
+
+    protected void FromDungeonGen(int seed, DungeonTemplate template)
+    {
+        Log.Info("Loading template for world {0}({1})...", Id, IdName);
+
+        var gen = new Generator(seed, template);
+        gen.Generate();
+        var ras = new Rasterizer(seed, gen.ExportGraph());
+        ras.Rasterize();
+        var dTiles = ras.ExportMap();
+
+        if (Map == null)
+        {
+            Map = new Wmap(Manager.Resources.GameData);
+            Interlocked.Add(ref _entityInc, Map.Load(dTiles, _entityInc));
+        }
+        else
+            Map.ResetTiles();
+
+        InitMap();
+    }
+
+    public virtual string SelectMap(WorldTemplateData template) => template.Maps[Rand.Next(0, template.Maps.Length)];
+
+    public void LoadMapFromData(MapData mapData)
+    {
+        Log.Info("Loading map for world {0}({1})...", Id, IdName);
+        
+        // assume nothing is wrong, this should be allowed to crash and cause issues so devs will fix the missing maps,
+        // preferably not during production runs
+        // to save time rewriting entire world system im doing this 
+        // ~Slendergo
+
+        if (Map == null)
+        {
+            Map = new Wmap(Manager.Resources.GameData);
+            _ = Interlocked.Add(ref _entityInc, Map.LoadFromMapData(mapData, _entityInc));
+        }
+        else
+            Map.ResetTiles();
+
+        InitMap();
+    }
+
+    protected void FromJson(string json)
+    {
+        Log.Info("Loading json map for world {0}...", Id);
+
+        if (Map == null)
+        {
+            var dat = new MemoryStream(Json2Wmap.Convert(Manager.Resources.GameData, json));
+            
+            Map = new Wmap(Manager.Resources.GameData);
+            _ = Interlocked.Add(ref _entityInc, Map.LoadFromWmap(dat, _entityInc));
+        }
+        else
+            Map.ResetTiles();
+
+        InitMap();
+    }
+
+    private void InitMap()
+    {
+        var w = Map.Width;
+        var h = Map.Height;
+
+        EnemiesCollision = new CollisionMap<Entity>(0, w, h);
+        PlayersCollision = new CollisionMap<Entity>(1, w, h);
+
+        Projectiles.Clear();
+        StaticObjects.Clear();
+        Enemies.Clear();
+        Players.Clear();
+        Quests.Clear();
+        Timers.Clear();
+
+        foreach (var entity in Map.InstantiateEntities(Manager))
+             _ = EnterWorld(entity);
+
         foreach (var shop in MerchantLists.Shops)
         {
             var shopItems = new List<ISellableItem>(shop.Value.Item1);
@@ -230,96 +281,6 @@ public class World
         }
     }
 
-    public bool Delete()
-    {
-        using (TimedLock.Lock(_deleteLock))
-        {
-            if (Players.Count > 0)
-                return false;
-
-            Deleted = true;
-            Manager.RemoveWorld(this);
-            Id = 0;
-
-            DisposeEntities(Players);
-            DisposeEntities(Enemies);
-            DisposeEntities(Projectiles);
-            DisposeEntities(StaticObjects);
-            DisposeEntities(Pets);
-
-            Players = null;
-            Enemies = null;
-            Projectiles = null;
-            StaticObjects = null;
-            Pets = null;
-
-            return true;
-        }
-    }
-
-    private void DisposeEntities<T, TU>(ConcurrentDictionary<T, TU> dictionary)
-    {
-        var entities = dictionary.Values.ToArray();
-        foreach (var entity in entities)
-            (entity as Entity).Dispose();
-    }
-
-    protected void FromDungeonGen(int seed, DungeonTemplate template)
-    {
-        Log.Info("Loading template for world {0}({1})...", Id, Name);
-
-        var gen = new Generator(seed, template);
-        gen.Generate();
-        var ras = new Rasterizer(seed, gen.ExportGraph());
-        ras.Rasterize();
-        var dTiles = ras.ExportMap();
-
-        if (Map == null)
-        {
-            Map = new Wmap(Manager.Resources.GameData);
-            Interlocked.Add(ref _entityInc, Map.Load(dTiles, _entityInc));
-            if (Blocking == 3)
-                Sight.CalcRegionBlocks(Map);
-        }
-        else
-            Map.ResetTiles();
-
-        InitMap();
-    }
-
-    protected void FromWorldMap(System.IO.Stream dat)
-    {
-        Log.Info("Loading map for world {0}({1})...", Id, Name);
-
-        if (Map == null)
-        {
-            Map = new Wmap(Manager.Resources.GameData);
-            Interlocked.Add(ref _entityInc, Map.Load(dat, _entityInc));
-            if (Blocking == 3)
-                Sight.CalcRegionBlocks(Map);
-        }
-        else
-            Map.ResetTiles();
-
-        InitMap();
-    }
-
-    private void InitMap()
-    {
-        int w = Map.Width, h = Map.Height;
-        EnemiesCollision = new CollisionMap<Entity>(0, w, h);
-        PlayersCollision = new CollisionMap<Entity>(1, w, h);
-
-        Projectiles.Clear();
-        StaticObjects.Clear();
-        Enemies.Clear();
-        Players.Clear();
-        Quests.Clear();
-        Timers.Clear();
-
-        foreach (var i in Map.InstantiateEntities(Manager))
-            EnterWorld(i);
-    }
 
     public virtual int EnterWorld(Entity entity, bool noIdChange = false)
     {
@@ -406,14 +367,8 @@ public class World
             StaticObjects.TryRemove(entity.Id, out dummy);
 
             if (entity.ObjectDesc?.BlocksSight == true)
-            {
-                if (Blocking == 3)
-                    Sight.UpdateRegion(Map, (int)entity.X, (int)entity.Y);
-
-                foreach (var plr in Players.Values
-                             .Where(p => MathsUtils.DistSqr(p.X, p.Y, entity.X, entity.Y) < Player.RadiusSqr))
+                foreach (var plr in Players.Values.Where(p => MathsUtils.DistSqr(p.X, p.Y, entity.X, entity.Y) < Player.RadiusSqr))
                     plr.Sight.UpdateCount++;
-            }
 
             if (entity is Decoy)
                 PlayersCollision.Remove(entity);
@@ -481,9 +436,9 @@ public class World
         if (tile.TileDesc.NoWalk)
             return false;
 
-        if (tile.ObjType != 0 && tile.ObjDesc != null)
+        if (tile.ObjectType != 0 && tile.ObjectDesc != null)
         {
-            if (tile.ObjDesc.FullOccupy || tile.ObjDesc.EnemyOccupySquare || (spawning && tile.ObjDesc.OccupySquare))
+            if (tile.ObjectDesc.FullOccupy || tile.ObjectDesc.EnemyOccupySquare || (spawning && tile.ObjectDesc.OccupySquare))
                 return false;
         }
 
@@ -550,7 +505,7 @@ public class World
 
     public void QuakeToWorld(World newWorld)
     {
-        if (!Persist || this is Realm)
+        if (!Persists || this is RealmOfTheMadGod)
             Closed = true;
 
         BroadcastPacket(new ShowEffect
@@ -565,12 +520,12 @@ public class World
                 if (plr.HasConditionEffect(ConditionEffects.Paused))
                     plr.Client.Reconnect("Nexus", Nexus);
                 else
-                    plr.Client.Reconnect(newWorld.Name, newWorld.Id);
+                    plr.Client.Reconnect(newWorld.IdName, newWorld.Id);
 
             }
         }));
 
-        if (!Persist)
+        if (!Persists)
             Timers.Add(new WorldTimer(20000, (w2, t2) =>
             {
                 // to ensure people get kicked out of world
@@ -602,83 +557,61 @@ public class World
         // make sure not to do anything after the call (or at least check)
         // as it is possible for the world to have been removed at that point.
 
-        try
+        ElapsedTime += time.ElaspedMsDelta;
+
+        if (!Persists && ElapsedTime > 60000 && Players.IsEmpty)
         {
-            _elapsedTime += time.ElaspedMsDelta;
+            _ = Delete();
+            return;
+        }
 
-            if (IsLimbo) return;
-
-            if (!Persist && _elapsedTime > 60000 && Players.Count <= 0)
+        for (var i = Timers.Count - 1; i >= 0; i--)
+            try
             {
-                Delete();
-                return;
-            }
-
-            for (var i = Timers.Count - 1; i >= 0; i--)
-                try
-                {
-                    if (Timers[i].Tick(this, time))
-                        Timers.RemoveAt(i);
-                }
-                catch (Exception e)
-                {
-                    var msg = e.Message + "\n" + e.StackTrace;
-                    Log.Error(msg);
+                if (Timers[i].Tick(this, time))
                     Timers.RemoveAt(i);
-                }
-
-            foreach (var i in Players)
-                i.Value.Tick(time);
-
-            /*(if (EnemiesCollision != null)
-            {
-                foreach (var i in EnemiesCollision.GetActiveChunks(PlayersCollision))
-                    i.Tick(time);
-                foreach (var i in StaticObjects.Where(x => x.Value is Decoy))
-                    i.Value.Tick(time);
             }
-            else
+            catch (Exception e)
             {
-                foreach (var i in Enemies)
-                    i.Value.Tick(time);
-                foreach (var i in StaticObjects)
-                    i.Value.Tick(time);
-            }*/
-            foreach (var i in Projectiles)
+                var msg = e.Message + "\n" + e.StackTrace;
+                Log.Error(msg);
+                Timers.RemoveAt(i);
+            }
+
+        // if player excepts we will not brick other players or entities
+        foreach (var i in Players)
+            try
+            {
                 i.Value.Tick(time);
-        }
-        catch (Exception e)
+            }
+            catch (Exception e)
+            {
+                var msg = "Player: " + e.Message + "\n" + e.StackTrace;
+                Log.Error(msg);
+            }
+
+        if (EnemiesCollision != null)
         {
-            var msg = e.Message + "\n" + e.StackTrace;
-            Log.Error(msg);
-        }
-    }
+            foreach (var i in EnemiesCollision.GetActiveChunks(PlayersCollision))
+                i.Tick(time);
 
-    public void TickLogic(RealmTime time)
-    {
-        using (TimedLock.Lock(_deleteLock))
-        {
-            if (Deleted)
-                return;
-
-            if (EnemiesCollision != null)
-            {
-                foreach (var i in EnemiesCollision.GetActiveChunks(PlayersCollision))
-                    i.Tick(time);
-                foreach (var i in StaticObjects.Where(x => x.Value is Decoy))
-                    i.Value.Tick(time);
-            }
-            else
-            {
-                foreach (var i in Enemies)
-                    i.Value.Tick(time);
-                foreach (var i in StaticObjects)
-                    i.Value.Tick(time);
-            }
-
-            foreach (var i in Pets)
+            foreach (var i in StaticObjects.Where(x => x.Value is Decoy))
                 i.Value.Tick(time);
         }
+        else
+        {
+            foreach (var i in Enemies)
+                i.Value.Tick(time);
+
+            foreach (var i in StaticObjects)
+                i.Value.Tick(time);
+        }
+
+        foreach (var i in Pets)
+            i.Value.Tick(time);
+
+        foreach (var i in Projectiles)
+            i.Value.Tick(time);
     }
 
     public Projectile GetProjectile(int objectId, int bulletId)

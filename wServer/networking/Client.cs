@@ -171,12 +171,11 @@ public partial class Client
             ErrorDescription = text
         });
 
-        if (errorId == Failure.MessageWithDisconnect ||
+        if (errorId == Failure.MessageWithDisconnect || 
+            errorId == Failure.ClientUpdateNeeded ||
             errorId == Failure.ForceCloseGame)
         {
-            var t = Task.Delay(1000);
-            await t;
-
+            await Task.Delay(1000);
             Disconnect($"Failure Message: {text}");
         }
     }

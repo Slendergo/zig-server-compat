@@ -125,7 +125,7 @@ public partial class Player
     private void SendUpdate(RealmTime time)
     {
         // init sight circle
-        var sCircle = Sight.GetSightCircle(Owner.Blocking);
+        var sCircle = Sight.GetSightCircle(Owner.VisibilityType);
 
         // get list of tiles for update
         var tilesUpdate = new List<Update.TileData>(AppoxAreaOfSight);
@@ -169,7 +169,7 @@ public partial class Player
             entitiesAdd.Length > 0 || staticsUpdate.Length > 0)
         {
             entitiesRemove.UnionWith(
-                staticsRemove.Select(s => Owner.Map[s.X, s.Y].ObjId));
+                staticsRemove.Select(s => Owner.Map[s.X, s.Y].ObjectId));
 
             _tiles = tilesUpdate.ToArray();
             _newObjects = entitiesAdd.Select(_ => _.ToDefinition()).Concat(staticsUpdate).ToArray();
@@ -254,8 +254,8 @@ public partial class Player
             if (/*visibleTiles.Contains(i)*/
                 StaticBoundingBox - ((int)X - i.X) > 0 &&
                 StaticBoundingBox - ((int)Y - i.Y) > 0 &&
-                tile.ObjType != 0 &&
-                tile.ObjId != 0)
+                tile.ObjectType != 0 &&
+                tile.ObjectId != 0)
                 continue;
 
             yield return i;
@@ -273,7 +273,7 @@ public partial class Player
             var y = i.Y;
             var tile = Owner.Map[x, y];
 
-            if (tile.ObjId != 0 && tile.ObjType != 0 && _clientStatic.Add(i))
+            if (tile.ObjectId != 0 && tile.ObjectType != 0 && _clientStatic.Add(i))
                 _newStatics.Add(tile.ToDef(x, y));
         }
 

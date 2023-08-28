@@ -58,8 +58,8 @@ public class DamageCounter
 
         var enemy = (Parent ?? this).enemy;
 
-        if (enemy.Owner is Realm)
-            (enemy.Owner as Realm).EnemyKilled(enemy, (Parent ?? this).LastHitter);
+        if (enemy.Owner is RealmOfTheMadGod)
+            (enemy.Owner as RealmOfTheMadGod).EnemyKilled(enemy, (Parent ?? this).LastHitter);
 
         if (enemy.Spawned)
             return;

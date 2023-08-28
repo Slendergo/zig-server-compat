@@ -89,7 +89,7 @@ public class CommandManager
         }
 
         var owner = player.Owner;
-        Log.Info("[Command] [{0}] <{1}> {2}", owner?.Name ?? "", player.Name, text);
+        Log.Info("[Command] [{0}] <{1}> {2}", owner?.IdName ?? "", player.Name, text);
         return command.Execute(player, time, args);
     }
 }

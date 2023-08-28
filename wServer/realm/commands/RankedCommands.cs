@@ -535,7 +535,7 @@ class SetpieceCommand : Command
             return false;
         }
 
-        if (!player.Owner.Name.Equals("Nexus"))
+        if (!player.Owner.IdName.Equals("Nexus"))
         {
             try
             {
@@ -1274,11 +1274,11 @@ class CloseRealmCommand : Command
 
     protected override bool Process(Player player, RealmTime time, string args)
     {
-        var gw = player.Manager.Worlds[World.Realm] as Realm;
+        var gw = player.Owner as RealmOfTheMadGod;
 
         if (gw == null)
         {
-            player.SendError("An undefined error occurred.");
+            player.SendError("Must be in realm to close.");
             return false;
         }
 
@@ -1299,44 +1299,45 @@ class QuakeCommand : Command
 
     protected override bool Process(Player player, RealmTime time, string worldName)
     {
-        var worldProtoData = player.Manager.Resources.Worlds.Data;
+        return false;
+        //var worldProtoData = player.Manager.Resources.Worlds.Data;
 
-        if (String.IsNullOrWhiteSpace(worldName))
-        {
-            var msg = worldProtoData.Aggregate(
-                "Valid World Names: ", (c, p) => c + ((!p.Value.setpiece) ? (p.Key + ", ") : ""));
-            player.SendInfo(msg.Substring(0, msg.Length - 2) + ".");
-            return false;
-        }
+        //if (String.IsNullOrWhiteSpace(worldName))
+        //{
+        //    var msg = worldProtoData.Aggregate(
+        //        "Valid World Names: ", (c, p) => c + ((!p.Value.setpiece) ? (p.Key + ", ") : ""));
+        //    player.SendInfo(msg.Substring(0, msg.Length - 2) + ".");
+        //    return false;
+        //}
 
-        if (player.Owner is Nexus)
-        {
-            player.SendError("Cannot use /quake in Nexus.");
-            return false;
-        }
+        //if (player.Owner is Nexus)
+        //{
+        //    player.SendError("Cannot use /quake in Nexus.");
+        //    return false;
+        //}
 
-        var worldNameProper =
-            player.Manager.Resources.Worlds.Data.FirstOrDefault(
-                p => p.Key.Equals(worldName, StringComparison.InvariantCultureIgnoreCase)).Key;
+        //var worldNameProper =
+        //    player.Manager.Resources.Worlds.Data.FirstOrDefault(
+        //        p => p.Key.Equals(worldName, StringComparison.InvariantCultureIgnoreCase)).Key;
 
-        ProtoWorld proto;
-        if (worldNameProper == null || (proto = worldProtoData[worldNameProper]).setpiece)
-        {
-            player.SendError("Invalid world.");
-            return false;
-        }
+        //WorldTemplateData template;
+        //if (worldNameProper == null || (proto = worldProtoData[worldNameProper]).setpiece)
+        //{
+        //    player.SendError("Invalid world.");
+        //    return false;
+        //}
 
-        World world;
-        if (proto.persist)
-            world = player.Manager.Worlds[proto.id];
-        else
-        {
-            DynamicWorld.TryGetWorld(proto, player.Client, out world);
-            world = player.Manager.AddWorld(world ?? new World(proto));
-        }
+        //World world;
+        //if (proto.persist)
+        //    world = player.Manager.Worlds[proto.id];
+        //else
+        //{
+        //    DynamicWorld.TryGetWorld(proto, player.Client, out world);
+        //    world = player.Manager.AddWorld(world ?? new World(template));
+        //}
 
-        player.Owner.QuakeToWorld(world);
-        return true;
+        //player.Owner.QuakeToWorld(world);
+        //return true;
     }
 }
 
@@ -1363,7 +1364,7 @@ class VisitCommand : Command
         }
 
         var owner = target.Player.Owner;
-        player.Client.Reconnect(owner.Name, owner.Id);
+        player.Client.Reconnect(owner.IdName, owner.Id);
         return true;
     }
 }

@@ -5,6 +5,7 @@ using System.Globalization;
 using NLog.Targets;
 using wServer.networking.server;
 using wServer.realm;
+using wServer.realm.worlds.parser;
 
 namespace wServer;
 
@@ -49,6 +50,12 @@ class Program
                    Config.dbInfo.auth, 
                    Resources))
         {
+            //var data = MapParser.ConvertWmapRealmToMapData(File.ReadAllBytes("realm.wmap"));
+            //File.WriteAllBytes($"{Environment.CurrentDirectory}/realm.pmap", data);
+
+            //data = MapParser.ConvertWmapToMapData(File.ReadAllBytes("nexus.wmap"));
+            //File.WriteAllBytes($"{Environment.CurrentDirectory}/nexus.pmap", data);
+
             Config.serverInfo.instanceId = Guid.NewGuid().ToString();
 
             var manager = new RealmManager(Resources, Database, Config);
@@ -59,6 +66,8 @@ class Program
                 Config.serverSettings.maxConnections,
                 StringUtils.StringToByteArray(Config.serverSettings.key));
             server.Start();
+
+            // convert here
 
             Console.CancelKeyPress += delegate
             {

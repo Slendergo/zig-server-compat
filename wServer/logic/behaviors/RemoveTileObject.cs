@@ -36,7 +36,7 @@ class RemoveTileObject : Behavior
         {
             var tile = map[x, y];
 
-            if (tile.ObjType != objType)
+            if (tile.ObjectType != objType)
                 continue;
 
             var dx = Math.Abs(x - (int)host.X);
@@ -45,17 +45,13 @@ class RemoveTileObject : Behavior
             if (dx > _range || dy > _range)
                 continue;
 
-            if (tile.ObjDesc?.BlocksSight == true)
+            if (tile.ObjectDesc?.BlocksSight == true)
             {
-                if (host.Owner.Blocking == 3)
-                    Sight.UpdateRegion(map, x, y);
-
-                foreach (var plr in host.Owner.Players.Values
-                             .Where(p => MathsUtils.DistSqr(p.X, p.Y, x, y) < Player.RadiusSqr))
+                foreach (var plr in host.Owner.Players.Values.Where(p => MathsUtils.DistSqr(p.X, p.Y, x, y) < Player.RadiusSqr))
                     plr.Sight.UpdateCount++;
             }
 
-            tile.ObjType = 0;
+            tile.ObjectType = 0;
             tile.UpdateCount++;
             map[x, y] = tile;
         }

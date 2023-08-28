@@ -15,7 +15,7 @@ class GLandCommand : Command
 
     protected override bool Process(Player player, RealmTime time, string args)
     {
-        if (!(player.Owner is Realm))
+        if (!(player.Owner is RealmOfTheMadGod))
         {
             player.SendError("This command requires you to be in realm first.");
             return false;
@@ -46,7 +46,8 @@ class TutorialCommand : Command
 
     protected override bool Process(Player player, RealmTime time, string args)
     {
-        player.Client.Reconnect("Tutorial", World.Tutorial);
+        var world = player.Manager.CreateNewWorld("Tutorial");
+        player.Client.Reconnect(world.IdName, world.Id);
         return true;
     }
 }
@@ -511,8 +512,8 @@ class RealmCommand : Command
 
     protected override bool Process(Player player, RealmTime time, string args)
     {
-        player.Client.Reconnect("Realm", World.Realm);
-
+        var world = player.Manager.GetRandomRealm();
+        player.Client.Reconnect(world.IdName, world.Id);
         return true;
     }
 }
@@ -534,7 +535,8 @@ class VaultCommand : Command
 
     protected override bool Process(Player player, RealmTime time, string args)
     {
-        player.Client.Reconnect("Vault", World.Vault);
+        var world = player.Manager.CreateNewWorld("Vault", player.Client);
+        player.Client.Reconnect(world.IdName, world.Id);
         return true;
     }
 }
@@ -550,7 +552,17 @@ class GhallCommand : Command
             player.SendError("You need to be in a guild.");
             return false;
         }
-        player.Client.Reconnect("Guild Hall", World.GuildHall);
+
+        World world = null;
+        foreach (var w in player.Manager.Worlds.Values)
+        {
+            if (w is not GuildHall || (w as GuildHall).GuildId != player.Client.Account.GuildId)
+                continue;
+            world = w;
+        }
+        world ??= player.Manager.CreateNewWorld("Guild Hall", player.Client);
+        
+        player.Client.Reconnect(world.IdName, world.Id);
         return true;
     }
 }

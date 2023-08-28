@@ -26,7 +26,7 @@ class Transform : Behavior
     {
         Entity entity = Entity.Resolve(host.Manager, target);
         if (entity is Portal
-            && host.Owner.Name.Contains("Arena"))
+            && host.Owner.IdName.Contains("Arena"))
         {
             return;
         }

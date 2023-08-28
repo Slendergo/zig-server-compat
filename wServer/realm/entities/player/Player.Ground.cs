@@ -12,7 +12,7 @@ public partial class Player
     {
         try
         {
-            if (time.TotalElapsedMs - l <= 100 || Owner?.Name != "OceanTrench") return;
+            if (time.TotalElapsedMs - l <= 100 || Owner?.IdName != "OceanTrench") return;
 
             if (!(Owner?.StaticObjects.Where(i => i.Value.ObjectType == 0x0731).Count(i => (X - i.Value.X) * (X - i.Value.X) + (Y - i.Value.Y) * (Y - i.Value.Y) < 1) > 0))
             {
@@ -49,7 +49,7 @@ public partial class Player
                 return false;
 
             WmapTile tile = Owner.Map[(int)X, (int)Y];
-            ObjectDesc objDesc = tile.ObjType == 0 ? null : Manager.Resources.GameData.ObjectDescs[tile.ObjType];
+            ObjectDesc objDesc = tile.ObjectType == 0 ? null : Manager.Resources.GameData.ObjectDescs[tile.ObjectType];
             TileDesc tileDesc = Manager.Resources.GameData.Tiles[tile.TileId];
             if (tileDesc.Damaging && (objDesc == null || !objDesc.ProtectFromGroundDamage))
             {
@@ -83,7 +83,7 @@ public partial class Player
             return;
 
         WmapTile tile = Owner.Map[(int)pos.X, (int)pos.Y];
-        ObjectDesc objDesc = tile.ObjType == 0 ? null : Manager.Resources.GameData.ObjectDescs[tile.ObjType];
+        ObjectDesc objDesc = tile.ObjectType == 0 ? null : Manager.Resources.GameData.ObjectDescs[tile.ObjectType];
         TileDesc tileDesc = Manager.Resources.GameData.Tiles[tile.TileId];
         if (tileDesc.Damaging && (objDesc == null || !objDesc.ProtectFromGroundDamage))
         {

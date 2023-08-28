@@ -1,5 +1,7 @@
 ﻿using common;
+using common.resources;
 using wServer.realm.worlds;
+using wServer.realm.worlds.logic;
 
 namespace wServer.realm.entities;
 
@@ -53,17 +55,36 @@ public class Portal : StaticObject
     public void CreateWorld(Player player)
     {
         World world = null;
-        foreach (var p in Program.Resources.Worlds.Data.Values
-                     .Where(p => p.portals != null && p.portals.Contains(ObjectType)))
+        foreach (var p in Program.Resources.GameData.WorldTemplates.Values.Where(p => p.Portals.Contains(ObjectId)))
         {
-            if (p.id < 0)
-                world = player.Manager.GetWorld(p.id);
-            else
+            if(p.Specialized == SpeicalizedDungeonType.GuildHall)
             {
-                DynamicWorld.TryGetWorld(p, player.Client, out world);
-                world = player.Manager.AddWorld(world ?? new World(p));
+                if (string.IsNullOrEmpty(player.Guild))
+                {
+                    player.SendError("You are not in a guild.");
+                    return;
+                }
+
+                foreach (var w in Manager.Worlds.Values)
+                {
+                    if (w is not GuildHall || (w as GuildHall).GuildId != player.Client.Account.GuildId)
+                        continue;
+                    player.Client.Reconnect(w.IdName, w.Id);
+                    return;
+                }
             }
+
+            var newWorld = player.Manager.CreateNewWorld(p, player.Client);
+            if (!p.Instanced)
+                world = newWorld;
             break;
+        }
+
+        // get nexus if failed to make a world 
+        if(world == null)
+        {
+            world = Manager.GetWorld(World.Nexus);
+            player.SendError("Unable to find world, sent to nexus");
         }
 
         WorldInstance = world;
