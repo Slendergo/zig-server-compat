@@ -11,6 +11,7 @@ using wServer.realm.worlds;
 using wServer.realm.worlds.logic;
 using NLog;
 using wServer.logic;
+using DungeonGenerator.Dungeon;
 
 namespace wServer.realm.commands;
 
@@ -466,8 +467,14 @@ class GimmeCommand : Command
         {
             if (!gameData.IdToObjectType.TryGetValue(args, out objType))
             {
-                player.SendError("Unknown item type!");
-                return false;
+                // direct get or partial match
+
+                var val = gameData.IdToObjectType.Keys.FirstOrDefault(_ => _.StartsWith(args) || _.Contains(args.ToLower()));
+                if (string.IsNullOrEmpty(val) || !gameData.IdToObjectType.TryGetValue(val, out objType))
+                {
+                    player.SendError("Unknown item type!");
+                    return false;
+                }
             }
         }
 
