@@ -9,12 +9,12 @@ public class XmlData
 
     public Dictionary<ushort, XElement> ObjectTypeToElement = new();
     public Dictionary<ushort, string> ObjectTypeToId = new();
-    public Dictionary<string, ushort> IdToObjectType = new();
-    public Dictionary<string, ushort> DisplayIdToObjectType = new();
+    public Dictionary<string, ushort> IdToObjectType = new(StringComparer.InvariantCulture);
+    public Dictionary<string, ushort> DisplayIdToObjectType = new(StringComparer.InvariantCulture);
 
     public Dictionary<ushort, XElement> TileTypeToElement = new();
     public Dictionary<ushort, string> TileTypeToId = new();
-    public Dictionary<string, ushort> IdToTileType = new();
+    public Dictionary<string, ushort> IdToTileType = new(StringComparer.InvariantCulture);
 
     public Dictionary<int, ItemType> SlotTypeToItemType = new();
 
@@ -24,7 +24,7 @@ public class XmlData
     public Dictionary<ushort, PlayerDesc> Classes = new();
     public Dictionary<ushort, PortalDesc> Portals = new();
     public Dictionary<ushort, SkinDesc> Skins = new();
-    public Dictionary<string, WorldTemplateData> WorldTemplates = new();
+    public Dictionary<string, WorldTemplateData> WorldTemplates = new(StringComparer.InvariantCulture);
 
     public XmlData(string dir)
     {
