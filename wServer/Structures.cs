@@ -183,13 +183,14 @@ public struct ObjectSlot
 {
     public int ObjectId;
     public byte SlotId;
-    public ushort ObjectType;
+    public int ObjectType;
     public static ObjectSlot Read(NReader rdr)
     {
-        ObjectSlot ret = new ObjectSlot();
-        ret.ObjectId = rdr.ReadInt32();
-        ret.SlotId = rdr.ReadByte();
-        ret.ObjectType = rdr.ReadUInt16();
+        var ret = new ObjectSlot {
+            ObjectId = rdr.ReadInt32(),
+            SlotId = rdr.ReadByte(),
+            ObjectType = rdr.ReadInt32()
+        };
         return ret;
     }
     public void Write(NWriter wtr)
