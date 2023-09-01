@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.transitions;
 
@@ -8,6 +10,13 @@ class EntitiesNotExistsTransition : Transition
 
     private readonly double _dist;
     private readonly ushort[] _targets;
+
+    public EntitiesNotExistsTransition(XElement e)
+    : base(e.ParseString("@targetState", "root"))
+    {
+        _dist = e.ParseFloat("@dist");
+        _targets = e.ParseStringArray("@targets", ',', new string[0]).Select(x => Behavior.GetObjType(x)).ToArray();
+    }
 
     public EntitiesNotExistsTransition(double dist, string targetState, params string[] targets)
         : base(targetState)

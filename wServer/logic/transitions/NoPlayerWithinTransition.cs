@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.transitions;
 
@@ -7,6 +9,12 @@ class NoPlayerWithinTransition : Transition
     //State storage: none
 
     double dist;
+
+    public NoPlayerWithinTransition(XElement e)
+    : base(e.ParseString("@targetState", "root"))
+    {
+        dist = e.ParseInt("@dist");
+    }
 
     public NoPlayerWithinTransition(double dist, string targetState)
         : base(targetState)

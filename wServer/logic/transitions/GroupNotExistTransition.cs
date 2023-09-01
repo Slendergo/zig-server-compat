@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.transitions;
 
@@ -8,6 +10,13 @@ class GroupNotExistTransition : Transition
 
     private readonly double _dist;
     private readonly string _group;
+
+    public GroupNotExistTransition(XElement e)
+    : base(e.ParseString("@targetState", "root"))
+    {
+        _dist = e.ParseFloat("@dist");
+        _group = e.ParseString("@group");
+    }
 
     public GroupNotExistTransition(double dist, string targetState, string group)
         : base(targetState)

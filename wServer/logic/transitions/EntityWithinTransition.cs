@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.transitions;
 
@@ -8,6 +10,13 @@ class EntityWithinTransition : Transition
 
     private readonly double _dist;
     private readonly string _entity;
+
+    public EntityWithinTransition(XElement e)
+    : base(e.ParseString("@targetState", "root"))
+    {
+        _dist = e.ParseFloat("@dist");
+        _entity = e.ParseString("@entity");
+    }
 
     public EntityWithinTransition(double dist, string entity, string targetState)
         : base(targetState)

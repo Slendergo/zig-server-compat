@@ -1,50 +1,64 @@
-﻿using wServer.realm;
+﻿using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic;
 
-public interface IStateChildren { }
+public interface IStateChildren
+{
+}
+
 public class State : IStateChildren
 {
-    public State(params IStateChildren[] children) : this("", children) { }
+    public State(params IStateChildren[] children) : this("", children)
+    {
+    }
+
+    public State(XElement elem, params IStateChildren[] children) : this(elem.Attribute("id").Value, children)
+    {
+    }
+
     public State(string name, params IStateChildren[] children)
     {
-        this.Name = name;
+        Name = name;
         States = new List<State>();
         Behaviors = new List<Behavior>();
         Transitions = new List<Transition>();
         foreach (var i in children)
         {
-            if (i is State)
+            switch (i)
             {
-                State state = i as State;
-                state.Parent = this;
-                States.Add(state);
+                case State state:
+                    state.Parent = this;
+                    States.Add(state);
+                    break;
+                case Behavior behavior:
+                    Behaviors.Add(behavior);
+                    break;
+                case Transition transition:
+                    Transitions.Add(transition);
+                    break;
+                default:
+                    throw new NotSupportedException("Unknown children type.");
             }
-            else if (i is Behavior)
-                Behaviors.Add(i as Behavior);
-            else if (i is Transition)
-                Transitions.Add(i as Transition);
-            else
-                throw new NotSupportedException("Unknown children type.");
         }
     }
 
-    public string Name { get; private set; }
+    public string Name { get; }
     public State Parent { get; private set; }
-    public IList<State> States { get; private set; }
-    public IList<Behavior> Behaviors { get; private set; }
-    public IList<Transition> Transitions { get; private set; }
+    public IList<State> States { get; }
+    public IList<Behavior> Behaviors { get; }
+    public IList<Transition> Transitions { get; }
 
     public static State CommonParent(State a, State b)
     {
         if (a == null || b == null) return null;
-        else return _CommonParent(a, a, b);
+        return _CommonParent(a, a, b);
     }
-    static State _CommonParent(State current, State a, State b)
+
+    private static State _CommonParent(State current, State a, State b)
     {
         if (b.Is(current)) return current;
-        else if (a.Parent == null) return null;
-        else return _CommonParent(current.Parent, a, b);
+        return a.Parent == null ? null : _CommonParent(current.Parent, a, b);
     }
 
     //child is parent
@@ -52,18 +66,15 @@ public class State : IStateChildren
     public bool Is(State state)
     {
         if (this == state) return true;
-        else if (this.Parent != null) return this.Parent.Is(state);
-        else return false;
+        return Parent != null && Parent.Is(state);
     }
 
     public event EventHandler<BehaviorEventArgs> Death;
 
     internal void OnDeath(BehaviorEventArgs e)
     {
-        if (Death != null)
-            Death(this, e);
-        if (Parent != null)
-            Parent.OnDeath(e);
+        Death?.Invoke(this, e);
+        Parent?.OnDeath(e);
     }
 
     internal void Resolve(Dictionary<string, State> states)
@@ -72,6 +83,7 @@ public class State : IStateChildren
         foreach (var i in States)
             i.Resolve(states);
     }
+
     internal void ResolveChildren(Dictionary<string, State> states)
     {
         foreach (var i in States)
@@ -82,7 +94,7 @@ public class State : IStateChildren
             j.Resolve(this);
     }
 
-    void ResolveTransition(Dictionary<string, State> states)
+    private void ResolveTransition(Dictionary<string, State> states)
     {
         foreach (var i in Transitions)
             i.Resolve(states);
@@ -100,9 +112,10 @@ public class BehaviorEventArgs : EventArgs
 {
     public BehaviorEventArgs(Entity host, RealmTime time)
     {
-        this.Host = host;
-        this.Time = time;
+        Host = host;
+        Time = time;
     }
-    public Entity Host { get; private set; }
-    public RealmTime Time { get; private set; }
+
+    public Entity Host { get; }
+    public RealmTime Time { get; }
 }

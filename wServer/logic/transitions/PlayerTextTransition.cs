@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using common;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using wServer.realm;
 using wServer.realm.entities;
 
@@ -15,6 +17,15 @@ class PlayerTextTransition : Transition
 
     private bool _transition;
     private Player _player;
+
+    public PlayerTextTransition(XElement e)
+    : base(e.ParseString("@targetState", "root"))
+    {
+        _regex = e.ParseString("@regex");
+        _distSqr = e.ParseNFloat("@dist") == null ? null : e.ParseNFloat("@dist") * e.ParseNFloat("@dist");
+        _setAttackTarget = e.ParseBool("@setAttackTarget");
+        _ignoreCase = e.ParseBool("@ignoreCase");
+    }
 
     public PlayerTextTransition(
         string targetState, 

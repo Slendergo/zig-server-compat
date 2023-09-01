@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 using wServer.realm.entities;
 
 namespace wServer.logic.transitions;
@@ -10,6 +12,14 @@ class EntityHpLessTransition : Transition
     private readonly double _dist;
     private readonly string _entity;
     private readonly double _threshold;
+
+    public EntityHpLessTransition(XElement e)
+    : base(e.ParseString("@targetState", "root"))
+    {
+        _dist = e.ParseFloat("@dist");
+        _entity = e.ParseString("@entity");
+        _threshold = e.ParseFloat("@threshold");
+    }
 
     public EntityHpLessTransition(double dist, string entity, double threshold, string targetState)
         : base(targetState)

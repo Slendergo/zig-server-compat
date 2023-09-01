@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.transitions;
 
@@ -8,6 +10,13 @@ class PlayerWithinTransition : Transition
 
     private readonly double _dist;
     private readonly bool _seeInvis;
+
+    public PlayerWithinTransition(XElement e)
+    : base(e.ParseString("@targetState", "root"))
+    {
+        _dist = e.ParseFloat("@dist");
+        _seeInvis = e.ParseBool("@seeInvis");
+    }
 
     public PlayerWithinTransition(double dist, string targetState, bool seeInvis = false)
         : base(targetState)

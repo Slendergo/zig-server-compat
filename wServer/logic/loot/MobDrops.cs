@@ -1,5 +1,8 @@
-﻿using common.resources;
+﻿using common;
+using common.resources;
 using NLog;
+using System.Security.Policy;
+using System.Xml.Linq;
 using wServer.realm;
 
 namespace wServer.logic.loot;
@@ -40,20 +43,28 @@ public abstract class MobDrops
 public class ItemLoot : MobDrops
 {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+    private readonly string _item;
+    private readonly double _probability;
+
+    public ItemLoot(XElement e)
+    {
+        _item = e.ParseString("@item");
+        _probability = e.ParseFloat("@probability");
+    }
 
     public ItemLoot(string item, double probability = 1, int numRequired = 0, double threshold = 0)
     {
         try
         {
             LootDefs.Add(new LootDef(
-                XmlData.Items[XmlData.IdToObjectType[item]],
-                probability,
+                XmlData.Items[XmlData.IdToObjectType[_item]],
+                _probability,
                 numRequired,
                 threshold));
         }
         catch (Exception e)
         {
-            Log.Warn($"Problem adding {item} to mob loot table.");
+            Log.Warn($"Problem adding {_item} to mob loot table.");
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 using wServer.realm.entities;
 
 namespace wServer.logic.transitions;
@@ -14,6 +16,12 @@ class HpBoundaryTransition : Transition
     }
 
     private readonly List<double> _thresholds;
+
+    public HpBoundaryTransition(XElement e)
+    : base(e.ParseStringArray("@targetStates", ',', new[] { "root" }))
+    {
+        _thresholds = e.ParseDoubleArray("@thresholds", ',').ToList();
+    }
 
     public HpBoundaryTransition(double[] thresholds, string[] targetStates)
         : base(targetStates)

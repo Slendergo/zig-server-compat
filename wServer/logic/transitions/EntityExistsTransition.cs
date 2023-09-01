@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.transitions;
 
@@ -8,6 +10,13 @@ class EntityExistsTransition : Transition
 
     readonly double _dist;
     readonly ushort _target;
+
+    public EntityExistsTransition(XElement e)
+    : base(e.ParseString("@targetState", "root"))
+    {
+        _dist = e.ParseFloat("@dist");
+        _target = Behavior.GetObjType(e.ParseString("@target"));
+    }
 
     public EntityExistsTransition(string target, double dist, string targetState)
         : base(targetState)

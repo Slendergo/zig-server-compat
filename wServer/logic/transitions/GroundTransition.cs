@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.transitions;
 
@@ -8,6 +10,12 @@ class GroundTransition : Transition
 
     private readonly string _ground;
     private ushort? _groundType;
+
+    public GroundTransition(XElement e)
+    : base(e.ParseString("@targetState", "root"))
+    {
+        _ground = e.ParseString("@ground");
+    }
 
     public GroundTransition(string ground, string targetState)
         : base(targetState)

@@ -1,4 +1,6 @@
-﻿using Mono.Game;
+﻿using common;
+using Mono.Game;
+using System.Xml.Linq;
 using wServer.realm;
 
 namespace wServer.logic.transitions;
@@ -14,6 +16,12 @@ class NotMovingTransition : Transition
     }
 
     private readonly int _delay;
+
+    public NotMovingTransition(XElement e)
+    : base(e.ParseString("@targetState", "root"))
+    {
+        _delay = e.ParseInt("@delay", 250);
+    }
 
     public NotMovingTransition(string targetState, int delay = 250)
         : base(targetState)

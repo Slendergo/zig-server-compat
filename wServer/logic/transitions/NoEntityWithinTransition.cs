@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.transitions;
 
@@ -7,6 +9,12 @@ class NoEntityWithinTransition : Transition
     //State storage: none
 
     private readonly int _dist;
+
+    public NoEntityWithinTransition(XElement e)
+    : base(e.ParseString("@targetState", "root"))
+    {
+        _dist = e.ParseInt("@dist");
+    }
 
     public NoEntityWithinTransition(int dist, string targetState)
         : base(targetState)

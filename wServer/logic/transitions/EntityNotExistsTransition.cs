@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.transitions;
 
@@ -9,6 +11,14 @@ class EntityNotExistsTransition : Transition
     private readonly double _dist;
     private readonly ushort? _target;
     private readonly bool _attackTarget;
+
+    public EntityNotExistsTransition(XElement e)
+    : base(e.ParseString("@targetState", "root"))
+    {
+        _dist = e.ParseFloat("@dist");
+        _target = Behavior.GetObjType(e.ParseString("@target"));
+        _attackTarget = e.ParseBool("@checkAttackTarget");
+    }
 
     public EntityNotExistsTransition(string target, double dist, string targetState, bool checkAttackTarget = false)
         : base(targetState)

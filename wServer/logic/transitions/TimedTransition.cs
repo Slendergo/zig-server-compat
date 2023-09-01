@@ -1,4 +1,6 @@
-﻿using wServer.realm;
+﻿using common;
+using System.Xml.Linq;
+using wServer.realm;
 
 namespace wServer.logic.transitions;
 
@@ -8,6 +10,13 @@ class TimedTransition : Transition
 
     int time;
     bool randomized;
+
+    public TimedTransition(XElement e)
+    : base(e.ParseString("@targetState", "root"))
+    {
+        time = e.ParseInt("@time");
+        randomized = e.ParseBool("@randomizedTime");
+    }
 
     public TimedTransition(int time, string targetState, bool randomized = false)
         : base(targetState)
