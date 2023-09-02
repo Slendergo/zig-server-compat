@@ -4,7 +4,7 @@ namespace wServer.networking.packets.incoming;
 
 public class EnemyHit : IncomingMessage
 {
-    public int Time { get; set; }
+    public long Time { get; set; }
     public byte BulletId { get; set; }
     public int TargetId { get; set; }
     public bool Killed { get; set; }
@@ -14,7 +14,7 @@ public class EnemyHit : IncomingMessage
 
     protected override void Read(NReader rdr)
     {
-        Time = rdr.ReadInt32();
+        Time = rdr.ReadInt64();
         BulletId = rdr.ReadByte();
         TargetId = rdr.ReadInt32();
         Killed = rdr.ReadBoolean();

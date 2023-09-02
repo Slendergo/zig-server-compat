@@ -11,14 +11,14 @@ class GroundDamageHandler : PacketHandlerBase<GroundDamage>
 
     protected override void HandlePacket(Client client, GroundDamage packet)
     {
-        client.Manager.Logic.AddPendingAction(t => Handle(client.Player, t, packet.Position, packet.Time));
+        client.Manager.Logic.AddPendingAction(t => Handle(client.Player,packet.Position, packet.Time));
     }
 
-    void Handle(Player player, RealmTime time, Position pos, int timeHit)
+    void Handle(Player player, Position pos, long time)
     {
         if (player?.Owner == null)
             return;
 
-        player.ForceGroundHit(time, pos, timeHit);
+        player.ForceGroundHit(pos, time);
     }
 }

@@ -4,7 +4,7 @@ namespace wServer.networking.packets.incoming;
 
 public class InvSwap : IncomingMessage
 {
-    public int Time { get; set; }
+    public long Time { get; set; }
     public Position Position { get; set; }
     public ObjectSlot SlotObj1 { get; set; }
     public ObjectSlot SlotObj2 { get; set; }
@@ -14,7 +14,7 @@ public class InvSwap : IncomingMessage
 
     protected override void Read(NReader rdr)
     {
-        Time = rdr.ReadInt32();
+        Time = rdr.ReadInt64();
         Position = Position.Read(rdr);
         SlotObj1 = ObjectSlot.Read(rdr);
         SlotObj2 = ObjectSlot.Read(rdr);

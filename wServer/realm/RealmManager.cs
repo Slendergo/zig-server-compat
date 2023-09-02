@@ -16,6 +16,7 @@ public struct RealmTime
 {
     public long TickCount;
     public long TotalElapsedMs;
+    public long TotalElapsedMicroSeconds;
     public int ElaspedMsDelta;
 }
 
@@ -51,7 +52,7 @@ public class RealmManager
     private Thread _network;
     private Thread _logic;
     public NetworkTicker Network { get; private set; }
-    public FLLogicTicker Logic { get; private set; }
+    public LogicTicker Logic { get; private set; }
 
     public readonly ConcurrentDictionary<int, World> Worlds = new();
     public readonly ConcurrentDictionary<Client, PlayerInfo> Clients = new();
@@ -99,7 +100,7 @@ public class RealmManager
         Log.Info("Starting Realm Manager...");
 
         // start server logic management
-        Logic = new FLLogicTicker(this);
+        Logic = new LogicTicker(this);
         var logic = new Task(() => Logic.TickLoop(), TaskCreationOptions.LongRunning);
         logic.ContinueWith(Program.Stop, TaskContinuationOptions.OnlyOnFaulted);
         logic.Start();

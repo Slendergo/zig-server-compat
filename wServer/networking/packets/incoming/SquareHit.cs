@@ -4,7 +4,7 @@ namespace wServer.networking.packets.incoming;
 
 public class SquareHit : IncomingMessage
 {
-    public int Time { get; set; }
+    public long Time { get; set; }
     public byte BulletId { get; set; }
     public int ObjectId { get; set; }
 
@@ -13,7 +13,7 @@ public class SquareHit : IncomingMessage
 
     protected override void Read(NReader rdr)
     {
-        Time = rdr.ReadInt32();
+        Time = rdr.ReadInt64();
         BulletId = rdr.ReadByte();
         ObjectId = rdr.ReadInt32();
     }

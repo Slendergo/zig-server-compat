@@ -6,12 +6,12 @@ public partial class Player
 {
     internal Projectile PlayerShootProjectile(
         byte id, ProjectileDesc desc, ushort objType,
-        int time, Position position, float angle)
+        long startTime, Position position, float angle)
     {
         projectileId = id;
         var dmg = (int)Stats.GetAttackDamage(desc.MinDamage, desc.MaxDamage);
         return CreateProjectile(desc, objType, dmg,
-            C2STime(time), position, angle);
+            C2STime(startTime), position, angle);
     }
 
     //public void EnemyHit(RealmTime time, EnemyHit pkt)

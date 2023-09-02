@@ -18,7 +18,7 @@ public class MapInfo : OutgoingMessage
     public float DayLightIntensity { get; set; }
     public float NightLightIntensity { get; set; }
     
-    public int GameTime { get; set; }
+    public long GameTimeMicroSeconds { get; set; }
 
     public override S2CPacketId S2CId => S2CPacketId.MapInfo;
     public override Packet CreateInstance() { return new MapInfo(); }
@@ -48,7 +48,7 @@ public class MapInfo : OutgoingMessage
         {
             wtr.Write(DayLightIntensity);
             wtr.Write(NightLightIntensity);
-            wtr.Write(GameTime);
+            wtr.Write(GameTimeMicroSeconds);
         }
     }
 }

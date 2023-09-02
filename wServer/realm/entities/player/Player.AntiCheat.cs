@@ -82,9 +82,9 @@ partial class Player
     private const float MinTimeDiff = 0.92f;
     private int Shots;
 
-    private int LastAttackTime = -1;
+    private long LastAttackTime = -1;
 
-    public PlayerShootStatus ValidatePlayerShoot(Item item, int time)
+    public PlayerShootStatus ValidatePlayerShoot(Item item, long time)
     {
         if (item != Inventory[0])
             return PlayerShootStatus.ITEM_MISMATCH;

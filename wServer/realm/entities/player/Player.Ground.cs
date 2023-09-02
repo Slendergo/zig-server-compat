@@ -76,7 +76,7 @@ public partial class Player
         return false;
     }
 
-    public void ForceGroundHit(RealmTime time, Position pos, int timeHit)
+    public void ForceGroundHit(Position pos, long timeHit)
     {
         if (HasConditionEffect(ConditionEffects.Paused) ||
             HasConditionEffect(ConditionEffects.Invincible))

@@ -207,17 +207,17 @@ public struct ObjectSlot
 
 }
 
-public struct TimedPosition
+public struct MoveRecord
 {
-    public int Time;
+    public long Time;
     public Position Position;
-    public static TimedPosition Read(NReader rdr)
+
+    public static MoveRecord Read(NReader rdr) => new MoveRecord()
     {
-        TimedPosition ret = new TimedPosition();
-        ret.Time = rdr.ReadInt32();
-        ret.Position = Position.Read(rdr);
-        return ret;
-    }
+        Time = rdr.ReadInt64(),
+        Position = Position.Read(rdr)
+    };
+
     public void Write(NWriter wtr)
     {
         wtr.Write(Time);
@@ -235,15 +235,11 @@ public struct Position
     public float X;
     public float Y;
 
-    public static Position Read(NReader rdr)
+    public static Position Read(NReader rdr) => new Position()
     {
-        var ret = new Position
-        {
-            X = rdr.ReadSingle(),
-            Y = rdr.ReadSingle()
-        };
-        return ret;
-    }
+        X = rdr.ReadSingle(),
+        Y = rdr.ReadSingle()
+    };
 
     public void Write(NWriter wtr)
     {

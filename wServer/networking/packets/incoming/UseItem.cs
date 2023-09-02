@@ -4,7 +4,7 @@ namespace wServer.networking.packets.incoming;
 
 public class UseItem : IncomingMessage
 {
-    public int Time { get; set; }
+    public long Time { get; set; }
     public ObjectSlot SlotObject { get; set; }
     public Position ItemUsePos { get; set; }
     public byte UseType { get; set; }
@@ -14,7 +14,7 @@ public class UseItem : IncomingMessage
 
     protected override void Read(NReader rdr)
     {
-        Time = rdr.ReadInt32();
+        Time = rdr.ReadInt64();
         SlotObject = ObjectSlot.Read(rdr);
         ItemUsePos = Position.Read(rdr);
         UseType = rdr.ReadByte();

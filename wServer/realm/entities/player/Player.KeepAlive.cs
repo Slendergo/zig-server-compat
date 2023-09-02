@@ -21,15 +21,15 @@ public partial class Player
     private long _latSum;
     public int Latency { get; private set; }
 
-    public int LastClientTime = -1;
+    public long LastClientTime = -1;
     public long LastServerTime = -1;
 
     private readonly ConcurrentQueue<long> _shootAckTimeout = new();
     private readonly ConcurrentQueue<long> _updateAckTimeout = new();
     private readonly ConcurrentQueue<long> _gotoAckTimeout = new();
     private readonly ConcurrentQueue<int> _move = new();
-    private readonly ConcurrentQueue<int> _clientTimeLog = new();
-    private readonly ConcurrentQueue<int> _serverTimeLog = new();
+    private readonly ConcurrentQueue<long> _clientTimeLog = new();
+    private readonly ConcurrentQueue<long> _serverTimeLog = new();
 
     bool KeepAlive(RealmTime time)
     {
@@ -126,12 +126,12 @@ public partial class Player
         return true;
     }
 
-    public long C2STime(int clientTime)
+    public long C2STime(long clientTime)
     {
         return clientTime + TimeMap;
     }
 
-    public long S2CTime(int serverTime)
+    public long S2CTime(long serverTime)
     {
         return serverTime - TimeMap;
     }
@@ -219,9 +219,8 @@ public partial class Player
 
         if (_clientTimeLog.Count > 30)
         {
-            int ignore;
-            _clientTimeLog.TryDequeue(out ignore);
-            _serverTimeLog.TryDequeue(out ignore);
+            _clientTimeLog.TryDequeue(out _);
+            _serverTimeLog.TryDequeue(out _);
         }
 
         // calculate average

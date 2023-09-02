@@ -1,11 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Collections.Concurrent;
 using NLog;
-using wServer.networking;
 
 namespace wServer.realm;
 
-public class FLLogicTicker
+public sealed class LogicTicker
 {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
@@ -16,7 +15,7 @@ public class FLLogicTicker
     private readonly RealmManager RealmManager;
     private readonly ConcurrentQueue<Action<RealmTime>>[] PendingActions = new ConcurrentQueue<Action<RealmTime>>[5];
 
-    public FLLogicTicker(RealmManager manager)
+    public LogicTicker(RealmManager manager)
     {
         RealmManager = manager;
         RealmTime = new RealmTime();
@@ -38,6 +37,7 @@ public class FLLogicTicker
         while (!RealmManager.Terminating)
         {
             var currentMS = RealmTime.TotalElapsedMs = watch.ElapsedMilliseconds;
+            RealmTime.TotalElapsedMicroSeconds = (long)(watch.Elapsed.TotalMicroseconds);
 
             var delta = (int)(currentMS - lastMS);
             if (delta >= MillisecondsPerTick)

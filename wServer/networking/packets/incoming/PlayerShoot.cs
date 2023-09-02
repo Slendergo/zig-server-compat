@@ -4,7 +4,7 @@ namespace wServer.networking.packets.incoming;
 
 public class PlayerShoot : IncomingMessage
 {
-    public int Time { get; set; }
+    public long Time { get; set; }
     public byte BulletId { get; set; }
     public ushort ContainerType { get; set; }
     public Position StartingPos { get; set; }
@@ -15,7 +15,7 @@ public class PlayerShoot : IncomingMessage
 
     protected override void Read(NReader rdr)
     {
-        Time = rdr.ReadInt32();
+        Time = rdr.ReadInt64();
         BulletId = rdr.ReadByte();
         ContainerType = rdr.ReadUInt16();
         StartingPos = Position.Read(rdr);
