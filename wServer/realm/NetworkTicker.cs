@@ -54,6 +54,8 @@ public class NetworkTicker
 
             try
             {
+                Console.WriteLine("Handling: " + pending.id);
+
                 var packet = Packet.C2SPackets[pending.id].CreateInstance();
                 packet.Read(pending.client, pending.packet, 0, pending.packet.Length);
                 pending.client.ProcessPacket(packet);

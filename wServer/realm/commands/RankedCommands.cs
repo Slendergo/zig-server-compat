@@ -460,10 +460,8 @@ class GimmeCommand : Command
     {
         var gameData = player.Manager.Resources.GameData;
 
-        ushort objType;
-
         // allow both DisplayId and Id for query
-        if (!gameData.DisplayIdToObjectType.TryGetValue(args, out objType))
+        if (!gameData.DisplayIdToObjectType.TryGetValue(args, out var objType))
         {
             if (!gameData.IdToObjectType.TryGetValue(args, out objType))
             {

@@ -215,6 +215,7 @@ public class RealmManager
             return null;
         }
         world.LoadMapFromData(selectedMapData);
+        world.Init();
 
         Log.Info("World {0}({1}) added. {2} Worlds existing.", world.Id, world.IdName, Worlds.Count);
         Worlds[world.Id] = world;
