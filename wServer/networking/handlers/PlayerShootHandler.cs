@@ -14,6 +14,10 @@ class PlayerShootHandler : PacketHandlerBase<PlayerShoot>
 
     protected override void HandlePacket(Client client, PlayerShoot packet)
     {
+        // fix for a handle on a null player
+        if(client?.Player == null)
+            return;
+        
         //client.Manager.Logic.AddPendingAction(t => Handle(client.Player, packet, t));
         Handle(client.Player, packet);
     }

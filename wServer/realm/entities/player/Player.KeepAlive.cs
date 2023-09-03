@@ -157,11 +157,8 @@ public partial class Player
 
     public void UpdateAckReceived()
     {
-        long ignored;
-        if (!_updateAckTimeout.TryDequeue(out ignored))
-        {
-            _client.Disconnect("One too many UpdateAcks");
-        }
+        if (!_updateAckTimeout.TryDequeue(out _))
+            _client.SendFailure("One too many UpdateAcks", Failure.MessageWithDisconnect);
     }
 
     public void AwaitGotoAck(long serverTime)
