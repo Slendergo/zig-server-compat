@@ -83,7 +83,7 @@ public class ConnectManager
 
         if (client.Character != null) {
             if (client.Character.Dead) {
-                client.SendFailure("Character is dead");
+                client.Disconnect("Character is dead");
                 return;
             }
 
@@ -99,7 +99,7 @@ public class ConnectManager
             });
         }
         else {
-            client.SendFailure("Failed to load character");
+            client.Disconnect("Failed to load character");
         }
 
         client.Reconnecting = false;
@@ -120,7 +120,7 @@ public class ConnectManager
             // try again...
             if (!client.Manager.Database.AcquireLock(acc))
             {
-                client.SendFailure($"Account in Use ({client.Manager.Database.GetLockTime(acc)?.ToString("%s")} seconds until timeout)");
+                client.Disconnect($"Account in Use ({client.Manager.Database.GetLockTime(acc)?.ToString("%s")} seconds until timeout)");
                 return;
             }
         }
@@ -131,7 +131,7 @@ public class ConnectManager
         // connect client to realm manager
         if (!client.Manager.TryConnect(client))
         {
-            client.SendFailure("Failed to connect");
+            client.Disconnect("Failed to connect");
             return;
         }
 
@@ -239,13 +239,13 @@ public class ConnectManager
             switch (status)
             {
                 case CreateStatus.ReachCharLimit:
-                    client.SendFailure("Too many characters");
+                    client.Disconnect("Too many characters");
                     return;
                 case CreateStatus.SkinUnavailable:
-                    client.SendFailure("Skin unavailable");
+                    client.Disconnect("Skin unavailable");
                     return;
                 case CreateStatus.Locked:
-                    client.SendFailure("Class locked");
+                    client.Disconnect("Class locked");
                     return;
             }
         }
@@ -255,14 +255,14 @@ public class ConnectManager
         // didnt load then disconnect
         if(character == null)
         {
-            client.SendFailure("Failed to load character");
+            client.Disconnect("Failed to load character");
             return;
         }
 
         // dead? then disconnect
         if (character.Dead)
         {
-            client.SendFailure("Character is dead");
+            client.Disconnect("Character is dead");
             return;
         }
 

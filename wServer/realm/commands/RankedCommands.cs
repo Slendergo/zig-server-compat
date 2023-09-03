@@ -452,9 +452,9 @@ class GuildRankCommand : Command
     }
 }
 
-class GimmeCommand : Command
+class GiveCommand : Command
 {
-    public GimmeCommand() : base("gimme", reqAdmin: true, alias: "give") { }
+    public GiveCommand() : base("give", reqAdmin: true) { }
 
     protected override bool Process(Player player, RealmTime time, string args)
     {

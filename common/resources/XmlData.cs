@@ -9,8 +9,8 @@ public class XmlData
 
     public Dictionary<ushort, XElement> ObjectTypeToElement = new();
     public Dictionary<ushort, string> ObjectTypeToId = new();
-    public Dictionary<string, ushort> IdToObjectType = new(StringComparer.InvariantCulture);
-    public Dictionary<string, ushort> DisplayIdToObjectType = new(StringComparer.InvariantCulture);
+    public Dictionary<string, ushort> IdToObjectType = new(StringComparer.InvariantCultureIgnoreCase);
+    public Dictionary<string, ushort> DisplayIdToObjectType = new(StringComparer.InvariantCultureIgnoreCase);
 
     public Dictionary<ushort, XElement> TileTypeToElement = new();
     public Dictionary<ushort, string> TileTypeToId = new();

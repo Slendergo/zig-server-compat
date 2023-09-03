@@ -36,20 +36,20 @@ class HelloHandler : PacketHandlerBase<Hello>
         var version = client.Manager.Config.serverSettings.version;
         if (!version.Equals(packet.BuildVersion))
         {
-            client.SendFailure(version, Failure.ClientUpdateNeeded);
+            client.Disconnect(version);
             return null;
         }
 
         var s1 = client.Manager.Database.Verify(packet.GUID, packet.Password, out var acc);
         if (s1 is LoginStatus.AccountNotExists or LoginStatus.InvalidCredentials)
         {
-            client.SendFailure("Bad Login");
+            client.Disconnect("Bad Login");
             return null;
         }
 
         if (acc.Banned)
         {
-            client.SendFailure("Account banned.");
+            client.Disconnect("Account banned.");
             Log.Info("{0} ({1}) tried to log in. Account Banned.",
                 acc.Name, client.IP);
             return null;
@@ -57,14 +57,14 @@ class HelloHandler : PacketHandlerBase<Hello>
 
         if (client.Manager.Database.IsIpBanned(client.IP))
         {
-            client.SendFailure("IP banned.");
+            client.Disconnect("IP banned.");
             Log.Info($"{acc.Name} ({client.IP}) tried to log in. IP Banned.");
             return null;
         }
 
         if (!acc.Admin && client.Manager.Config.serverInfo.adminOnly)
         {
-            client.SendFailure("Admin Only Server");
+            client.Disconnect("Admin Only Server");
             return null;
         }
 

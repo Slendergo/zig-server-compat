@@ -66,7 +66,7 @@ public class NetworkTicker
                     (pending.client.Account != null) ? pending.client.Account.Name : "<No account>",
                     pending.client.IP, pending.client, e);
 
-                pending.client.SendFailure("An error occurred while processing data from your client.");
+                pending.client.Disconnect("An error occurred while processing data from your client.");
             }
         }
         Log.Info("Network loop stopped.");

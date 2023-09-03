@@ -163,29 +163,18 @@ public partial class Client
         ConnectManager.Reconnect(this, gameId);
     }
 
-    public async void SendFailure(string text, int errorId = Failure.MessageWithDisconnect)
-    {
-        SendPacket(new Failure()
-        {
-            ErrorId = errorId,
-            ErrorDescription = text
-        });
-
-        if (errorId == Failure.MessageWithDisconnect || 
-            errorId == Failure.ClientUpdateNeeded ||
-            errorId == Failure.ForceCloseGame)
-        {
-            await Task.Delay(1000);
-            Disconnect($"Failure Message: {text}");
-        }
-    }
-
     public void Disconnect(string reason = "")
     {
         using (TimedLock.Lock(DcLock))
         {
             if (State == ProtocolState.Disconnected)
                 return;
+            
+            _handler.SendPacket(new Failure
+            {
+                ErrorId = Failure.MessageWithDisconnect,
+                ErrorDescription = reason,
+            });
 
             State = ProtocolState.Disconnected;
 
