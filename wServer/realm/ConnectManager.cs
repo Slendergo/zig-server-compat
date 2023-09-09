@@ -72,12 +72,10 @@ public class ConnectManager
         else {
             client.Disconnect("Failed to load character");
         }
-
-        client.Reconnecting = false;
     }
 
 
-    public static void Connect(Client client, Hello pkt)
+    public static void Connect(Client client, Hello packet)
     {
         var acc = client.Account;
         if (!client.Manager.Database.AcquireLock(acc))
@@ -106,7 +104,7 @@ public class ConnectManager
             return;
         }
 
-        var world = client.Manager.GetWorld(pkt.GameId);
+        var world = client.Manager.GetWorld(packet.GameId);
         if (world == null || world.Deleted)
         {
             client.SendErrorText("World does not exist");
@@ -162,9 +160,9 @@ public class ConnectManager
 
         DbChar character = null;
 
-        if (pkt.CreateCharacter)
+        if (packet.CreateCharacter)
         {
-            var status = client.Manager.Database.CreateCharacter(acc, pkt.CharacterType, pkt.SkinType, out character);
+            var status = client.Manager.Database.CreateCharacter(acc, packet.CharacterType, packet.SkinType, out character);
             switch (status)
             {
                 case CreateStatus.ReachCharLimit:
@@ -179,7 +177,7 @@ public class ConnectManager
             }
         }
         else
-            character = client.Manager.Database.LoadCharacter(acc, pkt.CharId);
+            character = client.Manager.Database.LoadCharacter(acc, packet.CharId);
 
         // didnt load then disconnect
         if(character == null)

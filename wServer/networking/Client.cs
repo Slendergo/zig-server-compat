@@ -4,10 +4,8 @@ using System.Buffers.Binary;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using System.Xml.Linq;
 using wServer.networking.packets;
 using wServer.networking.packets.incoming;
-using wServer.networking.packets.outgoing;
 using wServer.networking.server;
 using wServer.realm;
 using wServer.realm.entities;
@@ -301,12 +299,8 @@ public partial class Client
         }
     }
 
-    public bool Reconnecting;
-
     public void Reconnect(string name, int gameId)
     {
-        Reconnecting = true;
-
         if (Account == null)
         {
             Disconnect("Tried to reconnect an client with a null account...");
