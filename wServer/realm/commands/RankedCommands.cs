@@ -461,12 +461,13 @@ class GiveCommand : Command
             {
                 // direct get or partial match
 
-                var val = gameData.IdToObjectType.Keys.FirstOrDefault(_ => _.StartsWith(args) || _.Contains(args.ToLower()));
-                if (string.IsNullOrEmpty(val) || !gameData.IdToObjectType.TryGetValue(val, out objType))
+                var val = gameData.Items.Values.FirstOrDefault(_ => _.ObjectId.ToLower().StartsWith(args.ToLower()) || _.ObjectId.Contains(args.ToLower()));
+                if (val == null)
                 {
                     player.SendError("Unknown item type!");
                     return false;
                 }
+                objType = val.ObjectType;
             }
         }
 
