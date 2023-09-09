@@ -4,14 +4,14 @@ namespace wServer.networking.packets.outgoing;
 
 public class InvResult : OutgoingMessage
 {
-    public int Result { get; set; }
+    public byte Result { get; set; }
 
     public override S2CPacketId S2CId => S2CPacketId.InvResult;
     public override Packet CreateInstance() { return new InvResult(); }
 
     protected override void Read(NReader rdr)
     {
-        Result = rdr.ReadInt32();
+        Result = rdr.ReadByte();
     }
     protected override void Write(NWriter wtr)
     {
