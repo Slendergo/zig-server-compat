@@ -483,26 +483,18 @@ public partial class Player : Character, IContainer, IPlayer
 
         HandleQuest(time, true, position);
 
-        var id = Id;
-        var tpPkts = new Packet[]
+        foreach (var player in Owner.Players.Values)
         {
-            new Goto()
-            {
-                ObjectId = id,
-                Pos = position
-            },
-            new ShowEffect()
+            player.Client.SendGoto(Id, position.X, position.Y);
+            player.AwaitGotoAck(time.TotalElapsedMs);
+            
+            player.Client.SendPacket(new ShowEffect()
             {
                 EffectType = EffectType.Teleport,
-                TargetObjectId = id,
+                TargetObjectId = Id,
                 Pos1 = position,
                 Color = new ARGB(0xFFFFFFFF)
-            }
-        };
-        foreach (var plr in Owner.Players.Values)
-        {
-            plr.AwaitGotoAck(time.TotalElapsedMs);
-            plr.Client.SendPackets(tpPkts);
+            });
         }
     }
 

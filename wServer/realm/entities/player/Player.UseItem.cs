@@ -90,15 +90,9 @@ partial class Player
         {
             //Log.Debug(objId + ":" + slot);
             var entity = Owner.GetEntity(objId);
-            if (entity == null)
+            if (entity == null || entity is Player && objId != Id)
             {
-                Client.SendPacket(new InvResult() { Result = 1 });
-                return;
-            }
-
-            if (entity is Player && objId != Id)
-            {
-                Client.SendPacket(new InvResult() { Result = 1 });
+                Client.SendInventoryResult(1);
                 return;
             }
 
@@ -107,7 +101,7 @@ partial class Player
             // eheh no more clearing BBQ loot bags
             if (this.Dist(entity) > 3)
             {
-                Client.SendPacket(new InvResult() { Result = 1 });
+                Client.SendInventoryResult(1);
                 return;
             }
 
@@ -141,7 +135,7 @@ partial class Player
 
             if (MP < item.MpCost)
             {
-                Client.SendPacket(new InvResult() { Result = 1 });
+                Client.SendInventoryResult(1);
                 return;
             }
 
@@ -207,7 +201,7 @@ partial class Player
                 Activate(time, item, pos);
             }
             else
-                Client.SendPacket(new InvResult() { Result = 1 });
+                Client.SendInventoryResult(1);
         }
     }
 

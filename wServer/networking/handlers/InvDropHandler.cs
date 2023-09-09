@@ -33,7 +33,7 @@ class InvDropHandler : PacketHandlerBase<InvDrop>
         {
             if (player.Owner.GetEntity(slot.ObjectId) is Player)
             {
-                player.Client.SendPacket(new InvResult() { Result = 1 });
+                player.Client.SendInventoryResult(1);
                 return;
             }
             con = player.Owner.GetEntity(slot.ObjectId) as IContainer;
@@ -46,14 +46,14 @@ class InvDropHandler : PacketHandlerBase<InvDrop>
 
         if (slot.ObjectId == player.Id && player.Stacks.Any(stack => stack.Slot == slot.SlotId))
         {
-            player.Client.SendPacket(new InvResult() { Result = 1 });
+            player.Client.SendInventoryResult(1);
             return; // don't allow dropping of stacked items
         }
 
         if (con?.Inventory[slot.SlotId] == null)
         {
             //give proper error
-            player.Client.SendPacket(new InvResult() { Result = 1 });
+            player.Client.SendInventoryResult(1);
             return;
         }
 
@@ -80,6 +80,6 @@ class InvDropHandler : PacketHandlerBase<InvDrop>
         player.Owner.EnterWorld(container);
 
         // send success
-        player.Client.SendPacket(new InvResult() { Result = 0 });
+        player.Client.SendInventoryResult(0);
     }
 }

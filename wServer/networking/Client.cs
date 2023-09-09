@@ -90,6 +90,30 @@ public partial class Client
         TrySend(ptr);
     }
 
+    public void SendGoto(int objectId, float x, float y)
+    {
+        var ptr = LENGTH_PREFIX;
+        ref var spanRef = ref MemoryMarshal.GetReference(SendMem.Span);
+        WriteByte(ref ptr, ref spanRef, (byte)S2CPacketId.GoTo);
+
+        WriteInt(ref ptr, ref spanRef, objectId);
+        WriteFloat(ref ptr, ref spanRef, x);
+        WriteFloat(ref ptr, ref spanRef, y);
+
+        TrySend(ptr);
+    }
+
+    public void SendInventoryResult(byte result)
+    {
+        var ptr = LENGTH_PREFIX;
+        ref var spanRef = ref MemoryMarshal.GetReference(SendMem.Span);
+        WriteByte(ref ptr, ref spanRef, (byte)S2CPacketId.InvResult);
+
+        WriteByte(ref ptr, ref spanRef, result);
+
+        TrySend(ptr);
+    }
+
     public void SendMapInfo(
         int width,
         int height,
