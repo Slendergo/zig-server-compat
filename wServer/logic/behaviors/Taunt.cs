@@ -127,12 +127,12 @@ class Taunt : Behavior
         if (broadcast)
         {
             foreach (var p in host.Owner.Players.Values)
-                p.Client.SendText($"#{name}", host.Id, -1, 3, string.Empty, taunt);
+                p.SendEnemy(name, taunt);
             return;
         }
 
         foreach (var p in host.Owner.Players.Values)
             if (host.DistSqr(p) < Player.RadiusSqr)
-                p.Client.SendText($"#{name}", host.Id, -1, 3, string.Empty, taunt);
+                p.SendEnemy(name, taunt);
     }
 }

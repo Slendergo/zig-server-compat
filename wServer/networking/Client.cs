@@ -1,11 +1,8 @@
 ﻿using common;
 using NLog;
-using Pipelines.Sockets.Unofficial.Arenas;
-using Pipelines.Sockets.Unofficial.Buffers;
 using System.Buffers.Binary;
 using System.Net;
 using System.Net.Sockets;
-using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using wServer.networking.packets;
@@ -14,7 +11,6 @@ using wServer.networking.packets.outgoing;
 using wServer.networking.server;
 using wServer.realm;
 using wServer.realm.entities;
-using wServer.realm.terrain;
 using wServer.realm.worlds.logic;
 
 using static wServer.networking.PacketUtils;
@@ -83,6 +79,18 @@ public partial class Client
     }
 
     #region Send Methods
+
+    public void SendFailure(int errorCode, string description)
+    {
+        var ptr = LENGTH_PREFIX;
+        ref var spanRef = ref MemoryMarshal.GetReference(SendMem.Span);
+        WriteByte(ref ptr, ref spanRef, (byte)S2CPacketId.Failure);
+
+        WriteInt(ref ptr, ref spanRef, errorCode);
+        WriteString(ref ptr, ref spanRef, description);
+
+        TrySend(ptr);
+    }
 
     public void SendMapInfo(
         int width,
@@ -165,8 +173,7 @@ public partial class Client
         }
     }
 
-    #region Text
-
+    // kinda hacky but needed for client error with no player 
     public void SendErrorText(string text) => SendText("*Error*", 0, -1, 0, string.Empty, text);
 
     public void SendText(string name, int objectId, int numStars, byte bubbleTime, string recipient, string text)
@@ -187,8 +194,6 @@ public partial class Client
             TrySend(ptr);
         }
     }
-
-    #endregion
 
     private async void TrySend(int len)
     {
@@ -318,12 +323,8 @@ public partial class Client
         {
             if (State == ProtocolState.Disconnected)
                 return;
-            
-            _handler.SendPacket(new Failure
-            {
-                ErrorId = Failure.MessageWithDisconnect,
-                ErrorDescription = reason,
-            });
+
+            SendFailure(0, reason);
 
             State = ProtocolState.Disconnected;
 
