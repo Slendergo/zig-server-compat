@@ -263,12 +263,6 @@ class SpawnCommand : Command
 
                     if (target == true)
                         enemy.AttackTarget = player;
-
-                    enemy.ApplyConditionEffect(new ConditionEffect()
-                    {
-                        Effect = ConditionEffectIndex.Invisible,
-                        DurationMS = -1
-                    });
                 }
 
                 var sX = (x != null && i < x.Length) ? x[i] : pX;

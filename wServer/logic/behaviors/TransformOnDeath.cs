@@ -51,11 +51,6 @@ class TransformOnDeath : Behavior
                     if (e.Host is Enemy && entity is Enemy && (e.Host as Enemy).Spawned)
                     {
                         (entity as Enemy).Spawned = true;
-                        (entity as Enemy).ApplyConditionEffect(new ConditionEffect()
-                        {
-                            Effect = ConditionEffectIndex.Invisible,
-                            DurationMS = -1
-                        });
                     }
 
                     e.Host.Owner.EnterWorld(entity);

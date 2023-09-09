@@ -135,11 +135,6 @@ class ReproduceGroup : Behavior
                     if (enemyHost.Spawned)
                     {
                         enemyEntity.Spawned = true;
-                        enemyEntity.ApplyConditionEffect(new ConditionEffect()
-                        {
-                            Effect = ConditionEffectIndex.Invisible,
-                            DurationMS = -1
-                        });
                     }
                 }
 

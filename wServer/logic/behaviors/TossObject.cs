@@ -211,14 +211,6 @@ class TossObject : Behavior
                     if (enemyHost != null && enemyEntity != null)
                     {
                         enemyEntity.Terrain = enemyHost.Terrain;
-                        if (enemyHost.Spawned)
-                        {
-                            enemyEntity.ApplyConditionEffect(new ConditionEffect()
-                            {
-                                Effect = ConditionEffectIndex.Invisible,
-                                DurationMS = -1
-                            });
-                        }
                     }
 
                     world.EnterWorld(entity);

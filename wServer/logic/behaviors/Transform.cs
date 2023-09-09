@@ -35,11 +35,6 @@ class Transform : Behavior
         if (host is Enemy && entity is Enemy && (host as Enemy).Spawned)
         {
             (entity as Enemy).Spawned = true;
-            (entity as Enemy).ApplyConditionEffect(new ConditionEffect()
-            {
-                Effect = ConditionEffectIndex.Invisible,
-                DurationMS = -1
-            });
         }
 
         host.Owner.EnterWorld(entity);
