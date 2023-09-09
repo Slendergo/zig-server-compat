@@ -241,7 +241,7 @@ public class Server
     {
         try
         {
-            client.Skt.Shutdown(SocketShutdown.Both);
+            client.Socket.Shutdown(SocketShutdown.Both);
         }
         catch (Exception e)
         {
@@ -249,7 +249,7 @@ public class Server
             if (se == null || se.SocketErrorCode != SocketError.NotConnected)
                 Log.Error(e);
         }
-        client.Skt.Close();
+        client.Socket.Close();
 
         client.Reset();
         _clientPool.Push(client);

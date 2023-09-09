@@ -35,19 +35,19 @@ class ReskinHandler : PacketHandlerBase<Reskin>
 
             if (skinDesc == null)
             {
-                client.Player.SendError("Unknown skin type.");
+                client.Player.SendErrorText("Unknown skin type.");
                 return;
             }
 
             if (!ownedSkins.Contains(skin))
             {
-                client.Player.SendError("Skin not owned.");
+                client.Player.SendErrorText("Skin not owned.");
                 return;
             }
 
             if (skinDesc.PlayerClassType != currentClass)
             {
-                client.Player.SendError("Skin is for different class.");
+                client.Player.SendErrorText("Skin is for different class.");
                 return;
             }
 

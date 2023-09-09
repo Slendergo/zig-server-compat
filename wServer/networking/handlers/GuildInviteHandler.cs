@@ -21,7 +21,7 @@ class GuildInviteHandler : PacketHandlerBase<GuildInvite>
 
         if (src.Account.GuildRank < 20)
         {
-            src.Player.SendError("Insufficient privileges.");
+            src.Player.SendErrorText("Insufficient privileges.");
             return;
         }
 
@@ -34,13 +34,13 @@ class GuildInviteHandler : PacketHandlerBase<GuildInvite>
 
             if (!client.Account.NameChosen)
             {
-                src.Player.SendError("Player needs to choose a name first.");
+                src.Player.SendErrorText("Player needs to choose a name first.");
                 return;
             }
 
             if (client.Account.GuildId > 0)
             {
-                src.Player.SendError("Player is already in a guild.");
+                src.Player.SendErrorText("Player is already in a guild.");
                 return;
             }
 
@@ -54,6 +54,6 @@ class GuildInviteHandler : PacketHandlerBase<GuildInvite>
             return;
         }
 
-        src.Player.SendError("Could not find the player to invite.");
+        src.Player.SendErrorText("Could not find the player to invite.");
     }
 }

@@ -30,7 +30,7 @@ class GuildRemoveHandler : PacketHandlerBase<GuildRemove>
 
             if (!manager.Database.RemoveFromGuild(source.Account))
             {
-                srcPlayer.SendError("Guild not found.");
+                srcPlayer.SendErrorText("Guild not found.");
                 return;
             }
 
@@ -44,7 +44,7 @@ class GuildRemoveHandler : PacketHandlerBase<GuildRemove>
         var targetAccId = source.Manager.Database.ResolveId(name);
         if (targetAccId == 0)
         {
-            source.Player.SendError("Player not found");
+            source.Player.SendErrorText("Player not found");
             return;
         }
 
@@ -66,7 +66,7 @@ class GuildRemoveHandler : PacketHandlerBase<GuildRemove>
 
                 if (!manager.Database.RemoveFromGuild(targetClient.Account))
                 {
-                    srcPlayer.SendError("Guild not found.");
+                    srcPlayer.SendErrorText("Guild not found.");
                     return;
                 }
 
@@ -79,7 +79,7 @@ class GuildRemoveHandler : PacketHandlerBase<GuildRemove>
                 return;
             }
 
-            srcPlayer.SendError("Can't remove member. Insufficient privileges.");
+            srcPlayer.SendErrorText("Can't remove member. Insufficient privileges.");
             return;
         }
 
@@ -92,7 +92,7 @@ class GuildRemoveHandler : PacketHandlerBase<GuildRemove>
         {
             if (!manager.Database.RemoveFromGuild(targetAccount))
             {
-                srcPlayer.SendError("Guild not found.");
+                srcPlayer.SendErrorText("Guild not found.");
                 return;
             }
 
@@ -102,6 +102,6 @@ class GuildRemoveHandler : PacketHandlerBase<GuildRemove>
             return;
         }
 
-        srcPlayer.SendError("Can't remove member. Insufficient privileges.");
+        srcPlayer.SendErrorText("Can't remove member. Insufficient privileges.");
     }
 }

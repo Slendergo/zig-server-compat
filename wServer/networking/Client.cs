@@ -1,14 +1,23 @@
 ﻿using common;
 using NLog;
+using Pipelines.Sockets.Unofficial.Arenas;
+using Pipelines.Sockets.Unofficial.Buffers;
+using System.Buffers.Binary;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection.PortableExecutable;
+using System.Runtime.InteropServices;
+using System.Xml.Linq;
 using wServer.networking.packets;
 using wServer.networking.packets.incoming;
 using wServer.networking.packets.outgoing;
 using wServer.networking.server;
 using wServer.realm;
 using wServer.realm.entities;
+using wServer.realm.terrain;
 using wServer.realm.worlds.logic;
+
+using static wServer.networking.PacketUtils;
 
 namespace wServer.networking;
 
@@ -48,10 +57,18 @@ public partial class Client
     //Temporary connection state
     internal int TargetWorld = -1;
 
-    public Socket Skt { get; private set; }
+    public Socket Socket { get; private set; }
     public string IP { get; private set; }
 
     internal readonly object DcLock = new();
+
+    private readonly Memory<byte> ReceiveMemory;
+    private readonly Memory<byte> SendMem;
+
+    // dont think we need but its there incasse
+    private object ReceiveLock = new object();
+
+    private object SendLock = new object();
 
     public Client(Server server, RealmManager manager,
         SocketAsyncEventArgs send, SocketAsyncEventArgs receive)
@@ -60,7 +77,139 @@ public partial class Client
         Manager = manager;
 
         _handler = new CommHandler(this, send, receive);
+
+        ReceiveMemory = GC.AllocateArray<byte>(RECV_BUFFER_LEN, pinned: true).AsMemory();
+        SendMem = GC.AllocateArray<byte>(SEND_BUFFER_LEN, pinned: true).AsMemory();
     }
+
+    #region Send Methods
+
+    public void SendMapInfo(
+        int width,
+        int height,
+        string idName,
+        string displayName,
+        uint seed,
+        int difficulty,
+        int background,
+        bool allowTeleport,
+        bool showDisplays,
+        int bgLightColor,
+        float bgLightIntensity,
+        float dayLightIntensity,
+        float nightLightIntensity,
+        long totalElapsedMicroSeconds)
+    {
+        lock (SendLock)
+        {
+            var ptr = LENGTH_PREFIX;
+            ref var spanRef = ref MemoryMarshal.GetReference(SendMem.Span);
+            WriteByte(ref ptr, ref spanRef, (byte)S2CPacketId.MapInfo);
+
+            WriteInt(ref ptr, ref spanRef, width);
+            WriteInt(ref ptr, ref spanRef, height);
+            WriteString(ref ptr, ref spanRef, idName);
+            WriteString(ref ptr, ref spanRef, displayName);
+
+            WriteUInt(ref ptr, ref spanRef, seed);
+            WriteInt(ref ptr, ref spanRef, difficulty);
+            WriteInt(ref ptr, ref spanRef, background);
+
+            WriteBool(ref ptr, ref spanRef, allowTeleport);
+            WriteBool(ref ptr, ref spanRef, showDisplays);
+
+            WriteInt(ref ptr, ref spanRef, bgLightColor);
+            WriteFloat(ref ptr, ref spanRef, bgLightIntensity);
+            WriteBool(ref ptr, ref spanRef, dayLightIntensity != 0.0);
+            if (dayLightIntensity != 0.0)
+            {
+                WriteFloat(ref ptr, ref spanRef, dayLightIntensity);
+                WriteFloat(ref ptr, ref spanRef, nightLightIntensity);
+                WriteLong(ref ptr, ref spanRef, totalElapsedMicroSeconds);
+            }
+
+            TrySend(ptr);
+        }
+    }
+
+    public void SendAccountList(int accountListId, int[] accountIds)
+    {
+        lock (SendLock)
+        {
+            var ptr = LENGTH_PREFIX;
+            ref var spanRef = ref MemoryMarshal.GetReference(SendMem.Span);
+            WriteByte(ref ptr, ref spanRef, (byte)S2CPacketId.AccountList);
+
+            WriteInt(ref ptr, ref spanRef, accountListId);
+
+            WriteUShort(ref ptr, ref spanRef, (ushort)accountIds.Length);
+            for (var i = 0; i < accountIds.Length; i++)
+                WriteInt(ref ptr, ref spanRef, accountIds[i]);
+
+            TrySend(ptr);
+        }
+    }
+
+    public void SendCreateSuccess(int objectId, int charId)
+    {
+        lock (SendLock)
+        {
+            var ptr = LENGTH_PREFIX;
+            ref var spanRef = ref MemoryMarshal.GetReference(SendMem.Span);
+            WriteByte(ref ptr, ref spanRef, (byte)S2CPacketId.CreateSuccess);
+
+            WriteInt(ref ptr, ref spanRef, objectId);
+            WriteInt(ref ptr, ref spanRef, charId);
+
+            TrySend(ptr);
+        }
+    }
+
+    #region Text
+
+    public void SendErrorText(string text) => SendText("*Error*", 0, -1, 0, string.Empty, text);
+
+    public void SendText(string name, int objectId, int numStars, byte bubbleTime, string recipient, string text)
+    {
+        lock (SendLock)
+        {
+            var ptr = LENGTH_PREFIX;
+            ref var spanRef = ref MemoryMarshal.GetReference(SendMem.Span);
+            WriteByte(ref ptr, ref spanRef, (byte)S2CPacketId.Text);
+
+            WriteString(ref ptr, ref spanRef, name);
+            WriteInt(ref ptr, ref spanRef, objectId);
+            WriteInt(ref ptr, ref spanRef, numStars);
+            WriteByte(ref ptr, ref spanRef, bubbleTime);
+            WriteString(ref ptr, ref spanRef, recipient);
+            WriteString(ref ptr, ref spanRef, text);
+
+            TrySend(ptr);
+        }
+    }
+
+    #endregion
+
+    private async void TrySend(int len)
+    {
+        if (!Socket.Connected)
+            return;
+
+        try
+        {
+            // Log.Error($"Sending packet {(S2CPacketId) SendMem.Span[0]} {len}");
+            BinaryPrimitives.WriteUInt16LittleEndian(SendMem.Span, (ushort)(len - LENGTH_PREFIX));
+            _ = await Socket.SendAsync(SendMem[..len]);
+        }
+        catch (Exception e)
+        {
+            Disconnect();
+            if (e is not SocketException se || (se.SocketErrorCode != SocketError.ConnectionReset && se.SocketErrorCode != SocketError.Shutdown))
+                Log.Error($"{Account?.Name ?? "[unconnected]"} ({IP}): {e}");
+        }
+    }
+
+    #endregion
 
     public void Reset()
     {
@@ -78,7 +227,7 @@ public partial class Client
 
     public void BeginHandling(Socket skt)
     {
-        Skt = skt;
+        Socket = skt;
 
         try
         {
@@ -90,7 +239,7 @@ public partial class Client
         }
 
         Log.Trace("Received client @ {0}.", IP);
-        _handler.BeginHandling(Skt);
+        _handler.BeginHandling(Socket);
     }
 
     public void SendPacket(Packet pkt)

@@ -9,6 +9,7 @@
     <BaseOutputPath>..\bin\</BaseOutputPath>
     <LangVersion>default</LangVersion>
     <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

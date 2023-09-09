@@ -1,5 +1,6 @@
 ﻿using common;
 using NLog;
+using System.Xml.Linq;
 using wServer.networking.packets.outgoing;
 using wServer.realm.entities;
 using wServer.realm.worlds;
@@ -41,52 +42,33 @@ public class ChatManager : IDisposable
         manager.InterServer.ServerQuit -= AnnounceServerQuit;
     }
 
-    public void Say(Player src, string text)
+    public static void Say(Player src, string text)
     {
         if (string.IsNullOrWhiteSpace(text))
             return;
 
-        else
-        {
-            var tp = new Text()
-            {
-                Name = (src.Client.Account.Admin ? "@" : "") + src.Name,
-                ObjectId = src.Id,
-                NumStars = src.Stars,
-                BubbleTime = 5,
-                Recipient = "",
-                Txt = text
-            };
+        var name = (src.Client.Account.Admin ? "@" : "") + src.Name;
 
-            SendTextPacket(src, tp, p => !p.Client.Account.IgnoreList.Contains(src.AccountId));
-        }
+        foreach (var p in src.Owner.Players.Values)
+            if (!p.Client.Account.IgnoreList.Contains(src.AccountId))
+                p.Client.SendText($"#{name}", src.Id, src.Stars, 5, string.Empty, text);
+
+        log.Info($"[{src.Owner.IdName}({src.Owner.Id})] <{src.Name}> {text}");
     }
 
-    public bool Local(Player src, string text)
+    public static bool Local(Player src, string text)
     {
         if (string.IsNullOrWhiteSpace(text))
             return true;
 
-        var tp = new Text()
-        {
-            Name = (src.Client.Account.Admin ? "@" : "") + src.Name,
-            ObjectId = src.Id,
-            NumStars = src.Stars,
-            BubbleTime = 5,
-            Recipient = "",
-            Txt = text
-        };
+        var name = (src.Client.Account.Admin ? "@" : "") + src.Name;
 
-        SendTextPacket(src, tp,
-            p => !p.Client.Account.IgnoreList.Contains(src.AccountId) &&
-                 p.DistSqr(src) < Player.RadiusSqr);
+        foreach (var p in src.Owner.Players.Values)
+            if(!p.Client.Account.IgnoreList.Contains(src.AccountId) && p.DistSqr(src) < Player.RadiusSqr)
+                p.Client.SendText($"#{name}", src.Id, src.Stars, 5, string.Empty, text);
+
+        log.Info($"[{src.Owner.IdName}({src.Owner.Id})] <{src.Name}> {text}");
         return true;
-    }
-
-    private void SendTextPacket(Player src, Text tp, Predicate<Player> conditional)
-    {
-        src.Owner.BroadcastPacketConditional(tp, conditional);
-        log.Info($"[{src.Owner.IdName}({src.Owner.Id})] <{src.Name}> {tp.Txt}");
     }
 
     public void Mob(Entity entity, string text)
@@ -97,14 +79,9 @@ public class ChatManager : IDisposable
         var world = entity.Owner;
         var name = entity.ObjectDesc.DisplayId;
 
-        world.BroadcastPacket(new Text()
-        {
-            ObjectId = entity.Id,
-            BubbleTime = 5,
-            NumStars = -1,
-            Name = $"#{name}",
-            Txt = text
-        }, null);
+        foreach(var player in world.Players.Values)
+            player.Client.SendText($"#{name}", entity.Id, -1, 5, string.Empty, text);
+
         log.Info($"[{world.IdName}({world.Id})] <{name}> {text}");
     }
 
@@ -148,18 +125,14 @@ public class ChatManager : IDisposable
     }
 
 
-    public void Oryx(World world, string text)
+    public static void Oryx(World world, string text)
     {
         if (string.IsNullOrWhiteSpace(text))
             return;
 
-        world.BroadcastPacket(new Text()
-        {
-            BubbleTime = 0,
-            NumStars = -1,
-            Name = "#Oryx the Mad God",
-            Txt = text
-        }, null);
+        foreach (var player in world.Players.Values)
+            player.Client.SendText("#Oryx the Mad God", 0, -1, 5, string.Empty, text);
+
         log.Info("[{0}({1})] <Oryx the Mad God> {2}", world.IdName, world.Id, text);
     }
 
@@ -243,7 +216,7 @@ public class ChatManager : IDisposable
                 {
                     i.TellReceived(
                         e.Content.Inst == manager.InstanceId ? e.Content.ObjId : -1,
-                        e.Content.Stars, e.Content.Admin, from, to, e.Content.Text);
+                        e.Content.Stars, from, to, e.Content.Text);
                 }
             }
                 break;
@@ -259,7 +232,7 @@ public class ChatManager : IDisposable
                 {
                     i.GuildReceived(
                         e.Content.Inst == manager.InstanceId ? e.Content.ObjId : -1,
-                        e.Content.Stars, e.Content.Admin, from, e.Content.Text);
+                        e.Content.Stars, from, e.Content.Text);
                 }
             }
                 break;
@@ -271,7 +244,7 @@ public class ChatManager : IDisposable
                              .Where(x => x.Account.GuildId == e.Content.To)
                              .Select(x => x.Player))
                 {
-                    i.GuildReceived(-1, -1, 0, "", e.Content.Text);
+                    i.GuildReceived(-1, -1, "", e.Content.Text);
                 }
             }
                 break;

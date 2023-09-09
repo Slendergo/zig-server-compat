@@ -472,7 +472,7 @@ public partial class Player : Character, IContainer, IPlayer
         {
             if (!TPCooledDown())
             {
-                SendError("Too soon to teleport again!");
+                SendErrorText("Too soon to teleport again!");
                 return;
             }
 
@@ -511,7 +511,7 @@ public partial class Player : Character, IContainer, IPlayer
         var obj = Owner.GetEntity(objId);
         if (obj == null)
         {
-            SendError("Target does not exist.");
+            SendErrorText("Target does not exist.");
             return;
         }
 
@@ -525,31 +525,31 @@ public partial class Player : Character, IContainer, IPlayer
 
             if (!Owner.AllowTeleport)
             {
-                SendError("Cannot teleport here.");
+                SendErrorText("Cannot teleport here.");
                 return;
             }
 
             if (HasConditionEffect(ConditionEffects.Paused))
             {
-                SendError("Cannot teleport while paused.");
+                SendErrorText("Cannot teleport while paused.");
                 return;
             }
 
             if (!(obj is Player))
             {
-                SendError("Can only teleport to players.");
+                SendErrorText("Can only teleport to players.");
                 return;
             }
 
             if (obj.HasConditionEffect(ConditionEffects.Invisible))
             {
-                SendError("Cannot teleport to an invisible player.");
+                SendErrorText("Cannot teleport to an invisible player.");
                 return;
             }
 
             if (obj.HasConditionEffect(ConditionEffects.Paused))
             {
-                SendError("Cannot teleport to a paused player.");
+                SendErrorText("Cannot teleport to a paused player.");
                 return;
             }
         }
@@ -740,7 +740,7 @@ public partial class Player : Character, IContainer, IPlayer
         ((Portal)portal).WorldInstanceSet -= Reconnect;
 
         if (world == null)
-            SendError("Portal Not Implemented!");
+            SendErrorText("Portal Not Implemented!");
         else
             Client.Reconnect(world.IdName, world.Id);
     }

@@ -106,144 +106,22 @@ partial class Player
         return d[n, m];
     }
 
-    public void SendInfo(string text)
-    {
-        _client.SendPacket(new Text()
-        {
-            BubbleTime = 0,
-            NumStars = -1,
-            Name = "",
-            Txt = text
-        });
-    }
+    public void SendInfo(string text) => _client.SendText(string.Empty, 0, -1, 0, string.Empty, text);
+    public void SendInfoFormat(string text, params object[] args) => _client.SendText(string.Empty, 0, -1, 0, string.Empty, string.Format(text, args));
 
-    public void SendInfoFormat(string text, params object[] args)
-    {
-        _client.SendPacket(new Text()
-        {
-            BubbleTime = 0,
-            NumStars = -1,
-            Name = "",
-            Txt = string.Format(text, args)
-        });
-    }
+    public void SendErrorText(string text) => _client.SendErrorText(text);
+    public void SendErrorFormat(string text, params object[] args) => _client.SendErrorText(string.Format(text, args));
 
-    public void SendError(string text)
-    {
-        _client.SendPacket(new Text()
-        {
-            BubbleTime = 0,
-            NumStars = -1,
-            Name = "*Error*",
-            Txt = text
-        });
-    }
+    public void SendClientText(string text) => _client.SendText("*Client*", 0, -1, 0, string.Empty, text);
+    public void SendClientTextFormat(string text, params object[] args) => _client.SendText("*Client*", 0, -1, 0, string.Empty, string.Format(text, args));
 
-    public void SendErrorFormat(string text, params object[] args)
-    {
-        _client.SendPacket(new Text()
-        {
-            BubbleTime = 0,
-            NumStars = -1,
-            Name = "*Error*",
-            Txt = string.Format(text, args)
-        });
-    }
+    public void SendHelp(string text) => _client.SendText("*Help*", 0, -1, 0, string.Empty, text);
+    public void SendHelpFormat(string text, params object[] args) => _client.SendText("*Help*", 0, -1, 0, string.Empty, string.Format(text, args));
 
-    public void SendClientText(string text)
-    {
-        _client.SendPacket(new Text()
-        {
-            BubbleTime = 0,
-            NumStars = -1,
-            Name = "*Client*",
-            Txt = text
-        });
-    }
+    public void SendEnemy(string name, string text) => _client.SendText($"#{name}", 0, -1, 0, string.Empty, text);
+    public void SendEnemyFormat(string name, string text, params object[] args) => _client.SendText($"#{name}", 0, -1, 0, string.Empty, string.Format(text, args));
 
-    public void SendClientTextFormat(string text, params object[] args)
-    {
-        _client.SendPacket(new Text()
-        {
-            BubbleTime = 0,
-            NumStars = -1,
-            Name = "*Client*",
-            Txt = string.Format(text, args)
-        });
-    }
-
-    public void SendHelp(string text)
-    {
-        _client.SendPacket(new Text()
-        {
-            BubbleTime = 0,
-            NumStars = -1,
-            Name = "*Help*",
-            Txt = text
-        });
-    }
-
-    public void SendHelpFormat(string text, params object[] args)
-    {
-        _client.SendPacket(new Text()
-        {
-            BubbleTime = 0,
-            NumStars = -1,
-            Name = "*Help*",
-            Txt = string.Format(text, args)
-        });
-    }
-
-    public void SendEnemy(string name, string text)
-    {
-        _client.SendPacket(new Text()
-        {
-            BubbleTime = 0,
-            NumStars = -1,
-            Name = "#" + name,
-            Txt = text
-        });
-    }
-
-    public void SendEnemyFormat(string name, string text, params object[] args)
-    {
-        _client.SendPacket(new Text()
-        {
-            BubbleTime = 0,
-            NumStars = -1,
-            Name = "#" + name,
-            Txt = string.Format(text, args)
-        });
-    }
-
-    internal void TellReceived(int objId, int stars, int admin, string from, string to, string text)
-    {
-        Client.SendPacket(new Text()
-        {
-            ObjectId = objId,
-            BubbleTime = 10,
-            NumStars = stars,
-            Name = from,
-            Recipient = to,
-            Txt = text
-        });
-    }
-
-    internal void AnnouncementReceived(string text)
-    {
-        _client.Player.SendInfo(string.Concat("<ANNOUNCEMENT> ", text));
-    }
-
-    internal void GuildReceived(int objId, int stars, int admin, string from, string text)
-    {
-        Client.SendPacket(new Text()
-        {
-            ObjectId = objId,
-            BubbleTime = 10,
-            NumStars = stars,
-            Name = from,
-            Recipient = "*Guild*",
-            Txt = text
-        });
-    }
+    public void TellReceived(int objId, int stars, string from, string to, string text) => _client.SendText(from, objId, stars, 10, to, text);
+    public void AnnouncementReceived(string text) => _client.Player.SendInfo(string.Concat("<ANNOUNCEMENT> ", text));
+    public void GuildReceived(int objId, int stars, string from, string text) => _client.SendText(from, objId, stars, 10, "*Guild*", text);
 }

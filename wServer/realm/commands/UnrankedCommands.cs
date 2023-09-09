@@ -17,7 +17,7 @@ class GLandCommand : Command
     {
         if (!(player.Owner is RealmOfTheMadGod))
         {
-            player.SendError("This command requires you to be in realm first.");
+            player.SendErrorText("This command requires you to be in realm first.");
             return false;
         }
 
@@ -82,7 +82,7 @@ class PauseCommand : Command
 
         if (player.Owner.EnemiesCollision.HitTest(player.X, player.Y, 8).OfType<Enemy>().Any())
         {
-            player.SendError("Not safe to pause.");
+            player.SendErrorText("Not safe to pause.");
             return false;
         }
 
@@ -116,7 +116,7 @@ class TeleportCommand : Command
             return true;
         }
 
-        player.SendError($"Unable to find player: {args}");
+        player.SendErrorText($"Unable to find player: {args}");
         return false;
     }
 }
@@ -129,20 +129,20 @@ class TellCommand : Command
     {
         if (!player.NameChosen)
         {
-            player.SendError("Choose a name!");
+            player.SendErrorText("Choose a name!");
             return false;
         }
 
         if (player.Muted)
         {
-            player.SendError("Muted. You can not tell at this time.");
+            player.SendErrorText("Muted. You can not tell at this time.");
             return false;
         }
 
         int index = args.IndexOf(' ');
         if (index == -1)
         {
-            player.SendError("Usage: /tell <player name> <text>");
+            player.SendErrorText("Usage: /tell <player name> <text>");
             return false;
         }
 
@@ -157,7 +157,7 @@ class TellCommand : Command
 
         if (!player.Manager.Chat.Tell(player, playername, msg))
         {
-            player.SendError(string.Format("{0} not found.", playername));
+            player.SendErrorText(string.Format("{0} not found.", playername));
             return false;
         }
         return true;
@@ -172,19 +172,19 @@ class GCommand : Command
     {
         if (!player.NameChosen)
         {
-            player.SendError("Choose a name!");
+            player.SendErrorText("Choose a name!");
             return false;
         }
 
         if (player.Muted)
         {
-            player.SendError("Muted. You can not guild chat at this time.");
+            player.SendErrorText("Muted. You can not guild chat at this time.");
             return false;
         }
 
         if (String.IsNullOrEmpty(player.Guild))
         {
-            player.SendError("You need to be in a guild to guild chat.");
+            player.SendErrorText("You need to be in a guild to guild chat.");
             return false;
         }
 
@@ -200,13 +200,13 @@ class LocalCommand : Command
     {
         if (!player.NameChosen)
         {
-            player.SendError("Choose a name!");
+            player.SendErrorText("Choose a name!");
             return false;
         }
 
         if (player.Muted)
         {
-            player.SendError("Muted. You can not local chat at this time.");
+            player.SendErrorText("Muted. You can not local chat at this time.");
             return false;
         }
 
@@ -215,10 +215,10 @@ class LocalCommand : Command
             return false;
         }
 
-        var sent = player.Manager.Chat.Local(player, args);
+        var sent = ChatManager.Local(player, args);
         if (!sent)
         {
-            player.SendError("Failed to send message. Use of extended ascii characters and ascii whitespace (other than space) is not allowed.");
+            player.SendErrorText("Failed to send message. Use of extended ascii characters and ascii whitespace (other than space) is not allowed.");
         }
         else
         {
@@ -262,7 +262,7 @@ class IgnoreCommand : Command
 
         if (String.IsNullOrEmpty(playerName))
         {
-            player.SendError("Usage: /ignore <player name>");
+            player.SendErrorText("Usage: /ignore <player name>");
             return false;
         }
 
@@ -278,17 +278,12 @@ class IgnoreCommand : Command
 
         if (target == 0 || targetAccount == null)
         {
-            player.SendError("Player not found.");
+            player.SendErrorText("Player not found.");
             return false;
         }
 
         player.Manager.Database.IgnoreAccount(srcAccount, targetAccount, true);
-
-        player.Client.SendPacket(new AccountList()
-        {
-            AccountListId = 1, // ignore list
-            AccountIds = srcAccount.IgnoreList
-        });
+        player.Client.SendAccountList(1, srcAccount.IgnoreList);
 
         player.SendInfo(playerName + " has been added to your ignore list.");
         return true;
@@ -306,7 +301,7 @@ class UnignoreCommand : Command
 
         if (String.IsNullOrEmpty(playerName))
         {
-            player.SendError("Usage: /unignore <player name>");
+            player.SendErrorText("Usage: /unignore <player name>");
             return false;
         }
 
@@ -322,17 +317,12 @@ class UnignoreCommand : Command
 
         if (target == 0 || targetAccount == null)
         {
-            player.SendError("Player not found.");
+            player.SendErrorText("Player not found.");
             return false;
         }
 
         player.Manager.Database.IgnoreAccount(srcAccount, targetAccount, false);
-
-        player.Client.SendPacket(new AccountList()
-        {
-            AccountListId = 1, // ignore list
-            AccountIds = srcAccount.IgnoreList
-        });
+        player.Client.SendAccountList(1, srcAccount.IgnoreList);
 
         player.SendInfo(playerName + " no longer ignored.");
         return true;
@@ -350,7 +340,7 @@ class LockCommand : Command
 
         if (String.IsNullOrEmpty(playerName))
         {
-            player.SendError("Usage: /lock <player name>");
+            player.SendErrorText("Usage: /lock <player name>");
             return false;
         }
 
@@ -366,17 +356,12 @@ class LockCommand : Command
 
         if (target == 0 || targetAccount == null)
         {
-            player.SendError("Player not found.");
+            player.SendErrorText("Player not found.");
             return false;
         }
 
         player.Manager.Database.LockAccount(srcAccount, targetAccount, true);
-
-        player.Client.SendPacket(new AccountList()
-        {
-            AccountListId = 0, // locked list
-            AccountIds = player.Client.Account.LockList
-        });
+        player.Client.SendAccountList(0, player.Client.Account.LockList);
 
         player.SendInfo(playerName + " has been locked.");
         return true;
@@ -394,7 +379,7 @@ class UnlockCommand : Command
 
         if (String.IsNullOrEmpty(playerName))
         {
-            player.SendError("Usage: /unlock <player name>");
+            player.SendErrorText("Usage: /unlock <player name>");
             return false;
         }
 
@@ -410,17 +395,13 @@ class UnlockCommand : Command
 
         if (target == 0 || targetAccount == null)
         {
-            player.SendError("Player not found.");
+            player.SendErrorText("Player not found.");
             return false;
         }
 
         player.Manager.Database.LockAccount(srcAccount, targetAccount, false);
 
-        player.Client.SendPacket(new AccountList()
-        {
-            AccountListId = 0, // locked list
-            AccountIds = player.Client.Account.LockList
-        });
+        player.Client.SendAccountList(0, player.Client.Account.LockList);
 
         player.SendInfo(playerName + " no longer locked.");
         return true;
@@ -486,7 +467,7 @@ class TradeCommand : Command
     {
         if (String.IsNullOrWhiteSpace(args))
         {
-            player.SendError("Usage: /trade <player name>");
+            player.SendErrorText("Usage: /trade <player name>");
             return false;
         }
 
@@ -549,7 +530,7 @@ class GhallCommand : Command
     {
         if (player.GuildRank == -1)
         {
-            player.SendError("You need to be in a guild.");
+            player.SendErrorText("You need to be in a guild.");
             return false;
         }
 
@@ -703,7 +684,7 @@ class GuildKickCommand : Command
 
             if (!manager.Database.RemoveFromGuild(player.Client.Account))
             {
-                player.SendError("Guild not found.");
+                player.SendErrorText("Guild not found.");
                 return false;
             }
 
@@ -717,7 +698,7 @@ class GuildKickCommand : Command
         var targetAccId = manager.Database.ResolveId(name);
         if (targetAccId == 0)
         {
-            player.SendError("Player not found");
+            player.SendErrorText("Player not found");
             return false;
         }
 
@@ -739,7 +720,7 @@ class GuildKickCommand : Command
 
                 if (!manager.Database.RemoveFromGuild(targetClient.Account))
                 {
-                    player.SendError("Guild not found.");
+                    player.SendErrorText("Guild not found.");
                     return false;
                 }
 
@@ -752,7 +733,7 @@ class GuildKickCommand : Command
                 return true;
             }
 
-            player.SendError("Can't remove member. Insufficient privileges.");
+            player.SendErrorText("Can't remove member. Insufficient privileges.");
             return false;
         }
 
@@ -765,7 +746,7 @@ class GuildKickCommand : Command
         {
             if (!manager.Database.RemoveFromGuild(targetAccount))
             {
-                player.SendError("Guild not found.");
+                player.SendErrorText("Guild not found.");
                 return false;
             }
 
@@ -774,7 +755,7 @@ class GuildKickCommand : Command
             return true;
         }
 
-        player.SendError("Can't remove member. Insufficient privileges.");
+        player.SendErrorText("Can't remove member. Insufficient privileges.");
         return false;
     }
 }
@@ -790,14 +771,14 @@ class GuildInviteCommand : Command
 
         if (player.Client.Account.GuildRank < 20)
         {
-            player.SendError("Insufficient privileges.");
+            player.SendErrorText("Insufficient privileges.");
             return false;
         }
 
         var targetAccId = player.Client.Manager.Database.ResolveId(playerName);
         if (targetAccId == 0)
         {
-            player.SendError("Player not found");
+            player.SendErrorText("Player not found");
             return false;
         }
 
@@ -813,19 +794,19 @@ class GuildInviteCommand : Command
                 targetClient.Account == null ||
                 !targetClient.Account.Name.Equals(playerName))
             {
-                player.SendError("Could not find the player to invite.");
+                player.SendErrorText("Could not find the player to invite.");
                 return false;
             }
 
             if (!targetClient.Account.NameChosen)
             {
-                player.SendError("Player needs to choose a name first.");
+                player.SendErrorText("Player needs to choose a name first.");
                 return false;
             }
 
             if (targetClient.Account.GuildId > 0)
             {
-                player.SendError("Player is already in a guild.");
+                player.SendErrorText("Player is already in a guild.");
                 return false;
             }
 
@@ -839,7 +820,7 @@ class GuildInviteCommand : Command
             return true;
         }
 
-        player.SendError("Could not find the player to invite.");
+        player.SendErrorText("Could not find the player to invite.");
         return false;
     }
 }
@@ -852,7 +833,7 @@ class GuildWhoCommand : Command
     {
         if (player.Client.Account.GuildId == 0)
         {
-            player.SendError("You are not in a guild!");
+            player.SendErrorText("You are not in a guild!");
             return false;
         }
 

@@ -122,22 +122,17 @@ class Taunt : Behavior
         }
         taunt = taunt.Replace("{HP}", (host as Enemy).HP.ToString());
 
-        var packet = new Text()
-        {
-            Name = "#" + (host.ObjectDesc.DisplayId ?? host.ObjectDesc.ObjectId),
-            ObjectId = host.Id,
-            NumStars = -1,
-            BubbleTime = 3,
-            Recipient = "",
-            Txt = taunt
-        };
+        var name = $"#{host.ObjectDesc.DisplayId ?? host.ObjectDesc.ObjectId}";
+
         if (broadcast)
-            host.Owner.BroadcastPacket(packet, null);
-        else
-            foreach (var i in host.Owner.PlayersCollision.HitTest(host.X, host.Y, 15).Where(e => e is Player))
-            {
-                if (i is Player && host.Dist(i) < 15)
-                    (i as Player).Client.SendPacket(packet);
-            }
+        {
+            foreach (var p in host.Owner.Players.Values)
+                p.Client.SendText($"#{name}", host.Id, -1, 3, string.Empty, taunt);
+            return;
+        }
+
+        foreach (var p in host.Owner.Players.Values)
+            if (host.DistSqr(p) < Player.RadiusSqr)
+                p.Client.SendText($"#{name}", host.Id, -1, 3, string.Empty, taunt);
     }
 }

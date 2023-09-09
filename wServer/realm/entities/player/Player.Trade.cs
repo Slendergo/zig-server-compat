@@ -21,32 +21,32 @@ partial class Player
 
         if (!acc.NameChosen)
         {
-            SendError("A unique name is required before trading with others!");
+            SendErrorText("A unique name is required before trading with others!");
             return;
         }
 
         if (tradeTarget != null)
         {
-            SendError("Already trading!");
+            SendErrorText("Already trading!");
             return;
         }
 
         if (Database.GuestNames.Contains(name))
         {
-            SendError(name + " needs to choose a unique name first!");
+            SendErrorText(name + " needs to choose a unique name first!");
             return;
         }
 
         var target = Owner.GetUniqueNamedPlayer(name);
         if (target == null)
         {
-            SendError(name + " not found!");
+            SendErrorText(name + " not found!");
             return;
         }
 
         if (target == this)
         {
-            SendError("You can't trade with yourself!");
+            SendErrorText("You can't trade with yourself!");
             return;
         }
 
@@ -55,7 +55,7 @@ partial class Player
 
         if (target.tradeTarget != null)
         {
-            SendError(target.Name + " is already trading!");
+            SendErrorText(target.Name + " is already trading!");
             return;
         }
 

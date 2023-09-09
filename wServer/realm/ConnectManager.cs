@@ -50,36 +50,11 @@ public class ConnectManager
 
         // send out map info
         var mapSize = Math.Max(world.Map.Width, world.Map.Height);
-        client.SendPacket(new MapInfo
-        {
-            Width = mapSize,
-            Height = mapSize,
-            Name = world.IdName,
-            DisplayName = world.DisplayName,
-            Seed = client.Seed,
-            Background = world.Background,
-            Difficulty = world.Difficulty,
-            AllowPlayerTeleport = world.AllowTeleport,
-            ShowDisplays = world.ShowDisplays,
-            
-            BackgroundLightColor = world.BgLightColor,
-            BackgroundLightIntensity = world.BgLightIntensity,
-            DayLightIntensity = world.DayLightIntensity,
-            NightLightIntensity = world.NightLightIntensity,
-            GameTimeMicroSeconds = world.Manager.Logic.RealmTime.TotalElapsedMicroSeconds
-        });
+        client.SendMapInfo(mapSize, mapSize, world.IdName, world.DisplayName, client.Seed, world.Difficulty, world.Background, world.AllowTeleport, world.ShowDisplays, world.BgLightColor, world.BgLightIntensity, world.DayLightIntensity, world.NightLightIntensity, world.Manager.Logic.RealmTime.TotalElapsedMicroSeconds);
 
         // send out account lock/ignore list
-        client.SendPacket(new AccountList
-        {
-            AccountListId = 0, // locked list
-            AccountIds = client.Account.LockList
-        });
-        client.SendPacket(new AccountList
-        {
-            AccountListId = 1, // ignore list
-            AccountIds = client.Account.IgnoreList
-        });
+        client.SendAccountList(0, client.Account.LockList);
+        client.SendAccountList(1, client.Account.IgnoreList);
 
         if (client.Character != null) {
             if (client.Character.Dead) {
@@ -92,11 +67,7 @@ public class ConnectManager
 
             // dispose update
             var objectId = world.EnterWorld(player, true);
-            client.SendPacket(new CreateSuccess
-            {
-                CharId = client.Character.CharId,
-                ObjectId = objectId
-            });
+            client.SendCreateSuccess(objectId, client.Character.CharId);
         }
         else {
             client.Disconnect("Failed to load character");
@@ -138,25 +109,15 @@ public class ConnectManager
         var world = client.Manager.GetWorld(pkt.GameId);
         if (world == null || world.Deleted)
         {
-            client.SendPacket(new Text
-            {
-                BubbleTime = 0,
-                NumStars = -1,
-                Name = "*Error*",
-                Txt = "World does not exist."
-            });
+            client.SendErrorText("World does not exist");
+
             world = client.Manager.GetWorld(World.Nexus);
         }
 
         if(world == null)
         {
-            client.SendPacket(new Text
-            {
-                BubbleTime = 0,
-                NumStars = -1,
-                Name = "*Error*",
-                Txt = "Failed to parse instance"
-            });
+            client.SendErrorText("Failed to parse instance");
+
             world = client.Manager.GetWorld(World.Nexus);
         }
 
@@ -165,13 +126,7 @@ public class ConnectManager
             if (!world.Persists && world.TotalConnects <= 0)
                 client.Manager.RemoveWorld(world);
 
-            client.SendPacket(new Text
-            {
-                BubbleTime = 0,
-                NumStars = -1,
-                Name = "*Error*",
-                Txt = "Access denied"
-            });
+            client.SendErrorText("Access denied");
 
             if (world is not Nexus)
                 world = client.Manager.GetWorld(World.Nexus);
@@ -197,37 +152,11 @@ public class ConnectManager
 
         // send out map info
         var mapSize = Math.Max(world.Map.Width, world.Map.Height);
-        client.SendPacket(new MapInfo
-        {
-            Width = mapSize,
-            Height = mapSize,
-            Name = world.IdName,
-            DisplayName = world.DisplayName,
-            Seed = seed,
-            Background = world.Background,
-            Difficulty = world.Difficulty,
-            AllowPlayerTeleport = world.AllowTeleport,
-            ShowDisplays = world.ShowDisplays,
-            
-            BackgroundLightColor = world.BgLightColor,
-            BackgroundLightIntensity = world.BgLightIntensity,
-            DayLightIntensity = world.DayLightIntensity,
-            NightLightIntensity = world.NightLightIntensity,
-            GameTimeMicroSeconds = world.Manager.Logic.RealmTime.TotalElapsedMicroSeconds
-        });
+        client.SendMapInfo(mapSize, mapSize, world.IdName, world.DisplayName, client.Seed, world.Difficulty, world.Background, world.AllowTeleport, world.ShowDisplays, world.BgLightColor, world.BgLightIntensity, world.DayLightIntensity, world.NightLightIntensity, world.Manager.Logic.RealmTime.TotalElapsedMicroSeconds);
 
         // send out account lock/ignore list
-        client.SendPacket(new AccountList
-        {
-            AccountListId = 0, // locked list
-            AccountIds = client.Account.LockList
-        });
-        client.SendPacket(new AccountList
-        {
-            AccountListId = 1, // ignore list
-            AccountIds = client.Account.IgnoreList
-        });
-
+        client.SendAccountList(0, client.Account.LockList);
+        client.SendAccountList(1, client.Account.IgnoreList);
 
         // either create or load the character
 
@@ -275,11 +204,7 @@ public class ConnectManager
 
         client.Manager.Worlds[world.Id].EnterWorld(client.Player);
 
-        client.SendPacket(new CreateSuccess()
-        {
-            CharId = client.Character.CharId,
-            ObjectId = client.Player.Id
-        });
+        client.SendCreateSuccess(client.Player.Id, client.Character.CharId);
 
         client.Manager.Clients[client].WorldInstance = client.Player.Owner.Id;
         client.Manager.Clients[client].WorldName = client.Player.Owner.IdName;

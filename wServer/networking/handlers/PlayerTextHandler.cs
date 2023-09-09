@@ -37,20 +37,18 @@ class PlayerTextHandler : PacketHandlerBase<PlayerText>
 
         // check for commands before other checks
         if (text[0] == '/')
-        {
-            manager.Commands.Execute(player, time, text);
-        }
+            _ = manager.Commands.Execute(player, time, text);
         else
         {
             if (!player.NameChosen)
             {
-                player.SendError("Please choose a name before chatting.");
+                player.SendErrorText("Please choose a name before chatting.");
                 return;
             }
 
             if (player.Muted)
             {
-                player.SendError("Muted. You can not talk at this time.");
+                player.SendErrorText("Muted. You can not talk at this time.");
                 return;
             }
 
@@ -62,7 +60,7 @@ class PlayerTextHandler : PacketHandlerBase<PlayerText>
             // save message for mob behaviors
             player.Owner.ChatReceived(player, text);
 
-            manager.Chat.Say(player, text);
+            ChatManager.Say(player, text);
         }
     }
 }

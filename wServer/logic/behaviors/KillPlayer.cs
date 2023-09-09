@@ -52,22 +52,9 @@ class KillPlayer : Behavior
 
             // send kill message
             if (_killMessage != null)
-            {
-                var packet = new Text()
-                {
-                    Name = "#" + (host.ObjectDesc.DisplayId ?? host.ObjectDesc.ObjectId),
-                    ObjectId = host.Id,
-                    NumStars = -1,
-                    BubbleTime = 3,
-                    Recipient = "",
-                    Txt = _killMessage
-                };
-                foreach (var i in host.Owner.PlayersCollision.HitTest(host.X, host.Y, 15).Where(e => e is Player))
-                {
-                    if (i is Player && host.Dist(i) < 15)
-                        (i as Player).Client.SendPacket(packet);
-                }
-            }
+                foreach(var player in host.Owner.Players.Values)
+                    if (player.DistSqr(host) < Player.RadiusSqr)
+                        player.SendEnemy(host.ObjectDesc.DisplayId ?? host.ObjectDesc.ObjectId, _killMessage);
 
             cool = _coolDown.Next(Random);
         }
