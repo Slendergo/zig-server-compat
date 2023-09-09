@@ -90,6 +90,17 @@ public partial class Client
         TrySend(ptr);
     }
 
+    public void SendQuestObjectId(int objectId)
+    {
+        var ptr = LENGTH_PREFIX;
+        ref var spanRef = ref MemoryMarshal.GetReference(SendMem.Span);
+        WriteByte(ref ptr, ref spanRef, (byte)S2CPacketId.QuestObjId);
+
+        WriteInt(ref ptr, ref spanRef, objectId);
+
+        TrySend(ptr);
+    }
+
     public void SendGoto(int objectId, float x, float y)
     {
         var ptr = LENGTH_PREFIX;
