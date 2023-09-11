@@ -17,7 +17,7 @@ class StayBack : CycleBehavior
     public StayBack(XElement e)
     {
         speed = e.ParseFloat("@speed");
-        distance = e.ParseFloat("@distance");
+        distance = e.ParseFloat("@distance", 8);
         entity = e.ParseString("@entity");
     }
 

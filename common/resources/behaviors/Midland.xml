@@ -1,0 +1,1029 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Fire Sprite">
+    <Reproduce densityMax="2" cooldown="60000" />
+    <Shoot radius="10" count="2" shootAngle="7" cooldown="300" />
+    <Prioritize>
+      <StayAbove speed="1.4" altitude="55" />
+      <Wander speed="1.4" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Ice Sprite">
+    <Reproduce densityMax="2" cooldown="60000" />
+    <Shoot radius="10" count="3" shootAngle="7" cooldown="1000" />
+    <Prioritize>
+      <StayAbove speed="1.4" altitude="60" />
+      <Wander speed="1.4" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Magic Sprite">
+    <Reproduce densityMax="2" cooldown="60000" />
+    <Shoot radius="10" count="4" shootAngle="7" cooldown="1000" />
+    <Prioritize>
+      <StayAbove speed="1.4" altitude="60" />
+      <Wander speed="1.4" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Orc King">
+    <DropPortalOnDeath target="Spider Den Portal" probability="0.1" />
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+    <Spawn children="Orc Queen" maxChildren="2" initialSpawn="1" cooldown="60000" givesNoXp="false" />
+    <Prioritize>
+      <StayAbove speed="1.4" altitude="60" />
+      <Follow speed="0.6" range="1" duration="3000" cooldown="3000" />
+      <Wander speed="0.6" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Orc Queen">
+    <Spawn children="Orc Mage" maxChildren="2" initialSpawn="1" cooldown="8000" givesNoXp="false" />
+    <Spawn children="Orc Warrior" maxChildren="3" initialSpawn="1" cooldown="8000" givesNoXp="false" />
+    <Prioritize>
+      <StayAbove speed="1.4" altitude="60" />
+      <Protect speed="0.8" protectee="Orc King" acquireRange="11" protectionRange="7" reprotectRange="5.4" />
+      <Wander speed="0.8" />
+    </Prioritize>
+    <HealGroup range="10" cooldown="300" group="OrcKings" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Orc Mage">
+    <State id="circle_player">
+      <Shoot radius="8" shootAngle="0" predictive="0.3" coolDownOffset="500" cooldown="1000" />
+      <Prioritize>
+        <StayAbove speed="1.4" altitude="60" />
+        <Protect speed="0.7" protectee="Orc Queen" acquireRange="11" protectionRange="10" reprotectRange="3" />
+        <Orbit speed="0.7" radius="3.5" acquireRange="11" speedVariance="0.07" radiusVariance="0.07" orbitClockwise="false" />
+      </Prioritize>
+      <TimedTransition targetState="circle_queen" time="3500" />
+    </State>
+    <State id="circle_queen">
+      <Shoot radius="8" count="3" shootAngle="120" predictive="0.3" coolDownOffset="500" cooldown="1000" />
+      <Prioritize>
+        <StayAbove speed="1.4" altitude="60" />
+        <Orbit speed="1.2" radius="2.5" acquireRange="12" target="Orc Queen" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+      </Prioritize>
+      <TimedTransition targetState="circle_player" time="3500" />
+    </State>
+    <Shoot radius="8" shootAngle="0" predictive="0.3" coolDownOffset="500" cooldown="1000" />
+    <Prioritize>
+      <StayAbove speed="1.4" altitude="60" />
+      <Protect speed="0.7" protectee="Orc Queen" acquireRange="11" protectionRange="10" reprotectRange="3" />
+      <Orbit speed="0.7" radius="3.5" acquireRange="11" speedVariance="0.07" radiusVariance="0.07" orbitClockwise="false" />
+    </Prioritize>
+    <TimedTransition targetState="circle_queen" time="3500" />
+    <Shoot radius="8" count="3" shootAngle="120" predictive="0.3" coolDownOffset="500" cooldown="1000" />
+    <Prioritize>
+      <StayAbove speed="1.4" altitude="60" />
+      <Orbit speed="1.2" radius="2.5" acquireRange="12" target="Orc Queen" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+    </Prioritize>
+    <TimedTransition targetState="circle_player" time="3500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Orc Warrior">
+    <Shoot radius="3" shootAngle="0" predictive="1" cooldown="500" />
+    <Prioritize>
+      <StayAbove speed="1.4" altitude="60" />
+      <Orbit speed="1.35" radius="2.5" acquireRange="12" target="Orc Queen" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Pink Blob">
+    <StayAbove speed="0.4" altitude="50" />
+    <Shoot radius="6" count="3" shootAngle="7" cooldown="1000" />
+    <Prioritize>
+      <Follow speed="0.8" acquireRange="15" range="5" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Reproduce cooldown="60000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Gray Blob">
+    <State id="searching">
+      <StayAbove speed="0.2" altitude="50" />
+      <Prioritize>
+        <Charge speed="2" cooldown="2000" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <Reproduce cooldown="60000" />
+      <PlayerWithinTransition targetState="creeping" dist="2" />
+    </State>
+    <State id="creeping">
+      <Shoot radius="0" count="10" shootAngle="36" fixedAngle="0" cooldown="1000" />
+      <Decay time="0" />
+    </State>
+    <StayAbove speed="0.2" altitude="50" />
+    <Prioritize>
+      <Charge speed="2" cooldown="2000" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Reproduce cooldown="60000" />
+    <PlayerWithinTransition targetState="creeping" dist="2" />
+    <Shoot radius="0" count="10" shootAngle="36" fixedAngle="0" cooldown="1000" />
+    <Decay time="0" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Big Green Slime">
+    <StayAbove speed="0.4" altitude="50" />
+    <Shoot radius="9" shootAngle="0" cooldown="1000" />
+    <Wander speed="0.4" />
+    <Reproduce cooldown="60000" />
+    <TransformOnDeath target="Little Green Slime" />
+    <TransformOnDeath target="Little Green Slime" />
+    <TransformOnDeath target="Little Green Slime" />
+    <TransformOnDeath target="Little Green Slime" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Little Green Slime">
+    <StayAbove speed="0.4" altitude="50" />
+    <Shoot radius="6" shootAngle="0" cooldown="1000" />
+    <Wander speed="0.4" />
+    <Protect speed="0.4" protectee="Big Green Slime" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Wasp Queen">
+    <Spawn children="Worker Wasp" initialSpawn="2" cooldown="3400" givesNoXp="false" />
+    <Spawn children="Warrior Wasp" maxChildren="2" initialSpawn="1" cooldown="4400" givesNoXp="false" />
+    <State id="idle">
+      <StayAbove speed="0.4" altitude="60" />
+      <Wander speed="0.55" />
+      <PlayerWithinTransition targetState="froth" dist="10" />
+    </State>
+    <State id="froth">
+      <Shoot radius="8" shootAngle="0" predictive="0.1" cooldown="1600" />
+      <Prioritize>
+        <StayAbove speed="0.4" altitude="60" />
+        <Wander speed="0.55" />
+      </Prioritize>
+    </State>
+    <StayAbove speed="0.4" altitude="60" />
+    <Wander speed="0.55" />
+    <PlayerWithinTransition targetState="froth" dist="10" />
+    <Shoot radius="8" shootAngle="0" predictive="0.1" cooldown="1600" />
+    <Prioritize>
+      <StayAbove speed="0.4" altitude="60" />
+      <Wander speed="0.55" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Worker Wasp">
+    <Shoot radius="8" shootAngle="0" cooldown="4000" />
+    <Prioritize>
+      <Orbit speed="1" radius="2" target="Wasp Queen" speedVariance="0.1" radiusVariance="0.5" orbitClockwise="false" />
+      <Wander speed="0.75" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Warrior Wasp">
+    <Shoot radius="8" shootAngle="0" predictive="200" cooldown="1000" />
+    <State id="protecting">
+      <Prioritize>
+        <Orbit speed="1" radius="2" target="Wasp Queen" speedVariance="0.1" radiusVariance="0" orbitClockwise="false" />
+        <Wander speed="0.75" />
+      </Prioritize>
+      <TimedTransition targetState="attacking" time="3000" />
+    </State>
+    <State id="attacking">
+      <Prioritize>
+        <Follow speed="0.8" acquireRange="9" range="3.4" cooldown="0" />
+        <Orbit speed="1" radius="2" target="Wasp Queen" speedVariance="0.1" radiusVariance="0" orbitClockwise="false" />
+        <Wander speed="0.75" />
+      </Prioritize>
+      <TimedTransition targetState="protecting" time="2200" />
+    </State>
+    <Prioritize>
+      <Orbit speed="1" radius="2" target="Wasp Queen" speedVariance="0.1" radiusVariance="0" orbitClockwise="false" />
+      <Wander speed="0.75" />
+    </Prioritize>
+    <TimedTransition targetState="attacking" time="3000" />
+    <Prioritize>
+      <Follow speed="0.8" acquireRange="9" range="3.4" cooldown="0" />
+      <Orbit speed="1" radius="2" target="Wasp Queen" speedVariance="0.1" radiusVariance="0" orbitClockwise="false" />
+      <Wander speed="0.75" />
+    </Prioritize>
+    <TimedTransition targetState="protecting" time="2200" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Shambling Sludge">
+    <State id="idle">
+      <StayAbove speed="0.5" altitude="55" />
+      <PlayerWithinTransition targetState="toss_sludge" dist="10" />
+    </State>
+    <State id="toss_sludge">
+      <Prioritize>
+        <StayAbove speed="0.5" altitude="55" />
+        <Wander speed="0.5" />
+      </Prioritize>
+      <Shoot radius="8" shootAngle="0" cooldown="1200" />
+      <TossObject child="Sludget" range="3" angle="20" cooldown="100000" />
+      <TossObject child="Sludget" range="3" angle="92" cooldown="100000" />
+      <TossObject child="Sludget" range="3" angle="164" cooldown="100000" />
+      <TossObject child="Sludget" range="3" angle="236" cooldown="100000" />
+      <TossObject child="Sludget" range="3" angle="308" cooldown="100000" />
+      <TimedTransition targetState="pause" time="8000" />
+    </State>
+    <State id="pause">
+      <Prioritize>
+        <StayAbove speed="0.5" altitude="55" />
+        <Wander speed="0.5" />
+      </Prioritize>
+      <TimedTransition targetState="idle" time="1000" />
+    </State>
+    <StayAbove speed="0.5" altitude="55" />
+    <PlayerWithinTransition targetState="toss_sludge" dist="10" />
+    <Prioritize>
+      <StayAbove speed="0.5" altitude="55" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <Shoot radius="8" shootAngle="0" cooldown="1200" />
+    <TossObject child="Sludget" range="3" angle="20" cooldown="100000" />
+    <TossObject child="Sludget" range="3" angle="92" cooldown="100000" />
+    <TossObject child="Sludget" range="3" angle="164" cooldown="100000" />
+    <TossObject child="Sludget" range="3" angle="236" cooldown="100000" />
+    <TossObject child="Sludget" range="3" angle="308" cooldown="100000" />
+    <TimedTransition targetState="pause" time="8000" />
+    <Prioritize>
+      <StayAbove speed="0.5" altitude="55" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <TimedTransition targetState="idle" time="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Sludget">
+    <Decay time="9000" />
+    <State id="idle">
+      <Shoot radius="8" shootAngle="0" predictive="0.5" cooldown="600" />
+      <Prioritize>
+        <Protect speed="0.5" protectee="Shambling Sludge" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+        <Wander speed="0.5" />
+      </Prioritize>
+      <TimedTransition targetState="wander" time="1400" />
+    </State>
+    <State id="wander">
+      <Prioritize>
+        <Protect speed="0.5" protectee="Shambling Sludge" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+        <Wander speed="0.5" />
+      </Prioritize>
+      <TimedTransition targetState="jump" time="5400" />
+    </State>
+    <State id="jump">
+      <Prioritize>
+        <Protect speed="0.5" protectee="Shambling Sludge" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+        <Follow speed="7" acquireRange="6" range="1" cooldown="0" />
+        <Wander speed="0.5" />
+      </Prioritize>
+      <TimedTransition targetState="attack" time="200" />
+    </State>
+    <State id="attack">
+      <Shoot radius="8" shootAngle="0" predictive="0.5" coolDownOffset="300" cooldown="600" />
+      <Prioritize>
+        <Protect speed="0.5" protectee="Shambling Sludge" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+        <Follow speed="0.5" acquireRange="6" range="1" cooldown="0" />
+        <Wander speed="0.5" />
+      </Prioritize>
+      <TimedTransition targetState="idle" time="4000" />
+    </State>
+    <Shoot radius="8" shootAngle="0" predictive="0.5" cooldown="600" />
+    <Prioritize>
+      <Protect speed="0.5" protectee="Shambling Sludge" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <TimedTransition targetState="wander" time="1400" />
+    <Prioritize>
+      <Protect speed="0.5" protectee="Shambling Sludge" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <TimedTransition targetState="jump" time="5400" />
+    <Prioritize>
+      <Protect speed="0.5" protectee="Shambling Sludge" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+      <Follow speed="7" acquireRange="6" range="1" cooldown="0" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <TimedTransition targetState="attack" time="200" />
+    <Shoot radius="8" shootAngle="0" predictive="0.5" coolDownOffset="300" cooldown="600" />
+    <Prioritize>
+      <Protect speed="0.5" protectee="Shambling Sludge" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+      <Follow speed="0.5" acquireRange="6" range="1" cooldown="0" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <TimedTransition targetState="idle" time="4000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Swarm">
+    <Reproduce densityRadius="100" densityMax="1" cooldown="60000" />
+    <State id="circle">
+      <Prioritize>
+        <StayAbove speed="0.4" altitude="60" />
+        <Follow speed="4" acquireRange="11" range="3.5" duration="1000" cooldown="5000" />
+        <Orbit speed="1.9" radius="3.5" acquireRange="12" speedVariance="0.19" radiusVariance="0.19" orbitClockwise="false" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <Shoot radius="4" shootAngle="0" predictive="0.1" cooldown="500" />
+      <TimedTransition targetState="dart_away" time="3000" />
+    </State>
+    <State id="dart_away">
+      <Prioritize>
+        <StayAbove speed="0.4" altitude="60" />
+        <StayBack speed="2" distance="5" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <Shoot radius="8" count="5" shootAngle="72" fixedAngle="20" coolDownOffset="800" cooldown="100000" />
+      <Shoot radius="8" count="5" shootAngle="72" fixedAngle="56" coolDownOffset="1400" cooldown="100000" />
+      <TimedTransition targetState="circle" time="1600" />
+    </State>
+    <Prioritize>
+      <StayAbove speed="0.4" altitude="60" />
+      <Follow speed="4" acquireRange="11" range="3.5" duration="1000" cooldown="5000" />
+      <Orbit speed="1.9" radius="3.5" acquireRange="12" speedVariance="0.19" radiusVariance="0.19" orbitClockwise="false" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="4" shootAngle="0" predictive="0.1" cooldown="500" />
+    <TimedTransition targetState="dart_away" time="3000" />
+    <Prioritize>
+      <StayAbove speed="0.4" altitude="60" />
+      <StayBack speed="2" distance="5" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="8" count="5" shootAngle="72" fixedAngle="20" coolDownOffset="800" cooldown="100000" />
+    <Shoot radius="8" count="5" shootAngle="72" fixedAngle="56" coolDownOffset="1400" cooldown="100000" />
+    <TimedTransition targetState="circle" time="1600" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Black Bat">
+    <Prioritize>
+      <Charge cooldown="2000" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="1" shootAngle="0" cooldown="1000" />
+    <Reproduce densityRadius="20" cooldown="20000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Red Spider">
+    <Wander speed="0.8" />
+    <Shoot radius="9" shootAngle="0" cooldown="1000" />
+    <Reproduce densityRadius="15" densityMax="3" cooldown="45000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Dwarf Axebearer">
+    <Shoot radius="3.4" shootAngle="0" cooldown="1000" />
+    <State id="Default">
+      <Wander speed="0.4" />
+    </State>
+    <State id="Circling">
+      <Prioritize>
+        <Orbit speed="0.4" radius="2.7" acquireRange="11" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
+        <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <TimedTransition targetState="Default" time="3300" />
+      <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
+    </State>
+    <State id="Engaging">
+      <Prioritize>
+        <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+        <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <TimedTransition targetState="Circling" time="2500" />
+      <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
+    </State>
+    <Wander speed="0.4" />
+    <Prioritize>
+      <Orbit speed="0.4" radius="2.7" acquireRange="11" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
+      <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <TimedTransition targetState="Default" time="3300" />
+    <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
+    <Prioritize>
+      <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+      <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <TimedTransition targetState="Circling" time="2500" />
+    <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Dwarf Mage">
+    <State id="Default">
+      <Prioritize>
+        <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+        <Wander speed="0.6" />
+      </Prioritize>
+      <State id="fire1_def">
+        <Shoot radius="10" shootAngle="0" predictive="0.2" cooldown="100000" />
+        <TimedTransition targetState="fire2_def" time="1500" />
+      </State>
+      <State id="fire2_def">
+        <Shoot radius="5" shootAngle="0" predictive="0.2" cooldown="100000" />
+        <TimedTransition targetState="fire1_def" time="1500" />
+      </State>
+    </State>
+    <State id="Circling">
+      <Prioritize>
+        <Orbit speed="0.4" radius="2.7" acquireRange="11" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
+        <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+        <Wander speed="0.6" />
+      </Prioritize>
+      <TimedTransition targetState="Default" time="3300" />
+      <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
+      <State id="fire1_cir">
+        <Shoot radius="10" shootAngle="0" predictive="0.2" cooldown="100000" />
+        <TimedTransition targetState="fire2_cir" time="1500" />
+      </State>
+      <State id="fire2_cir">
+        <Shoot radius="5" shootAngle="0" predictive="0.2" cooldown="100000" />
+        <TimedTransition targetState="fire1_cir" time="1500" />
+      </State>
+    </State>
+    <State id="Engaging">
+      <Prioritize>
+        <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+        <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <TimedTransition targetState="Circling" time="2500" />
+      <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
+      <State id="fire1_eng">
+        <Shoot radius="10" shootAngle="0" predictive="0.2" cooldown="100000" />
+        <TimedTransition targetState="fire2_eng" time="1500" />
+      </State>
+      <State id="fire2_eng">
+        <Shoot radius="5" shootAngle="0" predictive="0.2" cooldown="100000" />
+        <TimedTransition targetState="fire1_eng" time="1500" />
+      </State>
+    </State>
+    <Prioritize>
+      <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+      <Wander speed="0.6" />
+    </Prioritize>
+    <State id="fire1_def">
+      <Shoot radius="10" shootAngle="0" predictive="0.2" cooldown="100000" />
+      <TimedTransition targetState="fire2_def" time="1500" />
+    </State>
+    <State id="fire2_def">
+      <Shoot radius="5" shootAngle="0" predictive="0.2" cooldown="100000" />
+      <TimedTransition targetState="fire1_def" time="1500" />
+    </State>
+    <Shoot radius="10" shootAngle="0" predictive="0.2" cooldown="100000" />
+    <TimedTransition targetState="fire2_def" time="1500" />
+    <Shoot radius="5" shootAngle="0" predictive="0.2" cooldown="100000" />
+    <TimedTransition targetState="fire1_def" time="1500" />
+    <Prioritize>
+      <Orbit speed="0.4" radius="2.7" acquireRange="11" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
+      <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+      <Wander speed="0.6" />
+    </Prioritize>
+    <TimedTransition targetState="Default" time="3300" />
+    <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
+    <State id="fire1_cir">
+      <Shoot radius="10" shootAngle="0" predictive="0.2" cooldown="100000" />
+      <TimedTransition targetState="fire2_cir" time="1500" />
+    </State>
+    <State id="fire2_cir">
+      <Shoot radius="5" shootAngle="0" predictive="0.2" cooldown="100000" />
+      <TimedTransition targetState="fire1_cir" time="1500" />
+    </State>
+    <Shoot radius="10" shootAngle="0" predictive="0.2" cooldown="100000" />
+    <TimedTransition targetState="fire2_cir" time="1500" />
+    <Shoot radius="5" shootAngle="0" predictive="0.2" cooldown="100000" />
+    <TimedTransition targetState="fire1_cir" time="1500" />
+    <Prioritize>
+      <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+      <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <TimedTransition targetState="Circling" time="2500" />
+    <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
+    <State id="fire1_eng">
+      <Shoot radius="10" shootAngle="0" predictive="0.2" cooldown="100000" />
+      <TimedTransition targetState="fire2_eng" time="1500" />
+    </State>
+    <State id="fire2_eng">
+      <Shoot radius="5" shootAngle="0" predictive="0.2" cooldown="100000" />
+      <TimedTransition targetState="fire1_eng" time="1500" />
+    </State>
+    <Shoot radius="10" shootAngle="0" predictive="0.2" cooldown="100000" />
+    <TimedTransition targetState="fire2_eng" time="1500" />
+    <Shoot radius="5" shootAngle="0" predictive="0.2" cooldown="100000" />
+    <TimedTransition targetState="fire1_eng" time="1500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Dwarf Veteran">
+    <Shoot radius="4" shootAngle="0" cooldown="1000" />
+    <State id="Default">
+      <Prioritize>
+        <Follow speed="1" acquireRange="9" range="2" duration="3000" cooldown="1000" />
+        <Wander speed="0.4" />
+      </Prioritize>
+    </State>
+    <State id="Circling">
+      <Prioritize>
+        <Orbit speed="0.4" radius="2.7" acquireRange="11" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
+        <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <TimedTransition targetState="Default" time="3300" />
+      <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
+    </State>
+    <State id="Engaging">
+      <Prioritize>
+        <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+        <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <TimedTransition targetState="Circling" time="2500" />
+      <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
+    </State>
+    <Prioritize>
+      <Follow speed="1" acquireRange="9" range="2" duration="3000" cooldown="1000" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Prioritize>
+      <Orbit speed="0.4" radius="2.7" acquireRange="11" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
+      <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <TimedTransition targetState="Default" time="3300" />
+    <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
+    <Prioritize>
+      <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+      <Protect speed="1.2" protectee="Dwarf King" acquireRange="15" protectionRange="6" reprotectRange="3" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <TimedTransition targetState="Circling" time="2500" />
+    <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Dwarf King">
+    <SpawnGroup group="Dwarves" maxChildren="10" initialSpawn="5" cooldown="8000" />
+    <Shoot radius="4" shootAngle="0" cooldown="2000" />
+    <State id="Circling">
+      <Prioritize>
+        <Orbit speed="0.4" radius="2.7" acquireRange="11" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <TimedTransition targetState="Engaging" time="3400" />
+    </State>
+    <State id="Engaging">
+      <Taunt text="You'll taste my axe!" probability="0.2" />
+      <Prioritize>
+        <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <TimedTransition targetState="Circling" time="2600" />
+    </State>
+    <Prioritize>
+      <Orbit speed="0.4" radius="2.7" acquireRange="11" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <TimedTransition targetState="Engaging" time="3400" />
+    <Taunt text="You'll taste my axe!" probability="0.2" />
+    <Prioritize>
+      <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <TimedTransition targetState="Circling" time="2600" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Werelion">
+    <DropPortalOnDeath target="Spider Den Portal" probability="0.1" />
+    <Spawn children="Weretiger" maxChildren="1" initialSpawn="0" cooldown="23000" givesNoXp="false" />
+    <Spawn children="Wereleopard" maxChildren="2" initialSpawn="1" cooldown="9000" givesNoXp="false" />
+    <Spawn children="Werepanther" maxChildren="3" initialSpawn="1" cooldown="15000" givesNoXp="false" />
+    <Shoot radius="4" shootAngle="0" cooldown="2000" />
+    <State id="idle">
+      <Prioritize>
+        <StayAbove speed="0.6" altitude="60" />
+        <Wander speed="0.6" />
+      </Prioritize>
+      <PlayerWithinTransition targetState="player_nearby" dist="11" />
+    </State>
+    <State id="player_nearby">
+      <Prioritize>
+        <StayAbove speed="0.6" altitude="60" />
+        <Follow speed="0.4" acquireRange="7" range="3" cooldown="0" />
+        <Wander speed="0.6" />
+      </Prioritize>
+      <TimedTransition targetState="idle" time="30000" />
+      <State id="normal_attack">
+        <Shoot radius="10" count="3" shootAngle="15" predictive="1" cooldown="10000" />
+        <TimedTransition targetState="if_cloaked" time="900" />
+      </State>
+      <State id="if_cloaked">
+        <Shoot radius="10" count="8" shootAngle="45" defaultAngle="20" coolDownOffset="400" cooldown="1600" />
+        <Shoot radius="10" count="8" shootAngle="45" defaultAngle="42" coolDownOffset="1200" cooldown="1600" />
+        <PlayerWithinTransition targetState="normal_attack" dist="10" />
+      </State>
+    </State>
+    <Prioritize>
+      <StayAbove speed="0.6" altitude="60" />
+      <Wander speed="0.6" />
+    </Prioritize>
+    <PlayerWithinTransition targetState="player_nearby" dist="11" />
+    <Prioritize>
+      <StayAbove speed="0.6" altitude="60" />
+      <Follow speed="0.4" acquireRange="7" range="3" cooldown="0" />
+      <Wander speed="0.6" />
+    </Prioritize>
+    <TimedTransition targetState="idle" time="30000" />
+    <State id="normal_attack">
+      <Shoot radius="10" count="3" shootAngle="15" predictive="1" cooldown="10000" />
+      <TimedTransition targetState="if_cloaked" time="900" />
+    </State>
+    <State id="if_cloaked">
+      <Shoot radius="10" count="8" shootAngle="45" defaultAngle="20" coolDownOffset="400" cooldown="1600" />
+      <Shoot radius="10" count="8" shootAngle="45" defaultAngle="42" coolDownOffset="1200" cooldown="1600" />
+      <PlayerWithinTransition targetState="normal_attack" dist="10" />
+    </State>
+    <Shoot radius="10" count="3" shootAngle="15" predictive="1" cooldown="10000" />
+    <TimedTransition targetState="if_cloaked" time="900" />
+    <Shoot radius="10" count="8" shootAngle="45" defaultAngle="20" coolDownOffset="400" cooldown="1600" />
+    <Shoot radius="10" count="8" shootAngle="45" defaultAngle="42" coolDownOffset="1200" cooldown="1600" />
+    <PlayerWithinTransition targetState="normal_attack" dist="10" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Weretiger">
+    <Shoot radius="8" shootAngle="0" predictive="0.3" cooldown="1000" />
+    <Prioritize>
+      <StayAbove speed="0.6" altitude="60" />
+      <Protect speed="1.1" protectee="Werelion" acquireRange="12" protectionRange="10" reprotectRange="5" />
+      <Follow speed="0.8" range="6.3" cooldown="0" />
+      <Wander speed="0.6" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Wereleopard">
+    <Shoot radius="4.5" shootAngle="0" predictive="0.4" cooldown="900" />
+    <Prioritize>
+      <Protect speed="1.1" protectee="Werelion" acquireRange="12" protectionRange="10" reprotectRange="5" />
+      <Follow speed="1.1" range="3" cooldown="0" />
+      <Wander speed="1" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Werepanther">
+    <State id="idle">
+      <Protect speed="0.65" protectee="Werelion" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+      <PlayerWithinTransition targetState="wander" dist="9.5" />
+    </State>
+    <State id="wander">
+      <Prioritize>
+        <Protect speed="0.65" protectee="Werelion" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+        <Follow speed="0.65" range="5" cooldown="0" />
+        <Wander speed="0.65" />
+      </Prioritize>
+      <PlayerWithinTransition targetState="jump" dist="4" />
+    </State>
+    <State id="jump">
+      <Prioritize>
+        <Protect speed="0.65" protectee="Werelion" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+        <Follow speed="7" acquireRange="6" range="1" cooldown="0" />
+        <Wander speed="0.55" />
+      </Prioritize>
+      <TimedTransition targetState="attack" time="200" />
+    </State>
+    <State id="attack">
+      <Prioritize>
+        <Protect speed="0.65" protectee="Werelion" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+        <Follow speed="0.5" acquireRange="6" range="1" cooldown="0" />
+        <Wander speed="0.5" />
+      </Prioritize>
+      <Shoot radius="4" shootAngle="0" predictive="0.5" coolDownOffset="300" cooldown="800" />
+      <TimedTransition targetState="idle" time="4000" />
+    </State>
+    <Protect speed="0.65" protectee="Werelion" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+    <PlayerWithinTransition targetState="wander" dist="9.5" />
+    <Prioritize>
+      <Protect speed="0.65" protectee="Werelion" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+      <Follow speed="0.65" range="5" cooldown="0" />
+      <Wander speed="0.65" />
+    </Prioritize>
+    <PlayerWithinTransition targetState="jump" dist="4" />
+    <Prioritize>
+      <Protect speed="0.65" protectee="Werelion" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+      <Follow speed="7" acquireRange="6" range="1" cooldown="0" />
+      <Wander speed="0.55" />
+    </Prioritize>
+    <TimedTransition targetState="attack" time="200" />
+    <Prioritize>
+      <Protect speed="0.65" protectee="Werelion" acquireRange="11" protectionRange="7.5" reprotectRange="7.4" />
+      <Follow speed="0.5" acquireRange="6" range="1" cooldown="0" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <Shoot radius="4" shootAngle="0" predictive="0.5" coolDownOffset="300" cooldown="800" />
+    <TimedTransition targetState="idle" time="4000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Horned Drake">
+    <Spawn children="Drake Baby" maxChildren="1" initialSpawn="1" cooldown="50000" givesNoXp="false" />
+    <State id="idle">
+      <StayAbove speed="0.8" altitude="60" />
+      <PlayerWithinTransition targetState="get_player" dist="10" />
+    </State>
+    <State id="get_player">
+      <Prioritize>
+        <StayAbove speed="0.8" altitude="60" />
+        <Follow speed="0.8" range="2.7" duration="5000" cooldown="1800" />
+        <Wander speed="0.8" />
+      </Prioritize>
+      <State id="one_shot">
+        <Shoot radius="8" shootAngle="0" predictive="0.1" cooldown="800" />
+        <TimedTransition targetState="three_shot" time="900" />
+      </State>
+      <State id="three_shot">
+        <Shoot radius="8" count="3" shootAngle="40" predictive="0.1" coolDownOffset="800" cooldown="100000" />
+        <TimedTransition targetState="one_shot" time="2000" />
+      </State>
+    </State>
+    <State id="protect_me">
+      <Protect speed="0.8" protectee="Drake Baby" acquireRange="12" protectionRange="2.5" reprotectRange="1.5" />
+      <EntityNotExistsTransition targetState="idle" dist="8" target="Drake Baby" />
+      <State id="one_shot">
+        <Shoot radius="8" shootAngle="0" predictive="0.1" cooldown="700" />
+        <TimedTransition targetState="three_shot" time="800" />
+      </State>
+      <State id="three_shot">
+        <Shoot radius="8" count="3" shootAngle="40" predictive="0.1" coolDownOffset="700" cooldown="100000" />
+        <TimedTransition targetState="one_shot" time="1800" />
+      </State>
+    </State>
+    <StayAbove speed="0.8" altitude="60" />
+    <PlayerWithinTransition targetState="get_player" dist="10" />
+    <Prioritize>
+      <StayAbove speed="0.8" altitude="60" />
+      <Follow speed="0.8" range="2.7" duration="5000" cooldown="1800" />
+      <Wander speed="0.8" />
+    </Prioritize>
+    <State id="one_shot">
+      <Shoot radius="8" shootAngle="0" predictive="0.1" cooldown="800" />
+      <TimedTransition targetState="three_shot" time="900" />
+    </State>
+    <State id="three_shot">
+      <Shoot radius="8" count="3" shootAngle="40" predictive="0.1" coolDownOffset="800" cooldown="100000" />
+      <TimedTransition targetState="one_shot" time="2000" />
+    </State>
+    <Shoot radius="8" shootAngle="0" predictive="0.1" cooldown="700" />
+    <TimedTransition targetState="three_shot" time="800" />
+    <Shoot radius="8" count="3" shootAngle="40" predictive="0.1" coolDownOffset="700" cooldown="100000" />
+    <TimedTransition targetState="one_shot" time="1800" />
+    <Protect speed="0.8" protectee="Drake Baby" acquireRange="12" protectionRange="2.5" reprotectRange="1.5" />
+    <EntityNotExistsTransition targetState="idle" dist="8" target="Drake Baby" />
+    <State id="one_shot">
+      <Shoot radius="8" shootAngle="0" predictive="0.1" cooldown="700" />
+      <TimedTransition targetState="three_shot" time="800" />
+    </State>
+    <State id="three_shot">
+      <Shoot radius="8" count="3" shootAngle="40" predictive="0.1" coolDownOffset="700" cooldown="100000" />
+      <TimedTransition targetState="one_shot" time="1800" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Drake Baby">
+    <State id="unharmed">
+      <Shoot radius="8" shootAngle="0" cooldown="1500" />
+      <HpLessTransition targetState="call_mama" threshold="0.65" />
+      <State id="wander">
+        <Prioritize>
+          <StayAbove speed="0.8" altitude="60" />
+          <Wander speed="0.8" />
+        </Prioritize>
+        <TimedTransition targetState="find_mama" time="2000" />
+      </State>
+      <State id="find_mama">
+        <Prioritize>
+          <StayAbove speed="0.8" altitude="60" />
+          <Protect speed="1.4" protectee="Horned Drake" acquireRange="15" protectionRange="4" reprotectRange="4" />
+        </Prioritize>
+        <TimedTransition targetState="wander" time="2000" />
+      </State>
+    </State>
+    <State id="call_mama">
+      <Flash color="0xFF484848" flashPeriod="0.6" flashRepeats="5000" />
+      <State id="get_close_to_mama">
+        <Taunt text="Awwwk! Awwwk!" />
+        <Protect speed="1.4" protectee="Horned Drake" acquireRange="15" protectionRange="1" />
+        <TimedTransition targetState="cry_for_mama" time="1500" />
+      </State>
+      <State id="cry_for_mama">
+        <StayBack speed="0.65" />
+        <Order range="8" children="Horned Drake" targetState="protect_me" />
+      </State>
+    </State>
+    <Shoot radius="8" shootAngle="0" cooldown="1500" />
+    <HpLessTransition targetState="call_mama" threshold="0.65" />
+    <State id="wander">
+      <Prioritize>
+        <StayAbove speed="0.8" altitude="60" />
+        <Wander speed="0.8" />
+      </Prioritize>
+      <TimedTransition targetState="find_mama" time="2000" />
+    </State>
+    <State id="find_mama">
+      <Prioritize>
+        <StayAbove speed="0.8" altitude="60" />
+        <Protect speed="1.4" protectee="Horned Drake" acquireRange="15" protectionRange="4" reprotectRange="4" />
+      </Prioritize>
+      <TimedTransition targetState="wander" time="2000" />
+    </State>
+    <Prioritize>
+      <StayAbove speed="0.8" altitude="60" />
+      <Wander speed="0.8" />
+    </Prioritize>
+    <TimedTransition targetState="find_mama" time="2000" />
+    <Prioritize>
+      <StayAbove speed="0.8" altitude="60" />
+      <Protect speed="1.4" protectee="Horned Drake" acquireRange="15" protectionRange="4" reprotectRange="4" />
+    </Prioritize>
+    <TimedTransition targetState="wander" time="2000" />
+    <Flash color="0xFF484848" flashPeriod="0.6" flashRepeats="5000" />
+    <State id="get_close_to_mama">
+      <Taunt text="Awwwk! Awwwk!" />
+      <Protect speed="1.4" protectee="Horned Drake" acquireRange="15" protectionRange="1" />
+      <TimedTransition targetState="cry_for_mama" time="1500" />
+    </State>
+    <State id="cry_for_mama">
+      <StayBack speed="0.65" />
+      <Order range="8" children="Horned Drake" targetState="protect_me" />
+    </State>
+    <Taunt text="Awwwk! Awwwk!" />
+    <Protect speed="1.4" protectee="Horned Drake" acquireRange="15" protectionRange="1" />
+    <TimedTransition targetState="cry_for_mama" time="1500" />
+    <StayBack speed="0.65" />
+    <Order range="8" children="Horned Drake" targetState="protect_me" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Nomadic Shaman">
+    <Prioritize>
+      <StayAbove speed="0.8" altitude="55" />
+      <Wander speed="0.7" />
+    </Prioritize>
+    <State id="fire1">
+      <Shoot radius="10" count="3" shootAngle="11" coolDownOffset="500" cooldown="500" />
+      <TimedTransition targetState="fire2" time="3100" />
+    </State>
+    <State id="fire2">
+      <Shoot radius="10" shootAngle="0" projectileIndex="1" coolDownOffset="700" cooldown="700" />
+      <TimedTransition targetState="fire1" time="2200" />
+    </State>
+    <Shoot radius="10" count="3" shootAngle="11" coolDownOffset="500" cooldown="500" />
+    <TimedTransition targetState="fire2" time="3100" />
+    <Shoot radius="10" shootAngle="0" projectileIndex="1" coolDownOffset="700" cooldown="700" />
+    <TimedTransition targetState="fire1" time="2200" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Sand Phantom">
+    <Prioritize>
+      <StayAbove speed="0.85" altitude="60" />
+      <Follow speed="0.85" acquireRange="10.5" range="1" cooldown="0" />
+      <Wander speed="0.85" />
+    </Prioritize>
+    <Shoot radius="8" shootAngle="0" predictive="0.4" coolDownOffset="600" cooldown="400" />
+    <State id="follow_player">
+      <PlayerWithinTransition targetState="sneak_away_from_player" dist="4.4" />
+    </State>
+    <State id="sneak_away_from_player">
+      <Transform target="Sand Phantom Wisp" />
+    </State>
+    <PlayerWithinTransition targetState="sneak_away_from_player" dist="4.4" />
+    <Transform target="Sand Phantom Wisp" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Sand Phantom Wisp">
+    <Shoot radius="8" shootAngle="0" predictive="0.4" coolDownOffset="600" cooldown="400" />
+    <State id="move_away_from_player">
+      <TimedTransition targetState="wisp_finished" time="6500" />
+      <State id="keep_back">
+        <Prioritize>
+          <StayBack speed="0.6" distance="5" />
+          <Wander speed="0.9" />
+        </Prioritize>
+        <TimedTransition targetState="wander" time="800" />
+      </State>
+      <State id="wander">
+        <Wander speed="0.9" />
+        <TimedTransition targetState="keep_back" time="800" />
+      </State>
+    </State>
+    <State id="wisp_finished">
+      <Transform target="Sand Phantom" />
+    </State>
+    <TimedTransition targetState="wisp_finished" time="6500" />
+    <State id="keep_back">
+      <Prioritize>
+        <StayBack speed="0.6" distance="5" />
+        <Wander speed="0.9" />
+      </Prioritize>
+      <TimedTransition targetState="wander" time="800" />
+    </State>
+    <State id="wander">
+      <Wander speed="0.9" />
+      <TimedTransition targetState="keep_back" time="800" />
+    </State>
+    <Prioritize>
+      <StayBack speed="0.6" distance="5" />
+      <Wander speed="0.9" />
+    </Prioritize>
+    <TimedTransition targetState="wander" time="800" />
+    <Wander speed="0.9" />
+    <TimedTransition targetState="keep_back" time="800" />
+    <Transform target="Sand Phantom" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Great Lizard">
+    <State id="idle">
+      <StayAbove speed="0.6" altitude="60" />
+      <Wander speed="0.6" />
+      <PlayerWithinTransition targetState="charge" dist="10" />
+    </State>
+    <State id="charge">
+      <Prioritize>
+        <StayAbove speed="0.6" altitude="60" />
+        <Follow speed="6" acquireRange="11" range="1.5" cooldown="0" />
+      </Prioritize>
+      <TimedTransition targetState="spit" time="200" />
+    </State>
+    <State id="spit">
+      <Shoot radius="8" shootAngle="0" coolDownOffset="1000" cooldown="100000" />
+      <Shoot radius="8" count="2" shootAngle="16" coolDownOffset="1200" cooldown="100000" />
+      <Shoot radius="8" shootAngle="0" predictive="0.2" coolDownOffset="1600" cooldown="100000" />
+      <Shoot radius="8" count="2" shootAngle="24" coolDownOffset="2200" cooldown="100000" />
+      <Shoot radius="8" shootAngle="0" predictive="0.2" coolDownOffset="2800" cooldown="100000" />
+      <Shoot radius="8" count="2" shootAngle="16" coolDownOffset="3200" cooldown="100000" />
+      <Shoot radius="8" shootAngle="0" predictive="0.1" coolDownOffset="3800" cooldown="100000" />
+      <Prioritize>
+        <StayAbove speed="0.6" altitude="60" />
+        <Wander speed="0.6" />
+      </Prioritize>
+      <TimedTransition targetState="flame_ring" time="5000" />
+    </State>
+    <State id="flame_ring">
+      <Shoot radius="7" count="30" shootAngle="12" projectileIndex="1" coolDownOffset="600" cooldown="400" />
+      <Prioritize>
+        <StayAbove speed="0.6" altitude="60" />
+        <Follow speed="0.6" acquireRange="9" range="1" cooldown="0" />
+        <Wander speed="0.6" />
+      </Prioritize>
+      <TimedTransition targetState="pause" time="3500" />
+    </State>
+    <State id="pause">
+      <Prioritize>
+        <StayAbove speed="0.6" altitude="60" />
+        <Wander speed="0.6" />
+      </Prioritize>
+      <TimedTransition targetState="idle" time="1000" />
+    </State>
+    <StayAbove speed="0.6" altitude="60" />
+    <Wander speed="0.6" />
+    <PlayerWithinTransition targetState="charge" dist="10" />
+    <Prioritize>
+      <StayAbove speed="0.6" altitude="60" />
+      <Follow speed="6" acquireRange="11" range="1.5" cooldown="0" />
+    </Prioritize>
+    <TimedTransition targetState="spit" time="200" />
+    <Shoot radius="8" shootAngle="0" coolDownOffset="1000" cooldown="100000" />
+    <Shoot radius="8" count="2" shootAngle="16" coolDownOffset="1200" cooldown="100000" />
+    <Shoot radius="8" shootAngle="0" predictive="0.2" coolDownOffset="1600" cooldown="100000" />
+    <Shoot radius="8" count="2" shootAngle="24" coolDownOffset="2200" cooldown="100000" />
+    <Shoot radius="8" shootAngle="0" predictive="0.2" coolDownOffset="2800" cooldown="100000" />
+    <Shoot radius="8" count="2" shootAngle="16" coolDownOffset="3200" cooldown="100000" />
+    <Shoot radius="8" shootAngle="0" predictive="0.1" coolDownOffset="3800" cooldown="100000" />
+    <Prioritize>
+      <StayAbove speed="0.6" altitude="60" />
+      <Wander speed="0.6" />
+    </Prioritize>
+    <TimedTransition targetState="flame_ring" time="5000" />
+    <Shoot radius="7" count="30" shootAngle="12" projectileIndex="1" coolDownOffset="600" cooldown="400" />
+    <Prioritize>
+      <StayAbove speed="0.6" altitude="60" />
+      <Follow speed="0.6" acquireRange="9" range="1" cooldown="0" />
+      <Wander speed="0.6" />
+    </Prioritize>
+    <TimedTransition targetState="pause" time="3500" />
+    <Prioritize>
+      <StayAbove speed="0.6" altitude="60" />
+      <Wander speed="0.6" />
+    </Prioritize>
+    <TimedTransition targetState="idle" time="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Tawny Warg">
+    <Shoot radius="3.4" shootAngle="0" cooldown="1000" />
+    <Prioritize>
+      <Protect speed="1.2" protectee="Desert Werewolf" acquireRange="14" protectionRange="8" reprotectRange="5" />
+      <Follow speed="0.7" acquireRange="9" range="2" cooldown="0" />
+      <Wander speed="0.8" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Demon Warg">
+    <Shoot radius="4.5" shootAngle="0" cooldown="1000" />
+    <Prioritize>
+      <Protect speed="1.2" protectee="Desert Werewolf" acquireRange="14" protectionRange="8" reprotectRange="5" />
+      <Wander speed="0.8" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Desert Werewolf">
+    <SpawnGroup group="Wargs" maxChildren="8" initialSpawn="4" cooldown="8000" />
+    <State id="unharmed">
+      <Shoot radius="8" shootAngle="0" predictive="0.3" coolDownOffset="500" cooldown="1000" />
+      <Prioritize>
+        <Follow speed="0.5" acquireRange="10.5" range="2.5" cooldown="0" />
+        <Wander speed="0.5" />
+      </Prioritize>
+      <HpLessTransition targetState="enraged" threshold="0.75" />
+    </State>
+    <State id="enraged">
+      <Shoot radius="8" shootAngle="0" predictive="0.3" coolDownOffset="500" cooldown="1000" />
+      <Taunt text="GRRRRAAGH!" probability="0.7" />
+      <ChangeSize rate="20" target="170" />
+      <Flash color="0xFFFF0000" flashPeriod="0.4" flashRepeats="5000" />
+      <Prioritize>
+        <Follow speed="0.65" acquireRange="9" range="2" cooldown="0" />
+        <Wander speed="0.65" />
+      </Prioritize>
+    </State>
+    <Shoot radius="8" shootAngle="0" predictive="0.3" coolDownOffset="500" cooldown="1000" />
+    <Prioritize>
+      <Follow speed="0.5" acquireRange="10.5" range="2.5" cooldown="0" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <HpLessTransition targetState="enraged" threshold="0.75" />
+    <Shoot radius="8" shootAngle="0" predictive="0.3" coolDownOffset="500" cooldown="1000" />
+    <Taunt text="GRRRRAAGH!" probability="0.7" />
+    <ChangeSize rate="20" target="170" />
+    <Flash color="0xFFFF0000" flashPeriod="0.4" flashRepeats="5000" />
+    <Prioritize>
+      <Follow speed="0.65" acquireRange="9" range="2" cooldown="0" />
+      <Wander speed="0.65" />
+    </Prioritize>
+  </BehaviorEntry>
+</BehaviorEntries>

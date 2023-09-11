@@ -1,0 +1,385 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Red Satellite">
+    <Prioritize>
+      <Orbit speed="1.7" radius="2" acquireRange="15" target="Fire Golem" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+      <Orbit speed="1.7" radius="2" acquireRange="15" target="Metal Golem" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+    </Prioritize>
+    <Decay time="16000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Green Satellite">
+    <Prioritize>
+      <Orbit speed="1.1" radius="2" acquireRange="15" target="Darkness Golem" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+      <Orbit speed="1.1" radius="2" acquireRange="15" target="Earth Golem" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+    </Prioritize>
+    <Decay time="16000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Blue Satellite">
+    <Prioritize>
+      <Orbit speed="1.1" radius="2" acquireRange="15" target="Clockwork Golem" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+      <Orbit speed="1.1" radius="2" acquireRange="15" target="Paper Golem" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+    </Prioritize>
+    <Decay time="16000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Gray Satellite 1">
+    <Shoot radius="6" count="3" shootAngle="34" predictive="0.3" cooldown="850" />
+    <Prioritize>
+      <Orbit speed="2.2" radius="0.75" acquireRange="15" target="Red Satellite" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+      <Orbit speed="2.2" radius="0.75" acquireRange="15" target="Blue Satellite" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+    </Prioritize>
+    <Decay time="16000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Gray Satellite 2">
+    <Shoot radius="7" shootAngle="0" predictive="0.3" cooldown="600" />
+    <Prioritize>
+      <Orbit speed="2.2" radius="0.75" acquireRange="15" target="Green Satellite" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+      <Orbit speed="2.2" radius="0.75" acquireRange="15" target="Blue Satellite" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+    </Prioritize>
+    <Decay time="16000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Gray Satellite 3">
+    <Shoot radius="7" count="5" shootAngle="72" coolDownOffset="600" cooldown="3200" />
+    <Shoot radius="7" count="4" shootAngle="90" coolDownOffset="1400" cooldown="3200" />
+    <Shoot radius="7" count="5" shootAngle="72" defaultAngle="36" coolDownOffset="2200" cooldown="3200" />
+    <Shoot radius="7" count="4" shootAngle="90" defaultAngle="45" coolDownOffset="3000" cooldown="3200" />
+    <Prioritize>
+      <Orbit speed="2.2" radius="0.75" acquireRange="15" target="Red Satellite" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+      <Orbit speed="2.2" radius="0.75" acquireRange="15" target="Green Satellite" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+    </Prioritize>
+    <Decay time="16000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Earth Golem">
+    <Reproduce densityMax="1" cooldown="60000" />
+    <State id="idle">
+      <PlayerWithinTransition targetState="player_nearby" dist="11" />
+    </State>
+    <State id="player_nearby">
+      <Shoot radius="8" count="2" shootAngle="12" cooldown="600" />
+      <State id="first_satellites">
+        <Spawn children="Green Satellite" maxChildren="1" initialSpawn="0" cooldown="200" />
+        <Spawn children="Gray Satellite 3" maxChildren="1" initialSpawn="0" cooldown="200" />
+        <TimedTransition targetState="next_satellite" time="300" />
+      </State>
+      <State id="next_satellite">
+        <Spawn children="Gray Satellite 3" maxChildren="1" initialSpawn="0" cooldown="200" />
+        <TimedTransition targetState="follow" time="200" />
+      </State>
+      <State id="follow">
+        <Prioritize>
+          <StayAbove speed="1.4" altitude="65" />
+          <Follow speed="1.4" range="3" cooldown="0" />
+          <Wander speed="0.8" />
+        </Prioritize>
+        <TimedTransition targetState="wander1" time="2000" />
+      </State>
+      <State id="wander1">
+        <Prioritize>
+          <StayAbove speed="1.55" altitude="65" />
+          <Wander speed="0.55" />
+        </Prioritize>
+        <TimedTransition targetState="circle" time="4000" />
+      </State>
+      <State id="circle">
+        <Prioritize>
+          <StayAbove speed="1.2" altitude="65" />
+          <Orbit speed="1.2" radius="5.4" acquireRange="11" speedVariance="0.12" radiusVariance="0.12" orbitClockwise="false" />
+        </Prioritize>
+        <TimedTransition targetState="wander2" time="4000" />
+      </State>
+      <State id="wander2">
+        <Prioritize>
+          <StayAbove speed="0.55" altitude="65" />
+          <Wander speed="0.55" />
+        </Prioritize>
+        <TimedTransition targetState="back_and_forth" time="3000" />
+      </State>
+      <State id="back_and_forth">
+        <Prioritize>
+          <StayAbove speed="0.55" altitude="65" />
+          <BackAndForth speed="0.8" />
+        </Prioritize>
+        <TimedTransition targetState="first_satellites" time="3000" />
+      </State>
+    </State>
+    <PlayerWithinTransition targetState="player_nearby" dist="11" />
+    <Shoot radius="8" count="2" shootAngle="12" cooldown="600" />
+    <State id="first_satellites">
+      <Spawn children="Green Satellite" maxChildren="1" initialSpawn="0" cooldown="200" />
+      <Spawn children="Gray Satellite 3" maxChildren="1" initialSpawn="0" cooldown="200" />
+      <TimedTransition targetState="next_satellite" time="300" />
+    </State>
+    <State id="next_satellite">
+      <Spawn children="Gray Satellite 3" maxChildren="1" initialSpawn="0" cooldown="200" />
+      <TimedTransition targetState="follow" time="200" />
+    </State>
+    <State id="follow">
+      <Prioritize>
+        <StayAbove speed="1.4" altitude="65" />
+        <Follow speed="1.4" range="3" cooldown="0" />
+        <Wander speed="0.8" />
+      </Prioritize>
+      <TimedTransition targetState="wander1" time="2000" />
+    </State>
+    <State id="wander1">
+      <Prioritize>
+        <StayAbove speed="1.55" altitude="65" />
+        <Wander speed="0.55" />
+      </Prioritize>
+      <TimedTransition targetState="circle" time="4000" />
+    </State>
+    <State id="circle">
+      <Prioritize>
+        <StayAbove speed="1.2" altitude="65" />
+        <Orbit speed="1.2" radius="5.4" acquireRange="11" speedVariance="0.12" radiusVariance="0.12" orbitClockwise="false" />
+      </Prioritize>
+      <TimedTransition targetState="wander2" time="4000" />
+    </State>
+    <State id="wander2">
+      <Prioritize>
+        <StayAbove speed="0.55" altitude="65" />
+        <Wander speed="0.55" />
+      </Prioritize>
+      <TimedTransition targetState="back_and_forth" time="3000" />
+    </State>
+    <State id="back_and_forth">
+      <Prioritize>
+        <StayAbove speed="0.55" altitude="65" />
+        <BackAndForth speed="0.8" />
+      </Prioritize>
+      <TimedTransition targetState="first_satellites" time="3000" />
+    </State>
+    <Spawn children="Green Satellite" maxChildren="1" initialSpawn="0" cooldown="200" />
+    <Spawn children="Gray Satellite 3" maxChildren="1" initialSpawn="0" cooldown="200" />
+    <TimedTransition targetState="next_satellite" time="300" />
+    <Spawn children="Gray Satellite 3" maxChildren="1" initialSpawn="0" cooldown="200" />
+    <TimedTransition targetState="follow" time="200" />
+    <Prioritize>
+      <StayAbove speed="1.4" altitude="65" />
+      <Follow speed="1.4" range="3" cooldown="0" />
+      <Wander speed="0.8" />
+    </Prioritize>
+    <TimedTransition targetState="wander1" time="2000" />
+    <Prioritize>
+      <StayAbove speed="1.55" altitude="65" />
+      <Wander speed="0.55" />
+    </Prioritize>
+    <TimedTransition targetState="circle" time="4000" />
+    <Prioritize>
+      <StayAbove speed="1.2" altitude="65" />
+      <Orbit speed="1.2" radius="5.4" acquireRange="11" speedVariance="0.12" radiusVariance="0.12" orbitClockwise="false" />
+    </Prioritize>
+    <TimedTransition targetState="wander2" time="4000" />
+    <Prioritize>
+      <StayAbove speed="0.55" altitude="65" />
+      <Wander speed="0.55" />
+    </Prioritize>
+    <TimedTransition targetState="back_and_forth" time="3000" />
+    <Prioritize>
+      <StayAbove speed="0.55" altitude="65" />
+      <BackAndForth speed="0.8" />
+    </Prioritize>
+    <TimedTransition targetState="first_satellites" time="3000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Paper Golem">
+    <Reproduce densityMax="1" cooldown="60000" />
+    <State id="idle">
+      <PlayerWithinTransition targetState="player_nearby" dist="11" />
+    </State>
+    <State id="player_nearby">
+      <Spawn children="Blue Satellite" maxChildren="1" initialSpawn="0" cooldown="200" />
+      <Spawn children="Gray Satellite 1" maxChildren="1" initialSpawn="0" cooldown="200" />
+      <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="700" />
+      <Prioritize>
+        <StayAbove speed="1.4" altitude="65" />
+        <Follow speed="1" range="3" duration="3000" cooldown="3000" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <TimedTransition targetState="idle" time="12000" />
+    </State>
+    <PlayerWithinTransition targetState="player_nearby" dist="11" />
+    <Spawn children="Blue Satellite" maxChildren="1" initialSpawn="0" cooldown="200" />
+    <Spawn children="Gray Satellite 1" maxChildren="1" initialSpawn="0" cooldown="200" />
+    <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="700" />
+    <Prioritize>
+      <StayAbove speed="1.4" altitude="65" />
+      <Follow speed="1" range="3" duration="3000" cooldown="3000" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <TimedTransition targetState="idle" time="12000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Fire Golem">
+    <Reproduce densityMax="1" cooldown="60000" />
+    <State id="idle">
+      <PlayerWithinTransition targetState="player_nearby" dist="11" />
+    </State>
+    <State id="player_nearby">
+      <Prioritize>
+        <StayAbove speed="1.4" altitude="65" />
+        <Follow speed="1" range="3" duration="3000" cooldown="3000" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <Spawn children="Red Satellite" maxChildren="1" initialSpawn="0" cooldown="200" />
+      <Spawn children="Gray Satellite 1" maxChildren="1" initialSpawn="0" cooldown="200" />
+      <State id="slowshot">
+        <Shoot radius="10" shootAngle="0" predictive="0.5" coolDownOffset="600" cooldown="300" />
+        <TimedTransition targetState="megashot" time="5000" />
+      </State>
+      <State id="megashot">
+        <Flash color="0xFFFFFFFF" flashPeriod="0.2" flashRepeats="5" />
+        <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="0.2" coolDownOffset="1000" cooldown="90" />
+        <TimedTransition targetState="slowshot" time="1200" />
+      </State>
+    </State>
+    <PlayerWithinTransition targetState="player_nearby" dist="11" />
+    <Prioritize>
+      <StayAbove speed="1.4" altitude="65" />
+      <Follow speed="1" range="3" duration="3000" cooldown="3000" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Spawn children="Red Satellite" maxChildren="1" initialSpawn="0" cooldown="200" />
+    <Spawn children="Gray Satellite 1" maxChildren="1" initialSpawn="0" cooldown="200" />
+    <State id="slowshot">
+      <Shoot radius="10" shootAngle="0" predictive="0.5" coolDownOffset="600" cooldown="300" />
+      <TimedTransition targetState="megashot" time="5000" />
+    </State>
+    <State id="megashot">
+      <Flash color="0xFFFFFFFF" flashPeriod="0.2" flashRepeats="5" />
+      <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="0.2" coolDownOffset="1000" cooldown="90" />
+      <TimedTransition targetState="slowshot" time="1200" />
+    </State>
+    <Shoot radius="10" shootAngle="0" predictive="0.5" coolDownOffset="600" cooldown="300" />
+    <TimedTransition targetState="megashot" time="5000" />
+    <Flash color="0xFFFFFFFF" flashPeriod="0.2" flashRepeats="5" />
+    <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="0.2" coolDownOffset="1000" cooldown="90" />
+    <TimedTransition targetState="slowshot" time="1200" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Darkness Golem">
+    <Reproduce densityMax="1" cooldown="60000" />
+    <State id="idle">
+      <PlayerWithinTransition targetState="player_nearby" dist="11" />
+    </State>
+    <State id="player_nearby">
+      <State id="first_satellites">
+        <Spawn children="Green Satellite" maxChildren="1" initialSpawn="0" cooldown="200" />
+        <Spawn children="Gray Satellite 2" maxChildren="1" initialSpawn="0" cooldown="200" />
+        <TimedTransition targetState="next_satellite" time="200" />
+      </State>
+      <State id="next_satellite">
+        <Spawn children="Gray Satellite 2" maxChildren="1" initialSpawn="0" cooldown="200" />
+        <TimedTransition targetState="follow" time="200" />
+      </State>
+      <State id="follow">
+        <Shoot radius="6" shootAngle="0" cooldown="200" />
+        <Prioritize>
+          <StayAbove speed="1.2" altitude="65" />
+          <Follow speed="1.2" range="1" cooldown="0" />
+          <Wander speed="0.5" />
+        </Prioritize>
+        <TimedTransition targetState="wander1" time="3000" />
+      </State>
+      <State id="wander1">
+        <Shoot radius="6" shootAngle="0" cooldown="200" />
+        <Prioritize>
+          <StayAbove speed="0.65" altitude="65" />
+          <Wander speed="0.65" />
+        </Prioritize>
+        <TimedTransition targetState="back_up" time="3800" />
+      </State>
+      <State id="back_up">
+        <Flash color="0xFFFFFFFF" flashPeriod="0.2" flashRepeats="25" />
+        <Shoot radius="9" shootAngle="0" projectileIndex="1" coolDownOffset="1000" cooldown="1400" />
+        <Prioritize>
+          <StayAbove speed="0.4" altitude="65" />
+          <StayBack speed="0.4" distance="4" />
+          <Wander speed="0.4" />
+        </Prioritize>
+        <TimedTransition targetState="wander2" time="5400" />
+      </State>
+      <State id="wander2">
+        <Shoot radius="6" shootAngle="0" cooldown="200" />
+        <Prioritize>
+          <StayAbove speed="0.65" altitude="65" />
+          <Wander speed="0.65" />
+        </Prioritize>
+        <TimedTransition targetState="first_satellites" time="3800" />
+      </State>
+    </State>
+    <PlayerWithinTransition targetState="player_nearby" dist="11" />
+    <State id="first_satellites">
+      <Spawn children="Green Satellite" maxChildren="1" initialSpawn="0" cooldown="200" />
+      <Spawn children="Gray Satellite 2" maxChildren="1" initialSpawn="0" cooldown="200" />
+      <TimedTransition targetState="next_satellite" time="200" />
+    </State>
+    <State id="next_satellite">
+      <Spawn children="Gray Satellite 2" maxChildren="1" initialSpawn="0" cooldown="200" />
+      <TimedTransition targetState="follow" time="200" />
+    </State>
+    <State id="follow">
+      <Shoot radius="6" shootAngle="0" cooldown="200" />
+      <Prioritize>
+        <StayAbove speed="1.2" altitude="65" />
+        <Follow speed="1.2" range="1" cooldown="0" />
+        <Wander speed="0.5" />
+      </Prioritize>
+      <TimedTransition targetState="wander1" time="3000" />
+    </State>
+    <State id="wander1">
+      <Shoot radius="6" shootAngle="0" cooldown="200" />
+      <Prioritize>
+        <StayAbove speed="0.65" altitude="65" />
+        <Wander speed="0.65" />
+      </Prioritize>
+      <TimedTransition targetState="back_up" time="3800" />
+    </State>
+    <State id="back_up">
+      <Flash color="0xFFFFFFFF" flashPeriod="0.2" flashRepeats="25" />
+      <Shoot radius="9" shootAngle="0" projectileIndex="1" coolDownOffset="1000" cooldown="1400" />
+      <Prioritize>
+        <StayAbove speed="0.4" altitude="65" />
+        <StayBack speed="0.4" distance="4" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <TimedTransition targetState="wander2" time="5400" />
+    </State>
+    <State id="wander2">
+      <Shoot radius="6" shootAngle="0" cooldown="200" />
+      <Prioritize>
+        <StayAbove speed="0.65" altitude="65" />
+        <Wander speed="0.65" />
+      </Prioritize>
+      <TimedTransition targetState="first_satellites" time="3800" />
+    </State>
+    <Spawn children="Green Satellite" maxChildren="1" initialSpawn="0" cooldown="200" />
+    <Spawn children="Gray Satellite 2" maxChildren="1" initialSpawn="0" cooldown="200" />
+    <TimedTransition targetState="next_satellite" time="200" />
+    <Spawn children="Gray Satellite 2" maxChildren="1" initialSpawn="0" cooldown="200" />
+    <TimedTransition targetState="follow" time="200" />
+    <Shoot radius="6" shootAngle="0" cooldown="200" />
+    <Prioritize>
+      <StayAbove speed="1.2" altitude="65" />
+      <Follow speed="1.2" range="1" cooldown="0" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <TimedTransition targetState="wander1" time="3000" />
+    <Shoot radius="6" shootAngle="0" cooldown="200" />
+    <Prioritize>
+      <StayAbove speed="0.65" altitude="65" />
+      <Wander speed="0.65" />
+    </Prioritize>
+    <TimedTransition targetState="back_up" time="3800" />
+    <Flash color="0xFFFFFFFF" flashPeriod="0.2" flashRepeats="25" />
+    <Shoot radius="9" shootAngle="0" projectileIndex="1" coolDownOffset="1000" cooldown="1400" />
+    <Prioritize>
+      <StayAbove speed="0.4" altitude="65" />
+      <StayBack speed="0.4" distance="4" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <TimedTransition targetState="wander2" time="5400" />
+    <Shoot radius="6" shootAngle="0" cooldown="200" />
+    <Prioritize>
+      <StayAbove speed="0.65" altitude="65" />
+      <Wander speed="0.65" />
+    </Prioritize>
+    <TimedTransition targetState="first_satellites" time="3800" />
+  </BehaviorEntry>
+</BehaviorEntries>

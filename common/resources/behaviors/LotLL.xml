@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Lord of the Lost Lands">
+    <State id="Waiting">
+      <HpLessTransition targetState="Start1.0" threshold="0.99" />
+    </State>
+    <State id="Start1.0">
+      <HpLessTransition targetState="Dead" threshold="0.1" />
+      <State id="Start">
+        <SetAltTexture minValue="0" cooldown="0" />
+        <Prioritize>
+          <Wander speed="0.8" />
+        </Prioritize>
+        <Shoot radius="0" count="7" shootAngle="10" fixedAngle="180" cooldown="2000" />
+        <Shoot radius="0" count="7" shootAngle="10" fixedAngle="0" cooldown="2000" />
+        <TossObject child="Guardian of the Lost Lands" cooldown="1000" />
+        <TimedTransition targetState="Spawning Guardian" time="100" />
+      </State>
+      <State id="Spawning Guardian">
+        <TossObject child="Guardian of the Lost Lands" cooldown="1000" />
+        <TimedTransition targetState="Attack" time="3100" />
+      </State>
+      <State id="Attack">
+        <SetAltTexture minValue="0" cooldown="0" />
+        <Wander speed="0.8" />
+        <PlayerWithinTransition targetState="Follow" dist="1" />
+        <TimedTransition targetState="Gathering" time="10000" />
+        <State id="Attack1.0">
+          <TimedRandomTransition targetState="Attack1.1,Attack1.2" time="3000" />
+          <State id="Attack1.1">
+            <Shoot radius="12" count="7" shootAngle="10" cooldown="2000" />
+            <Shoot radius="12" count="7" shootAngle="190" cooldown="2000" />
+            <TimedTransition targetState="Attack1.0" time="2000" />
+          </State>
+          <State id="Attack1.2">
+            <Shoot radius="0" count="7" shootAngle="10" fixedAngle="180" cooldown="3000" />
+            <Shoot radius="0" count="7" shootAngle="10" fixedAngle="0" cooldown="3000" />
+            <TimedTransition targetState="Attack1.0" time="2000" />
+          </State>
+        </State>
+      </State>
+      <State id="Follow">
+        <Prioritize>
+          <Follow speed="1" acquireRange="20" range="3" cooldown="0" />
+          <Wander speed="0.4" />
+        </Prioritize>
+        <Shoot radius="20" count="7" shootAngle="10" cooldown="1300" />
+        <TimedTransition targetState="Gathering" time="5000" />
+      </State>
+      <State id="Gathering">
+        <Taunt text="Gathering power!" probability="0.99" />
+        <SetAltTexture minValue="3" cooldown="0" />
+        <TimedTransition targetState="Gathering1.0" time="2000" />
+      </State>
+      <State id="Gathering1.0">
+        <TimedTransition targetState="Protection" time="5000" />
+        <State id="Gathering1.1">
+          <Shoot radius="30" count="4" shootAngle="0" projectileIndex="1" fixedAngle="90" cooldown="2000" />
+          <TimedTransition targetState="Gathering1.2" time="1500" />
+        </State>
+        <State id="Gathering1.2">
+          <Shoot radius="30" count="4" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="2000" />
+          <TimedTransition targetState="Gathering1.1" time="1500" />
+        </State>
+      </State>
+      <State id="Protection">
+        <SetAltTexture minValue="0" cooldown="0" />
+        <TossObject child="Protection Crystal" range="4" angle="0" cooldown="5000" />
+        <TossObject child="Protection Crystal" range="4" angle="45" cooldown="5000" />
+        <TossObject child="Protection Crystal" range="4" angle="90" cooldown="5000" />
+        <TossObject child="Protection Crystal" range="4" angle="135" cooldown="5000" />
+        <TossObject child="Protection Crystal" range="4" angle="180" cooldown="5000" />
+        <TossObject child="Protection Crystal" range="4" angle="225" cooldown="5000" />
+        <TossObject child="Protection Crystal" range="4" angle="270" cooldown="5000" />
+        <TossObject child="Protection Crystal" range="4" angle="315" cooldown="5000" />
+        <EntityExistsTransition targetState="Waiting" dist="10" target="Protection Crystal" />
+      </State>
+    </State>
+    <State id="Waiting">
+      <ConditionalEffect effect="Invulnerable" />
+      <SetAltTexture minValue="1" cooldown="0" />
+      <EntityNotExistsTransition targetState="Start1.0" dist="10" target="Protection Crystal" />
+    </State>
+    <State id="Dead">
+      <ConditionalEffect effect="Invulnerable" />
+      <SetAltTexture minValue="3" cooldown="0" />
+      <Taunt text="NOOOO!!!!!!" probability="0.99" />
+      <Flash color="0xFF0000" flashPeriod="0.1" flashRepeats="1000" />
+      <TimedTransition targetState="Suicide" time="2000" />
+    </State>
+    <State id="Suicide">
+      <ConditionalEffect effect="StunImmune" perm="true" />
+      <Shoot radius="0" count="8" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="1000" />
+      <Suicide />
+    </State>
+    <ConditionalEffect effect="Invulnerable" />
+    <SetAltTexture minValue="1" cooldown="0" />
+    <EntityNotExistsTransition targetState="Start1.0" dist="10" target="Protection Crystal" />
+    <HpLessTransition targetState="Dead" threshold="0.1" />
+    <State id="Start">
+      <SetAltTexture minValue="0" cooldown="0" />
+      <Prioritize>
+        <Wander speed="0.8" />
+      </Prioritize>
+      <Shoot radius="0" count="7" shootAngle="10" fixedAngle="180" cooldown="2000" />
+      <Shoot radius="0" count="7" shootAngle="10" fixedAngle="0" cooldown="2000" />
+      <TossObject child="Guardian of the Lost Lands" cooldown="1000" />
+      <TimedTransition targetState="Spawning Guardian" time="100" />
+    </State>
+    <State id="Spawning Guardian">
+      <TossObject child="Guardian of the Lost Lands" cooldown="1000" />
+      <TimedTransition targetState="Attack" time="3100" />
+    </State>
+    <State id="Attack">
+      <SetAltTexture minValue="0" cooldown="0" />
+      <Wander speed="0.8" />
+      <PlayerWithinTransition targetState="Follow" dist="1" />
+      <TimedTransition targetState="Gathering" time="10000" />
+      <State id="Attack1.0">
+        <TimedRandomTransition targetState="Attack1.1,Attack1.2" time="3000" />
+        <State id="Attack1.1">
+          <Shoot radius="12" count="7" shootAngle="10" cooldown="2000" />
+          <Shoot radius="12" count="7" shootAngle="190" cooldown="2000" />
+          <TimedTransition targetState="Attack1.0" time="2000" />
+        </State>
+        <State id="Attack1.2">
+          <Shoot radius="0" count="7" shootAngle="10" fixedAngle="180" cooldown="3000" />
+          <Shoot radius="0" count="7" shootAngle="10" fixedAngle="0" cooldown="3000" />
+          <TimedTransition targetState="Attack1.0" time="2000" />
+        </State>
+      </State>
+    </State>
+    <State id="Follow">
+      <Prioritize>
+        <Follow speed="1" acquireRange="20" range="3" cooldown="0" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <Shoot radius="20" count="7" shootAngle="10" cooldown="1300" />
+      <TimedTransition targetState="Gathering" time="5000" />
+    </State>
+    <State id="Gathering">
+      <Taunt text="Gathering power!" probability="0.99" />
+      <SetAltTexture minValue="3" cooldown="0" />
+      <TimedTransition targetState="Gathering1.0" time="2000" />
+    </State>
+    <State id="Gathering1.0">
+      <TimedTransition targetState="Protection" time="5000" />
+      <State id="Gathering1.1">
+        <Shoot radius="30" count="4" shootAngle="0" projectileIndex="1" fixedAngle="90" cooldown="2000" />
+        <TimedTransition targetState="Gathering1.2" time="1500" />
+      </State>
+      <State id="Gathering1.2">
+        <Shoot radius="30" count="4" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="2000" />
+        <TimedTransition targetState="Gathering1.1" time="1500" />
+      </State>
+    </State>
+    <State id="Protection">
+      <SetAltTexture minValue="0" cooldown="0" />
+      <TossObject child="Protection Crystal" range="4" angle="0" cooldown="5000" />
+      <TossObject child="Protection Crystal" range="4" angle="45" cooldown="5000" />
+      <TossObject child="Protection Crystal" range="4" angle="90" cooldown="5000" />
+      <TossObject child="Protection Crystal" range="4" angle="135" cooldown="5000" />
+      <TossObject child="Protection Crystal" range="4" angle="180" cooldown="5000" />
+      <TossObject child="Protection Crystal" range="4" angle="225" cooldown="5000" />
+      <TossObject child="Protection Crystal" range="4" angle="270" cooldown="5000" />
+      <TossObject child="Protection Crystal" range="4" angle="315" cooldown="5000" />
+      <EntityExistsTransition targetState="Waiting" dist="10" target="Protection Crystal" />
+    </State>
+    <SetAltTexture minValue="0" cooldown="0" />
+    <Prioritize>
+      <Wander speed="0.8" />
+    </Prioritize>
+    <Shoot radius="0" count="7" shootAngle="10" fixedAngle="180" cooldown="2000" />
+    <Shoot radius="0" count="7" shootAngle="10" fixedAngle="0" cooldown="2000" />
+    <TossObject child="Guardian of the Lost Lands" cooldown="1000" />
+    <TimedTransition targetState="Spawning Guardian" time="100" />
+    <TossObject child="Guardian of the Lost Lands" cooldown="1000" />
+    <TimedTransition targetState="Attack" time="3100" />
+    <SetAltTexture minValue="0" cooldown="0" />
+    <Wander speed="0.8" />
+    <PlayerWithinTransition targetState="Follow" dist="1" />
+    <TimedTransition targetState="Gathering" time="10000" />
+    <State id="Attack1.0">
+      <TimedRandomTransition targetState="Attack1.1,Attack1.2" time="3000" />
+      <State id="Attack1.1">
+        <Shoot radius="12" count="7" shootAngle="10" cooldown="2000" />
+        <Shoot radius="12" count="7" shootAngle="190" cooldown="2000" />
+        <TimedTransition targetState="Attack1.0" time="2000" />
+      </State>
+      <State id="Attack1.2">
+        <Shoot radius="0" count="7" shootAngle="10" fixedAngle="180" cooldown="3000" />
+        <Shoot radius="0" count="7" shootAngle="10" fixedAngle="0" cooldown="3000" />
+        <TimedTransition targetState="Attack1.0" time="2000" />
+      </State>
+    </State>
+    <TimedRandomTransition targetState="Attack1.1,Attack1.2" time="3000" />
+    <State id="Attack1.1">
+      <Shoot radius="12" count="7" shootAngle="10" cooldown="2000" />
+      <Shoot radius="12" count="7" shootAngle="190" cooldown="2000" />
+      <TimedTransition targetState="Attack1.0" time="2000" />
+    </State>
+    <State id="Attack1.2">
+      <Shoot radius="0" count="7" shootAngle="10" fixedAngle="180" cooldown="3000" />
+      <Shoot radius="0" count="7" shootAngle="10" fixedAngle="0" cooldown="3000" />
+      <TimedTransition targetState="Attack1.0" time="2000" />
+    </State>
+    <Shoot radius="12" count="7" shootAngle="10" cooldown="2000" />
+    <Shoot radius="12" count="7" shootAngle="190" cooldown="2000" />
+    <TimedTransition targetState="Attack1.0" time="2000" />
+    <Shoot radius="0" count="7" shootAngle="10" fixedAngle="180" cooldown="3000" />
+    <Shoot radius="0" count="7" shootAngle="10" fixedAngle="0" cooldown="3000" />
+    <TimedTransition targetState="Attack1.0" time="2000" />
+    <Prioritize>
+      <Follow speed="1" acquireRange="20" range="3" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="20" count="7" shootAngle="10" cooldown="1300" />
+    <TimedTransition targetState="Gathering" time="5000" />
+    <Taunt text="Gathering power!" probability="0.99" />
+    <SetAltTexture minValue="3" cooldown="0" />
+    <TimedTransition targetState="Gathering1.0" time="2000" />
+    <TimedTransition targetState="Protection" time="5000" />
+    <State id="Gathering1.1">
+      <Shoot radius="30" count="4" shootAngle="0" projectileIndex="1" fixedAngle="90" cooldown="2000" />
+      <TimedTransition targetState="Gathering1.2" time="1500" />
+    </State>
+    <State id="Gathering1.2">
+      <Shoot radius="30" count="4" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="2000" />
+      <TimedTransition targetState="Gathering1.1" time="1500" />
+    </State>
+    <Shoot radius="30" count="4" shootAngle="0" projectileIndex="1" fixedAngle="90" cooldown="2000" />
+    <TimedTransition targetState="Gathering1.2" time="1500" />
+    <Shoot radius="30" count="4" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="2000" />
+    <TimedTransition targetState="Gathering1.1" time="1500" />
+    <SetAltTexture minValue="0" cooldown="0" />
+    <TossObject child="Protection Crystal" range="4" angle="0" cooldown="5000" />
+    <TossObject child="Protection Crystal" range="4" angle="45" cooldown="5000" />
+    <TossObject child="Protection Crystal" range="4" angle="90" cooldown="5000" />
+    <TossObject child="Protection Crystal" range="4" angle="135" cooldown="5000" />
+    <TossObject child="Protection Crystal" range="4" angle="180" cooldown="5000" />
+    <TossObject child="Protection Crystal" range="4" angle="225" cooldown="5000" />
+    <TossObject child="Protection Crystal" range="4" angle="270" cooldown="5000" />
+    <TossObject child="Protection Crystal" range="4" angle="315" cooldown="5000" />
+    <EntityExistsTransition targetState="Waiting" dist="10" target="Protection Crystal" />
+    <ConditionalEffect effect="Invulnerable" />
+    <SetAltTexture minValue="3" cooldown="0" />
+    <Taunt text="NOOOO!!!!!!" probability="0.99" />
+    <Flash color="0xFF0000" flashPeriod="0.1" flashRepeats="1000" />
+    <TimedTransition targetState="Suicide" time="2000" />
+    <ConditionalEffect effect="StunImmune" perm="true" />
+    <Shoot radius="0" count="8" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="1000" />
+    <Suicide />
+  </BehaviorEntry>
+  <BehaviorEntry id="Protection Crystal">
+    <Prioritize>
+      <Orbit speed="0.3" radius="4" target="Lord of the Lost Lands" speedVariance="0.03" radiusVariance="0.03" orbitClockwise="false" />
+    </Prioritize>
+    <Shoot radius="8" count="4" shootAngle="7" cooldown="500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Guardian of the Lost Lands">
+    <State id="Full">
+      <Spawn children="Knight of the Lost Lands" maxChildren="2" initialSpawn="2" cooldown="4000" />
+      <Prioritize>
+        <Follow speed="0.6" acquireRange="20" range="6" cooldown="0" />
+        <Wander speed="0.2" />
+      </Prioritize>
+      <Shoot radius="10" count="8" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="3000" />
+      <Shoot radius="10" count="5" shootAngle="10" cooldown="1500" />
+      <HpLessTransition targetState="Low" threshold="0.25" />
+    </State>
+    <State id="Low">
+      <Prioritize>
+        <StayBack speed="0.6" distance="5" />
+        <Wander speed="0.2" />
+      </Prioritize>
+      <Shoot radius="10" count="8" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="3000" />
+      <Shoot radius="10" count="5" shootAngle="10" cooldown="1500" />
+    </State>
+    <Spawn children="Knight of the Lost Lands" maxChildren="2" initialSpawn="2" cooldown="4000" />
+    <Prioritize>
+      <Follow speed="0.6" acquireRange="20" range="6" cooldown="0" />
+      <Wander speed="0.2" />
+    </Prioritize>
+    <Shoot radius="10" count="8" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="3000" />
+    <Shoot radius="10" count="5" shootAngle="10" cooldown="1500" />
+    <HpLessTransition targetState="Low" threshold="0.25" />
+    <Prioritize>
+      <StayBack speed="0.6" distance="5" />
+      <Wander speed="0.2" />
+    </Prioritize>
+    <Shoot radius="10" count="8" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="3000" />
+    <Shoot radius="10" count="5" shootAngle="10" cooldown="1500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Knight of the Lost Lands">
+    <Prioritize>
+      <Follow speed="1" acquireRange="20" cooldown="0" />
+      <StayBack speed="0.5" distance="2" />
+      <Wander speed="0.3" />
+    </Prioritize>
+    <Shoot radius="13" shootAngle="0" cooldown="700" />
+  </BehaviorEntry>
+</BehaviorEntries>

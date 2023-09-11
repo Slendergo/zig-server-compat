@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Cube God">
+    <Wander speed="0.3" />
+    <Shoot radius="30" count="9" shootAngle="10" predictive="0.5" cooldown="750" />
+    <Shoot radius="30" count="4" shootAngle="10" projectileIndex="1" predictive="0.5" cooldown="1500" />
+    <Reproduce children="Cube Overseer" densityRadius="30" densityMax="10" cooldown="1500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Cube Overseer">
+    <Prioritize>
+      <Orbit speed="0.375" radius="10" acquireRange="30" target="Cube God" speedVariance="0.075" radiusVariance="5" orbitClockwise="false" />
+      <Wander speed="0.375" />
+    </Prioritize>
+    <Reproduce children="Cube Defender" densityRadius="12" densityMax="10" cooldown="1000" />
+    <Reproduce children="Cube Blaster" densityRadius="30" densityMax="10" cooldown="1000" />
+    <Shoot radius="10" count="4" shootAngle="10" cooldown="750" />
+    <Shoot radius="10" shootAngle="0" projectileIndex="1" cooldown="1500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Cube Defender">
+    <Prioritize>
+      <Orbit speed="1.05" radius="5" acquireRange="15" target="Cube Overseer" speedVariance="0.15" radiusVariance="3" orbitClockwise="false" />
+      <Wander speed="1.05" />
+    </Prioritize>
+    <Shoot radius="10" shootAngle="0" cooldown="500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Cube Blaster">
+    <Shoot radius="10" count="2" shootAngle="10" projectileIndex="1" predictive="1" cooldown="500" />
+    <Shoot radius="10" shootAngle="0" predictive="1" cooldown="1500" />
+    <State id="Orbit">
+      <Prioritize>
+        <Orbit speed="1.05" radius="7.5" acquireRange="40" target="Cube Overseer" speedVariance="0.15" radiusVariance="3" orbitClockwise="false" />
+        <Wander speed="1.05" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Follow" dist="10" target="Cube Overseer" />
+    </State>
+    <State id="Follow">
+      <Prioritize>
+        <Follow speed="0.75" range="1" duration="5000" cooldown="1000" />
+        <Wander speed="1.05" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Orbit" dist="10" target="Cube Defender" />
+      <TimedTransition targetState="Orbit" time="5000" />
+    </State>
+    <Prioritize>
+      <Orbit speed="1.05" radius="7.5" acquireRange="40" target="Cube Overseer" speedVariance="0.15" radiusVariance="3" orbitClockwise="false" />
+      <Wander speed="1.05" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Follow" dist="10" target="Cube Overseer" />
+    <Prioritize>
+      <Follow speed="0.75" range="1" duration="5000" cooldown="1000" />
+      <Wander speed="1.05" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Orbit" dist="10" target="Cube Defender" />
+    <TimedTransition targetState="Orbit" time="5000" />
+  </BehaviorEntry>
+</BehaviorEntries>

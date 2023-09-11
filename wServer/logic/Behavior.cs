@@ -59,12 +59,11 @@ public abstract class Behavior : IStateChildren
 
     public static ushort GetObjType(string id)
     {
-        ushort ret;
-        if (!BehaviorDb.InitGameData.IdToObjectType.TryGetValue(id, out ret))
-        {
-            ret = BehaviorDb.InitGameData.IdToObjectType["Pirate"];
-            Log.Warn($"Object type '{id}' not found. Using Pirate ({ret.To4Hex()}).");
-        }
+        if (BehaviorDb.InitGameData.IdToObjectType.TryGetValue(id, out var ret)) 
+            return ret;
+        
+        ret = BehaviorDb.InitGameData.IdToObjectType["Pirate"];
+        Log.Warn($"Object type '{id}' not found. Using Pirate ({ret.To4Hex()}).");
         return ret;
     }
 

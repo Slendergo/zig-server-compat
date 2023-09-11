@@ -28,8 +28,9 @@ class Orbit : CycleBehavior
     {
         speed = e.ParseFloat("@speed");
         radius = e.ParseFloat("@radius");
-        acquireRange = e.ParseFloat("@acquireRange");
-        target = GetObjType(e.ParseString("@target", null));
+        acquireRange = e.ParseFloat("@acquireRange", 10);
+        var targetString = e.ParseString("@target");
+        target = targetString == null ? null : GetObjType(targetString);
         speedVariance = e.ParseNFloat("@speedVariance") ?? speed * 0.1f;
         radiusVariance = e.ParseNFloat("@radiusVariance") ?? speed * 0.1f;
         orbitClockwise = e.ParseBool("@orbitClockwise");

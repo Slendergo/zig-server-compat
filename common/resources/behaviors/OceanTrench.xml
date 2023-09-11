@@ -1,0 +1,501 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Coral Gift">
+    <State id="Texture1">
+      <SetAltTexture minValue="1" cooldown="0" />
+      <TimedTransition targetState="Texture2" time="500" />
+    </State>
+    <State id="Texture2">
+      <SetAltTexture minValue="2" cooldown="0" />
+      <TimedTransition targetState="Texture0" time="500" />
+    </State>
+    <State id="Texture0">
+      <SetAltTexture minValue="0" cooldown="0" />
+      <TimedTransition targetState="Texture1" time="500" />
+    </State>
+    <SetAltTexture minValue="1" cooldown="0" />
+    <TimedTransition targetState="Texture2" time="500" />
+    <SetAltTexture minValue="2" cooldown="0" />
+    <TimedTransition targetState="Texture0" time="500" />
+    <SetAltTexture minValue="0" cooldown="0" />
+    <TimedTransition targetState="Texture1" time="500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Coral Bomb Big">
+    <State id="Spawning">
+      <TossObject child="Coral Bomb Small" range="1" angle="30" cooldown="500" />
+      <TossObject child="Coral Bomb Small" range="1" angle="90" cooldown="500" />
+      <TossObject child="Coral Bomb Small" range="1" angle="150" cooldown="500" />
+      <TossObject child="Coral Bomb Small" range="1" angle="210" cooldown="500" />
+      <TossObject child="Coral Bomb Small" range="1" angle="270" cooldown="500" />
+      <TossObject child="Coral Bomb Small" range="1" angle="330" cooldown="500" />
+      <TimedTransition targetState="Attack" time="500" />
+    </State>
+    <State id="Attack">
+      <Shoot radius="4.4" count="5" shootAngle="70" fixedAngle="0" cooldown="1000" />
+      <Suicide />
+    </State>
+    <TossObject child="Coral Bomb Small" range="1" angle="30" cooldown="500" />
+    <TossObject child="Coral Bomb Small" range="1" angle="90" cooldown="500" />
+    <TossObject child="Coral Bomb Small" range="1" angle="150" cooldown="500" />
+    <TossObject child="Coral Bomb Small" range="1" angle="210" cooldown="500" />
+    <TossObject child="Coral Bomb Small" range="1" angle="270" cooldown="500" />
+    <TossObject child="Coral Bomb Small" range="1" angle="330" cooldown="500" />
+    <TimedTransition targetState="Attack" time="500" />
+    <Shoot radius="4.4" count="5" shootAngle="70" fixedAngle="0" cooldown="1000" />
+    <Suicide />
+  </BehaviorEntry>
+  <BehaviorEntry id="Coral Bomb Small">
+    <Shoot radius="3.8" count="5" shootAngle="70" fixedAngle="0" cooldown="1000" />
+    <Suicide />
+  </BehaviorEntry>
+  <BehaviorEntry id="Deep Sea Beast">
+    <ChangeSize rate="11" target="100" />
+    <Prioritize>
+      <StayCloseToSpawn speed="0.2" range="2" />
+      <Follow speed="0.2" acquireRange="4" range="1" cooldown="0" />
+    </Prioritize>
+    <Shoot radius="1.8" shootAngle="0" cooldown="1000" />
+    <Shoot radius="2.5" shootAngle="0" projectileIndex="1" cooldown="1000" />
+    <Shoot radius="3.3" shootAngle="0" projectileIndex="2" cooldown="1000" />
+    <Shoot radius="4.2" shootAngle="0" projectileIndex="3" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Thessal the Mermaid Goddess">
+    <TransformOnDeath target="Thessal the Mermaid Goddess Wounded" probability="0.1" />
+    <TransformOnDeath target="Thessal Dropper" />
+    <State id="Start">
+      <Prioritize>
+        <Wander speed="0.3" />
+        <Follow speed="0.3" range="2" cooldown="0" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Spawning Deep" dist="20" target="Deep Sea Beast" />
+      <HpLessTransition targetState="Attack1" threshold="1" />
+    </State>
+    <State id="Main">
+      <Prioritize>
+        <Wander speed="0.3" />
+        <Follow speed="0.3" range="2" cooldown="0" />
+      </Prioritize>
+      <TimedTransition targetState="Attack1" time="0" />
+    </State>
+    <State id="Main 2">
+      <Prioritize>
+        <Wander speed="0.3" />
+        <Follow speed="0.3" range="2" cooldown="0" />
+      </Prioritize>
+      <TimedTransition targetState="Attack2" time="0" />
+    </State>
+    <State id="Spawning Bomb">
+      <TossObject child="Coral Bomb Big" angle="45" cooldown="1000" />
+      <TossObject child="Coral Bomb Big" angle="135" cooldown="1000" />
+      <TossObject child="Coral Bomb Big" angle="225" cooldown="1000" />
+      <TossObject child="Coral Bomb Big" angle="315" cooldown="1000" />
+      <TimedTransition targetState="Main" time="1000" />
+    </State>
+    <State id="Spawning Bomb Attack2">
+      <TossObject child="Coral Bomb Big" angle="45" cooldown="1000" />
+      <TossObject child="Coral Bomb Big" angle="135" cooldown="1000" />
+      <TossObject child="Coral Bomb Big" angle="225" cooldown="1000" />
+      <TossObject child="Coral Bomb Big" angle="315" cooldown="1000" />
+      <TimedTransition targetState="Attack2" time="1000" />
+    </State>
+    <State id="Spawning Deep">
+      <TossObject child="Deep Sea Beast" range="14" angle="0" cooldown="1000" />
+      <TossObject child="Deep Sea Beast" range="14" angle="90" cooldown="1000" />
+      <TossObject child="Deep Sea Beast" range="14" angle="180" cooldown="1000" />
+      <TossObject child="Deep Sea Beast" range="14" angle="270" cooldown="1000" />
+      <TimedTransition targetState="Start" time="1000" />
+    </State>
+    <State id="Attack1">
+      <HpLessTransition targetState="Attack2" threshold="0.5" />
+      <TimedTransition targetState="Yellow Wall" time="3000" randomizedTime="true" />
+      <TimedTransition targetState="Super Trident" time="3000" randomizedTime="true" />
+      <TimedTransition targetState="Thunder Swirl" time="3000" randomizedTime="true" />
+      <TimedTransition targetState="Spawning Bomb" time="3000" randomizedTime="true" />
+    </State>
+    <State id="Thunder Swirl">
+      <Shoot radius="8.8" count="8" shootAngle="45" cooldown="1000" />
+      <TimedTransition targetState="Thunder Swirl 2" time="500" />
+    </State>
+    <State id="Thunder Swirl 2">
+      <Shoot radius="8.8" count="8" shootAngle="45" cooldown="1000" />
+      <TossObject child="Coral Bomb Big" cooldown="1000" />
+      <TimedTransition targetState="Thunder Swirl 3" time="500" />
+    </State>
+    <State id="Thunder Swirl 3">
+      <Shoot radius="8.8" count="8" shootAngle="45" cooldown="1000" />
+      <TimedTransition targetState="Main" time="100" />
+    </State>
+    <State id="Thunder Swirl Attack2">
+      <Shoot radius="8.8" count="16" shootAngle="22" cooldown="1000" />
+      <TimedTransition targetState="Thunder Swirl 2 Attack2" time="500" />
+    </State>
+    <State id="Thunder Swirl 2 Attack2">
+      <Shoot radius="8.8" count="16" shootAngle="22" cooldown="1000" />
+      <TossObject child="Coral Bomb Big" cooldown="1000" />
+      <TimedTransition targetState="Thunder Swirl 3 Attack2" time="500" />
+    </State>
+    <State id="Thunder Swirl 3 Attack2">
+      <Shoot radius="8.8" count="16" shootAngle="22" cooldown="1000" />
+      <TimedTransition targetState="Main 2" time="100" />
+    </State>
+    <State id="Super Trident">
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="90" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="180" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="270" cooldown="1000" />
+      <TossObject child="Coral Bomb Big" cooldown="1000" />
+      <TimedTransition targetState="Super Trident 2" time="250" />
+    </State>
+    <State id="Super Trident 2">
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="45" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="135" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="225" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="315" cooldown="1000" />
+      <TossObject child="Coral Bomb Big" cooldown="1000" />
+      <TimedTransition targetState="Main" time="100" />
+    </State>
+    <State id="Super Trident Attack2">
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="90" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="180" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="270" cooldown="1000" />
+      <TossObject child="Coral Bomb Big" cooldown="1000" />
+      <TimedTransition targetState="Super Trident 2 Attack2" time="250" />
+    </State>
+    <State id="Super Trident 2 Attack2">
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="45" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="135" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="225" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="315" cooldown="1000" />
+      <TimedTransition targetState="Super Trident 3 Attack2" time="250" />
+    </State>
+    <State id="Super Trident 3 Attack2">
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="90" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="180" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="270" cooldown="1000" />
+      <TossObject child="Coral Bomb Big" cooldown="1000" />
+      <TimedTransition targetState="Super Trident 4 Attack2" time="250" />
+    </State>
+    <State id="Super Trident 4 Attack2">
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="45" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="135" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="225" cooldown="1000" />
+      <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="315" cooldown="1000" />
+      <TimedTransition targetState="Main 2" time="100" />
+    </State>
+    <State id="Yellow Wall">
+      <Flash color="0xFFFF00" flashPeriod="0.1" flashRepeats="15" />
+      <Prioritize>
+        <StayCloseToSpawn speed="0.3" range="1" />
+      </Prioritize>
+      <Shoot radius="18" count="30" shootAngle="0" projectileIndex="3" fixedAngle="6" cooldown="1000" />
+      <TimedTransition targetState="Yellow Wall 2" time="500" />
+    </State>
+    <State id="Yellow Wall 2">
+      <Flash color="0xFFFF00" flashPeriod="0.1" flashRepeats="15" />
+      <Shoot radius="18" count="30" shootAngle="0" projectileIndex="3" fixedAngle="6" cooldown="1000" />
+      <TimedTransition targetState="Yellow Wall 3" time="500" />
+    </State>
+    <State id="Yellow Wall 3">
+      <Flash color="0xFFFF00" flashPeriod="0.1" flashRepeats="15" />
+      <Shoot radius="18" count="30" shootAngle="0" projectileIndex="3" fixedAngle="6" cooldown="1000" />
+      <TimedTransition targetState="Main" time="100" />
+    </State>
+    <State id="Yellow Wall Attack2">
+      <Flash color="0xFFFF00" flashPeriod="0.1" flashRepeats="15" />
+      <Prioritize>
+        <StayCloseToSpawn speed="0.3" range="1" />
+      </Prioritize>
+      <Shoot radius="18" count="30" shootAngle="0" projectileIndex="3" fixedAngle="6" cooldown="1000" />
+      <TimedTransition targetState="Yellow Wall 2 Attack2" time="500" />
+    </State>
+    <State id="Yellow Wall 2 Attack2">
+      <Flash color="0xFFFF00" flashPeriod="0.1" flashRepeats="15" />
+      <Shoot radius="18" count="30" shootAngle="0" projectileIndex="3" fixedAngle="6" cooldown="1000" />
+      <TimedTransition targetState="Yellow Wall 3 Attack2" time="500" />
+    </State>
+    <State id="Yellow Wall 3 Attack2">
+      <Flash color="0xFFFF00" flashPeriod="0.1" flashRepeats="15" />
+      <Shoot radius="18" count="30" shootAngle="0" projectileIndex="3" fixedAngle="6" cooldown="1000" />
+      <TimedTransition targetState="Main 2" time="100" />
+    </State>
+    <State id="Attack2">
+      <TimedTransition targetState="Yellow Wall Attack2" time="500" randomizedTime="true" />
+      <TimedTransition targetState="Super Trident Attack2" time="500" randomizedTime="true" />
+      <TimedTransition targetState="Thunder Swirl Attack2" time="500" randomizedTime="true" />
+      <TimedTransition targetState="Spawning Bomb" time="500" randomizedTime="true" />
+    </State>
+    <Prioritize>
+      <Wander speed="0.3" />
+      <Follow speed="0.3" range="2" cooldown="0" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Spawning Deep" dist="20" target="Deep Sea Beast" />
+    <HpLessTransition targetState="Attack1" threshold="1" />
+    <Prioritize>
+      <Wander speed="0.3" />
+      <Follow speed="0.3" range="2" cooldown="0" />
+    </Prioritize>
+    <TimedTransition targetState="Attack1" time="0" />
+    <Prioritize>
+      <Wander speed="0.3" />
+      <Follow speed="0.3" range="2" cooldown="0" />
+    </Prioritize>
+    <TimedTransition targetState="Attack2" time="0" />
+    <TossObject child="Coral Bomb Big" angle="45" cooldown="1000" />
+    <TossObject child="Coral Bomb Big" angle="135" cooldown="1000" />
+    <TossObject child="Coral Bomb Big" angle="225" cooldown="1000" />
+    <TossObject child="Coral Bomb Big" angle="315" cooldown="1000" />
+    <TimedTransition targetState="Main" time="1000" />
+    <TossObject child="Coral Bomb Big" angle="45" cooldown="1000" />
+    <TossObject child="Coral Bomb Big" angle="135" cooldown="1000" />
+    <TossObject child="Coral Bomb Big" angle="225" cooldown="1000" />
+    <TossObject child="Coral Bomb Big" angle="315" cooldown="1000" />
+    <TimedTransition targetState="Attack2" time="1000" />
+    <TossObject child="Deep Sea Beast" range="14" angle="0" cooldown="1000" />
+    <TossObject child="Deep Sea Beast" range="14" angle="90" cooldown="1000" />
+    <TossObject child="Deep Sea Beast" range="14" angle="180" cooldown="1000" />
+    <TossObject child="Deep Sea Beast" range="14" angle="270" cooldown="1000" />
+    <TimedTransition targetState="Start" time="1000" />
+    <HpLessTransition targetState="Attack2" threshold="0.5" />
+    <TimedTransition targetState="Yellow Wall" time="3000" randomizedTime="true" />
+    <TimedTransition targetState="Super Trident" time="3000" randomizedTime="true" />
+    <TimedTransition targetState="Thunder Swirl" time="3000" randomizedTime="true" />
+    <TimedTransition targetState="Spawning Bomb" time="3000" randomizedTime="true" />
+    <Shoot radius="8.8" count="8" shootAngle="45" cooldown="1000" />
+    <TimedTransition targetState="Thunder Swirl 2" time="500" />
+    <Shoot radius="8.8" count="8" shootAngle="45" cooldown="1000" />
+    <TossObject child="Coral Bomb Big" cooldown="1000" />
+    <TimedTransition targetState="Thunder Swirl 3" time="500" />
+    <Shoot radius="8.8" count="8" shootAngle="45" cooldown="1000" />
+    <TimedTransition targetState="Main" time="100" />
+    <Shoot radius="8.8" count="16" shootAngle="22" cooldown="1000" />
+    <TimedTransition targetState="Thunder Swirl 2 Attack2" time="500" />
+    <Shoot radius="8.8" count="16" shootAngle="22" cooldown="1000" />
+    <TossObject child="Coral Bomb Big" cooldown="1000" />
+    <TimedTransition targetState="Thunder Swirl 3 Attack2" time="500" />
+    <Shoot radius="8.8" count="16" shootAngle="22" cooldown="1000" />
+    <TimedTransition targetState="Main 2" time="100" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="90" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="180" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="270" cooldown="1000" />
+    <TossObject child="Coral Bomb Big" cooldown="1000" />
+    <TimedTransition targetState="Super Trident 2" time="250" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="45" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="135" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="225" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="315" cooldown="1000" />
+    <TossObject child="Coral Bomb Big" cooldown="1000" />
+    <TimedTransition targetState="Main" time="100" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="90" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="180" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="270" cooldown="1000" />
+    <TossObject child="Coral Bomb Big" cooldown="1000" />
+    <TimedTransition targetState="Super Trident 2 Attack2" time="250" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="45" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="135" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="225" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="315" cooldown="1000" />
+    <TimedTransition targetState="Super Trident 3 Attack2" time="250" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="90" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="180" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="270" cooldown="1000" />
+    <TossObject child="Coral Bomb Big" cooldown="1000" />
+    <TimedTransition targetState="Super Trident 4 Attack2" time="250" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="45" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="135" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="225" cooldown="1000" />
+    <Shoot radius="21" count="2" shootAngle="25" projectileIndex="2" angleOffset="315" cooldown="1000" />
+    <TimedTransition targetState="Main 2" time="100" />
+    <Flash color="0xFFFF00" flashPeriod="0.1" flashRepeats="15" />
+    <Prioritize>
+      <StayCloseToSpawn speed="0.3" range="1" />
+    </Prioritize>
+    <Shoot radius="18" count="30" shootAngle="0" projectileIndex="3" fixedAngle="6" cooldown="1000" />
+    <TimedTransition targetState="Yellow Wall 2" time="500" />
+    <Flash color="0xFFFF00" flashPeriod="0.1" flashRepeats="15" />
+    <Shoot radius="18" count="30" shootAngle="0" projectileIndex="3" fixedAngle="6" cooldown="1000" />
+    <TimedTransition targetState="Yellow Wall 3" time="500" />
+    <Flash color="0xFFFF00" flashPeriod="0.1" flashRepeats="15" />
+    <Shoot radius="18" count="30" shootAngle="0" projectileIndex="3" fixedAngle="6" cooldown="1000" />
+    <TimedTransition targetState="Main" time="100" />
+    <Flash color="0xFFFF00" flashPeriod="0.1" flashRepeats="15" />
+    <Prioritize>
+      <StayCloseToSpawn speed="0.3" range="1" />
+    </Prioritize>
+    <Shoot radius="18" count="30" shootAngle="0" projectileIndex="3" fixedAngle="6" cooldown="1000" />
+    <TimedTransition targetState="Yellow Wall 2 Attack2" time="500" />
+    <Flash color="0xFFFF00" flashPeriod="0.1" flashRepeats="15" />
+    <Shoot radius="18" count="30" shootAngle="0" projectileIndex="3" fixedAngle="6" cooldown="1000" />
+    <TimedTransition targetState="Yellow Wall 3 Attack2" time="500" />
+    <Flash color="0xFFFF00" flashPeriod="0.1" flashRepeats="15" />
+    <Shoot radius="18" count="30" shootAngle="0" projectileIndex="3" fixedAngle="6" cooldown="1000" />
+    <TimedTransition targetState="Main 2" time="100" />
+    <TimedTransition targetState="Yellow Wall Attack2" time="500" randomizedTime="true" />
+    <TimedTransition targetState="Super Trident Attack2" time="500" randomizedTime="true" />
+    <TimedTransition targetState="Thunder Swirl Attack2" time="500" randomizedTime="true" />
+    <TimedTransition targetState="Spawning Bomb" time="500" randomizedTime="true" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Thessal the Mermaid Goddess Wounded">
+    <ConditionalEffect effect="Invincible" />
+    <Taunt text="Is King Alexander alive?" />
+    <TimedTransition targetState="Fail" time="12000" />
+    <State id="Texture1">
+      <SetAltTexture minValue="1" cooldown="0" />
+      <TimedTransition targetState="Texture2" time="250" />
+    </State>
+    <State id="Texture2">
+      <SetAltTexture minValue="0" cooldown="0" />
+      <TimedTransition targetState="Texture1" time="250" />
+    </State>
+    <State id="Prize">
+      <Taunt text="Thank you kind sailor." />
+      <TossObject child="Coral Gift" angle="45" cooldown="1000" />
+      <TossObject child="Coral Gift" angle="135" cooldown="1000" />
+      <TossObject child="Coral Gift" angle="235" cooldown="1000" />
+      <TimedTransition targetState="Suicide" time="0" />
+    </State>
+    <State id="Fail">
+      <Taunt text="You speak LIES!!" />
+      <TimedTransition targetState="Suicide" time="0" />
+    </State>
+    <State id="Suicide">
+      <Suicide />
+    </State>
+    <SetAltTexture minValue="1" cooldown="0" />
+    <TimedTransition targetState="Texture2" time="250" />
+    <SetAltTexture minValue="0" cooldown="0" />
+    <TimedTransition targetState="Texture1" time="250" />
+    <Taunt text="Thank you kind sailor." />
+    <TossObject child="Coral Gift" angle="45" cooldown="1000" />
+    <TossObject child="Coral Gift" angle="135" cooldown="1000" />
+    <TossObject child="Coral Gift" angle="235" cooldown="1000" />
+    <TimedTransition targetState="Suicide" time="0" />
+    <Taunt text="You speak LIES!!" />
+    <TimedTransition targetState="Suicide" time="0" />
+    <Suicide />
+  </BehaviorEntry>
+  <BehaviorEntry id="Fishman Warrior">
+    <State id="Start">
+      <Prioritize>
+        <Follow speed="0.6" acquireRange="9" range="2" cooldown="0" />
+      </Prioritize>
+      <Orbit speed="0.6" radius="5" acquireRange="9" speedVariance="0.06" radiusVariance="0.06" orbitClockwise="false" />
+      <Shoot radius="9" count="3" shootAngle="10" cooldown="500" />
+      <Shoot radius="9" count="6" shootAngle="0" projectileIndex="2" fixedAngle="0" cooldown="2000" />
+      <NoPlayerWithinTransition targetState="Range Shoot" dist="9" />
+    </State>
+    <State id="Range Shoot">
+      <Prioritize>
+        <StayCloseToSpawn speed="0.2" range="3" />
+        <Wander speed="0.3" />
+      </Prioritize>
+      <Shoot radius="12" shootAngle="0" projectileIndex="1" coolDownOffset="250" cooldown="1000" />
+      <PlayerWithinTransition targetState="Start" dist="9" />
+    </State>
+    <Prioritize>
+      <Follow speed="0.6" acquireRange="9" range="2" cooldown="0" />
+    </Prioritize>
+    <Orbit speed="0.6" radius="5" acquireRange="9" speedVariance="0.06" radiusVariance="0.06" orbitClockwise="false" />
+    <Shoot radius="9" count="3" shootAngle="10" cooldown="500" />
+    <Shoot radius="9" count="6" shootAngle="0" projectileIndex="2" fixedAngle="0" cooldown="2000" />
+    <NoPlayerWithinTransition targetState="Range Shoot" dist="9" />
+    <Prioritize>
+      <StayCloseToSpawn speed="0.2" range="3" />
+      <Wander speed="0.3" />
+    </Prioritize>
+    <Shoot radius="12" shootAngle="0" projectileIndex="1" coolDownOffset="250" cooldown="1000" />
+    <PlayerWithinTransition targetState="Start" dist="9" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Fishman">
+    <Prioritize>
+      <Follow speed="0.7" acquireRange="9" range="1" cooldown="0" />
+    </Prioritize>
+    <Shoot radius="9" shootAngle="0" projectileIndex="1" cooldown="2000" />
+    <Shoot radius="9" shootAngle="0" coolDownOffset="250" cooldown="1000" />
+    <Shoot radius="9" count="3" shootAngle="10" coolDownOffset="500" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Sea Mare">
+    <Charge speed="2" range="8" cooldown="4000" />
+    <Wander speed="0.4" />
+    <State id="Shoot 1">
+      <Shoot radius="9" count="3" shootAngle="0" projectileIndex="1" cooldown="500" />
+      <TimedTransition targetState="Shoot 2" time="5000" />
+    </State>
+    <State id="Shoot 2">
+      <Shoot radius="10" count="8" shootAngle="10" coolDownOffset="500" cooldown="1000" />
+      <Shoot radius="10" count="8" shootAngle="10" angleOffset="45" coolDownOffset="1000" cooldown="1000" />
+      <Shoot radius="10" count="8" shootAngle="10" angleOffset="135" coolDownOffset="1500" cooldown="1000" />
+      <TimedTransition targetState="Shoot 1" time="3000" />
+    </State>
+    <Shoot radius="9" count="3" shootAngle="0" projectileIndex="1" cooldown="500" />
+    <TimedTransition targetState="Shoot 2" time="5000" />
+    <Shoot radius="10" count="8" shootAngle="10" coolDownOffset="500" cooldown="1000" />
+    <Shoot radius="10" count="8" shootAngle="10" angleOffset="45" coolDownOffset="1000" cooldown="1000" />
+    <Shoot radius="10" count="8" shootAngle="10" angleOffset="135" coolDownOffset="1500" cooldown="1000" />
+    <TimedTransition targetState="Shoot 1" time="3000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Sea Horse">
+    <Orbit speed="0.2" radius="2" target="Sea Mare" speedVariance="0.02" radiusVariance="0.02" orbitClockwise="false" />
+    <Wander speed="0.2" />
+    <State id="Shoot 1">
+      <Shoot radius="9" shootAngle="0" coolDownOffset="250" cooldown="1000" />
+      <Shoot radius="9" count="2" shootAngle="5" coolDownOffset="500" cooldown="1000" />
+      <Shoot radius="9" count="3" shootAngle="5" coolDownOffset="750" cooldown="1000" />
+    </State>
+    <Shoot radius="9" shootAngle="0" coolDownOffset="250" cooldown="1000" />
+    <Shoot radius="9" count="2" shootAngle="5" coolDownOffset="500" cooldown="1000" />
+    <Shoot radius="9" count="3" shootAngle="5" coolDownOffset="750" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Giant Squid">
+    <Shoot radius="10" shootAngle="0" cooldown="100" />
+    <Follow speed="0.8" acquireRange="12" range="1" cooldown="0" />
+    <State id="Toss">
+      <TossObject child="Ink Bubble" cooldown="1000" />
+      <TimedTransition targetState="Toss 2" time="100" />
+    </State>
+    <State id="Toss 2">
+      <TossObject child="Ink Bubble" cooldown="1000" />
+      <TimedTransition targetState="Attack 1" time="100" />
+    </State>
+    <State id="Attack 1">
+      <Shoot radius="10" count="4" shootAngle="15" projectileIndex="1" cooldown="250" />
+      <TimedTransition targetState="Toss" time="20000" />
+    </State>
+    <TossObject child="Ink Bubble" cooldown="1000" />
+    <TimedTransition targetState="Toss 2" time="100" />
+    <TossObject child="Ink Bubble" cooldown="1000" />
+    <TimedTransition targetState="Attack 1" time="100" />
+    <Shoot radius="10" count="4" shootAngle="15" projectileIndex="1" cooldown="250" />
+    <TimedTransition targetState="Toss" time="20000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Ink Bubble">
+    <Shoot radius="10" shootAngle="0" cooldown="100" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Grey Sea Slurp">
+    <StayCloseToSpawn speed="0.5" range="10" />
+    <State id="Shoot and Move">
+      <Prioritize>
+        <Follow speed="0.3" cooldown="0" />
+        <Wander speed="0.2" />
+      </Prioritize>
+      <Shoot radius="8" shootAngle="0" cooldown="300" />
+      <TimedTransition targetState="Wall Shoot" time="900" />
+    </State>
+    <State id="Wall Shoot">
+      <Shoot radius="8" count="6" shootAngle="0" projectileIndex="1" fixedAngle="2" cooldown="750" />
+      <TimedTransition targetState="Shoot and Move" time="1500" />
+    </State>
+    <Prioritize>
+      <Follow speed="0.3" cooldown="0" />
+      <Wander speed="0.2" />
+    </Prioritize>
+    <Shoot radius="8" shootAngle="0" cooldown="300" />
+    <TimedTransition targetState="Wall Shoot" time="900" />
+    <Shoot radius="8" count="6" shootAngle="0" projectileIndex="1" fixedAngle="2" cooldown="750" />
+    <TimedTransition targetState="Shoot and Move" time="1500" />
+  </BehaviorEntry>
+</BehaviorEntries>

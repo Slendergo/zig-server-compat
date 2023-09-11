@@ -23,8 +23,8 @@ class Buzz : CycleBehavior
 
     public Buzz(XElement e)
     {
-        speed = e.ParseFloat("@speed");
-        dist = e.ParseFloat("@dist");
+        speed = e.ParseFloat("@speed", 2);
+        dist = e.ParseFloat("@dist", 0.5f);
         coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1));
     }
 

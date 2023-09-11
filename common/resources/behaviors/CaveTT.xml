@@ -1,0 +1,486 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Golden Oryx Effigy">
+    <DropPortalOnDeath target="Realm Portal" />
+    <State id="Ini">
+      <HpLessTransition targetState="Q1 Spawn Minion" threshold="0.99" />
+    </State>
+    <State id="Q1 Spawn Minion">
+      <ConditionalEffect effect="Invulnerable" />
+      <TossObject child="Gold Planet" range="7" angle="0" cooldown="10000000" />
+      <TossObject child="Gold Planet" range="7" angle="45" cooldown="10000000" />
+      <TossObject child="Gold Planet" range="7" angle="90" cooldown="10000000" />
+      <TossObject child="Gold Planet" range="7" angle="135" cooldown="10000000" />
+      <TossObject child="Gold Planet" range="7" angle="180" cooldown="10000000" />
+      <TossObject child="Gold Planet" range="7" angle="225" cooldown="10000000" />
+      <TossObject child="Gold Planet" range="7" angle="270" cooldown="10000000" />
+      <TossObject child="Gold Planet" range="7" angle="315" cooldown="10000000" />
+      <TossObject child="Treasure Oryx Defender" range="3" angle="0" cooldown="10000000" />
+      <TossObject child="Treasure Oryx Defender" range="3" angle="90" cooldown="10000000" />
+      <TossObject child="Treasure Oryx Defender" range="3" angle="180" cooldown="10000000" />
+      <TossObject child="Treasure Oryx Defender" range="3" angle="270" cooldown="10000000" />
+      <ChangeSize rate="-1" target="60" />
+      <TimedTransition targetState="Q1 Invulnerable" time="4000" />
+    </State>
+    <State id="Q1 Invulnerable">
+      <ConditionalEffect effect="Invulnerable" />
+      <EntitiesNotExistsTransition targetState="Q1 Vulnerable Transition" dist="99" targets="Treasure Oryx Defender" />
+    </State>
+    <State id="Q1 Vulnerable Transition">
+      <TimedTransition targetState="Q1 Vulnerable" time="800" />
+      <State id="T1">
+        <SetAltTexture minValue="2" cooldown="0" />
+        <TimedTransition targetState="T2" time="50" />
+      </State>
+      <State id="T2">
+        <SetAltTexture minValue="0" maxValue="1" cooldown="100" loop="true" />
+      </State>
+    </State>
+    <State id="Q1 Vulnerable">
+      <SetAltTexture minValue="1" cooldown="0" />
+      <Taunt text="My protectors!|My guardians are gone!|What have you done?|You destroy my guardians in my house? Blasphemy!" probability="0.75" />
+      <HpLessTransition targetState="Q2 Invulnerable Transition" threshold="0.75" />
+    </State>
+    <State id="Q2 Invulnerable Transition">
+      <TimedTransition targetState="Q2 Spawn Minion" time="800" />
+      <State id="T1_2">
+        <SetAltTexture minValue="2" cooldown="0" />
+        <TimedTransition targetState="T2_2" time="50" />
+      </State>
+      <State id="T2_2">
+        <SetAltTexture minValue="0" maxValue="1" cooldown="100" loop="true" />
+      </State>
+    </State>
+    <State id="Q2 Spawn Minion">
+      <SetAltTexture minValue="0" cooldown="0" />
+      <ConditionalEffect effect="Invulnerable" />
+      <TossObject child="Treasure Oryx Defender" range="3" angle="0" cooldown="10000000" />
+      <TossObject child="Treasure Oryx Defender" range="3" angle="90" cooldown="10000000" />
+      <TossObject child="Treasure Oryx Defender" range="3" angle="180" cooldown="10000000" />
+      <TossObject child="Treasure Oryx Defender" range="3" angle="270" cooldown="10000000" />
+      <ChangeSize rate="-1" target="60" />
+      <TimedTransition targetState="Q2 Invulnerable" time="4000" />
+    </State>
+    <State id="Q2 Invulnerable">
+      <ConditionalEffect effect="Invulnerable" />
+      <EntitiesNotExistsTransition targetState="Q2 Vulnerable Transition" dist="99" targets="Treasure Oryx Defender" />
+    </State>
+    <State id="Q2 Vulnerable Transition">
+      <TimedTransition targetState="Q2 Vulnerable" time="800" />
+      <State id="T1_3">
+        <SetAltTexture minValue="2" cooldown="0" />
+        <TimedTransition targetState="T2_3" time="50" />
+      </State>
+      <State id="T2_3">
+        <SetAltTexture minValue="0" maxValue="1" cooldown="100" loop="true" />
+      </State>
+    </State>
+    <State id="Q2 Vulnerable">
+      <SetAltTexture minValue="1" cooldown="0" />
+      <Taunt text="My protectors are no more!|You Mongrels are ruining my beautiful treasure!|You won't leave with your pilfered loot!|I'm weakened" probability="0.75" />
+      <HpLessTransition targetState="Q3 Vulnerable Transition" threshold="0.6" />
+    </State>
+    <State id="Q3 Vulnerable Transition">
+      <TimedTransition targetState="Q3" time="800" />
+      <State id="T1_4">
+        <SetAltTexture minValue="2" cooldown="0" />
+        <TimedTransition targetState="T2_4" time="50" />
+      </State>
+      <State id="T2_4">
+        <SetAltTexture minValue="0" maxValue="1" cooldown="100" loop="true" />
+      </State>
+    </State>
+    <State id="Q3">
+      <SetAltTexture minValue="1" cooldown="0" />
+      <State id="Attack1">
+        <TimedTransition targetState="Attack2" time="8500" />
+        <State id="CardinalBarrage">
+          <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="0" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="90" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="180" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="270" cooldown="1000" />
+          <TimedTransition targetState="OrdinalBarrage" time="1500" />
+        </State>
+        <State id="OrdinalBarrage">
+          <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="45" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="135" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="225" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="315" cooldown="1000" />
+          <TimedTransition targetState="CardinalBarrage2" time="1500" />
+        </State>
+        <State id="CardinalBarrage2">
+          <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="0" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="90" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="180" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="270" cooldown="1000" />
+          <TimedTransition targetState="OrdinalBarrage2" time="1500" />
+        </State>
+        <State id="OrdinalBarrage2">
+          <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="45" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="135" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="225" cooldown="1000" />
+          <Grenade radius="1" damage="70" range="3" fixedAngle="315" cooldown="1000" />
+          <TimedTransition targetState="CardinalBarrage" time="1500" />
+        </State>
+      </State>
+      <State id="Attack2">
+        <Flash color="0xFF" flashPeriod="0.1" flashRepeats="10" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="200" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="80" coolDownOffset="400" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="70" coolDownOffset="600" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="60" coolDownOffset="800" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="50" coolDownOffset="1000" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="40" coolDownOffset="1200" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="30" coolDownOffset="1400" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="20" coolDownOffset="1600" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="10" coolDownOffset="1800" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="45" projectileIndex="1" defaultAngle="0" coolDownOffset="2200" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="45" projectileIndex="1" defaultAngle="0" coolDownOffset="2400" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="0" coolDownOffset="2600" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="10" coolDownOffset="2800" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="20" coolDownOffset="3000" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="30" coolDownOffset="3200" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="40" coolDownOffset="3400" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="50" coolDownOffset="3600" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="60" coolDownOffset="3800" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="70" coolDownOffset="4000" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="80" coolDownOffset="4200" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="4400" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="45" projectileIndex="1" defaultAngle="90" coolDownOffset="4600" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="4800" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="5000" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="5200" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="80" coolDownOffset="5400" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="70" coolDownOffset="5600" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="60" coolDownOffset="5800" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="50" coolDownOffset="6000" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="40" coolDownOffset="6200" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="30" coolDownOffset="6400" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="20" coolDownOffset="6600" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="10" coolDownOffset="6800" cooldown="10000000" />
+        <Shoot radius="0" count="4" shootAngle="45" projectileIndex="1" defaultAngle="0" coolDownOffset="7000" cooldown="10000000" />
+        <TimedTransition targetState="Recuperate" time="7000" />
+      </State>
+      <State id="Recuperate">
+        <ConditionalEffect effect="Invulnerable" />
+        <HealSelf amount="200" cooldown="1000" />
+        <TimedTransition targetState="Attack1" time="3000" />
+      </State>
+    </State>
+    <HpLessTransition targetState="Q1 Spawn Minion" threshold="0.99" />
+    <ConditionalEffect effect="Invulnerable" />
+    <TossObject child="Gold Planet" range="7" angle="0" cooldown="10000000" />
+    <TossObject child="Gold Planet" range="7" angle="45" cooldown="10000000" />
+    <TossObject child="Gold Planet" range="7" angle="90" cooldown="10000000" />
+    <TossObject child="Gold Planet" range="7" angle="135" cooldown="10000000" />
+    <TossObject child="Gold Planet" range="7" angle="180" cooldown="10000000" />
+    <TossObject child="Gold Planet" range="7" angle="225" cooldown="10000000" />
+    <TossObject child="Gold Planet" range="7" angle="270" cooldown="10000000" />
+    <TossObject child="Gold Planet" range="7" angle="315" cooldown="10000000" />
+    <TossObject child="Treasure Oryx Defender" range="3" angle="0" cooldown="10000000" />
+    <TossObject child="Treasure Oryx Defender" range="3" angle="90" cooldown="10000000" />
+    <TossObject child="Treasure Oryx Defender" range="3" angle="180" cooldown="10000000" />
+    <TossObject child="Treasure Oryx Defender" range="3" angle="270" cooldown="10000000" />
+    <ChangeSize rate="-1" target="60" />
+    <TimedTransition targetState="Q1 Invulnerable" time="4000" />
+    <ConditionalEffect effect="Invulnerable" />
+    <EntitiesNotExistsTransition targetState="Q1 Vulnerable Transition" dist="99" targets="Treasure Oryx Defender" />
+    <TimedTransition targetState="Q1 Vulnerable" time="800" />
+    <State id="T1">
+      <SetAltTexture minValue="2" cooldown="0" />
+      <TimedTransition targetState="T2" time="50" />
+    </State>
+    <State id="T2">
+      <SetAltTexture minValue="0" maxValue="1" cooldown="100" loop="true" />
+    </State>
+    <SetAltTexture minValue="2" cooldown="0" />
+    <TimedTransition targetState="T2" time="50" />
+    <SetAltTexture minValue="0" maxValue="1" cooldown="100" loop="true" />
+    <SetAltTexture minValue="1" cooldown="0" />
+    <Taunt text="My protectors!|My guardians are gone!|What have you done?|You destroy my guardians in my house? Blasphemy!" probability="0.75" />
+    <HpLessTransition targetState="Q2 Invulnerable Transition" threshold="0.75" />
+    <TimedTransition targetState="Q2 Spawn Minion" time="800" />
+    <State id="T1_2">
+      <SetAltTexture minValue="2" cooldown="0" />
+      <TimedTransition targetState="T2_2" time="50" />
+    </State>
+    <State id="T2_2">
+      <SetAltTexture minValue="0" maxValue="1" cooldown="100" loop="true" />
+    </State>
+    <SetAltTexture minValue="2" cooldown="0" />
+    <TimedTransition targetState="T2_2" time="50" />
+    <SetAltTexture minValue="0" maxValue="1" cooldown="100" loop="true" />
+    <SetAltTexture minValue="0" cooldown="0" />
+    <ConditionalEffect effect="Invulnerable" />
+    <TossObject child="Treasure Oryx Defender" range="3" angle="0" cooldown="10000000" />
+    <TossObject child="Treasure Oryx Defender" range="3" angle="90" cooldown="10000000" />
+    <TossObject child="Treasure Oryx Defender" range="3" angle="180" cooldown="10000000" />
+    <TossObject child="Treasure Oryx Defender" range="3" angle="270" cooldown="10000000" />
+    <ChangeSize rate="-1" target="60" />
+    <TimedTransition targetState="Q2 Invulnerable" time="4000" />
+    <ConditionalEffect effect="Invulnerable" />
+    <EntitiesNotExistsTransition targetState="Q2 Vulnerable Transition" dist="99" targets="Treasure Oryx Defender" />
+    <TimedTransition targetState="Q2 Vulnerable" time="800" />
+    <State id="T1_3">
+      <SetAltTexture minValue="2" cooldown="0" />
+      <TimedTransition targetState="T2_3" time="50" />
+    </State>
+    <State id="T2_3">
+      <SetAltTexture minValue="0" maxValue="1" cooldown="100" loop="true" />
+    </State>
+    <SetAltTexture minValue="2" cooldown="0" />
+    <TimedTransition targetState="T2_3" time="50" />
+    <SetAltTexture minValue="0" maxValue="1" cooldown="100" loop="true" />
+    <SetAltTexture minValue="1" cooldown="0" />
+    <Taunt text="My protectors are no more!|You Mongrels are ruining my beautiful treasure!|You won't leave with your pilfered loot!|I'm weakened" probability="0.75" />
+    <HpLessTransition targetState="Q3 Vulnerable Transition" threshold="0.6" />
+    <TimedTransition targetState="Q3" time="800" />
+    <State id="T1_4">
+      <SetAltTexture minValue="2" cooldown="0" />
+      <TimedTransition targetState="T2_4" time="50" />
+    </State>
+    <State id="T2_4">
+      <SetAltTexture minValue="0" maxValue="1" cooldown="100" loop="true" />
+    </State>
+    <SetAltTexture minValue="2" cooldown="0" />
+    <TimedTransition targetState="T2_4" time="50" />
+    <SetAltTexture minValue="0" maxValue="1" cooldown="100" loop="true" />
+    <SetAltTexture minValue="1" cooldown="0" />
+    <State id="Attack1">
+      <TimedTransition targetState="Attack2" time="8500" />
+      <State id="CardinalBarrage">
+        <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="0" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="90" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="180" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="270" cooldown="1000" />
+        <TimedTransition targetState="OrdinalBarrage" time="1500" />
+      </State>
+      <State id="OrdinalBarrage">
+        <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="45" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="135" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="225" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="315" cooldown="1000" />
+        <TimedTransition targetState="CardinalBarrage2" time="1500" />
+      </State>
+      <State id="CardinalBarrage2">
+        <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="0" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="90" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="180" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="270" cooldown="1000" />
+        <TimedTransition targetState="OrdinalBarrage2" time="1500" />
+      </State>
+      <State id="OrdinalBarrage2">
+        <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="45" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="135" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="225" cooldown="1000" />
+        <Grenade radius="1" damage="70" range="3" fixedAngle="315" cooldown="1000" />
+        <TimedTransition targetState="CardinalBarrage" time="1500" />
+      </State>
+    </State>
+    <State id="Attack2">
+      <Flash color="0xFF" flashPeriod="0.1" flashRepeats="10" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="200" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="80" coolDownOffset="400" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="70" coolDownOffset="600" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="60" coolDownOffset="800" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="50" coolDownOffset="1000" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="40" coolDownOffset="1200" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="30" coolDownOffset="1400" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="20" coolDownOffset="1600" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="10" coolDownOffset="1800" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="45" projectileIndex="1" defaultAngle="0" coolDownOffset="2200" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="45" projectileIndex="1" defaultAngle="0" coolDownOffset="2400" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="0" coolDownOffset="2600" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="10" coolDownOffset="2800" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="20" coolDownOffset="3000" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="30" coolDownOffset="3200" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="40" coolDownOffset="3400" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="50" coolDownOffset="3600" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="60" coolDownOffset="3800" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="70" coolDownOffset="4000" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="80" coolDownOffset="4200" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="4400" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="45" projectileIndex="1" defaultAngle="90" coolDownOffset="4600" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="4800" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="5000" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="5200" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="80" coolDownOffset="5400" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="70" coolDownOffset="5600" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="60" coolDownOffset="5800" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="50" coolDownOffset="6000" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="40" coolDownOffset="6200" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="30" coolDownOffset="6400" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="20" coolDownOffset="6600" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="10" coolDownOffset="6800" cooldown="10000000" />
+      <Shoot radius="0" count="4" shootAngle="45" projectileIndex="1" defaultAngle="0" coolDownOffset="7000" cooldown="10000000" />
+      <TimedTransition targetState="Recuperate" time="7000" />
+    </State>
+    <State id="Recuperate">
+      <ConditionalEffect effect="Invulnerable" />
+      <HealSelf amount="200" cooldown="1000" />
+      <TimedTransition targetState="Attack1" time="3000" />
+    </State>
+    <TimedTransition targetState="Attack2" time="8500" />
+    <State id="CardinalBarrage">
+      <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="0" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="90" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="180" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="270" cooldown="1000" />
+      <TimedTransition targetState="OrdinalBarrage" time="1500" />
+    </State>
+    <State id="OrdinalBarrage">
+      <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="45" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="135" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="225" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="315" cooldown="1000" />
+      <TimedTransition targetState="CardinalBarrage2" time="1500" />
+    </State>
+    <State id="CardinalBarrage2">
+      <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="0" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="90" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="180" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="270" cooldown="1000" />
+      <TimedTransition targetState="OrdinalBarrage2" time="1500" />
+    </State>
+    <State id="OrdinalBarrage2">
+      <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="45" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="135" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="225" cooldown="1000" />
+      <Grenade radius="1" damage="70" range="3" fixedAngle="315" cooldown="1000" />
+      <TimedTransition targetState="CardinalBarrage" time="1500" />
+    </State>
+    <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="0" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="90" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="180" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="270" cooldown="1000" />
+    <TimedTransition targetState="OrdinalBarrage" time="1500" />
+    <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="45" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="135" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="225" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="315" cooldown="1000" />
+    <TimedTransition targetState="CardinalBarrage2" time="1500" />
+    <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="0" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="90" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="180" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="270" cooldown="1000" />
+    <TimedTransition targetState="OrdinalBarrage2" time="1500" />
+    <Grenade radius="0.5" damage="70" range="0" fixedAngle="0" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="45" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="135" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="225" cooldown="1000" />
+    <Grenade radius="1" damage="70" range="3" fixedAngle="315" cooldown="1000" />
+    <TimedTransition targetState="CardinalBarrage" time="1500" />
+    <Flash color="0xFF" flashPeriod="0.1" flashRepeats="10" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="200" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="80" coolDownOffset="400" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="70" coolDownOffset="600" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="60" coolDownOffset="800" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="50" coolDownOffset="1000" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="40" coolDownOffset="1200" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="30" coolDownOffset="1400" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="20" coolDownOffset="1600" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="10" coolDownOffset="1800" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="45" projectileIndex="1" defaultAngle="0" coolDownOffset="2200" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="45" projectileIndex="1" defaultAngle="0" coolDownOffset="2400" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="0" coolDownOffset="2600" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="10" coolDownOffset="2800" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="20" coolDownOffset="3000" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="30" coolDownOffset="3200" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="40" coolDownOffset="3400" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="50" coolDownOffset="3600" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="60" coolDownOffset="3800" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="70" coolDownOffset="4000" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="80" coolDownOffset="4200" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="4400" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="45" projectileIndex="1" defaultAngle="90" coolDownOffset="4600" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="4800" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="5000" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="90" coolDownOffset="5200" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="80" coolDownOffset="5400" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="70" coolDownOffset="5600" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="60" coolDownOffset="5800" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="50" coolDownOffset="6000" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="40" coolDownOffset="6200" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="30" coolDownOffset="6400" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="20" coolDownOffset="6600" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="90" projectileIndex="1" defaultAngle="10" coolDownOffset="6800" cooldown="10000000" />
+    <Shoot radius="0" count="4" shootAngle="45" projectileIndex="1" defaultAngle="0" coolDownOffset="7000" cooldown="10000000" />
+    <TimedTransition targetState="Recuperate" time="7000" />
+    <ConditionalEffect effect="Invulnerable" />
+    <HealSelf amount="200" cooldown="1000" />
+    <TimedTransition targetState="Attack1" time="3000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Treasure Oryx Defender">
+    <Prioritize>
+      <Orbit speed="0.5" radius="3" acquireRange="6" target="Golden Oryx Effigy" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+    </Prioritize>
+    <Shoot radius="0" count="8" shootAngle="45" defaultAngle="0" cooldown="3000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Gold Planet">
+    <ConditionalEffect effect="Invincible" />
+    <Prioritize>
+      <Orbit speed="0.5" radius="7" acquireRange="20" target="Golden Oryx Effigy" speedVariance="0" radiusVariance="0" orbitClockwise="false" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Die" dist="999" target="Golden Oryx Effigy" />
+    <State id="GreySpiral">
+      <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="90" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="90" coolDownOffset="400" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="80" coolDownOffset="800" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="70" coolDownOffset="1200" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" defaultAngle="60" coolDownOffset="1600" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="50" coolDownOffset="2000" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="40" coolDownOffset="2400" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="30" coolDownOffset="2800" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="20" coolDownOffset="3200" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" defaultAngle="10" coolDownOffset="3600" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="0" coolDownOffset="4000" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="-10" coolDownOffset="4400" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="-20" coolDownOffset="4800" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="-30" coolDownOffset="5200" cooldown="10000" />
+      <Shoot radius="0" count="2" shootAngle="180" defaultAngle="-40" coolDownOffset="5600" cooldown="10000" />
+      <TimedTransition targetState="Reset" time="5600" />
+    </State>
+    <State id="Reset">
+      <TimedTransition targetState="GreySpiral" time="0" />
+    </State>
+    <State id="Die">
+      <Suicide />
+    </State>
+    <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="90" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="90" coolDownOffset="400" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="80" coolDownOffset="800" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="70" coolDownOffset="1200" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" defaultAngle="60" coolDownOffset="1600" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="50" coolDownOffset="2000" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="40" coolDownOffset="2400" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="30" coolDownOffset="2800" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="20" coolDownOffset="3200" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" defaultAngle="10" coolDownOffset="3600" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="0" coolDownOffset="4000" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="-10" coolDownOffset="4400" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="-20" coolDownOffset="4800" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" projectileIndex="1" defaultAngle="-30" coolDownOffset="5200" cooldown="10000" />
+    <Shoot radius="0" count="2" shootAngle="180" defaultAngle="-40" coolDownOffset="5600" cooldown="10000" />
+    <TimedTransition targetState="Reset" time="5600" />
+    <TimedTransition targetState="GreySpiral" time="0" />
+    <Suicide />
+  </BehaviorEntry>
+</BehaviorEntries>

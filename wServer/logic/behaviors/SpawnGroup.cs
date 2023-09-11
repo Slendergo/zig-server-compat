@@ -26,7 +26,7 @@ class SpawnGroup : Behavior
         children = BehaviorDb.InitGameData.ObjectDescs.Values
             .Where(x => x.Group == e.ParseString("@group"))
             .Select(x => x.ObjectType).ToArray();
-        maxChildren = e.ParseInt("@maxChildren");
+        maxChildren = e.ParseInt("@maxChildren", 5);
         initialSpawn = (int)(maxChildren * e.ParseFloat("@initialSpawn", 0.5f));
         coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
         radius = e.ParseFloat("@radius");

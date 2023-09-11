@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Arachna the Spider Queen">
+    <State id="idle">
+      <ConditionalEffect effect="Invulnerable" />
+      <PlayerWithinTransition targetState="WEB!" dist="12" />
+    </State>
+    <State id="WEB!">
+      <ConditionalEffect effect="Invulnerable" />
+      <TossObject child="Arachna Web Spoke 7" range="6" angle="0" cooldown="100000" />
+      <TossObject child="Arachna Web Spoke 8" range="6" angle="120" cooldown="100000" />
+      <TossObject child="Arachna Web Spoke 9" range="6" angle="240" cooldown="100000" />
+      <TossObject child="Arachna Web Spoke 1" range="10" angle="0" cooldown="100000" />
+      <TossObject child="Arachna Web Spoke 2" range="10" angle="60" cooldown="100000" />
+      <TossObject child="Arachna Web Spoke 3" range="10" angle="120" cooldown="100000" />
+      <TossObject child="Arachna Web Spoke 4" range="10" angle="180" cooldown="100000" />
+      <TossObject child="Arachna Web Spoke 5" range="10" angle="240" cooldown="100000" />
+      <TossObject child="Arachna Web Spoke 6" range="10" angle="300" cooldown="100000" />
+      <TimedTransition targetState="attack" time="2000" />
+    </State>
+    <State id="attack">
+      <Wander speed="1" />
+      <Shoot radius="3000" count="12" shootAngle="0" fixedAngle="22.5" cooldown="1000" />
+      <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="1000" />
+      <Shoot radius="10" shootAngle="0" projectileIndex="1" defaultAngle="0" predictive="1" cooldown="2000" />
+    </State>
+    <ConditionalEffect effect="Invulnerable" />
+    <PlayerWithinTransition targetState="WEB!" dist="12" />
+    <ConditionalEffect effect="Invulnerable" />
+    <TossObject child="Arachna Web Spoke 7" range="6" angle="0" cooldown="100000" />
+    <TossObject child="Arachna Web Spoke 8" range="6" angle="120" cooldown="100000" />
+    <TossObject child="Arachna Web Spoke 9" range="6" angle="240" cooldown="100000" />
+    <TossObject child="Arachna Web Spoke 1" range="10" angle="0" cooldown="100000" />
+    <TossObject child="Arachna Web Spoke 2" range="10" angle="60" cooldown="100000" />
+    <TossObject child="Arachna Web Spoke 3" range="10" angle="120" cooldown="100000" />
+    <TossObject child="Arachna Web Spoke 4" range="10" angle="180" cooldown="100000" />
+    <TossObject child="Arachna Web Spoke 5" range="10" angle="240" cooldown="100000" />
+    <TossObject child="Arachna Web Spoke 6" range="10" angle="300" cooldown="100000" />
+    <TimedTransition targetState="attack" time="2000" />
+    <Wander speed="1" />
+    <Shoot radius="3000" count="12" shootAngle="0" fixedAngle="22.5" cooldown="1000" />
+    <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="1000" />
+    <Shoot radius="10" shootAngle="0" projectileIndex="1" defaultAngle="0" predictive="1" cooldown="2000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Arachna Web Spoke 1">
+    <State id=":D">
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
+      <Shoot radius="0" shootAngle="180" fixedAngle="180" cooldown="5" />
+      <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
+    </State>
+    <ConditionalEffect effect="Invulnerable" />
+    <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
+    <Shoot radius="0" shootAngle="180" fixedAngle="180" cooldown="5" />
+    <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Arachna Web Spoke 2">
+    <State id=":D">
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
+      <Shoot radius="0" shootAngle="180" fixedAngle="180" cooldown="5" />
+      <Shoot radius="0" shootAngle="300" fixedAngle="300" cooldown="5" />
+    </State>
+    <ConditionalEffect effect="Invulnerable" />
+    <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
+    <Shoot radius="0" shootAngle="180" fixedAngle="180" cooldown="5" />
+    <Shoot radius="0" shootAngle="300" fixedAngle="300" cooldown="5" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Arachna Web Spoke 3">
+    <State id=":D">
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="0" shootAngle="300" fixedAngle="300" cooldown="5" />
+      <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
+      <Shoot radius="0" shootAngle="0" fixedAngle="0" cooldown="5" />
+    </State>
+    <ConditionalEffect effect="Invulnerable" />
+    <Shoot radius="0" shootAngle="300" fixedAngle="300" cooldown="5" />
+    <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
+    <Shoot radius="0" shootAngle="0" fixedAngle="0" cooldown="5" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Arachna Web Spoke 4">
+    <State id=":D">
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="0" shootAngle="0" fixedAngle="0" cooldown="5" />
+      <Shoot radius="0" shootAngle="60" fixedAngle="60" cooldown="5" />
+      <Shoot radius="0" shootAngle="300" fixedAngle="300" cooldown="5" />
+    </State>
+    <ConditionalEffect effect="Invulnerable" />
+    <Shoot radius="0" shootAngle="0" fixedAngle="0" cooldown="5" />
+    <Shoot radius="0" shootAngle="60" fixedAngle="60" cooldown="5" />
+    <Shoot radius="0" shootAngle="300" fixedAngle="300" cooldown="5" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Arachna Web Spoke 5">
+    <State id=":D">
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="0" shootAngle="60" fixedAngle="60" cooldown="5" />
+      <Shoot radius="0" shootAngle="0" fixedAngle="0" cooldown="5" />
+      <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
+    </State>
+    <ConditionalEffect effect="Invulnerable" />
+    <Shoot radius="0" shootAngle="60" fixedAngle="60" cooldown="5" />
+    <Shoot radius="0" shootAngle="0" fixedAngle="0" cooldown="5" />
+    <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Arachna Web Spoke 6">
+    <State id=":D">
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
+      <Shoot radius="0" shootAngle="60" fixedAngle="60" cooldown="5" />
+      <Shoot radius="0" shootAngle="180" fixedAngle="180" cooldown="5" />
+    </State>
+    <ConditionalEffect effect="Invulnerable" />
+    <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
+    <Shoot radius="0" shootAngle="60" fixedAngle="60" cooldown="5" />
+    <Shoot radius="0" shootAngle="180" fixedAngle="180" cooldown="5" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Arachna Web Spoke 7">
+    <State id=":D">
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="0" shootAngle="180" fixedAngle="180" cooldown="5" />
+      <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
+      <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
+    </State>
+    <ConditionalEffect effect="Invulnerable" />
+    <Shoot radius="0" shootAngle="180" fixedAngle="180" cooldown="5" />
+    <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
+    <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Arachna Web Spoke 8">
+    <State id=":D">
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="0" shootAngle="360" fixedAngle="360" cooldown="5" />
+      <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
+      <Shoot radius="0" shootAngle="300" fixedAngle="300" cooldown="5" />
+    </State>
+    <ConditionalEffect effect="Invulnerable" />
+    <Shoot radius="0" shootAngle="360" fixedAngle="360" cooldown="5" />
+    <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
+    <Shoot radius="0" shootAngle="300" fixedAngle="300" cooldown="5" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Arachna Web Spoke 9">
+    <State id=":D">
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="0" shootAngle="0" fixedAngle="0" cooldown="5" />
+      <Shoot radius="0" shootAngle="60" fixedAngle="60" cooldown="5" />
+      <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
+    </State>
+    <ConditionalEffect effect="Invulnerable" />
+    <Shoot radius="0" shootAngle="0" fixedAngle="0" cooldown="5" />
+    <Shoot radius="0" shootAngle="60" fixedAngle="60" cooldown="5" />
+    <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Black Den Spider">
+    <State id="idle">
+      <Wander speed="0.8" />
+      <Charge speed="0.9" range="20" cooldown="2000" />
+      <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="500" />
+    </State>
+    <Wander speed="0.8" />
+    <Charge speed="0.9" range="20" cooldown="2000" />
+    <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Black Spotted Den Spider">
+    <State id="idle">
+      <Wander speed="0.8" />
+      <Charge speed="0.9" range="40" cooldown="2000" />
+      <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="500" />
+    </State>
+    <Wander speed="0.8" />
+    <Charge speed="0.9" range="40" cooldown="2000" />
+    <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Brown Den Spider">
+    <State id="idle">
+      <Wander speed="0.8" />
+      <Follow speed="0.8" acquireRange="0.3" range="0" cooldown="0" />
+      <Shoot radius="10" count="3" shootAngle="20" cooldown="500" />
+    </State>
+    <Wander speed="0.8" />
+    <Follow speed="0.8" acquireRange="0.3" range="0" cooldown="0" />
+    <Shoot radius="10" count="3" shootAngle="20" cooldown="500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Green Den Spider Hatchling">
+    <State id="idle">
+      <Wander speed="0" />
+      <Follow speed="0.8" acquireRange="0.8" range="0" cooldown="0" />
+      <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="1000" />
+    </State>
+    <Wander speed="0" />
+    <Follow speed="0.8" acquireRange="0.8" range="0" cooldown="0" />
+    <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Spider Egg Sac">
+    <TransformOnDeath target="Green Den Spider Hatchling" min="2" max="7" />
+    <State id="idle">
+      <PlayerWithinTransition targetState="suicide" dist="0.5" />
+    </State>
+    <State id="suicide">
+      <Suicide />
+    </State>
+    <PlayerWithinTransition targetState="suicide" dist="0.5" />
+    <Suicide />
+  </BehaviorEntry>
+  <BehaviorEntry id="Red Spotted Den Spider">
+    <State id="idle">
+      <Wander speed="0" />
+      <Follow speed="1" acquireRange="0.8" range="0" cooldown="0" />
+      <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="500" />
+    </State>
+    <Wander speed="0" />
+    <Follow speed="1" acquireRange="0.8" range="0" cooldown="0" />
+    <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Arachna Summoner">
+    <ConditionalEffect effect="Invincible" perm="true" />
+    <State id="idle">
+      <EntitiesNotExistsTransition targetState="Death" dist="300" targets="Arachna the Spider Queen" />
+    </State>
+    <State id="Death">
+      <Suicide />
+    </State>
+    <EntitiesNotExistsTransition targetState="Death" dist="300" targets="Arachna the Spider Queen" />
+    <Suicide />
+  </BehaviorEntry>
+</BehaviorEntries>

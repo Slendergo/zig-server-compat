@@ -20,7 +20,8 @@ class Reproduce : Behavior
 
     public Reproduce(XElement e)
     {
-        _children = GetObjType(e.ParseString("@children"));
+        var childrenString = e.ParseString("@children");
+        _children = childrenString == null ? null : GetObjType(childrenString);
         _densityRadius = e.ParseFloat("@densityRadius", 10);
         _densityMax = e.ParseInt("@densityMax", 5);
         _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 60000));

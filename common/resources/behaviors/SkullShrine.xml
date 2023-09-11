@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Skull Shrine">
+    <Shoot radius="30" count="9" shootAngle="10" predictive="1" cooldown="750" />
+    <Reproduce children="Red Flaming Skull" densityRadius="40" densityMax="20" cooldown="500" />
+    <Reproduce children="Blue Flaming Skull" densityRadius="40" densityMax="20" cooldown="500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Red Flaming Skull">
+    <Shoot radius="12" count="2" shootAngle="10" cooldown="750" />
+    <State id="Orbit Skull Shrine">
+      <Prioritize>
+        <Protect speed="0.3" protectee="Skull Shrine" acquireRange="30" protectionRange="15" reprotectRange="15" />
+        <Wander speed="0.3" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Wander" dist="40" target="Skull Shrine" />
+    </State>
+    <State id="Wander">
+      <Wander speed="0.3" />
+    </State>
+    <Prioritize>
+      <Protect speed="0.3" protectee="Skull Shrine" acquireRange="30" protectionRange="15" reprotectRange="15" />
+      <Wander speed="0.3" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Wander" dist="40" target="Skull Shrine" />
+    <Wander speed="0.3" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Blue Flaming Skull">
+    <Shoot radius="12" count="2" shootAngle="10" cooldown="750" />
+    <State id="Orbit Skull Shrine">
+      <Orbit speed="1.5" radius="15" acquireRange="40" target="Skull Shrine" speedVariance="0.6" radiusVariance="10" />
+      <EntityNotExistsTransition targetState="Wander" dist="40" target="Skull Shrine" />
+    </State>
+    <State id="Wander">
+      <Wander speed="1.5" />
+    </State>
+    <Orbit speed="1.5" radius="15" acquireRange="40" target="Skull Shrine" speedVariance="0.6" radiusVariance="10" />
+    <EntityNotExistsTransition targetState="Wander" dist="40" target="Skull Shrine" />
+    <Wander speed="1.5" />
+  </BehaviorEntry>
+</BehaviorEntries>

@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Skeleton">
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+    <State id="Default">
+      <Prioritize>
+        <Follow speed="1" range="1" cooldown="0" />
+        <Wander speed="0.4" />
+      </Prioritize>
+    </State>
+    <State id="Protect">
+      <Prioritize>
+        <Protect speed="1" protectee="Deathmage" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    </State>
+    <State id="Circling">
+      <Prioritize>
+        <Orbit speed="1" radius="10" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    </State>
+    <State id="Engaging">
+      <Prioritize>
+        <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    </State>
+    <Prioritize>
+      <Follow speed="1" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Prioritize>
+      <Protect speed="1" protectee="Deathmage" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    <Prioritize>
+      <Orbit speed="1" radius="10" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    <Prioritize>
+      <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Skeleton Swordsman">
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+    <State id="Default">
+      <Prioritize>
+        <Follow speed="1" range="1" cooldown="0" />
+        <Wander speed="0.4" />
+      </Prioritize>
+    </State>
+    <State id="Protect">
+      <Prioritize>
+        <Protect speed="1" protectee="Deathmage" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    </State>
+    <State id="Circling">
+      <Prioritize>
+        <Orbit speed="1" radius="10" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    </State>
+    <State id="Engaging">
+      <Prioritize>
+        <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    </State>
+    <Prioritize>
+      <Follow speed="1" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Prioritize>
+      <Protect speed="1" protectee="Deathmage" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    <Prioritize>
+      <Orbit speed="1" radius="10" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    <Prioritize>
+      <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Skeleton Veteran">
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+    <State id="Default">
+      <Prioritize>
+        <Follow speed="1" range="1" cooldown="0" />
+        <Wander speed="0.4" />
+      </Prioritize>
+    </State>
+    <State id="Protect">
+      <Prioritize>
+        <Protect speed="1" protectee="Deathmage" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    </State>
+    <State id="Circling">
+      <Prioritize>
+        <Orbit speed="1" radius="10" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    </State>
+    <State id="Engaging">
+      <Prioritize>
+        <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    </State>
+    <Prioritize>
+      <Follow speed="1" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Prioritize>
+      <Protect speed="1" protectee="Deathmage" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    <Prioritize>
+      <Orbit speed="1" radius="10" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    <Prioritize>
+      <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Skeleton Mage">
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <State id="Default">
+      <Prioritize>
+        <Follow speed="1" range="7" cooldown="0" />
+        <Wander speed="0.4" />
+      </Prioritize>
+    </State>
+    <State id="Protect">
+      <Prioritize>
+        <Protect speed="1" protectee="Deathmage" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    </State>
+    <State id="Circling">
+      <Prioritize>
+        <Orbit speed="1" radius="10" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    </State>
+    <State id="Engaging">
+      <Prioritize>
+        <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    </State>
+    <Prioritize>
+      <Follow speed="1" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Prioritize>
+      <Protect speed="1" protectee="Deathmage" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    <Prioritize>
+      <Orbit speed="1" radius="10" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+    <Prioritize>
+      <Follow speed="1" acquireRange="15" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Deathmage">
+    <Spawn children="Skeleton" maxChildren="4" initialSpawn="2" cooldown="8000" givesNoXp="false" />
+    <Spawn children="Skeleton Swordsman" maxChildren="2" initialSpawn="1" cooldown="8000" givesNoXp="false" />
+    <Spawn children="Skeleton Veteran" maxChildren="1" initialSpawn="0" cooldown="8000" givesNoXp="false" />
+    <Spawn children="Skeleton Mage" maxChildren="1" initialSpawn="0" cooldown="8000" givesNoXp="false" />
+    <State id="Waiting">
+      <Prioritize>
+        <StayCloseToSpawn speed="0.8" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <Order range="10" children="Skeleton" targetState="Protect" />
+      <Order range="10" children="Skeleton Swordsman" targetState="Protect" />
+      <Order range="10" children="Skeleton Veteran" targetState="Protect" />
+      <Order range="10" children="Skeleton Mage" targetState="Protect" />
+      <PlayerWithinTransition targetState="Attacking" dist="15" />
+    </State>
+    <State id="Attacking">
+      <Taunt text="{PLAYER}, you will soon be my undead slave!|My skeletons will make short work of you.|You will never leave this graveyard alive!" probability="0.2" cooldown="2000" />
+      <Prioritize>
+        <StayCloseToSpawn speed="0.8" />
+        <Follow speed="0.8" range="8" cooldown="0" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <Shoot radius="10" count="3" shootAngle="15" predictive="1" cooldown="1000" />
+      <NoPlayerWithinTransition targetState="Waiting" dist="30" />
+      <State id="Circling">
+        <Orbit speed="0.8" radius="5" speedVariance="0.08" radiusVariance="0.08" orbitClockwise="false" />
+        <Order range="10" children="Skeleton" targetState="Circling" />
+        <Order range="10" children="Skeleton Swordsman" targetState="Circling" />
+        <Order range="10" children="Skeleton Veteran" targetState="Circling" />
+        <Order range="10" children="Skeleton Mage" targetState="Circling" />
+        <TimedTransition targetState="Engaging" time="2000" />
+      </State>
+      <State id="Engaging">
+        <Order range="10" children="Skeleton" targetState="Engaging" />
+        <Order range="10" children="Skeleton Swordsman" targetState="Engaging" />
+        <Order range="10" children="Skeleton Veteran" targetState="Engaging" />
+        <Order range="10" children="Skeleton Mage" targetState="Engaging" />
+        <TimedTransition targetState="Circling" time="2000" />
+      </State>
+    </State>
+    <Prioritize>
+      <StayCloseToSpawn speed="0.8" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Order range="10" children="Skeleton" targetState="Protect" />
+    <Order range="10" children="Skeleton Swordsman" targetState="Protect" />
+    <Order range="10" children="Skeleton Veteran" targetState="Protect" />
+    <Order range="10" children="Skeleton Mage" targetState="Protect" />
+    <PlayerWithinTransition targetState="Attacking" dist="15" />
+    <Taunt text="{PLAYER}, you will soon be my undead slave!|My skeletons will make short work of you.|You will never leave this graveyard alive!" probability="0.2" cooldown="2000" />
+    <Prioritize>
+      <StayCloseToSpawn speed="0.8" />
+      <Follow speed="0.8" range="8" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="10" count="3" shootAngle="15" predictive="1" cooldown="1000" />
+    <NoPlayerWithinTransition targetState="Waiting" dist="30" />
+    <State id="Circling">
+      <Orbit speed="0.8" radius="5" speedVariance="0.08" radiusVariance="0.08" orbitClockwise="false" />
+      <Order range="10" children="Skeleton" targetState="Circling" />
+      <Order range="10" children="Skeleton Swordsman" targetState="Circling" />
+      <Order range="10" children="Skeleton Veteran" targetState="Circling" />
+      <Order range="10" children="Skeleton Mage" targetState="Circling" />
+      <TimedTransition targetState="Engaging" time="2000" />
+    </State>
+    <State id="Engaging">
+      <Order range="10" children="Skeleton" targetState="Engaging" />
+      <Order range="10" children="Skeleton Swordsman" targetState="Engaging" />
+      <Order range="10" children="Skeleton Veteran" targetState="Engaging" />
+      <Order range="10" children="Skeleton Mage" targetState="Engaging" />
+      <TimedTransition targetState="Circling" time="2000" />
+    </State>
+    <Orbit speed="0.8" radius="5" speedVariance="0.08" radiusVariance="0.08" orbitClockwise="false" />
+    <Order range="10" children="Skeleton" targetState="Circling" />
+    <Order range="10" children="Skeleton Swordsman" targetState="Circling" />
+    <Order range="10" children="Skeleton Veteran" targetState="Circling" />
+    <Order range="10" children="Skeleton Mage" targetState="Circling" />
+    <TimedTransition targetState="Engaging" time="2000" />
+    <Order range="10" children="Skeleton" targetState="Engaging" />
+    <Order range="10" children="Skeleton Swordsman" targetState="Engaging" />
+    <Order range="10" children="Skeleton Veteran" targetState="Engaging" />
+    <Order range="10" children="Skeleton Mage" targetState="Engaging" />
+    <TimedTransition targetState="Circling" time="2000" />
+  </BehaviorEntry>
+</BehaviorEntries>

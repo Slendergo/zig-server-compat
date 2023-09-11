@@ -1,0 +1,435 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Arena Horseman Anchor">
+    <ConditionalEffect effect="Invincible" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Arena Headless Horseman">
+    <Spawn children="Arena Horseman Anchor" maxChildren="1" initialSpawn="1" cooldown="0" />
+    <DropPortalOnDeath target="Haunted Cemetery Portal" probability="0.4" />
+    <State id="EverythingIsCool">
+      <HpLessTransition targetState="End" threshold="0.1" />
+      <State id="Circle">
+        <Shoot radius="15" count="3" shootAngle="25" cooldown="1000" />
+        <Shoot radius="15" shootAngle="0" projectileIndex="1" cooldown="1000" />
+        <Orbit speed="1" radius="5" target="Arena Horseman Anchor" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+        <TimedTransition targetState="Shoot" time="8000" />
+      </State>
+      <State id="Shoot">
+        <ReturnToSpawn speed="1.5" />
+        <ConditionalEffect effect="Invincible" />
+        <Flash color="0xF0E68C" flashPeriod="1" flashRepeats="6" />
+        <Shoot radius="15" count="8" shootAngle="0" projectileIndex="2" cooldown="1500" />
+        <Shoot radius="15" shootAngle="0" projectileIndex="1" cooldown="2500" />
+        <TimedTransition targetState="Circle" time="6000" />
+      </State>
+    </State>
+    <State id="End">
+      <Prioritize>
+        <Follow speed="1.5" acquireRange="20" range="1" cooldown="0" />
+        <Wander speed="1.5" />
+      </Prioritize>
+      <Flash color="0xF0E68C" flashPeriod="1" flashRepeats="1000" />
+      <Shoot radius="15" count="3" shootAngle="25" cooldown="1000" />
+      <Shoot radius="15" shootAngle="0" projectileIndex="1" cooldown="1000" />
+    </State>
+    <HpLessTransition targetState="End" threshold="0.1" />
+    <State id="Circle">
+      <Shoot radius="15" count="3" shootAngle="25" cooldown="1000" />
+      <Shoot radius="15" shootAngle="0" projectileIndex="1" cooldown="1000" />
+      <Orbit speed="1" radius="5" target="Arena Horseman Anchor" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+      <TimedTransition targetState="Shoot" time="8000" />
+    </State>
+    <State id="Shoot">
+      <ReturnToSpawn speed="1.5" />
+      <ConditionalEffect effect="Invincible" />
+      <Flash color="0xF0E68C" flashPeriod="1" flashRepeats="6" />
+      <Shoot radius="15" count="8" shootAngle="0" projectileIndex="2" cooldown="1500" />
+      <Shoot radius="15" shootAngle="0" projectileIndex="1" cooldown="2500" />
+      <TimedTransition targetState="Circle" time="6000" />
+    </State>
+    <Shoot radius="15" count="3" shootAngle="25" cooldown="1000" />
+    <Shoot radius="15" shootAngle="0" projectileIndex="1" cooldown="1000" />
+    <Orbit speed="1" radius="5" target="Arena Horseman Anchor" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+    <TimedTransition targetState="Shoot" time="8000" />
+    <ReturnToSpawn speed="1.5" />
+    <ConditionalEffect effect="Invincible" />
+    <Flash color="0xF0E68C" flashPeriod="1" flashRepeats="6" />
+    <Shoot radius="15" count="8" shootAngle="0" projectileIndex="2" cooldown="1500" />
+    <Shoot radius="15" shootAngle="0" projectileIndex="1" cooldown="2500" />
+    <TimedTransition targetState="Circle" time="6000" />
+    <Prioritize>
+      <Follow speed="1.5" acquireRange="20" range="1" cooldown="0" />
+      <Wander speed="1.5" />
+    </Prioritize>
+    <Flash color="0xF0E68C" flashPeriod="1" flashRepeats="1000" />
+    <Shoot radius="15" count="3" shootAngle="25" cooldown="1000" />
+    <Shoot radius="15" shootAngle="0" projectileIndex="1" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="White Demon">
+    <DropPortalOnDeath target="Abyss of Demons Portal" probability="0.17" />
+    <Prioritize>
+      <StayAbove speed="1" altitude="200" />
+      <Follow speed="1" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="10" count="3" shootAngle="20" predictive="1" cooldown="500" />
+    <Reproduce densityMax="3" cooldown="60000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Sprite God">
+    <Prioritize>
+      <StayAbove speed="1" altitude="200" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="12" count="4" shootAngle="10" cooldown="1000" />
+    <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="1" cooldown="1000" />
+    <Reproduce densityMax="3" cooldown="60000" />
+    <ReproduceChildren children="Sprite Child" initialSpawn="2" cooldown="5000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Sprite Child">
+    <Prioritize>
+      <StayAbove speed="1" altitude="200" />
+      <Protect speed="0.4" protectee="Sprite God" protectionRange="1" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <DropPortalOnDeath target="Glowing Portal" probability="0.11" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Medusa">
+    <DropPortalOnDeath target="Snake Pit Portal" probability="0.17" />
+    <Prioritize>
+      <StayAbove speed="1" altitude="200" />
+      <Follow speed="1" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="12" count="5" shootAngle="10" cooldown="1000" />
+    <Grenade radius="4" damage="150" range="8" cooldown="3000" />
+    <Reproduce densityMax="3" cooldown="60000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Ent God">
+    <Prioritize>
+      <StayAbove speed="1" altitude="200" />
+      <Follow speed="1" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="12" count="5" shootAngle="10" predictive="1" cooldown="1250" />
+    <Reproduce densityMax="3" cooldown="60000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Beholder">
+    <Prioritize>
+      <StayAbove speed="1" altitude="200" />
+      <Follow speed="1" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="12" count="5" shootAngle="72" predictive="0.5" cooldown="750" />
+    <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="1" cooldown="1000" />
+    <Reproduce densityMax="3" cooldown="60000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Flying Brain">
+    <Prioritize>
+      <StayAbove speed="1" altitude="200" />
+      <Follow speed="1" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="12" count="5" shootAngle="72" cooldown="500" />
+    <Reproduce densityMax="3" cooldown="60000" />
+    <DropPortalOnDeath target="Mad Lab Portal" probability="0.17" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Slime God">
+    <Prioritize>
+      <StayAbove speed="1" altitude="200" />
+      <Follow speed="1" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="12" count="5" shootAngle="10" predictive="1" cooldown="1000" />
+    <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="1" cooldown="650" />
+    <Reproduce densityMax="2" cooldown="60000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Ghost God">
+    <Prioritize>
+      <StayAbove speed="1" altitude="200" />
+      <Follow speed="1" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="12" count="7" shootAngle="25" predictive="0.5" cooldown="900" />
+    <Reproduce densityMax="3" cooldown="60000" />
+    <DropPortalOnDeath target="Undead Lair Portal" probability="0.17" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Rock Bot">
+    <Spawn children="Paper Bot" maxChildren="1" initialSpawn="1" cooldown="10000" givesNoXp="false" />
+    <Spawn children="Steel Bot" maxChildren="1" initialSpawn="1" cooldown="10000" givesNoXp="false" />
+    <Swirl speed="0.6" radius="3" target="false" />
+    <State id="Waiting">
+      <PlayerWithinTransition targetState="Attacking" dist="15" />
+    </State>
+    <State id="Attacking">
+      <Shoot radius="8" shootAngle="0" cooldown="2000" />
+      <HealGroup range="8" cooldown="1000" group="Papers" />
+      <Taunt text="We are impervious to non-mystic attacks!" probability="0.5" />
+      <TimedTransition targetState="Waiting" time="10000" />
+    </State>
+    <PlayerWithinTransition targetState="Attacking" dist="15" />
+    <Shoot radius="8" shootAngle="0" cooldown="2000" />
+    <HealGroup range="8" cooldown="1000" group="Papers" />
+    <Taunt text="We are impervious to non-mystic attacks!" probability="0.5" />
+    <TimedTransition targetState="Waiting" time="10000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Paper Bot">
+    <DropPortalOnDeath target="Puppet Theatre Portal" probability="0.15" />
+    <Prioritize>
+      <Orbit speed="0.4" radius="3" target="Rock Bot" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
+      <Wander speed="0.8" />
+    </Prioritize>
+    <State id="Idle">
+      <PlayerWithinTransition targetState="Attack" dist="15" />
+    </State>
+    <State id="Attack">
+      <Shoot radius="8" count="3" shootAngle="20" cooldown="800" />
+      <HealGroup range="8" cooldown="1000" group="Steels" />
+      <NoPlayerWithinTransition targetState="Idle" dist="30" />
+      <HpLessTransition targetState="Explode" threshold="0.2" />
+    </State>
+    <State id="Explode">
+      <Shoot radius="0" count="10" shootAngle="36" fixedAngle="0" cooldown="1000" />
+      <Decay time="0" />
+    </State>
+    <PlayerWithinTransition targetState="Attack" dist="15" />
+    <Shoot radius="8" count="3" shootAngle="20" cooldown="800" />
+    <HealGroup range="8" cooldown="1000" group="Steels" />
+    <NoPlayerWithinTransition targetState="Idle" dist="30" />
+    <HpLessTransition targetState="Explode" threshold="0.2" />
+    <Shoot radius="0" count="10" shootAngle="36" fixedAngle="0" cooldown="1000" />
+    <Decay time="0" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Steel Bot">
+    <Prioritize>
+      <Orbit speed="0.4" radius="3" target="Rock Bot" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
+      <Wander speed="0.8" />
+    </Prioritize>
+    <State id="Idle">
+      <PlayerWithinTransition targetState="Attack" dist="15" />
+    </State>
+    <State id="Attack">
+      <Shoot radius="8" count="3" shootAngle="20" cooldown="800" />
+      <HealGroup range="8" cooldown="1000" group="Rocks" />
+      <Taunt text="Silly squishy. We heal our brothers in a circle." probability="0.5" />
+      <NoPlayerWithinTransition targetState="Idle" dist="30" />
+      <HpLessTransition targetState="Explode" threshold="0.2" />
+    </State>
+    <State id="Explode">
+      <Shoot radius="0" count="10" shootAngle="36" fixedAngle="0" cooldown="1000" />
+      <Decay time="0" />
+    </State>
+    <PlayerWithinTransition targetState="Attack" dist="15" />
+    <Shoot radius="8" count="3" shootAngle="20" cooldown="800" />
+    <HealGroup range="8" cooldown="1000" group="Rocks" />
+    <Taunt text="Silly squishy. We heal our brothers in a circle." probability="0.5" />
+    <NoPlayerWithinTransition targetState="Idle" dist="30" />
+    <HpLessTransition targetState="Explode" threshold="0.2" />
+    <Shoot radius="0" count="10" shootAngle="36" fixedAngle="0" cooldown="1000" />
+    <Decay time="0" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Djinn">
+    <State id="Idle">
+      <Prioritize>
+        <StayAbove speed="1" altitude="200" />
+        <Wander speed="0.8" />
+      </Prioritize>
+      <ConditionalEffect effect="Invulnerable" />
+      <Reproduce densityRadius="20" densityMax="3" cooldown="60000" />
+      <PlayerWithinTransition targetState="Attacking" dist="8" />
+    </State>
+    <State id="Attacking">
+      <NoPlayerWithinTransition targetState="Idle" dist="13" />
+      <HpLessTransition targetState="FlashBeforeExplode" threshold="0.5" />
+      <State id="Bullet">
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="90" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="100" coolDownOffset="200" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="110" coolDownOffset="400" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="120" coolDownOffset="600" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="130" coolDownOffset="800" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="140" coolDownOffset="1000" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="150" coolDownOffset="1200" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="160" coolDownOffset="1400" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="170" coolDownOffset="1600" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="180" coolDownOffset="1800" cooldown="10000" />
+        <Shoot radius="1" count="8" shootAngle="45" fixedAngle="180" coolDownOffset="2000" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="180" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="170" coolDownOffset="200" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="160" coolDownOffset="400" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="150" coolDownOffset="600" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="140" coolDownOffset="800" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="130" coolDownOffset="1000" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="120" coolDownOffset="1200" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="110" coolDownOffset="1400" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="100" coolDownOffset="1600" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="90" fixedAngle="90" coolDownOffset="1800" cooldown="10000" />
+        <Shoot radius="1" count="4" shootAngle="22.5" fixedAngle="90" coolDownOffset="2000" cooldown="10000" />
+        <TimedTransition targetState="Wait" time="2000" />
+      </State>
+      <State id="Wait">
+        <Follow speed="0.7" range="0.5" cooldown="0" />
+        <Flash color="0xFF00FF00" flashPeriod="0.1" flashRepeats="20" />
+        <ConditionalEffect effect="Invulnerable" />
+        <TimedTransition targetState="Bullet" time="2000" />
+      </State>
+    </State>
+    <State id="FlashBeforeExplode">
+      <ConditionalEffect effect="Invulnerable" />
+      <Flash color="0xFF0000" flashPeriod="0.3" flashRepeats="3" />
+      <TimedTransition targetState="Explode" time="1000" />
+    </State>
+    <State id="Explode">
+      <Shoot radius="0" count="10" shootAngle="36" fixedAngle="0" cooldown="1000" />
+      <Suicide />
+    </State>
+    <Prioritize>
+      <StayAbove speed="1" altitude="200" />
+      <Wander speed="0.8" />
+    </Prioritize>
+    <ConditionalEffect effect="Invulnerable" />
+    <Reproduce densityRadius="20" densityMax="3" cooldown="60000" />
+    <PlayerWithinTransition targetState="Attacking" dist="8" />
+    <NoPlayerWithinTransition targetState="Idle" dist="13" />
+    <HpLessTransition targetState="FlashBeforeExplode" threshold="0.5" />
+    <State id="Bullet">
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="90" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="100" coolDownOffset="200" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="110" coolDownOffset="400" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="120" coolDownOffset="600" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="130" coolDownOffset="800" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="140" coolDownOffset="1000" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="150" coolDownOffset="1200" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="160" coolDownOffset="1400" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="170" coolDownOffset="1600" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="180" coolDownOffset="1800" cooldown="10000" />
+      <Shoot radius="1" count="8" shootAngle="45" fixedAngle="180" coolDownOffset="2000" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="180" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="170" coolDownOffset="200" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="160" coolDownOffset="400" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="150" coolDownOffset="600" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="140" coolDownOffset="800" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="130" coolDownOffset="1000" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="120" coolDownOffset="1200" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="110" coolDownOffset="1400" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="100" coolDownOffset="1600" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="90" fixedAngle="90" coolDownOffset="1800" cooldown="10000" />
+      <Shoot radius="1" count="4" shootAngle="22.5" fixedAngle="90" coolDownOffset="2000" cooldown="10000" />
+      <TimedTransition targetState="Wait" time="2000" />
+    </State>
+    <State id="Wait">
+      <Follow speed="0.7" range="0.5" cooldown="0" />
+      <Flash color="0xFF00FF00" flashPeriod="0.1" flashRepeats="20" />
+      <ConditionalEffect effect="Invulnerable" />
+      <TimedTransition targetState="Bullet" time="2000" />
+    </State>
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="90" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="100" coolDownOffset="200" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="110" coolDownOffset="400" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="120" coolDownOffset="600" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="130" coolDownOffset="800" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="140" coolDownOffset="1000" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="150" coolDownOffset="1200" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="160" coolDownOffset="1400" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="170" coolDownOffset="1600" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="180" coolDownOffset="1800" cooldown="10000" />
+    <Shoot radius="1" count="8" shootAngle="45" fixedAngle="180" coolDownOffset="2000" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="180" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="170" coolDownOffset="200" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="160" coolDownOffset="400" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="150" coolDownOffset="600" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="140" coolDownOffset="800" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="130" coolDownOffset="1000" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="120" coolDownOffset="1200" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="110" coolDownOffset="1400" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="100" coolDownOffset="1600" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="90" fixedAngle="90" coolDownOffset="1800" cooldown="10000" />
+    <Shoot radius="1" count="4" shootAngle="22.5" fixedAngle="90" coolDownOffset="2000" cooldown="10000" />
+    <TimedTransition targetState="Wait" time="2000" />
+    <Follow speed="0.7" range="0.5" cooldown="0" />
+    <Flash color="0xFF00FF00" flashPeriod="0.1" flashRepeats="20" />
+    <ConditionalEffect effect="Invulnerable" />
+    <TimedTransition targetState="Bullet" time="2000" />
+    <ConditionalEffect effect="Invulnerable" />
+    <Flash color="0xFF0000" flashPeriod="0.3" flashRepeats="3" />
+    <TimedTransition targetState="Explode" time="1000" />
+    <Shoot radius="0" count="10" shootAngle="36" fixedAngle="0" cooldown="1000" />
+    <Suicide />
+  </BehaviorEntry>
+  <BehaviorEntry id="Leviathan">
+    <State id="Wander">
+      <Swirl />
+      <Shoot radius="10" count="2" shootAngle="10" projectileIndex="1" cooldown="500" />
+      <TimedTransition targetState="Triangle" time="5000" />
+    </State>
+    <State id="Triangle">
+      <State id="1">
+        <MoveLine speed="0.7" direction="40" />
+        <Shoot radius="1" count="3" shootAngle="120" fixedAngle="34" cooldown="300" />
+        <Shoot radius="1" count="3" shootAngle="120" fixedAngle="38" cooldown="300" />
+        <Shoot radius="1" count="3" shootAngle="120" fixedAngle="42" cooldown="300" />
+        <Shoot radius="1" count="3" shootAngle="120" fixedAngle="46" cooldown="300" />
+        <TimedTransition targetState="2" time="1500" />
+      </State>
+      <State id="2">
+        <MoveLine speed="0.7" direction="160" />
+        <Shoot radius="1" count="3" shootAngle="120" fixedAngle="94" cooldown="300" />
+        <Shoot radius="1" count="3" shootAngle="120" fixedAngle="98" cooldown="300" />
+        <Shoot radius="1" count="3" shootAngle="120" fixedAngle="102" cooldown="300" />
+        <Shoot radius="1" count="3" shootAngle="120" fixedAngle="106" cooldown="300" />
+        <TimedTransition targetState="3" time="1500" />
+      </State>
+      <State id="3">
+        <MoveLine speed="0.7" direction="280" />
+        <Shoot radius="1" count="3" shootAngle="120" fixedAngle="274" cooldown="300" />
+        <Shoot radius="1" count="3" shootAngle="120" fixedAngle="278" cooldown="300" />
+        <Shoot radius="1" count="3" shootAngle="120" fixedAngle="282" cooldown="300" />
+        <Shoot radius="1" count="3" shootAngle="120" fixedAngle="286" cooldown="300" />
+        <TimedTransition targetState="Wander" time="1500" />
+      </State>
+    </State>
+    <Swirl />
+    <Shoot radius="10" count="2" shootAngle="10" projectileIndex="1" cooldown="500" />
+    <TimedTransition targetState="Triangle" time="5000" />
+    <State id="1">
+      <MoveLine speed="0.7" direction="40" />
+      <Shoot radius="1" count="3" shootAngle="120" fixedAngle="34" cooldown="300" />
+      <Shoot radius="1" count="3" shootAngle="120" fixedAngle="38" cooldown="300" />
+      <Shoot radius="1" count="3" shootAngle="120" fixedAngle="42" cooldown="300" />
+      <Shoot radius="1" count="3" shootAngle="120" fixedAngle="46" cooldown="300" />
+      <TimedTransition targetState="2" time="1500" />
+    </State>
+    <State id="2">
+      <MoveLine speed="0.7" direction="160" />
+      <Shoot radius="1" count="3" shootAngle="120" fixedAngle="94" cooldown="300" />
+      <Shoot radius="1" count="3" shootAngle="120" fixedAngle="98" cooldown="300" />
+      <Shoot radius="1" count="3" shootAngle="120" fixedAngle="102" cooldown="300" />
+      <Shoot radius="1" count="3" shootAngle="120" fixedAngle="106" cooldown="300" />
+      <TimedTransition targetState="3" time="1500" />
+    </State>
+    <State id="3">
+      <MoveLine speed="0.7" direction="280" />
+      <Shoot radius="1" count="3" shootAngle="120" fixedAngle="274" cooldown="300" />
+      <Shoot radius="1" count="3" shootAngle="120" fixedAngle="278" cooldown="300" />
+      <Shoot radius="1" count="3" shootAngle="120" fixedAngle="282" cooldown="300" />
+      <Shoot radius="1" count="3" shootAngle="120" fixedAngle="286" cooldown="300" />
+      <TimedTransition targetState="Wander" time="1500" />
+    </State>
+    <MoveLine speed="0.7" direction="40" />
+    <Shoot radius="1" count="3" shootAngle="120" fixedAngle="34" cooldown="300" />
+    <Shoot radius="1" count="3" shootAngle="120" fixedAngle="38" cooldown="300" />
+    <Shoot radius="1" count="3" shootAngle="120" fixedAngle="42" cooldown="300" />
+    <Shoot radius="1" count="3" shootAngle="120" fixedAngle="46" cooldown="300" />
+    <TimedTransition targetState="2" time="1500" />
+    <MoveLine speed="0.7" direction="160" />
+    <Shoot radius="1" count="3" shootAngle="120" fixedAngle="94" cooldown="300" />
+    <Shoot radius="1" count="3" shootAngle="120" fixedAngle="98" cooldown="300" />
+    <Shoot radius="1" count="3" shootAngle="120" fixedAngle="102" cooldown="300" />
+    <Shoot radius="1" count="3" shootAngle="120" fixedAngle="106" cooldown="300" />
+    <TimedTransition targetState="3" time="1500" />
+    <MoveLine speed="0.7" direction="280" />
+    <Shoot radius="1" count="3" shootAngle="120" fixedAngle="274" cooldown="300" />
+    <Shoot radius="1" count="3" shootAngle="120" fixedAngle="278" cooldown="300" />
+    <Shoot radius="1" count="3" shootAngle="120" fixedAngle="282" cooldown="300" />
+    <Shoot radius="1" count="3" shootAngle="120" fixedAngle="286" cooldown="300" />
+    <TimedTransition targetState="Wander" time="1500" />
+  </BehaviorEntry>
+</BehaviorEntries>

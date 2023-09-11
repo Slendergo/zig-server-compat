@@ -25,6 +25,7 @@ class Protect : CycleBehavior
     public Protect(XElement e)
     {
         speed = e.ParseFloat("@speed");
+        protectee = GetObjType(e.ParseString("@protectee"));
         acquireRange = e.ParseFloat("@acquireRange");
         protectionRange = e.ParseFloat("@protectionRange");
         reprotectRange = e.ParseFloat("@reprotectRange");

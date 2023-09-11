@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Pentaract Eye">
+    <Prioritize>
+      <Swirl speed="2" acquireRange="20" />
+      <Protect speed="2" protectee="Pentaract Tower" acquireRange="20" protectionRange="6" reprotectRange="4" />
+    </Prioritize>
+    <Shoot radius="9" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Pentaract Tower">
+    <Spawn children="Pentaract Eye" initialSpawn="2" cooldown="5000" givesNoXp="false" />
+    <Grenade radius="4" damage="100" range="8" cooldown="5000" />
+    <TransformOnDeath target="Pentaract Tower Corpse" />
+    <TransferDamageOnDeath target="Pentaract" />
+    <TransferDamageOnDeath target="Pentaract Tower Corpse" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Pentaract">
+    <ConditionalEffect effect="Invincible" />
+    <State id="Waiting">
+      <EntityNotExistsTransition targetState="Die" dist="50" target="Pentaract Tower" />
+    </State>
+    <State id="Die">
+      <Suicide />
+    </State>
+    <EntityNotExistsTransition targetState="Die" dist="50" target="Pentaract Tower" />
+    <Suicide />
+  </BehaviorEntry>
+  <BehaviorEntry id="Pentaract Tower Corpse">
+    <ConditionalEffect effect="Invincible" />
+    <State id="Waiting">
+      <TimedTransition targetState="Spawn" time="15000" />
+      <EntityNotExistsTransition targetState="Die" dist="50" target="Pentaract Tower" />
+    </State>
+    <State id="Spawn">
+      <Transform target="Pentaract Tower" />
+    </State>
+    <State id="Die">
+      <Suicide />
+    </State>
+    <TimedTransition targetState="Spawn" time="15000" />
+    <EntityNotExistsTransition targetState="Die" dist="50" target="Pentaract Tower" />
+    <Transform target="Pentaract Tower" />
+    <Suicide />
+  </BehaviorEntry>
+</BehaviorEntries>

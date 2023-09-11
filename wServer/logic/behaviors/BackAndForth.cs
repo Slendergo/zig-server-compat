@@ -15,7 +15,7 @@ class BackAndForth : CycleBehavior
     public BackAndForth(XElement e)
     {
         speed = e.ParseFloat("@speed");
-        distance = e.ParseInt("@distance");
+        distance = e.ParseInt("@distance", 5);
     }
 
     public BackAndForth(double speed, int distance = 5)

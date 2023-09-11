@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Septavius the Ghost God">
+    <State id="noName360">
+      <PlayerWithinTransition targetState="transition1" dist="8" />
+    </State>
+    <State id="noName361">
+      <ConditionalEffect effect="Invulnerable" />
+      <Flash color="0xFF00" flashPeriod="0.25" flashRepeats="12" />
+      <Wander speed="0.1" />
+      <State id="transition1">
+        <TimedTransition targetState="spiral" time="3000" />
+      </State>
+      <State id="transition2">
+        <TimedTransition targetState="ring" time="3000" />
+      </State>
+      <State id="transition3">
+        <TimedTransition targetState="quiet" time="3000" />
+      </State>
+      <State id="transition4">
+        <TimedTransition targetState="spawn" time="3000" />
+      </State>
+    </State>
+    <State id="spiral">
+      <Spawn children="Lair Ghost Archer" maxChildren="1" initialSpawn="1" cooldown="0" />
+      <Spawn children="Lair Ghost Knight" maxChildren="2" initialSpawn="4" cooldown="0" />
+      <Spawn children="Lair Ghost Mage" maxChildren="1" initialSpawn="1" cooldown="0" />
+      <Spawn children="Lair Ghost Rogue" maxChildren="2" initialSpawn="4" cooldown="0" />
+      <Spawn children="Lair Ghost Paladin" maxChildren="1" initialSpawn="1" cooldown="0" />
+      <Spawn children="Lair Ghost Warrior" maxChildren="2" initialSpawn="4" cooldown="0" />
+      <Shoot radius="10" count="3" shootAngle="0" fixedAngle="0" cooldown="1000" />
+      <Shoot radius="10" count="3" shootAngle="0" fixedAngle="24" coolDownOffset="200" cooldown="1000" />
+      <Shoot radius="10" count="3" shootAngle="0" fixedAngle="48" coolDownOffset="400" cooldown="1000" />
+      <Shoot radius="10" count="3" shootAngle="0" fixedAngle="72" coolDownOffset="600" cooldown="1000" />
+      <Shoot radius="10" count="3" shootAngle="0" fixedAngle="96" coolDownOffset="800" cooldown="1000" />
+      <TimedTransition targetState="transition2" time="10000" />
+    </State>
+    <State id="ring">
+      <Wander speed="0.1" />
+      <Shoot radius="10" count="12" shootAngle="0" projectileIndex="4" cooldown="2000" />
+      <TimedTransition targetState="transition3" time="10000" />
+    </State>
+    <State id="quiet">
+      <Wander speed="0.1" />
+      <Shoot radius="10" count="8" shootAngle="0" projectileIndex="1" cooldown="1000" />
+      <Shoot radius="10" count="8" shootAngle="0" projectileIndex="1" angleOffset="22.5" coolDownOffset="500" cooldown="1000" />
+      <Shoot radius="8" count="3" shootAngle="20" projectileIndex="2" cooldown="2000" />
+      <TimedTransition targetState="transition4" time="10000" />
+    </State>
+    <State id="spawn">
+      <Wander speed="0.1" />
+      <Spawn children="Ghost Mage of Septavius" maxChildren="2" initialSpawn="4" cooldown="0" />
+      <Spawn children="Ghost Rogue of Septavius" maxChildren="2" initialSpawn="4" cooldown="0" />
+      <Spawn children="Ghost Warrior of Septavius" maxChildren="2" initialSpawn="4" cooldown="0" />
+      <Reproduce children="Ghost Mage of Septavius" densityMax="2" cooldown="1000" />
+      <Reproduce children="Ghost Rogue of Septavius" densityMax="2" cooldown="1000" />
+      <Reproduce children="Ghost Warrior of Septavius" densityMax="2" cooldown="1000" />
+      <Shoot radius="8" count="3" shootAngle="10" projectileIndex="1" cooldown="1000" />
+      <TimedTransition targetState="transition1" time="10000" />
+    </State>
+    <PlayerWithinTransition targetState="transition1" dist="8" />
+    <ConditionalEffect effect="Invulnerable" />
+    <Flash color="0xFF00" flashPeriod="0.25" flashRepeats="12" />
+    <Wander speed="0.1" />
+    <State id="transition1">
+      <TimedTransition targetState="spiral" time="3000" />
+    </State>
+    <State id="transition2">
+      <TimedTransition targetState="ring" time="3000" />
+    </State>
+    <State id="transition3">
+      <TimedTransition targetState="quiet" time="3000" />
+    </State>
+    <State id="transition4">
+      <TimedTransition targetState="spawn" time="3000" />
+    </State>
+    <TimedTransition targetState="spiral" time="3000" />
+    <TimedTransition targetState="ring" time="3000" />
+    <TimedTransition targetState="quiet" time="3000" />
+    <TimedTransition targetState="spawn" time="3000" />
+    <Spawn children="Lair Ghost Archer" maxChildren="1" initialSpawn="1" cooldown="0" />
+    <Spawn children="Lair Ghost Knight" maxChildren="2" initialSpawn="4" cooldown="0" />
+    <Spawn children="Lair Ghost Mage" maxChildren="1" initialSpawn="1" cooldown="0" />
+    <Spawn children="Lair Ghost Rogue" maxChildren="2" initialSpawn="4" cooldown="0" />
+    <Spawn children="Lair Ghost Paladin" maxChildren="1" initialSpawn="1" cooldown="0" />
+    <Spawn children="Lair Ghost Warrior" maxChildren="2" initialSpawn="4" cooldown="0" />
+    <Shoot radius="10" count="3" shootAngle="0" fixedAngle="0" cooldown="1000" />
+    <Shoot radius="10" count="3" shootAngle="0" fixedAngle="24" coolDownOffset="200" cooldown="1000" />
+    <Shoot radius="10" count="3" shootAngle="0" fixedAngle="48" coolDownOffset="400" cooldown="1000" />
+    <Shoot radius="10" count="3" shootAngle="0" fixedAngle="72" coolDownOffset="600" cooldown="1000" />
+    <Shoot radius="10" count="3" shootAngle="0" fixedAngle="96" coolDownOffset="800" cooldown="1000" />
+    <TimedTransition targetState="transition2" time="10000" />
+    <Wander speed="0.1" />
+    <Shoot radius="10" count="12" shootAngle="0" projectileIndex="4" cooldown="2000" />
+    <TimedTransition targetState="transition3" time="10000" />
+    <Wander speed="0.1" />
+    <Shoot radius="10" count="8" shootAngle="0" projectileIndex="1" cooldown="1000" />
+    <Shoot radius="10" count="8" shootAngle="0" projectileIndex="1" angleOffset="22.5" coolDownOffset="500" cooldown="1000" />
+    <Shoot radius="8" count="3" shootAngle="20" projectileIndex="2" cooldown="2000" />
+    <TimedTransition targetState="transition4" time="10000" />
+    <Wander speed="0.1" />
+    <Spawn children="Ghost Mage of Septavius" maxChildren="2" initialSpawn="4" cooldown="0" />
+    <Spawn children="Ghost Rogue of Septavius" maxChildren="2" initialSpawn="4" cooldown="0" />
+    <Spawn children="Ghost Warrior of Septavius" maxChildren="2" initialSpawn="4" cooldown="0" />
+    <Reproduce children="Ghost Mage of Septavius" densityMax="2" cooldown="1000" />
+    <Reproduce children="Ghost Rogue of Septavius" densityMax="2" cooldown="1000" />
+    <Reproduce children="Ghost Warrior of Septavius" densityMax="2" cooldown="1000" />
+    <Shoot radius="8" count="3" shootAngle="10" projectileIndex="1" cooldown="1000" />
+    <TimedTransition targetState="transition1" time="10000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Ghost Mage of Septavius">
+    <Prioritize>
+      <Protect speed="0.625" protectee="Septavius the Ghost God" protectionRange="6" />
+      <Follow speed="0.75" range="7" cooldown="0" />
+    </Prioritize>
+    <Wander speed="0.25" />
+    <Shoot radius="8" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Ghost Rogue of Septavius">
+    <Follow speed="0.75" range="1" cooldown="0" />
+    <Wander speed="0.25" />
+    <Shoot radius="8" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Ghost Warrior of Septavius">
+    <Follow speed="0.75" range="1" cooldown="0" />
+    <Wander speed="0.25" />
+    <Shoot radius="8" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Ghost Archer">
+    <Prioritize>
+      <Protect speed="0.625" protectee="Septavius the Ghost God" protectionRange="6" />
+      <Follow speed="0.75" range="7" cooldown="0" />
+    </Prioritize>
+    <Wander speed="0.25" />
+    <Shoot radius="8" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Ghost Knight">
+    <Follow speed="0.75" range="1" cooldown="0" />
+    <Wander speed="0.25" />
+    <Shoot radius="8" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Ghost Mage">
+    <Prioritize>
+      <Protect speed="0.625" protectee="Septavius the Ghost God" protectionRange="6" />
+      <Follow speed="0.75" range="7" cooldown="0" />
+    </Prioritize>
+    <Wander speed="0.25" />
+    <Shoot radius="8" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Ghost Paladin">
+    <Follow speed="0.75" range="1" cooldown="0" />
+    <Wander speed="0.25" />
+    <Shoot radius="8" shootAngle="0" cooldown="1000" />
+    <HealGroup range="5" cooldown="5000" group="Lair Ghost" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Ghost Rogue">
+    <Follow speed="0.75" range="1" cooldown="0" />
+    <Wander speed="0.25" />
+    <Shoot radius="8" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Ghost Warrior">
+    <Follow speed="0.75" range="1" cooldown="0" />
+    <Wander speed="0.25" />
+    <Shoot radius="8" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Skeleton">
+    <Shoot radius="6" shootAngle="0" cooldown="1000" />
+    <Prioritize>
+      <Follow speed="1" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Skeleton King">
+    <Shoot radius="10" count="3" shootAngle="10" cooldown="1000" />
+    <Prioritize>
+      <Follow speed="1" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Skeleton Mage">
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <Prioritize>
+      <Follow speed="1" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Skeleton Swordsman">
+    <Shoot radius="5" shootAngle="0" cooldown="1000" />
+    <Prioritize>
+      <Follow speed="1" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Skeleton Veteran">
+    <Shoot radius="5" shootAngle="0" cooldown="1000" />
+    <Prioritize>
+      <Follow speed="1" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Mummy">
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <Prioritize>
+      <Follow speed="0.9" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Mummy King">
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <Prioritize>
+      <Follow speed="0.9" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Mummy Pharaoh">
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <Prioritize>
+      <Follow speed="0.9" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Big Brown Slime">
+    <Shoot radius="10" count="3" shootAngle="10" cooldown="500" />
+    <Wander speed="0.1" />
+    <TransformOnDeath target="Lair Little Brown Slime" max="6" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Little Brown Slime">
+    <Shoot radius="10" count="3" shootAngle="10" cooldown="500" />
+    <Protect speed="0.1" protectee="Lair Big Brown Slime" acquireRange="5" />
+    <Wander speed="0.1" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Big Black Slime">
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <Wander speed="0.1" />
+    <TransformOnDeath target="Lair Little Black Slime" max="4" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Medium Black Slime">
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <Wander speed="0.1" />
+    <TransformOnDeath target="Lair Little Black Slime" max="4" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Little Black Slime">
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <Wander speed="0.1" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Construct Giant">
+    <Prioritize>
+      <Follow speed="0.8" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="10" count="3" shootAngle="20" cooldown="1000" />
+    <Shoot radius="10" shootAngle="0" projectileIndex="1" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Construct Titan">
+    <Prioritize>
+      <Follow speed="0.8" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="10" count="3" shootAngle="20" cooldown="1000" />
+    <Shoot radius="10" count="3" shootAngle="20" projectileIndex="1" coolDownOffset="100" cooldown="2000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Brown Bat">
+    <Wander speed="0.1" />
+    <Charge speed="3" range="8" cooldown="2000" />
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Ghost Bat">
+    <Wander speed="0.1" />
+    <Charge speed="3" range="8" cooldown="2000" />
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Reaper">
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+    <Follow speed="1.3" range="1" cooldown="0" />
+    <Wander speed="0.1" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Vampire">
+    <Shoot radius="10" shootAngle="0" cooldown="500" />
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+    <Follow speed="1.3" range="1" cooldown="0" />
+    <Wander speed="0.1" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Vampire King">
+    <Shoot radius="10" shootAngle="0" cooldown="500" />
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+    <Follow speed="1.3" range="1" cooldown="0" />
+    <Wander speed="0.1" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Grey Spectre">
+    <Wander speed="0.1" />
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <Grenade radius="2.5" damage="50" range="8" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Blue Spectre">
+    <Wander speed="0.1" />
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <Grenade radius="2.5" damage="70" range="8" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair White Spectre">
+    <Wander speed="0.1" />
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <Grenade radius="2.5" damage="90" range="8" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Burst Trap">
+    <State id="FinnaBustANut">
+      <PlayerWithinTransition targetState="Aaa" dist="3" />
+    </State>
+    <State id="Aaa">
+      <Shoot radius="8.4" count="12" shootAngle="0" cooldown="1000" />
+      <Suicide />
+    </State>
+    <PlayerWithinTransition targetState="Aaa" dist="3" />
+    <Shoot radius="8.4" count="12" shootAngle="0" cooldown="1000" />
+    <Suicide />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lair Blast Trap">
+    <State id="FinnaBustANut">
+      <PlayerWithinTransition targetState="Aaa" dist="3" />
+    </State>
+    <State id="Aaa">
+      <Shoot radius="25" count="12" shootAngle="0" cooldown="3000" />
+      <Suicide />
+    </State>
+    <PlayerWithinTransition targetState="Aaa" dist="3" />
+    <Shoot radius="25" count="12" shootAngle="0" cooldown="3000" />
+    <Suicide />
+  </BehaviorEntry>
+</BehaviorEntries>

@@ -31,7 +31,7 @@ class Follow : CycleBehavior
     {
         speed = e.ParseFloat("@speed");
         acquireRange = e.ParseFloat("@acquireRange", 10);
-        range = e.ParseFloat("@range", 6);
+        range = e.ParseFloat("@range", 4);
         duration = e.ParseInt("@duration");
         coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown"));
     }
