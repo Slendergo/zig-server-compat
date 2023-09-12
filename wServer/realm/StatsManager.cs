@@ -85,7 +85,7 @@ public class StatsManager
         if (host.HasConditionEffect(ConditionEffects.ArmorBroken))
             def = 0;
 
-        float limit = dmg * 0.15f;
+        float limit = dmg * 0.25f;
 
         float ret;
         if (dmg - def < limit) ret = limit;
@@ -105,7 +105,7 @@ public class StatsManager
         if (Owner.HasConditionEffect(ConditionEffects.ArmorBroken) || noDef)
             def = 0;
 
-        float limit = dmg * 0.15f;
+        float limit = dmg * 0.25f;
 
         float ret;
         if (dmg - def < limit) ret = limit;
