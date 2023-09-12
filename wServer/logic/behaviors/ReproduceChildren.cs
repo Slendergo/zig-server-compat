@@ -57,11 +57,6 @@ class ReproduceChildren : Behavior
                 if (enemyHost.Spawned)
                 {
                     enemyEntity.Spawned = true;
-                    enemyEntity.ApplyConditionEffect(new ConditionEffect()
-                    {
-                        Effect = ConditionEffectIndex.Invisible,
-                        DurationMS = -1
-                    });
                 }
             }
             (state as SpawnState).livingChildren.Add(enemyEntity);
@@ -96,11 +91,6 @@ class ReproduceChildren : Behavior
                 if (enemyHost.Spawned)
                 {
                     enemyEntity.Spawned = true;
-                    enemyEntity.ApplyConditionEffect(new ConditionEffect()
-                    {
-                        Effect = ConditionEffectIndex.Invisible,
-                        DurationMS = -1
-                    });
                 }
             }
 

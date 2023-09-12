@@ -65,11 +65,6 @@ class Spawn : Behavior
                 if (enemyHost.Spawned)
                 {
                     enemyEntity.Spawned = true;
-                    enemyEntity.ApplyConditionEffect(new ConditionEffect()
-                    {
-                        Effect = ConditionEffectIndex.Invisible,
-                        DurationMS = -1
-                    });
                 }
             }
 
@@ -98,11 +93,6 @@ class Spawn : Behavior
                 if (enemyHost.Spawned)
                 {
                     enemyEntity.Spawned = true;
-                    enemyEntity.ApplyConditionEffect(new ConditionEffect()
-                    {
-                        Effect = ConditionEffectIndex.Invisible,
-                        DurationMS = -1
-                    });
                 }
             }
 
