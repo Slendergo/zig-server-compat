@@ -988,7 +988,7 @@ partial class Player
         for (var i = 0; i < item.NumProjectiles; i++)
         {
             var proj = CreateProjectile(prjDesc, item.ObjectType,
-                (int)Stats.GetAttackDamage(prjDesc.MinDamage, prjDesc.MaxDamage, true),
+                (int)Stats.GetClientDamage(prjDesc.MinDamage, prjDesc.MaxDamage, true),
                 time.TotalElapsedMs, new Position() { X = X, Y = Y }, (float)(startAngle + arcGap * i));
             Owner.EnterWorld(proj);
             sPkts[i] = new AllyShoot()
@@ -1052,8 +1052,8 @@ partial class Player
 
     void PoisonEnemy(World world, Enemy enemy, ActivateEffect eff)
     {
-        var remainingDmg = (int)StatsManager.GetDefenseDamage(enemy, eff.TotalDamage, enemy.ObjectDesc.Defense);
-        var perDmg =( remainingDmg * 1000) / eff.DurationMS;
+        var remainingDmg = enemy.DamageWithDefense(eff.TotalDamage, enemy.Defense, false);
+        var perDmg = (remainingDmg * 1000) / eff.DurationMS;
 
         WorldTimer tmr = null;
         var x = 0;

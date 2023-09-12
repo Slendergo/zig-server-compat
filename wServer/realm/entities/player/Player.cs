@@ -567,9 +567,9 @@ public partial class Player : Character, IContainer, IPlayer
             return false;
         }
 
-        var dmg = (int)Stats.GetDefenseDamage(projectile.Damage, projectile.ProjDesc.ArmorPiercing);
-        if (!HasConditionEffect(ConditionEffects.Invulnerable))
-            HP -= dmg;
+        var dmg = DamageWithDefense(projectile.Damage, Stats[3], projectile.ProjDesc.ArmorPiercing);
+        HP -= dmg;
+
         ApplyConditionEffect(projectile.ProjDesc.Effects);
         Owner.BroadcastPacketNearby(new Damage()
         {
@@ -594,9 +594,10 @@ public partial class Player : Character, IContainer, IPlayer
         if (IsInvulnerable())
             return;
 
-        dmg = (int)Stats.GetDefenseDamage(dmg, false);
-        if (!HasConditionEffect(ConditionEffects.Invulnerable))
-            HP -= dmg;
+        dmg = DamageWithDefense(dmg, Stats[3], false);
+
+        HP -= dmg;
+
         Owner.BroadcastPacketNearby(new Damage()
         {
             TargetId = Id,
@@ -791,10 +792,5 @@ public partial class Player : Character, IContainer, IPlayer
     public void RestoreDefaultSkin()
     {
         Skin = _originalSkin;
-    }
-
-    public void DropNextRandom()
-    {
-        Client.Random.NextInt();
     }
 }

@@ -24,10 +24,9 @@ class PlayerShootHandler : PacketHandlerBase<PlayerShoot>
 
     private void Handle(Player player, PlayerShoot packet)
     {
-        Item item;
-        if (!player.Manager.Resources.GameData.Items.TryGetValue(packet.ContainerType, out item))
+        if (!player.Manager.Resources.GameData.Items.TryGetValue(packet.ContainerType, out var item))
         {
-            player.DropNextRandom();
+            player.Client.Disconnect("Invalid Shoot ContainerType");
             return;
         }
 
@@ -38,17 +37,21 @@ class PlayerShootHandler : PacketHandlerBase<PlayerShoot>
         var result = player.ValidatePlayerShoot(item, packet.Time);
         if (result != PlayerShootStatus.OK)
         {
-            CheatLog.Info($"PlayerShoot validation failure ({player.Name}:{player.AccountId}): {result}");
-            player.DropNextRandom();
+            player.Client.Disconnect("Invalid Shoot State");
+            //CheatLog.Info($"PlayerShoot validation failure ({player.Name}:{player.AccountId}): {result}");
+            //player.Client.Random.NextInt(prjDesc.MinDamage, prjDesc.MaxDamage);
             return;
         }
 
-        // create projectile and show other players
         var prjDesc = item.Projectiles[0]; //Assume only one
-        Projectile prj = player.PlayerShootProjectile(
+
+        // create projectile and show other players
+        var prj = player.PlayerShootProjectile(
             packet.BulletId, prjDesc, item.ObjectType,
             packet.Time, packet.StartingPos, packet.Angle);
+
         player.Owner.EnterWorld(prj);
+
         player.Owner.BroadcastPacketNearby(new AllyShoot()
         {
             OwnerId = player.Id,

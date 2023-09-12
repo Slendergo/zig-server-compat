@@ -734,6 +734,21 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
         Size = _originalSize;
     }
 
+    public int DamageWithDefense(int origDamage, int targetDefense, bool armorPiercing)
+    {
+        var def = (float)targetDefense;
+        if (armorPiercing || HasConditionEffect(ConditionEffects.ArmorBroken))
+            def = 0;
+        else if (HasConditionEffect(ConditionEffects.Armored))
+            def *= 1.5f;
+
+        var min = (origDamage * 2) / 20;
+        var d = (int)Math.Max(min, origDamage - def);
+        if (HasConditionEffect(ConditionEffects.Invulnerable) || HasConditionEffect(ConditionEffects.Invincible))
+            d = 0;
+        return d;
+    }
+
     public virtual void Dispose()
     {
         Owner = null;

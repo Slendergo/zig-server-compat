@@ -19,6 +19,13 @@ public class StaticObject : Entity
         set { _hp.SetValue(value); }
     }
 
+    private readonly SV<int> defense;
+    public int Defense
+    {
+        get => defense.GetValue();
+        set => defense.SetValue(value);
+    }
+
     public static int? GetHP(XElement elem)
     {
         var n = elem.Element("MaxHitPoints");
@@ -32,6 +39,7 @@ public class StaticObject : Entity
         : base(manager, objType)
     {
         _hp = new SV<int>(this, StatsType.HP, 0, dying);
+        defense = new SV<int>(this, StatsType.Defense, ObjectDesc.Defense);
         if (Vulnerable = life.HasValue)
             HP = life.Value;
         Dying = dying;
@@ -42,6 +50,7 @@ public class StaticObject : Entity
     protected override void ExportStats(IDictionary<StatsType, object> stats)
     {
         stats[StatsType.HP] = (!Vulnerable) ? int.MaxValue : HP;
+        stats[StatsType.Defense] = Defense;
         base.ExportStats(stats);
     }
 
@@ -49,11 +58,10 @@ public class StaticObject : Entity
     {
         if (Vulnerable && projectile.ProjectileOwner is Player)
         {
-            var def = this.ObjectDesc.Defense;
-            if (projectile.ProjDesc.ArmorPiercing)
-                def = 0;
-            var dmg = (int)StatsManager.GetDefenseDamage(this, projectile.Damage, def);
+            var dmg = DamageWithDefense(projectile.Damage, Defense, projectile.ProjDesc.ArmorPiercing);
+            
             HP -= dmg;
+
             Owner.BroadcastPacketNearby(new Damage()
             {
                 TargetId = this.Id,

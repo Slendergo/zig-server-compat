@@ -1,4 +1,5 @@
 ﻿using common.resources;
+using System.Net.NetworkInformation;
 using wServer.logic;
 using wServer.networking.packets.outgoing;
 using wServer.realm.worlds;
@@ -11,12 +12,21 @@ public class Enemy : Character
     bool stat;
     public Enemy ParentEntity;
 
+    private readonly SV<int> defense;
+
+    public int Defense
+    {
+        get => defense.GetValue(); 
+        set => defense.SetValue(value);
+    }
+
     DamageCounter counter;
     public Enemy(RealmManager manager, ushort objType)
         : base(manager, objType)
     {
         stat = ObjectDesc.MaxHP == 0;
         counter = new DamageCounter(this);
+        defense = new SV<int>(this, StatsType.Defense, ObjectDesc.Defense);
     }
 
     public DamageCounter DamageCounter { get { return counter; } }
@@ -43,6 +53,12 @@ public class Enemy : Character
             });
     }
 
+    protected override void ExportStats(IDictionary<StatsType, object> stats)
+    {
+        stats[StatsType.Defense] = Defense;
+        base.ExportStats(stats);
+    }
+
     public event EventHandler<BehaviorEventArgs> OnDeath;
 
     public void Death(RealmTime time)
@@ -62,15 +78,12 @@ public class Enemy : Character
         if (!HasConditionEffect(ConditionEffects.Paused) &&
             !HasConditionEffect(ConditionEffects.Stasis))
         {
-            var def = this.ObjectDesc.Defense;
-            if (noDef)
-                def = 0;
-            dmg = (int)StatsManager.GetDefenseDamage(this, dmg, def);
-            int effDmg = dmg;
-            if (effDmg > HP)
-                effDmg = HP;
-            if (!HasConditionEffect(ConditionEffects.Invulnerable))
-                HP -= dmg;
+            dmg = DamageWithDefense(dmg, Defense, noDef);
+            if (dmg > HP)
+                dmg = HP;
+
+            HP -= dmg;
+
             ApplyConditionEffect(effs);
             Owner.BroadcastPacketNearby(new Damage()
             {
@@ -89,7 +102,7 @@ public class Enemy : Character
                 Death(time);
             }
 
-            return effDmg;
+            return dmg;
         }
         return 0;
     }
@@ -102,12 +115,11 @@ public class Enemy : Character
             !HasConditionEffect(ConditionEffects.Paused) &&
             !HasConditionEffect(ConditionEffects.Stasis))
         {
-            var def = this.ObjectDesc.Defense;
-            if (projectile.ProjDesc.ArmorPiercing)
-                def = 0;
-            int dmg = (int)StatsManager.GetDefenseDamage(this, projectile.Damage, def);
-            if (!HasConditionEffect(ConditionEffects.Invulnerable))
-                HP -= dmg;
+            var dmg = DamageWithDefense(projectile.Damage, Defense, projectile.ProjDesc.ArmorPiercing);
+            HP -= dmg;
+
+            Console.WriteLine(dmg);
+
             ApplyConditionEffect(projectile.ProjDesc.Effects);
             Owner.BroadcastPacketNearby(new Damage()
             {

@@ -9,7 +9,7 @@ public partial class Player
         long startTime, Position position, float angle)
     {
         projectileId = id;
-        var dmg = (int)Stats.GetAttackDamage(desc.MinDamage, desc.MaxDamage);
+        var dmg = (int)Stats.GetClientDamage(desc.MinDamage, desc.MaxDamage);
         return CreateProjectile(desc, objType, dmg,
             C2STime(startTime), position, angle);
     }

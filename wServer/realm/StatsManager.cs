@@ -46,25 +46,19 @@ public class StatsManager
         _stats[index].SetValue(this[index]);
     }
 
-    public int GetAttackDamage(int min, int max, bool isAbility = false)
+    public int GetClientDamage(int min, int max, bool useMult = false)
     {
-        var ret = Owner.Client.Random.NextIntRange((uint)min, (uint)max) * GetAttackMult(isAbility);
-        //Log.Info($"Dmg: {ret}");
-        return (int)ret;
+        var mult = useMult ? GetAttackMult() : 1.0;
+        return (int)(Owner.Client.Random.NextIntRange((uint)min, (uint)max) * mult);
     }
 
-    public float GetAttackMult(bool isAbility)
+    public float GetAttackMult()
     {
-        if (isAbility)
-            return 1;
-
         if (Owner.HasConditionEffect(ConditionEffects.Weak))
             return MinAttackMult;
-
         var mult = MinAttackMult + (this[2] / 75f) * (MaxAttackMult - MinAttackMult);
         if (Owner.HasConditionEffect(ConditionEffects.Damaging))
             mult *= 1.5f;
-
         return mult;
     }
 
@@ -78,44 +72,25 @@ public class StatsManager
         return rof;
     }
 
-    public static float GetDefenseDamage(Entity host, int dmg, int def)
-    {
-        if (host.HasConditionEffect(ConditionEffects.Armored))
-            def *= 2;
-        if (host.HasConditionEffect(ConditionEffects.ArmorBroken))
-            def = 0;
+    //public float GetDefenseDamage(int dmg, bool noDef)
+    //{
+    //    var def = this[3];
+    //    if (Owner.HasConditionEffect(ConditionEffects.Armored))
+    //        def *= 2;
+    //    if (Owner.HasConditionEffect(ConditionEffects.ArmorBroken) || noDef)
+    //        def = 0;
 
-        float limit = dmg * 0.25f;
+    //    float limit = dmg * 0.25f;
 
-        float ret;
-        if (dmg - def < limit) ret = limit;
-        else ret = dmg - def;
+    //    float ret;
+    //    if (dmg - def < limit) ret = limit;
+    //    else ret = dmg - def;
 
-        if (host.HasConditionEffect(ConditionEffects.Invulnerable) ||
-            host.HasConditionEffect(ConditionEffects.Invincible))
-            ret = 0;
-        return ret;
-    }
-
-    public float GetDefenseDamage(int dmg, bool noDef)
-    {
-        var def = this[3];
-        if (Owner.HasConditionEffect(ConditionEffects.Armored))
-            def *= 2;
-        if (Owner.HasConditionEffect(ConditionEffects.ArmorBroken) || noDef)
-            def = 0;
-
-        float limit = dmg * 0.25f;
-
-        float ret;
-        if (dmg - def < limit) ret = limit;
-        else ret = dmg - def;
-
-        if (Owner.HasConditionEffect(ConditionEffects.Invulnerable) ||
-            Owner.HasConditionEffect(ConditionEffects.Invincible))
-            ret = 0;
-        return ret;
-    }
+    //    if (Owner.HasConditionEffect(ConditionEffects.Invulnerable) ||
+    //        Owner.HasConditionEffect(ConditionEffects.Invincible))
+    //        ret = 0;
+    //    return ret;
+    //}
 
     public static float GetSpeed(Entity entity, float stat)
     {
