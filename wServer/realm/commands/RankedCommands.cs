@@ -212,13 +212,10 @@ class SpawnCommand : Command
             ObjectId = player.Id,
             Message = notif
         }, null);
-
-        foreach (var p in player.Owner.Players.Values)
-        {
-            //p.Client.SendNotification();
+        
+        foreach (var p in player.Owner.Players.Values) {
             p.SendInfo($"{player.Name} - {notif}");
         }
-
     }
 
     private void QueueSpawnEvent(
@@ -1311,7 +1308,7 @@ class QuakeCommand : Command
 
         //if (player.Owner is Nexus)
         //{
-        //    player.SendError("Cannot use /quake in Nexus.");
+        //    player.SendErrorText("Cannot use /quake in Nexus.");
         //    return false;
         //}
 
@@ -1322,7 +1319,7 @@ class QuakeCommand : Command
         //WorldTemplateData template;
         //if (worldNameProper == null || (proto = worldProtoData[worldNameProper]).setpiece)
         //{
-        //    player.SendError("Invalid world.");
+        //    player.SendErrorText("Invalid world.");
         //    return false;
         //}
 

@@ -45,7 +45,7 @@ public class NetworkTicker
 
             if (pending.client.State == ProtocolState.Disconnected)
                 continue;
-            
+
             try
             {
                 // Console.WriteLine("Handling: " + pending.id);
