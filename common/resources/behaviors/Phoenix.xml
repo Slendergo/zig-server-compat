@@ -43,21 +43,6 @@
         <TimedTransition targetState="grow" time="800" />
       </State>
     </State>
-    <ConditionalEffect effect="Invulnerable" />
-    <TimedTransition targetState="unshielded" time="2000" />
-    <Flash color="0xFF0000" flashPeriod="1" flashRepeats="5000" />
-    <State id="grow">
-      <ChangeSize rate="20" target="150" />
-      <TimedTransition targetState="shrink" time="800" />
-    </State>
-    <State id="shrink">
-      <ChangeSize rate="-20" target="130" />
-      <TimedTransition targetState="grow" time="800" />
-    </State>
-    <ChangeSize rate="20" target="150" />
-    <TimedTransition targetState="shrink" time="800" />
-    <ChangeSize rate="-20" target="130" />
-    <TimedTransition targetState="grow" time="800" />
   </BehaviorEntry>
   <BehaviorEntry id="Phoenix Reborn">
     <Prioritize>
@@ -80,14 +65,5 @@
       <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="0.5" cooldown="350" />
       <TimedTransition targetState="xxx" time="4500" />
     </State>
-    <Shoot radius="10" count="12" shootAngle="30" fixedAngle="10" coolDownOffset="500" cooldown="100000" />
-    <Shoot radius="10" count="12" shootAngle="30" fixedAngle="25" coolDownOffset="1000" cooldown="100000" />
-    <TimedTransition targetState="xxx" time="1800" />
-    <Shoot radius="10" count="4" shootAngle="7" projectileIndex="1" predictive="0.5" cooldown="600" />
-    <TimedTransition targetState="yyy" time="2800" />
-    <Shoot radius="10" count="12" shootAngle="30" fixedAngle="10" coolDownOffset="500" cooldown="100000" />
-    <Shoot radius="10" count="12" shootAngle="30" fixedAngle="25" coolDownOffset="1000" cooldown="100000" />
-    <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="0.5" cooldown="350" />
-    <TimedTransition targetState="xxx" time="4500" />
   </BehaviorEntry>
 </BehaviorEntries>

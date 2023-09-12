@@ -58,55 +58,6 @@
       <Shoot radius="8" count="3" shootAngle="10" projectileIndex="1" cooldown="1000" />
       <TimedTransition targetState="transition1" time="10000" />
     </State>
-    <PlayerWithinTransition targetState="transition1" dist="8" />
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00" flashPeriod="0.25" flashRepeats="12" />
-    <Wander speed="0.1" />
-    <State id="transition1">
-      <TimedTransition targetState="spiral" time="3000" />
-    </State>
-    <State id="transition2">
-      <TimedTransition targetState="ring" time="3000" />
-    </State>
-    <State id="transition3">
-      <TimedTransition targetState="quiet" time="3000" />
-    </State>
-    <State id="transition4">
-      <TimedTransition targetState="spawn" time="3000" />
-    </State>
-    <TimedTransition targetState="spiral" time="3000" />
-    <TimedTransition targetState="ring" time="3000" />
-    <TimedTransition targetState="quiet" time="3000" />
-    <TimedTransition targetState="spawn" time="3000" />
-    <Spawn children="Lair Ghost Archer" maxChildren="1" initialSpawn="1" cooldown="0" />
-    <Spawn children="Lair Ghost Knight" maxChildren="2" initialSpawn="4" cooldown="0" />
-    <Spawn children="Lair Ghost Mage" maxChildren="1" initialSpawn="1" cooldown="0" />
-    <Spawn children="Lair Ghost Rogue" maxChildren="2" initialSpawn="4" cooldown="0" />
-    <Spawn children="Lair Ghost Paladin" maxChildren="1" initialSpawn="1" cooldown="0" />
-    <Spawn children="Lair Ghost Warrior" maxChildren="2" initialSpawn="4" cooldown="0" />
-    <Shoot radius="10" count="3" shootAngle="0" fixedAngle="0" cooldown="1000" />
-    <Shoot radius="10" count="3" shootAngle="0" fixedAngle="24" coolDownOffset="200" cooldown="1000" />
-    <Shoot radius="10" count="3" shootAngle="0" fixedAngle="48" coolDownOffset="400" cooldown="1000" />
-    <Shoot radius="10" count="3" shootAngle="0" fixedAngle="72" coolDownOffset="600" cooldown="1000" />
-    <Shoot radius="10" count="3" shootAngle="0" fixedAngle="96" coolDownOffset="800" cooldown="1000" />
-    <TimedTransition targetState="transition2" time="10000" />
-    <Wander speed="0.1" />
-    <Shoot radius="10" count="12" shootAngle="0" projectileIndex="4" cooldown="2000" />
-    <TimedTransition targetState="transition3" time="10000" />
-    <Wander speed="0.1" />
-    <Shoot radius="10" count="8" shootAngle="0" projectileIndex="1" cooldown="1000" />
-    <Shoot radius="10" count="8" shootAngle="0" projectileIndex="1" angleOffset="22.5" coolDownOffset="500" cooldown="1000" />
-    <Shoot radius="8" count="3" shootAngle="20" projectileIndex="2" cooldown="2000" />
-    <TimedTransition targetState="transition4" time="10000" />
-    <Wander speed="0.1" />
-    <Spawn children="Ghost Mage of Septavius" maxChildren="2" initialSpawn="4" cooldown="0" />
-    <Spawn children="Ghost Rogue of Septavius" maxChildren="2" initialSpawn="4" cooldown="0" />
-    <Spawn children="Ghost Warrior of Septavius" maxChildren="2" initialSpawn="4" cooldown="0" />
-    <Reproduce children="Ghost Mage of Septavius" densityMax="2" cooldown="1000" />
-    <Reproduce children="Ghost Rogue of Septavius" densityMax="2" cooldown="1000" />
-    <Reproduce children="Ghost Warrior of Septavius" densityMax="2" cooldown="1000" />
-    <Shoot radius="8" count="3" shootAngle="10" projectileIndex="1" cooldown="1000" />
-    <TimedTransition targetState="transition1" time="10000" />
   </BehaviorEntry>
   <BehaviorEntry id="Ghost Mage of Septavius">
     <Prioritize>
@@ -309,9 +260,6 @@
       <Shoot radius="8.4" count="12" shootAngle="0" cooldown="1000" />
       <Suicide />
     </State>
-    <PlayerWithinTransition targetState="Aaa" dist="3" />
-    <Shoot radius="8.4" count="12" shootAngle="0" cooldown="1000" />
-    <Suicide />
   </BehaviorEntry>
   <BehaviorEntry id="Lair Blast Trap">
     <State id="FinnaBustANut">
@@ -321,8 +269,5 @@
       <Shoot radius="25" count="12" shootAngle="0" cooldown="3000" />
       <Suicide />
     </State>
-    <PlayerWithinTransition targetState="Aaa" dist="3" />
-    <Shoot radius="25" count="12" shootAngle="0" cooldown="3000" />
-    <Suicide />
   </BehaviorEntry>
 </BehaviorEntries>

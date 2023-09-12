@@ -60,40 +60,5 @@
       <SetAltTexture minValue="3" cooldown="0" />
       <TimedTransition targetState="1" time="500" />
     </State>
-    <Taunt text="Oh no, Mixcoatl is my brother, I prefer partying to fighting." broadcast="true" />
-    <SetAltTexture minValue="1" cooldown="0" />
-    <TimedTransition targetState="2" time="500" />
-    <Taunt text="Lets have a fun-time in the sun-shine!" broadcast="true" />
-    <SetAltTexture minValue="2" cooldown="0" />
-    <TimedTransition targetState="3" time="500" />
-    <Taunt text="Nothing like relaxin' on the beach." broadcast="true" />
-    <SetAltTexture minValue="3" cooldown="0" />
-    <TimedTransition targetState="4" time="500" />
-    <Taunt text="Chillin' is the name of the game!" broadcast="true" />
-    <SetAltTexture minValue="1" cooldown="0" />
-    <TimedTransition targetState="5" time="500" />
-    <Taunt text="I hope you're having a good time!" broadcast="true" />
-    <SetAltTexture minValue="2" cooldown="0" />
-    <TimedTransition targetState="6" time="500" />
-    <Taunt text="How do you like my shades?" broadcast="true" />
-    <SetAltTexture minValue="3" cooldown="0" />
-    <TimedTransition targetState="7" time="500" />
-    <Taunt text="EVERYBODY BOOGEY!" broadcast="true" />
-    <SetAltTexture minValue="1" cooldown="0" />
-    <TimedTransition targetState="8" time="500" />
-    <Taunt text="What a beautiful day!" broadcast="true" />
-    <SetAltTexture minValue="2" cooldown="0" />
-    <TimedTransition targetState="9" time="500" />
-    <Taunt text="Whoa there!" broadcast="true" />
-    <SetAltTexture minValue="3" cooldown="0" />
-    <TimedTransition targetState="10" time="500" />
-    <Taunt text="Oh SNAP!" broadcast="true" />
-    <SetAltTexture minValue="1" cooldown="0" />
-    <TimedTransition targetState="11" time="500" />
-    <Taunt text="Ho!" broadcast="true" />
-    <SetAltTexture minValue="2" cooldown="0" />
-    <TimedTransition targetState="end" time="500" />
-    <SetAltTexture minValue="3" cooldown="0" />
-    <TimedTransition targetState="1" time="500" />
   </BehaviorEntry>
 </BehaviorEntries>

@@ -23,13 +23,6 @@
       <Shoot radius="1" count="15" shootAngle="24" projectileIndex="2" fixedAngle="16" cooldown="1200" />
       <TimedTransition targetState="idle" time="400" />
     </State>
-    <PlayerWithinTransition targetState="ring1" dist="12" />
-    <Shoot radius="1" count="15" shootAngle="24" fixedAngle="0" cooldown="1200" />
-    <TimedTransition targetState="ring2" time="400" />
-    <Shoot radius="1" count="15" shootAngle="24" projectileIndex="1" fixedAngle="8" cooldown="1200" />
-    <TimedTransition targetState="ring3" time="400" />
-    <Shoot radius="1" count="15" shootAngle="24" projectileIndex="2" fixedAngle="16" cooldown="1200" />
-    <TimedTransition targetState="idle" time="400" />
   </BehaviorEntry>
   <BehaviorEntry id="Hobbit Archer">
     <Shoot radius="10" shootAngle="0" cooldown="1000" />
@@ -54,21 +47,6 @@
       </Prioritize>
       <TimedTransition targetState="run1" time="400" />
     </State>
-    <Prioritize>
-      <Protect speed="1.1" protectee="Hobbit Mage" acquireRange="12" protectionRange="10" />
-      <Wander speed="0.4" />
-    </Prioritize>
-    <TimedTransition targetState="run2" time="400" />
-    <Prioritize>
-      <StayBack speed="0.8" distance="4" />
-      <Wander speed="0.4" />
-    </Prioritize>
-    <TimedTransition targetState="run3" time="600" />
-    <Prioritize>
-      <Protect speed="1" protectee="Hobbit Archer" acquireRange="16" reprotectRange="2" />
-      <Wander speed="0.4" />
-    </Prioritize>
-    <TimedTransition targetState="run1" time="400" />
   </BehaviorEntry>
   <BehaviorEntry id="Hobbit Rogue">
     <Shoot radius="3" shootAngle="0" cooldown="1000" />
@@ -102,13 +80,6 @@
       <Shoot radius="1" count="15" shootAngle="24" projectileIndex="2" fixedAngle="16" cooldown="1200" />
       <TimedTransition targetState="idle" time="400" />
     </State>
-    <PlayerWithinTransition targetState="ring1" dist="12" />
-    <Shoot radius="1" count="15" shootAngle="24" fixedAngle="0" cooldown="1200" />
-    <TimedTransition targetState="ring2" time="400" />
-    <Shoot radius="1" count="15" shootAngle="24" projectileIndex="1" fixedAngle="8" cooldown="1200" />
-    <TimedTransition targetState="ring3" time="400" />
-    <Shoot radius="1" count="15" shootAngle="24" projectileIndex="2" fixedAngle="16" cooldown="1200" />
-    <TimedTransition targetState="idle" time="400" />
   </BehaviorEntry>
   <BehaviorEntry id="Undead Hobbit Archer">
     <Shoot radius="10" shootAngle="0" cooldown="1000" />
@@ -133,21 +104,6 @@
       </Prioritize>
       <TimedTransition targetState="run1" time="400" />
     </State>
-    <Prioritize>
-      <Protect speed="1.1" protectee="Undead Hobbit Mage" acquireRange="12" protectionRange="10" />
-      <Wander speed="0.4" />
-    </Prioritize>
-    <TimedTransition targetState="run2" time="400" />
-    <Prioritize>
-      <StayBack speed="0.8" distance="4" />
-      <Wander speed="0.4" />
-    </Prioritize>
-    <TimedTransition targetState="run3" time="600" />
-    <Prioritize>
-      <Protect speed="1" protectee="Undead Hobbit Archer" acquireRange="16" reprotectRange="2" />
-      <Wander speed="0.4" />
-    </Prioritize>
-    <TimedTransition targetState="run1" time="400" />
   </BehaviorEntry>
   <BehaviorEntry id="Undead Hobbit Rogue">
     <Shoot radius="3" shootAngle="0" cooldown="1000" />
@@ -197,38 +153,6 @@
         <TimedTransition targetState="shoot" time="400" />
       </State>
     </State>
-    <SetAltTexture minValue="0" cooldown="0" />
-    <TimedTransition targetState="sleeping2" time="1000" />
-    <HpLessTransition targetState="hurt" threshold="0.99" />
-    <SetAltTexture minValue="3" cooldown="0" />
-    <TimedTransition targetState="sleeping1" time="1000" />
-    <HpLessTransition targetState="hurt" threshold="0.99" />
-    <SetAltTexture minValue="2" cooldown="0" />
-    <Spawn children="Lil Sumo" initialSpawn="2" cooldown="200" />
-    <TimedTransition targetState="awake" time="1000" />
-    <SetAltTexture minValue="1" cooldown="0" />
-    <Shoot radius="3" shootAngle="0" cooldown="250" />
-    <Prioritize>
-      <Follow speed="0.05" range="1" cooldown="0" />
-      <Wander speed="0.05" />
-    </Prioritize>
-    <HpLessTransition targetState="rage" threshold="0.5" />
-    <SetAltTexture minValue="4" cooldown="0" />
-    <Taunt text="Engaging Super-Mode!!!" />
-    <Prioritize>
-      <Follow speed="0.6" range="1" cooldown="0" />
-      <Wander speed="0.6" />
-    </Prioritize>
-    <State id="shoot">
-      <Shoot radius="8" shootAngle="0" projectileIndex="1" cooldown="150" />
-      <TimedTransition targetState="rest" time="700" />
-    </State>
-    <State id="rest">
-      <TimedTransition targetState="shoot" time="400" />
-    </State>
-    <Shoot radius="8" shootAngle="0" projectileIndex="1" cooldown="150" />
-    <TimedTransition targetState="rest" time="700" />
-    <TimedTransition targetState="shoot" time="400" />
   </BehaviorEntry>
   <BehaviorEntry id="Lil Sumo">
     <Shoot radius="8" shootAngle="0" cooldown="1000" />
@@ -270,27 +194,6 @@
       </Prioritize>
       <TimedTransition targetState="idle" time="2000" />
     </State>
-    <Wander speed="0.4" />
-    <PlayerWithinTransition targetState="move1" dist="11" />
-    <Shoot radius="10" count="3" shootAngle="14" predictive="0.3" cooldown="1000" />
-    <Prioritize>
-      <StayAbove speed="0.4" altitude="14" />
-      <BackAndForth speed="0.8" />
-    </Prioritize>
-    <TimedTransition targetState="move2" time="2000" />
-    <Shoot radius="10" count="3" shootAngle="10" predictive="0.5" cooldown="1000" />
-    <Prioritize>
-      <StayAbove speed="0.4" altitude="14" />
-      <Follow speed="0.6" acquireRange="10.5" range="3" cooldown="0" />
-      <Wander speed="0.4" />
-    </Prioritize>
-    <TimedTransition targetState="move3" time="2000" />
-    <Prioritize>
-      <StayAbove speed="0.4" altitude="14" />
-      <StayBack speed="0.6" distance="5" />
-      <Wander speed="0.4" />
-    </Prioritize>
-    <TimedTransition targetState="idle" time="2000" />
   </BehaviorEntry>
   <BehaviorEntry id="Elf Archer">
     <Shoot radius="10" shootAngle="0" predictive="1" cooldown="1000" />
@@ -332,13 +235,6 @@
       <Follow speed="0.8" acquireRange="10.5" range="1.5" cooldown="0" />
       <EntityNotExistsTransition targetState="protect" dist="15" target="Goblin Mage" />
     </State>
-    <Protect speed="0.8" protectee="Goblin Mage" acquireRange="12" protectionRange="1.5" reprotectRange="1.5" />
-    <TimedTransition targetState="scatter" time="1200" randomizedTime="true" />
-    <Orbit speed="0.8" radius="7" target="Goblin Mage" speedVariance="0.08" radiusVariance="1" orbitClockwise="false" />
-    <TimedTransition targetState="protect" time="2400" />
-    <Protect speed="0.8" protectee="Goblin Mage" acquireRange="12" protectionRange="6" reprotectRange="3" />
-    <Follow speed="0.8" acquireRange="10.5" range="1.5" cooldown="0" />
-    <EntityNotExistsTransition targetState="protect" dist="15" target="Goblin Mage" />
   </BehaviorEntry>
   <BehaviorEntry id="Goblin Warrior">
     <Shoot radius="3" shootAngle="0" cooldown="1000" />
@@ -356,13 +252,6 @@
       <Follow speed="0.8" acquireRange="10.5" range="1.5" cooldown="0" />
       <EntityNotExistsTransition targetState="protect" dist="15" target="Goblin Mage" />
     </State>
-    <Protect speed="0.8" protectee="Goblin Mage" acquireRange="12" protectionRange="1.5" reprotectRange="1.5" />
-    <TimedTransition targetState="scatter" time="1200" randomizedTime="true" />
-    <Orbit speed="0.8" radius="7" target="Goblin Mage" speedVariance="0.08" radiusVariance="1" orbitClockwise="false" />
-    <TimedTransition targetState="protect" time="2400" />
-    <Protect speed="0.8" protectee="Goblin Mage" acquireRange="12" protectionRange="6" reprotectRange="3" />
-    <Follow speed="0.8" acquireRange="10.5" range="1.5" cooldown="0" />
-    <EntityNotExistsTransition targetState="protect" dist="15" target="Goblin Mage" />
   </BehaviorEntry>
   <BehaviorEntry id="Goblin Mage">
     <Spawn children="Goblin Rogue" maxChildren="7" initialSpawn="3" cooldown="12000" givesNoXp="false" />
@@ -388,23 +277,6 @@
         <StayBack speed="0.5" distance="6" />
       </Prioritize>
     </State>
-    <Shoot radius="8" shootAngle="0" predictive="0.35" cooldown="1000" />
-    <Shoot radius="8" shootAngle="0" projectileIndex="1" predictive="0.35" cooldown="1300" />
-    <Prioritize>
-      <StayAbove speed="0.4" altitude="16" />
-      <Follow speed="0.5" acquireRange="10.5" cooldown="0" />
-      <Wander speed="0.4" />
-    </Prioritize>
-    <HpLessTransition targetState="activate_horde" threshold="0.65" />
-    <Shoot radius="8" shootAngle="0" predictive="0.25" cooldown="1000" />
-    <Shoot radius="8" shootAngle="0" projectileIndex="1" predictive="0.25" cooldown="1000" />
-    <Flash color="0xFF484848" flashPeriod="0.6" flashRepeats="5000" />
-    <Order range="12" children="Goblin Rogue" targetState="help" />
-    <Order range="12" children="Goblin Warrior" targetState="help" />
-    <Prioritize>
-      <StayAbove speed="0.4" altitude="16" />
-      <StayBack speed="0.5" distance="6" />
-    </Prioritize>
   </BehaviorEntry>
   <BehaviorEntry id="Easily Enraged Bunny">
     <Prioritize>
@@ -432,12 +304,6 @@
       <Flash color="0xFF9900" flashPeriod="1.5" flashRepeats="1" />
       <TimedTransition targetState="red" time="1600" />
     </State>
-    <Flash color="0xFF0000" flashPeriod="1.5" flashRepeats="1" />
-    <TimedTransition targetState="yellow" time="1600" />
-    <Flash color="0xFFFF33" flashPeriod="1.5" flashRepeats="1" />
-    <TimedTransition targetState="orange" time="1600" />
-    <Flash color="0xFF9900" flashPeriod="1.5" flashRepeats="1" />
-    <TimedTransition targetState="red" time="1600" />
   </BehaviorEntry>
   <BehaviorEntry id="Forest Nymph">
     <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01" />
@@ -456,17 +322,6 @@
       <Wander speed="0.4" />
       <TimedTransition targetState="circle" time="3600" />
     </State>
-    <Shoot radius="4" shootAngle="0" predictive="0.1" cooldown="900" />
-    <Prioritize>
-      <StayAbove speed="0.4" altitude="25" />
-      <Follow speed="0.9" acquireRange="11" range="3.5" duration="1000" cooldown="5000" />
-      <Orbit speed="1.3" radius="3.5" acquireRange="12" speedVariance="0.13" radiusVariance="0.13" orbitClockwise="false" />
-      <Wander speed="0.7" />
-    </Prioritize>
-    <TimedTransition targetState="dart_away" time="4000" />
-    <Shoot radius="9" count="6" shootAngle="60" projectileIndex="1" fixedAngle="20" cooldown="1400" />
-    <Wander speed="0.4" />
-    <TimedTransition targetState="circle" time="3600" />
   </BehaviorEntry>
   <BehaviorEntry id="Sandsman King">
     <Shoot radius="10" shootAngle="0" cooldown="10000" />
@@ -537,49 +392,6 @@
         <TimedTransition targetState="move" time="200" />
       </State>
     </State>
-    <Prioritize>
-      <StayAbove speed="0.6" altitude="13" />
-      <Wander speed="0.6" />
-    </Prioritize>
-    <PlayerWithinTransition targetState="scuttle" dist="11" />
-    <Shoot radius="9" shootAngle="0" cooldown="1000" />
-    <Shoot radius="9" shootAngle="0" projectileIndex="1" cooldown="1000" />
-    <Shoot radius="9" shootAngle="0" projectileIndex="2" cooldown="1000" />
-    <Shoot radius="9" shootAngle="0" projectileIndex="3" cooldown="1000" />
-    <TimedTransition targetState="tri-spit" time="4700" />
-    <State id="move">
-      <Prioritize>
-        <Follow speed="1" acquireRange="10.6" range="2" cooldown="0" />
-        <StayAbove speed="1" altitude="25" />
-        <Wander speed="0.6" />
-      </Prioritize>
-      <TimedTransition targetState="pause" time="400" />
-    </State>
-    <State id="pause">
-      <TimedTransition targetState="move" time="200" />
-    </State>
-    <Prioritize>
-      <Follow speed="1" acquireRange="10.6" range="2" cooldown="0" />
-      <StayAbove speed="1" altitude="25" />
-      <Wander speed="0.6" />
-    </Prioritize>
-    <TimedTransition targetState="pause" time="400" />
-    <TimedTransition targetState="move" time="200" />
-    <Shoot radius="9" shootAngle="0" projectileIndex="4" predictive="0.5" coolDownOffset="1200" cooldown="90000" />
-    <Shoot radius="9" shootAngle="0" projectileIndex="4" predictive="0.5" coolDownOffset="1800" cooldown="90000" />
-    <Shoot radius="9" shootAngle="0" projectileIndex="4" predictive="0.5" coolDownOffset="2400" cooldown="90000" />
-    <TimedTransition targetState="idle" time="3200" />
-    <State id="move">
-      <Prioritize>
-        <Follow speed="1" acquireRange="10.6" range="2" cooldown="0" />
-        <StayAbove speed="1" altitude="25" />
-        <Wander speed="0.6" />
-      </Prioritize>
-      <TimedTransition targetState="pause" time="400" />
-    </State>
-    <State id="pause">
-      <TimedTransition targetState="move" time="200" />
-    </State>
   </BehaviorEntry>
   <BehaviorEntry id="Sand Devil">
     <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01" />
@@ -597,15 +409,5 @@
       <Orbit speed="0.7" radius="2" acquireRange="9" speedVariance="0.07" radiusVariance="0.07" orbitClockwise="false" />
       <TimedTransition targetState="wander" time="3100" />
     </State>
-    <Shoot radius="8" shootAngle="0" predictive="0.3" cooldown="700" />
-    <Prioritize>
-      <StayAbove speed="0.7" altitude="10" />
-      <Follow speed="0.7" range="2.2" cooldown="0" />
-      <Wander speed="0.7" />
-    </Prioritize>
-    <TimedTransition targetState="circle" time="3000" />
-    <Shoot radius="8" shootAngle="0" predictive="0.3" coolDownOffset="1000" cooldown="1000" />
-    <Orbit speed="0.7" radius="2" acquireRange="9" speedVariance="0.07" radiusVariance="0.07" orbitClockwise="false" />
-    <TimedTransition targetState="wander" time="3100" />
   </BehaviorEntry>
 </BehaviorEntries>

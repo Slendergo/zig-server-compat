@@ -45,32 +45,6 @@
       <TimedTransition targetState="idle" time="10000" />
       <PlayerWithinTransition targetState="idle" dist="10.5" />
     </State>
-    <PlayerWithinTransition targetState="blade_attack" dist="11" />
-    <HpLessTransition targetState="blade_attack" threshold="0.8" />
-    <Prioritize>
-      <Follow speed="0.4" range="7" cooldown="0" />
-      <Wander speed="0.4" />
-    </Prioritize>
-    <Shoot radius="10" shootAngle="15" projectileIndex="4" predictive="0.5" cooldown="100000" />
-    <Shoot radius="10" count="2" shootAngle="10" projectileIndex="4" predictive="0.5" coolDownOffset="700" cooldown="100000" />
-    <Shoot radius="10" count="3" shootAngle="8.5" projectileIndex="4" predictive="0.5" coolDownOffset="1400" cooldown="100000" />
-    <Shoot radius="10" count="4" shootAngle="7" projectileIndex="4" predictive="0.5" coolDownOffset="2100" cooldown="100000" />
-    <TimedTransition targetState="if_cloaked1" time="4000" />
-    <Shoot radius="10" count="15" shootAngle="24" projectileIndex="4" fixedAngle="8" coolDownOffset="400" cooldown="1500" />
-    <TimedTransition targetState="wave_attack" time="10000" />
-    <PlayerWithinTransition targetState="wave_attack" dist="10.5" />
-    <Prioritize>
-      <Follow speed="0.6" range="5" cooldown="0" />
-      <Wander speed="0.6" />
-    </Prioritize>
-    <Shoot radius="9" shootAngle="0" coolDownOffset="700" cooldown="700" />
-    <Shoot radius="9" shootAngle="0" projectileIndex="1" coolDownOffset="700" cooldown="700" />
-    <Shoot radius="9" shootAngle="0" projectileIndex="2" coolDownOffset="700" cooldown="700" />
-    <Shoot radius="9" shootAngle="0" projectileIndex="3" coolDownOffset="700" cooldown="700" />
-    <TimedTransition targetState="if_cloaked2" time="3800" />
-    <Shoot radius="10" count="15" shootAngle="24" projectileIndex="4" fixedAngle="8" coolDownOffset="400" cooldown="1500" />
-    <TimedTransition targetState="idle" time="10000" />
-    <PlayerWithinTransition targetState="idle" dist="10.5" />
   </BehaviorEntry>
   <BehaviorEntry id="Cyclops">
     <Prioritize>

@@ -12,11 +12,6 @@
       </Prioritize>
       <Taunt text="baa|baa baa" probability="0.001" cooldown="1000" />
     </State>
-    <Prioritize>
-      <StayCloseToSpawn speed="0.1" range="2" />
-      <Wander speed="0.1" />
-    </Prioritize>
-    <Taunt text="baa|baa baa" probability="0.001" cooldown="1000" />
   </BehaviorEntry>
   <BehaviorEntry id="Black Cat">
     <PetFollow />

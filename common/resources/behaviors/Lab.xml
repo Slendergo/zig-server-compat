@@ -174,149 +174,6 @@
       <SetAltTexture minValue="1" cooldown="0" />
       <TimedTransition targetState="idle" time="15000" />
     </State>
-    <PlayerWithinTransition targetState="GP" dist="12" />
-    <HpLessTransition targetState="rage" threshold="0.2" />
-    <Order range="100" children="Monster Cage" targetState="no spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="nothing change" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="OFF" />
-    <Wander speed="0.5" />
-    <SetAltTexture minValue="0" cooldown="0" />
-    <TossObject child="Green Potion" cooldown="1500" />
-    <TimedTransition targetState="rage TA" time="12000" />
-    <Order range="100" children="Monster Cage" targetState="no spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="nothing change" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="OFF" />
-    <Wander speed="0.5" />
-    <SetAltTexture minValue="0" cooldown="0" />
-    <TossObject child="Turret Attack" cooldown="1500" />
-    <TimedTransition targetState="rage" time="10000" />
-    <Order range="100" children="Monster Cage" targetState="no spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="nothing change" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="ON" />
-    <Wander speed="0.5" />
-    <SetAltTexture minValue="0" cooldown="0" />
-    <Taunt text="For Science" probability="0.5" />
-    <TossObject child="Green Potion" cooldown="2000" />
-    <TimedTransition targetState="TA" time="12000" />
-    <Order range="100" children="Monster Cage" targetState="no spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="nothing change" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="ON" />
-    <Wander speed="0.5" />
-    <SetAltTexture minValue="0" cooldown="0" />
-    <TossObject child="Turret Attack" cooldown="2000" />
-    <TimedTransition targetState="hide" time="10000" />
-    <Order range="100" children="Monster Cage" targetState="spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="Bubble time" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="OFF" />
-    <ReturnToSpawn speed="1" />
-    <ConditionalEffect effect="Invincible" />
-    <SetAltTexture minValue="1" cooldown="0" />
-    <TimedTransition targetState="nohide" time="15000" />
-    <Order range="100" children="Monster Cage" targetState="no spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="nothing change" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="ON" />
-    <Wander speed="0.5" />
-    <SetAltTexture minValue="0" cooldown="0" />
-    <TossObject child="Green Potion" cooldown="2000" />
-    <TimedTransition targetState="TA2" time="12000" />
-    <Order range="100" children="Monster Cage" targetState="no spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="nothing change" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="ON" />
-    <Wander speed="0.5" />
-    <SetAltTexture minValue="0" cooldown="0" />
-    <TossObject child="Green Potion" cooldown="2000" />
-    <TimedTransition targetState="hide2" time="10000" />
-    <Order range="100" children="Monster Cage" targetState="spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="Bubble time" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="OFF" />
-    <ReturnToSpawn speed="1" />
-    <ConditionalEffect effect="Invincible" />
-    <SetAltTexture minValue="1" cooldown="0" />
-    <TimedTransition targetState="nohide2" time="15000" />
-    <Order range="100" children="Monster Cage" targetState="no spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="nothing change" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="ON" />
-    <Wander speed="0.5" />
-    <SetAltTexture minValue="0" cooldown="0" />
-    <TossObject child="Green Potion" cooldown="2000" />
-    <TimedTransition targetState="TA3" time="12000" />
-    <Order range="100" children="Monster Cage" targetState="no spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="nothing change" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="ON" />
-    <Wander speed="0.5" />
-    <SetAltTexture minValue="0" cooldown="0" />
-    <TossObject child="Green Potion" cooldown="2000" />
-    <TimedTransition targetState="hide3" time="10000" />
-    <Order range="100" children="Monster Cage" targetState="spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="Bubble time" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="OFF" />
-    <ReturnToSpawn speed="1" />
-    <ConditionalEffect effect="Invincible" />
-    <SetAltTexture minValue="1" cooldown="0" />
-    <TimedTransition targetState="nohide3" time="15000" />
-    <Order range="100" children="Monster Cage" targetState="no spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="nothing change" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="OFF" />
-    <Wander speed="0.5" />
-    <SetAltTexture minValue="0" cooldown="0" />
-    <TossObject child="Green Potion" cooldown="2000" />
-    <TimedTransition targetState="TA4" time="12000" />
-    <Order range="100" children="Monster Cage" targetState="no spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="nothing change" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="ON" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="OFF" />
-    <Wander speed="0.5" />
-    <SetAltTexture minValue="0" cooldown="0" />
-    <TossObject child="Green Potion" cooldown="2000" />
-    <TimedTransition targetState="hide4" time="10000" />
-    <Order range="100" children="Monster Cage" targetState="spawn" />
-    <Order range="100" children="Dr Terrible Bubble" targetState="Bubble time" />
-    <Order range="100" children="Red Gas Spawner UL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner UR" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LL" targetState="OFF" />
-    <Order range="100" children="Red Gas Spawner LR" targetState="OFF" />
-    <ReturnToSpawn speed="1" />
-    <ConditionalEffect effect="Invincible" />
-    <SetAltTexture minValue="1" cooldown="0" />
-    <TimedTransition targetState="idle" time="15000" />
   </BehaviorEntry>
   <BehaviorEntry id="Dr Terrible Mini Bot">
     <Wander speed="0.5" />
@@ -359,63 +216,6 @@
         <Suicide />
       </State>
     </State>
-    <PlayerWithinTransition targetState="normal" dist="10" />
-    <State id="normal">
-      <Wander speed="0.5" />
-      <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-      <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="800" />
-      <HpLessTransition targetState="blink" threshold="0.2" />
-      <TimedTransition targetState="rage blink" time="10000" />
-    </State>
-    <State id="rage blink">
-      <Wander speed="0.5" />
-      <Flash color="0xF0E68C" flashPeriod="0.1" flashRepeats="5" />
-      <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-      <Shoot radius="10" shootAngle="0" projectileIndex="1" defaultAngle="0" predictive="1" cooldown="800" />
-      <HpLessTransition targetState="blink" threshold="0.2" />
-      <TimedTransition targetState="rage" time="3000" />
-    </State>
-    <State id="rage">
-      <Wander speed="0.5" />
-      <Flash color="0xF0E68C" flashPeriod="0.1" flashRepeats="5" />
-      <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-      <Shoot radius="10" shootAngle="0" projectileIndex="1" defaultAngle="0" predictive="1" cooldown="800" />
-      <HpLessTransition targetState="blink" threshold="0.2" />
-    </State>
-    <State id="blink">
-      <Wander speed="0.5" />
-      <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-      <Flash color="0xFFF0000" flashPeriod="0.1" flashRepeats="10000" />
-      <TimedTransition targetState="explode" time="2000" />
-    </State>
-    <State id="explode">
-      <Flash color="0xFFF0000" flashPeriod="1" flashRepeats="9000001" />
-      <Shoot radius="10" count="8" shootAngle="0" projectileIndex="2" fixedAngle="22.5" cooldown="1000" />
-      <Suicide />
-    </State>
-    <Wander speed="0.5" />
-    <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-    <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="800" />
-    <HpLessTransition targetState="blink" threshold="0.2" />
-    <TimedTransition targetState="rage blink" time="10000" />
-    <Wander speed="0.5" />
-    <Flash color="0xF0E68C" flashPeriod="0.1" flashRepeats="5" />
-    <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-    <Shoot radius="10" shootAngle="0" projectileIndex="1" defaultAngle="0" predictive="1" cooldown="800" />
-    <HpLessTransition targetState="blink" threshold="0.2" />
-    <TimedTransition targetState="rage" time="3000" />
-    <Wander speed="0.5" />
-    <Flash color="0xF0E68C" flashPeriod="0.1" flashRepeats="5" />
-    <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-    <Shoot radius="10" shootAngle="0" projectileIndex="1" defaultAngle="0" predictive="1" cooldown="800" />
-    <HpLessTransition targetState="blink" threshold="0.2" />
-    <Wander speed="0.5" />
-    <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-    <Flash color="0xFFF0000" flashPeriod="0.1" flashRepeats="10000" />
-    <TimedTransition targetState="explode" time="2000" />
-    <Flash color="0xFFF0000" flashPeriod="1" flashRepeats="9000001" />
-    <Shoot radius="10" count="8" shootAngle="0" projectileIndex="2" fixedAngle="22.5" cooldown="1000" />
-    <Suicide />
   </BehaviorEntry>
   <BehaviorEntry id="Dr Terrible Escaped Experiment">
     <Wander speed="0.5" />
@@ -462,63 +262,6 @@
         <Suicide />
       </State>
     </State>
-    <PlayerWithinTransition targetState="normal" dist="10" />
-    <State id="normal">
-      <Wander speed="0.5" />
-      <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-      <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="800" />
-      <HpLessTransition targetState="blink" threshold="0.2" />
-      <TimedTransition targetState="rage blink" time="10000" />
-    </State>
-    <State id="rage blink">
-      <Wander speed="0.5" />
-      <Flash color="0xF0E68C" flashPeriod="0.1" flashRepeats="5" />
-      <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-      <Shoot radius="10" shootAngle="0" projectileIndex="1" defaultAngle="0" predictive="1" cooldown="800" />
-      <HpLessTransition targetState="blink" threshold="0.2" />
-      <TimedTransition targetState="rage" time="3000" />
-    </State>
-    <State id="rage">
-      <Wander speed="0.5" />
-      <Flash color="0xF0E68C" flashPeriod="0.1" flashRepeats="5" />
-      <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-      <Shoot radius="10" shootAngle="0" projectileIndex="1" defaultAngle="0" predictive="1" cooldown="800" />
-      <HpLessTransition targetState="blink" threshold="0.2" />
-    </State>
-    <State id="blink">
-      <Wander speed="0.5" />
-      <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-      <Flash color="0xFFF0000" flashPeriod="0.1" flashRepeats="10000" />
-      <TimedTransition targetState="explode" time="2000" />
-    </State>
-    <State id="explode">
-      <Flash color="0xFFF0000" flashPeriod="1" flashRepeats="9000001" />
-      <Shoot radius="10" count="8" shootAngle="0" projectileIndex="2" fixedAngle="22.5" cooldown="1000" />
-      <Suicide />
-    </State>
-    <Wander speed="0.5" />
-    <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-    <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="800" />
-    <HpLessTransition targetState="blink" threshold="0.2" />
-    <TimedTransition targetState="rage blink" time="10000" />
-    <Wander speed="0.5" />
-    <Flash color="0xF0E68C" flashPeriod="0.1" flashRepeats="5" />
-    <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-    <Shoot radius="10" shootAngle="0" projectileIndex="1" defaultAngle="0" predictive="1" cooldown="800" />
-    <HpLessTransition targetState="blink" threshold="0.2" />
-    <TimedTransition targetState="rage" time="3000" />
-    <Wander speed="0.5" />
-    <Flash color="0xF0E68C" flashPeriod="0.1" flashRepeats="5" />
-    <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-    <Shoot radius="10" shootAngle="0" projectileIndex="1" defaultAngle="0" predictive="1" cooldown="800" />
-    <HpLessTransition targetState="blink" threshold="0.2" />
-    <Wander speed="0.5" />
-    <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-    <Flash color="0xFFF0000" flashPeriod="0.1" flashRepeats="10000" />
-    <TimedTransition targetState="explode" time="2000" />
-    <Flash color="0xFFF0000" flashPeriod="1" flashRepeats="9000001" />
-    <Shoot radius="10" count="8" shootAngle="0" projectileIndex="2" fixedAngle="22.5" cooldown="1000" />
-    <Suicide />
   </BehaviorEntry>
   <BehaviorEntry id="Escaped Experiment">
     <Wander speed="0.5" />
@@ -555,20 +298,6 @@
       <ChangeSize rate="11" target="200" />
       <Shoot radius="10" count="2" shootAngle="20" projectileIndex="3" cooldown="1000" />
     </State>
-    <Wander speed="0.5" />
-    <Shoot radius="10" count="3" shootAngle="20" cooldown="1000" />
-    <HpLessTransition targetState="2 step" threshold="0.75" />
-    <Wander speed="0.5" />
-    <ChangeSize rate="11" target="150" />
-    <Shoot radius="10" count="2" shootAngle="20" projectileIndex="1" cooldown="1000" />
-    <HpLessTransition targetState="3 step" threshold="0.5" />
-    <Wander speed="0.5" />
-    <ChangeSize rate="11" target="175" />
-    <Shoot radius="10" count="2" shootAngle="20" projectileIndex="2" cooldown="1000" />
-    <HpLessTransition targetState="4 step" threshold="0.25" />
-    <Wander speed="0.5" />
-    <ChangeSize rate="11" target="200" />
-    <Shoot radius="10" count="2" shootAngle="20" projectileIndex="3" cooldown="1000" />
   </BehaviorEntry>
   <BehaviorEntry id="Enforcer Bot 3000">
     <Wander speed="0.5" />
@@ -584,9 +313,6 @@
       <Shoot radius="10" count="6" shootAngle="0" fixedAngle="22.5" cooldown="1000" />
       <Suicide />
     </State>
-    <TimedTransition targetState="explode" time="2000" />
-    <Shoot radius="10" count="6" shootAngle="0" fixedAngle="22.5" cooldown="1000" />
-    <Suicide />
   </BehaviorEntry>
   <BehaviorEntry id="Red Gas Spawner UL">
     <EntityNotExistsTransition targetState="OFF" dist="50" target="Dr Terrible" />
@@ -597,9 +323,6 @@
       <ConditionalEffect effect="Invincible" />
       <Shoot radius="10" count="20" shootAngle="0" fixedAngle="22.5" cooldown="1000" />
     </State>
-    <ConditionalEffect effect="Invincible" />
-    <ConditionalEffect effect="Invincible" />
-    <Shoot radius="10" count="20" shootAngle="0" fixedAngle="22.5" cooldown="1000" />
   </BehaviorEntry>
   <BehaviorEntry id="Red Gas Spawner UR">
     <EntityNotExistsTransition targetState="OFF" dist="50" target="Dr Terrible" />
@@ -610,9 +333,6 @@
       <ConditionalEffect effect="Invincible" />
       <Shoot radius="10" count="20" shootAngle="0" fixedAngle="22.5" cooldown="1000" />
     </State>
-    <ConditionalEffect effect="Invincible" />
-    <ConditionalEffect effect="Invincible" />
-    <Shoot radius="10" count="20" shootAngle="0" fixedAngle="22.5" cooldown="1000" />
   </BehaviorEntry>
   <BehaviorEntry id="Red Gas Spawner LL">
     <EntityNotExistsTransition targetState="OFF" dist="50" target="Dr Terrible" />
@@ -623,9 +343,6 @@
       <ConditionalEffect effect="Invincible" />
       <Shoot radius="10" count="20" shootAngle="0" fixedAngle="22.5" cooldown="1000" />
     </State>
-    <ConditionalEffect effect="Invincible" />
-    <ConditionalEffect effect="Invincible" />
-    <Shoot radius="10" count="20" shootAngle="0" fixedAngle="22.5" cooldown="1000" />
   </BehaviorEntry>
   <BehaviorEntry id="Red Gas Spawner LR">
     <EntityNotExistsTransition targetState="OFF" dist="50" target="Dr Terrible" />
@@ -636,9 +353,6 @@
       <ConditionalEffect effect="Invincible" />
       <Shoot radius="10" count="20" shootAngle="0" fixedAngle="22.5" cooldown="1000" />
     </State>
-    <ConditionalEffect effect="Invincible" />
-    <ConditionalEffect effect="Invincible" />
-    <Shoot radius="10" count="20" shootAngle="0" fixedAngle="22.5" cooldown="1000" />
   </BehaviorEntry>
   <BehaviorEntry id="Turret Attack">
     <Shoot radius="10" count="2" shootAngle="20" cooldown="1000" />
@@ -653,9 +367,6 @@
     <State id="Suicide :D">
       <Suicide />
     </State>
-    <ConditionalEffect effect="Invincible" />
-    <EntityNotExistsTransition targetState="Suicide :D" dist="1000" target="Tesla Coil" />
-    <Suicide />
   </BehaviorEntry>
   <BehaviorEntry id="Mad Scientist Summoner">
     <ConditionalEffect effect="Invincible" perm="true" />
@@ -665,8 +376,6 @@
     <State id="Death">
       <Suicide />
     </State>
-    <EntitiesNotExistsTransition targetState="Death" dist="300" targets="Dr Terrible" />
-    <Suicide />
   </BehaviorEntry>
   <BehaviorEntry id="Dr Terrible Bubble">
     <State id="nothing change">
@@ -680,11 +389,6 @@
       <ConditionalEffect effect="Invincible" />
       <TimedTransition targetState="Bubble time" time="1000" />
     </State>
-    <ConditionalEffect effect="Invincible" />
-    <ConditionalEffect effect="Invincible" />
-    <TimedTransition targetState="Bubble time2" time="1000" />
-    <ConditionalEffect effect="Invincible" />
-    <TimedTransition targetState="Bubble time" time="1000" />
   </BehaviorEntry>
   <BehaviorEntry id="Mad Gas Controller">
     <ConditionalEffect effect="Invincible" perm="true" />
@@ -699,10 +403,5 @@
       <Spawn children="Dr Terrible Mini Bot" maxChildren="1" initialSpawn="0" cooldown="0" />
       <Spawn children="Dr Terrible Escaped Experiment" maxChildren="1" initialSpawn="0" cooldown="0" />
     </State>
-    <ConditionalEffect effect="Invincible" />
-    <ConditionalEffect effect="Invincible" />
-    <Spawn children="Dr Terrible Rampage Cyborg" maxChildren="1" initialSpawn="0" cooldown="0" />
-    <Spawn children="Dr Terrible Mini Bot" maxChildren="1" initialSpawn="0" cooldown="0" />
-    <Spawn children="Dr Terrible Escaped Experiment" maxChildren="1" initialSpawn="0" cooldown="0" />
   </BehaviorEntry>
 </BehaviorEntries>

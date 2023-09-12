@@ -41,16 +41,5 @@
       <EntityNotExistsTransition targetState="Orbit" dist="10" target="Cube Defender" />
       <TimedTransition targetState="Orbit" time="5000" />
     </State>
-    <Prioritize>
-      <Orbit speed="1.05" radius="7.5" acquireRange="40" target="Cube Overseer" speedVariance="0.15" radiusVariance="3" orbitClockwise="false" />
-      <Wander speed="1.05" />
-    </Prioritize>
-    <EntityNotExistsTransition targetState="Follow" dist="10" target="Cube Overseer" />
-    <Prioritize>
-      <Follow speed="0.75" range="1" duration="5000" cooldown="1000" />
-      <Wander speed="1.05" />
-    </Prioritize>
-    <EntityNotExistsTransition targetState="Orbit" dist="10" target="Cube Defender" />
-    <TimedTransition targetState="Orbit" time="5000" />
   </BehaviorEntry>
 </BehaviorEntries>

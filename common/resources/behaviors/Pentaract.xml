@@ -22,8 +22,6 @@
     <State id="Die">
       <Suicide />
     </State>
-    <EntityNotExistsTransition targetState="Die" dist="50" target="Pentaract Tower" />
-    <Suicide />
   </BehaviorEntry>
   <BehaviorEntry id="Pentaract Tower Corpse">
     <ConditionalEffect effect="Invincible" />
@@ -37,9 +35,5 @@
     <State id="Die">
       <Suicide />
     </State>
-    <TimedTransition targetState="Spawn" time="15000" />
-    <EntityNotExistsTransition targetState="Die" dist="50" target="Pentaract Tower" />
-    <Transform target="Pentaract Tower" />
-    <Suicide />
   </BehaviorEntry>
 </BehaviorEntries>

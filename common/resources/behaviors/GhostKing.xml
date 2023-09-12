@@ -146,126 +146,6 @@
       <Taunt text="Will you release me?" probability="0.5" />
       <Transform target="Actual Ghost King" />
     </State>
-    <BackAndForth speed="0.3" distance="3" />
-    <HpLessTransition targetState="EvaluationStart1" threshold="0.99999" />
-    <Taunt text="No corporeal creature can kill my sorrow" />
-    <ConditionalEffect effect="Invulnerable" />
-    <Prioritize>
-      <StayCloseToSpawn speed="0.4" range="3" />
-      <Wander speed="0.4" />
-    </Prioritize>
-    <TimedTransition targetState="EvaluationStart2" time="2500" />
-    <Flash color="0xFF" flashPeriod="0.1" flashRepeats="60" />
-    <ChangeSize rate="20" target="140" />
-    <Shoot radius="10" count="4" shootAngle="30" defaultAngle="0" cooldown="1000" />
-    <Prioritize>
-      <StayCloseToSpawn speed="0.4" range="3" />
-      <Wander speed="0.4" />
-    </Prioritize>
-    <HpLessTransition targetState="EvaluationEnd" threshold="0.87" />
-    <TimedTransition targetState="EvaluationEnd" time="6000" />
-    <Taunt text="Aye, let's be miserable together" probability="0.5" />
-    <HpLessTransition targetState="HugeMob" threshold="0.875" />
-    <HpLessTransition targetState="Mob" threshold="0.952" />
-    <HpLessTransition targetState="SmallGroup" threshold="0.985" />
-    <HpLessTransition targetState="Solo" threshold="0.99999" />
-    <Taunt text="What a HUGE MOB!" />
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="300" />
-    <TossObject child="Small Ghost" range="4" angle="0" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="60" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="120" cooldown="100000" />
-    <TossObject child="Large Ghost" range="4" angle="180" cooldown="100000" />
-    <TossObject child="Large Ghost" range="4" angle="240" cooldown="100000" />
-    <TossObject child="Large Ghost" range="4" angle="300" cooldown="100000" />
-    <TimedTransition targetState="HugeMob2" time="30000" />
-    <Taunt text="I feel almost manic!" />
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="300" />
-    <TossObject child="Small Ghost" range="4" angle="0" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="60" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="120" cooldown="100000" />
-    <TossObject child="Large Ghost" range="4" angle="180" cooldown="100000" />
-    <TossObject child="Large Ghost" range="4" angle="240" cooldown="100000" />
-    <TossObject child="Large Ghost" range="4" angle="300" cooldown="100000" />
-    <TimedTransition targetState="Company" time="30000" />
-    <Taunt text="There's a MOB of you." />
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="300" />
-    <TossObject child="Small Ghost" range="4" angle="0" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="60" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="120" cooldown="100000" />
-    <TossObject child="Large Ghost" range="4" angle="180" cooldown="100000" />
-    <TossObject child="Large Ghost" range="4" angle="240" cooldown="100000" />
-    <TossObject child="Large Ghost" range="4" angle="300" cooldown="100000" />
-    <TimedTransition targetState="Company" time="30000" />
-    <Taunt text="Misery loves company!" />
-    <TossObject child="Ghost Master" range="4" angle="0" cooldown="100000" />
-    <TossObject child="Medium Ghost" range="4" angle="60" cooldown="100000" />
-    <TossObject child="Medium Ghost" range="4" angle="120" cooldown="100000" />
-    <TossObject child="Large Ghost" range="4" angle="180" cooldown="100000" />
-    <TossObject child="Large Ghost" range="4" angle="240" cooldown="100000" />
-    <TossObject child="Large Ghost" range="4" angle="300" cooldown="100000" />
-    <TimedTransition targetState="Wait" time="2000" />
-    <Taunt text="Such a small party." />
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="300" />
-    <TossObject child="Small Ghost" range="4" angle="0" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="60" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="120" cooldown="100000" />
-    <TossObject child="Medium Ghost" range="4" angle="180" cooldown="100000" />
-    <TossObject child="Medium Ghost" range="4" angle="240" cooldown="100000" />
-    <TossObject child="Medium Ghost" range="4" angle="300" cooldown="100000" />
-    <TimedTransition targetState="SmallGroup2" time="30000" />
-    <Taunt text="Misery loves company!" />
-    <TossObject child="Ghost Master" range="4" angle="0" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="60" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="120" cooldown="100000" />
-    <TossObject child="Medium Ghost" range="4" angle="180" cooldown="100000" />
-    <TossObject child="Medium Ghost" range="4" angle="240" cooldown="100000" />
-    <TossObject child="Medium Ghost" range="4" angle="300" cooldown="100000" />
-    <TimedTransition targetState="Wait" time="2000" />
-    <Taunt text="Just you?  I guess you don't have any friends to play with." />
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="10" />
-    <TossObject child="Ghost Master" range="4" angle="0" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="70" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="140" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="210" cooldown="100000" />
-    <TossObject child="Small Ghost" range="4" angle="280" cooldown="100000" />
-    <TimedTransition targetState="Wait" time="1000" />
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="10000" />
-    <Prioritize>
-      <StayCloseToSpawn speed="1" range="8" />
-      <Follow speed="0.6" range="2" duration="2000" cooldown="2000" />
-    </Prioritize>
-    <Shoot radius="10" shootAngle="0" cooldown="1000" />
-    <TimedTransition targetState="Overly_long_combat" time="140000" />
-    <State id="Speak">
-      <Taunt text="I cannot be defeated while my loyal subjects sustain me!" />
-      <TimedTransition targetState="Quiet" time="1000" />
-    </State>
-    <State id="Quiet">
-      <TimedTransition targetState="Speak" time="22000" />
-    </State>
-    <Taunt text="I cannot be defeated while my loyal subjects sustain me!" />
-    <TimedTransition targetState="Quiet" time="1000" />
-    <TimedTransition targetState="Speak" time="22000" />
-    <Taunt text="You have sapped my energy. A curse on you!" />
-    <Prioritize>
-      <StayCloseToSpawn speed="1" range="8" />
-      <Follow speed="0.6" range="2" duration="2000" cooldown="2000" />
-    </Prioritize>
-    <Shoot radius="10" shootAngle="0" cooldown="1000" />
-    <Order range="30" children="Ghost Master" targetState="Decay" />
-    <Order range="30" children="Small Ghost" targetState="Decay" />
-    <Order range="30" children="Medium Ghost" targetState="Decay" />
-    <Order range="30" children="Large Ghost" targetState="Decay" />
-    <Transform target="Actual Ghost King" />
-    <Taunt text="I feel my flesh again! For the first time in a 1000 years I LIVE!" />
-    <Taunt text="Will you release me?" probability="0.5" />
-    <Transform target="Actual Ghost King" />
   </BehaviorEntry>
   <BehaviorEntry id="Ghost Master">
     <State id="Attack1">
@@ -341,98 +221,6 @@
     <State id="Decay">
       <Decay time="0" />
     </State>
-    <HpLessTransition targetState="Attack2" threshold="0.99" />
-    <State id="NewLocation1">
-      <ConditionalEffect effect="Invulnerable" />
-      <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-      <Prioritize>
-        <StayCloseToSpawn speed="2" range="7" />
-        <Wander speed="2" />
-      </Prioritize>
-      <TimedTransition targetState="Att1" time="1000" />
-    </State>
-    <State id="Att1">
-      <Shoot radius="10" count="4" shootAngle="90" fixedAngle="0" cooldown="400" />
-      <TimedTransition targetState="NewLocation1" time="9000" />
-    </State>
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-    <Prioritize>
-      <StayCloseToSpawn speed="2" range="7" />
-      <Wander speed="2" />
-    </Prioritize>
-    <TimedTransition targetState="Att1" time="1000" />
-    <Shoot radius="10" count="4" shootAngle="90" fixedAngle="0" cooldown="400" />
-    <TimedTransition targetState="NewLocation1" time="9000" />
-    <HpLessTransition targetState="Attack3" threshold="0.98" />
-    <State id="Intro">
-      <ConditionalEffect effect="Invulnerable" />
-      <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-      <ChangeSize rate="20" target="140" />
-      <TimedTransition targetState="NewLocation2" time="1000" />
-    </State>
-    <State id="NewLocation2">
-      <ConditionalEffect effect="Invulnerable" />
-      <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-      <Prioritize>
-        <StayCloseToSpawn speed="2" range="7" />
-        <Wander speed="2" />
-      </Prioritize>
-      <TimedTransition targetState="Att2" time="1000" />
-    </State>
-    <State id="Att2">
-      <Shoot radius="10" count="4" shootAngle="90" fixedAngle="45" cooldown="400" />
-      <TimedTransition targetState="NewLocation2" time="6000" />
-    </State>
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-    <ChangeSize rate="20" target="180" />
-    <TimedTransition targetState="NewLocation3" time="1000" />
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-    <Prioritize>
-      <StayCloseToSpawn speed="2" range="7" />
-      <Wander speed="2" />
-    </Prioritize>
-    <TimedTransition targetState="Att2" time="1000" />
-    <Shoot radius="10" count="4" shootAngle="90" fixedAngle="45" cooldown="400" />
-    <TimedTransition targetState="NewLocation2" time="6000" />
-    <HpLessTransition targetState="KillKing" threshold="0.94" />
-    <State id="Intro">
-      <ConditionalEffect effect="Invulnerable" />
-      <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-      <ChangeSize rate="20" target="180" />
-      <TimedTransition targetState="NewLocation3" time="1000" />
-    </State>
-    <State id="NewLocation3">
-      <ConditionalEffect effect="Invulnerable" />
-      <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-      <Prioritize>
-        <StayCloseToSpawn speed="2" range="7" />
-        <Wander speed="2" />
-      </Prioritize>
-      <TimedTransition targetState="Att3" time="1000" />
-    </State>
-    <State id="Att3">
-      <Shoot radius="10" count="4" shootAngle="90" fixedAngle="22.5" cooldown="400" />
-      <TimedTransition targetState="NewLocation3" time="3000" />
-    </State>
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-    <Prioritize>
-      <StayCloseToSpawn speed="2" range="7" />
-      <Wander speed="2" />
-    </Prioritize>
-    <TimedTransition targetState="Att3" time="1000" />
-    <Shoot radius="10" count="4" shootAngle="90" fixedAngle="22.5" cooldown="400" />
-    <TimedTransition targetState="NewLocation3" time="3000" />
-    <Taunt text="Your secret soul master is dying, Your Majesty" />
-    <Order range="30" children="Ghost King" targetState="Killed" />
-    <TimedTransition targetState="Suicide" time="3000" />
-    <Taunt text="I cannot live with my betrayal..." />
-    <Shoot radius="0" count="8" shootAngle="45" fixedAngle="22.5" cooldown="1000" />
-    <Decay time="0" />
-    <Decay time="0" />
   </BehaviorEntry>
   <BehaviorEntry id="Actual Ghost King">
     <Taunt text="I am still so very alone" probability="0.9" />
@@ -461,18 +249,6 @@
     <State id="Decay">
       <Decay time="0" />
     </State>
-    <Taunt text="Switch!" probability="0.1" />
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-    <Prioritize>
-      <StayCloseToSpawn speed="2" range="7" />
-      <Wander speed="2" />
-    </Prioritize>
-    <TimedTransition targetState="Attack" time="1000" />
-    <Taunt text="Save the King's Soul!" probability="0.1" />
-    <Shoot radius="10" count="4" shootAngle="90" fixedAngle="0" cooldown="400" />
-    <TimedTransition targetState="NewLocation" time="9000" />
-    <Decay time="0" />
   </BehaviorEntry>
   <BehaviorEntry id="Medium Ghost">
     <TransformOnDeath target="Large Ghost" />
@@ -500,21 +276,6 @@
     <State id="Decay">
       <Decay time="0" />
     </State>
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-    <ChangeSize rate="20" target="140" />
-    <TimedTransition targetState="NewLocation" time="1000" />
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-    <Prioritize>
-      <StayCloseToSpawn speed="2" range="7" />
-      <Wander speed="2" />
-    </Prioritize>
-    <TimedTransition targetState="Attack" time="1000" />
-    <Taunt text="I come back more powerful than you could ever imagine" probability="0.02" />
-    <Shoot radius="10" count="4" shootAngle="90" fixedAngle="45" cooldown="800" />
-    <TimedTransition targetState="NewLocation" time="6000" />
-    <Decay time="0" />
   </BehaviorEntry>
   <BehaviorEntry id="Large Ghost">
     <Decay time="160000" />
@@ -549,26 +310,5 @@
     <State id="Decay">
       <Decay time="0" />
     </State>
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-    <ChangeSize rate="20" target="180" />
-    <TimedTransition targetState="NewLocation" time="1000" />
-    <Taunt text="The Ghost King protects this sacred ground|The Ghost King gave his heart to the Ghost Master.  He cannot die.|Only the Secret Ghost Master can kill the King." probability="0.01" />
-    <ConditionalEffect effect="Invulnerable" />
-    <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="10" />
-    <Prioritize>
-      <StayCloseToSpawn speed="2" range="7" />
-      <Wander speed="2" />
-    </Prioritize>
-    <TimedTransition targetState="Attack" time="1000" />
-    <Taunt text="The King's wife died here.  For her memory." probability="0.01" />
-    <Shoot radius="10" count="8" shootAngle="45" fixedAngle="22.5" cooldown="800" />
-    <TimedTransition targetState="NewLocation" time="3000" />
-    <EntityNotExistsTransition targetState="AttackKingGone" dist="30" target="Ghost King" />
-    <Taunt text="The King's wife died here.  For her memory." probability="0.01" />
-    <Shoot radius="10" count="8" shootAngle="45" fixedAngle="22.5" coolDownOffset="800" cooldown="800" />
-    <TransformOnDeath target="Imp" min="2" max="3" />
-    <TimedTransition targetState="NewLocation" time="3000" />
-    <Decay time="0" />
   </BehaviorEntry>
 </BehaviorEntries>
