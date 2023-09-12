@@ -59,7 +59,7 @@ class SpawnCommand : Command
         }
         catch (Exception)
         {
-            player.SendError("JSON not formatted correctly!");
+            player.SendErrorText("JSON not formatted correctly!");
             return false;
         }
 
@@ -68,14 +68,14 @@ class SpawnCommand : Command
             {
                 if (spawn.name == null)
                 {
-                    player.SendError("No mob specified. Every entry needs a name property.");
+                    player.SendErrorText("No mob specified. Every entry needs a name property.");
                     return false;
                 }
 
                 var objType = GetSpawnObjectType(gameData, spawn.name);
                 if (objType == null)
                 {
-                    player.SendError("Unknown entity!");
+                    player.SendErrorText("Unknown entity!");
                     return false;
                 }
 
@@ -160,7 +160,7 @@ class SpawnCommand : Command
         var objType = GetSpawnObjectType(gameData, name);
         if (objType == null)
         {
-            player.SendError("Unknown entity!");
+            player.SendErrorText("Unknown entity!");
             return false;
         }
 
@@ -213,13 +213,12 @@ class SpawnCommand : Command
             Message = notif
         }, null);
 
-        w.BroadcastPacket(new Text
+        foreach (var p in player.Owner.Players.Values)
         {
-            Name = $"#{player.Name}",
-            NumStars = player.Stars,
-            BubbleTime = 0,
-            Txt = notif
-        }, null);
+            //p.Client.SendNotification();
+            p.SendInfo($"{player.Name} - {notif}");
+        }
+
     }
 
     private void QueueSpawnEvent(
@@ -342,7 +341,7 @@ class ToggleEffCommand : Command
         ConditionEffectIndex effect;
         if (!Enum.TryParse(args, true, out effect))
         {
-            player.SendError("Invalid effect!");
+            player.SendErrorText("Invalid effect!");
             return false;
         }
 
@@ -391,26 +390,26 @@ class GuildRankCommand : Command
         var rank = args.Substring(index + 1).IsInt() ? args.Substring(index + 1).ToInt32() : RankNumberFromName(args.Substring(index + 1));
         if (rank == -1)
         {
-            player.SendError("Unknown rank!");
+            player.SendErrorText("Unknown rank!");
             return false;
         }
         else if (rank % 10 != 0)
         {
-            player.SendError("Valid ranks are multiples of 10!");
+            player.SendErrorText("Valid ranks are multiples of 10!");
             return false;
         }
 
         // get player account
         if (Database.GuestNames.Contains(playerName, StringComparer.InvariantCultureIgnoreCase))
         {
-            player.SendError("Cannot rank the unnamed...");
+            player.SendErrorText("Cannot rank the unnamed...");
             return false;
         }
         var id = player.Manager.Database.ResolveId(playerName);
         var acc = player.Manager.Database.GetAccount(id);
         if (id == 0 || acc == null)
         {
-            player.SendError("Account not found!");
+            player.SendErrorText("Account not found!");
             return false;
         }
 
@@ -464,7 +463,7 @@ class GiveCommand : Command
                 var val = gameData.Items.Values.FirstOrDefault(_ => _.ObjectId.ToLower().StartsWith(args.ToLower()) || _.ObjectId.Contains(args.ToLower()));
                 if (val == null)
                 {
-                    player.SendError("Unknown item type!");
+                    player.SendErrorText("Unknown item type!");
                     return false;
                 }
                 objType = val.ObjectType;
@@ -473,7 +472,7 @@ class GiveCommand : Command
 
         if (!gameData.Items.ContainsKey(objType))
         {
-            player.SendError("Not an item!");
+            player.SendErrorText("Not an item!");
             return false;
         }
 
@@ -485,7 +484,7 @@ class GiveCommand : Command
             return true;
         }
 
-        player.SendError("Not enough space in inventory!");
+        player.SendErrorText("Not enough space in inventory!");
         return false;
     }
 }
@@ -499,7 +498,7 @@ class TpPosCommand : Command
         string[] coordinates = args.Split(' ');
         if (coordinates.Length != 2)
         {
-            player.SendError("Invalid coordinates!");
+            player.SendErrorText("Invalid coordinates!");
             return false;
         }
 
@@ -507,7 +506,7 @@ class TpPosCommand : Command
         if (!int.TryParse(coordinates[0], out x) ||
             !int.TryParse(coordinates[1], out y))
         {
-            player.SendError("Invalid coordinates!");
+            player.SendErrorText("Invalid coordinates!");
             return false;
         }
 
@@ -546,7 +545,7 @@ class SetpieceCommand : Command
             }
             catch (Exception)
             {
-                player.SendError("Invalid SetPiece.");
+                player.SendErrorText("Invalid SetPiece.");
                 return false;
             }
         }
@@ -603,7 +602,7 @@ class KickCommand : Command
                 return true;
             }
         }
-        player.SendError($"Player '{args}' could not be found!");
+        player.SendErrorText($"Player '{args}' could not be found!");
         return false;
     }
 }
@@ -616,7 +615,7 @@ class GetQuestCommand : Command
     {
         if (player.Quest == null)
         {
-            player.SendError("Player does not have a quest!");
+            player.SendErrorText("Player does not have a quest!");
             return false;
         }
         player.SendInfo("Quest location: (" + player.Quest.X + ", " + player.Quest.Y + ")");
@@ -630,7 +629,7 @@ class OryxSayCommand : Command
 
     protected override bool Process(Player player, RealmTime time, string args)
     {
-        player.Manager.Chat.Oryx(player.Owner, args);
+        ChatManager.Oryx(player.Owner, args);
         return true;
     }
 }
@@ -663,7 +662,7 @@ class SummonCommand : Command
                 return true;
             }
         }
-        player.SendError($"Player '{args}' could not be found!");
+        player.SendErrorText($"Player '{args}' could not be found!");
         return false;
     }
 }
@@ -701,7 +700,7 @@ class KillPlayerCommand : Command
                 return true;
             }
         }
-        player.SendError($"Player '{args}' could not be found!");
+        player.SendErrorText($"Player '{args}' could not be found!");
         return false;
     }
 }
@@ -714,7 +713,7 @@ class SizeCommand : Command
     {
         if (string.IsNullOrEmpty(args))
         {
-            player.SendError("Usage: /size <positive integer>. Using 0 will restore the default size for the sprite.");
+            player.SendErrorText("Usage: /size <positive integer>. Using 0 will restore the default size for the sprite.");
             return false;
         }
 
@@ -723,7 +722,7 @@ class SizeCommand : Command
         var max = 500;
         if (size < min && size != 0 || size > max)
         {
-            player.SendError($"Invalid size. Size needs to be within the range: {min}-{max}. Use 0 to reset size to default.");
+            player.SendErrorText($"Invalid size. Size needs to be within the range: {min}-{max}. Use 0 to reset size to default.");
             return false;
         }
 
@@ -836,8 +835,8 @@ class ReSkinCommand : Command
         if (String.IsNullOrEmpty(args))
         {
             var choices = skins.ToCommaSepString();
-            player.SendError("Usage: /reskin <positive integer>");
-            player.SendError("Choices: " + choices);
+            player.SendErrorText("Usage: /reskin <positive integer>");
+            player.SendErrorText("Choices: " + choices);
             return false;
         }
 
@@ -845,7 +844,7 @@ class ReSkinCommand : Command
 
         if (skin != 0 && !skins.Contains(skin))
         {
-            player.SendError("Error setting skin. Either the skin type doesn't exist or the skin is for another class.");
+            player.SendErrorText("Error setting skin. Either the skin type doesn't exist or the skin is for another class.");
             return false;
         }
 
@@ -888,7 +887,7 @@ class TpQuestCommand : Command
     {
         if (player.Quest == null)
         {
-            player.SendError("Player does not have a quest!");
+            player.SendErrorText("Player does not have a quest!");
             return false;
         }
 
@@ -916,7 +915,7 @@ class MuteCommand : Command
         var match = CmdParams.Match(args);
         if (!match.Success)
         {
-            player?.SendError("Usage: /mute <player name> <time out in minutes>\\n" +
+            player?.SendErrorText("Usage: /mute <player name> <time out in minutes>\\n" +
                               "Time parameter is optional. If left out player will be muted until unmuted.");
             return false;
         }
@@ -938,22 +937,22 @@ class MuteCommand : Command
         // run through checks
         if (id == 0 || acc == null)
         {
-            player?.SendError("Account not found!");
+            player?.SendErrorText("Account not found!");
             return false;
         }
         if (acc.IP == null)
         {
-            player?.SendError("Account has no associated IP address. Player must login at least once before being muted.");
+            player?.SendErrorText("Account has no associated IP address. Player must login at least once before being muted.");
             return false;
         }
         if (acc.IP.Equals(player?.Client.Account.IP))
         {
-            player?.SendError("Mute failed. That action would cause yourself to be muted (IPs are the same).");
+            player?.SendErrorText("Mute failed. That action would cause yourself to be muted (IPs are the same).");
             return false;
         }
         if (acc.Admin)
         {
-            player?.SendError("Cannot mute other admins.");
+            player?.SendErrorText("Cannot mute other admins.");
             return false;
         }
 
@@ -1011,7 +1010,7 @@ class UnMuteCommand : Command
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            player.SendError("Usage: /unmute <player name>");
+            player.SendErrorText("Usage: /unmute <player name>");
             return false;
         }
 
@@ -1022,12 +1021,12 @@ class UnMuteCommand : Command
         // run checks
         if (id == 0 || acc == null)
         {
-            player.SendError("Account not found!");
+            player.SendErrorText("Account not found!");
             return false;
         }
         if (acc.IP == null)
         {
-            player.SendError("Account has no associated IP address. Player must login at least once before being unmuted.");
+            player.SendErrorText("Account has no associated IP address. Player must login at least once before being unmuted.");
             return false;
         }
 
@@ -1076,7 +1075,7 @@ class BanAccountCommand : Command
             var match = rgx.Match(args);
             if (!match.Success)
             {
-                player.SendError("Usage: /ban <account id or name> <reason>");
+                player.SendErrorText("Usage: /ban <account id or name> <reason>");
                 return false;
             }
 
@@ -1093,17 +1092,17 @@ class BanAccountCommand : Command
         // run checks
         if (Database.GuestNames.Any(n => n.ToLower().Equals(bInfo.Name?.ToLower())))
         {
-            player.SendError("If you specify a player name to ban, the name needs to be unique.");
+            player.SendErrorText("If you specify a player name to ban, the name needs to be unique.");
             return false;
         }
         if (bInfo.accountId == 0)
         {
-            player.SendError("Account not found...");
+            player.SendErrorText("Account not found...");
             return false;
         }
         if (string.IsNullOrWhiteSpace(bInfo.banReasons))
         {
-            player.SendError("A reason must be provided.");
+            player.SendErrorText("A reason must be provided.");
             return false;
         }
         var acc = player.Manager.Database.GetAccount(bInfo.accountId);
@@ -1143,7 +1142,7 @@ class BanIPCommand : Command
         var match = rgx.Match(args);
         if (!match.Success)
         {
-            player.SendError("Usage: /banip <account id or name> <reason>");
+            player.SendErrorText("Usage: /banip <account id or name> <reason>");
             return false;
         }
 
@@ -1159,28 +1158,28 @@ class BanIPCommand : Command
         // run checks
         if (Database.GuestNames.Any(n => n.ToLower().Equals(idstr.ToLower())))
         {
-            player.SendError("If you specify a player name to ban, the name needs to be unique.");
+            player.SendErrorText("If you specify a player name to ban, the name needs to be unique.");
             return false;
         }
         if (id == 0)
         {
-            player.SendError("Account not found...");
+            player.SendErrorText("Account not found...");
             return false;
         }
         if (string.IsNullOrWhiteSpace(reason))
         {
-            player.SendError("A reason must be provided.");
+            player.SendErrorText("A reason must be provided.");
             return false;
         }
         var acc = db.GetAccount(id);
         if (string.IsNullOrEmpty(acc.IP))
         {
-            player.SendError("Failed to ip ban player. IP not logged...");
+            player.SendErrorText("Failed to ip ban player. IP not logged...");
             return false;
         }
         if (player.AccountId != acc.AccountId && acc.IP.Equals(player.Client.Account.IP))
         {
-            player.SendError("IP ban failed. That action would cause yourself to be banned (IPs are the same).");
+            player.SendErrorText("IP ban failed. That action would cause yourself to be banned (IPs are the same).");
             return false;
         }
 
@@ -1211,7 +1210,7 @@ class UnBanAccountCommand : Command
         var rgx = new Regex(@"^(\w+)$");
         if (!rgx.IsMatch(args))
         {
-            player.SendError("Usage: /unban <account id or name>");
+            player.SendErrorText("Usage: /unban <account id or name>");
             return false;
         }
 
@@ -1223,7 +1222,7 @@ class UnBanAccountCommand : Command
         // run checks
         if (id == 0)
         {
-            player.SendError("Account doesn't exist...");
+            player.SendErrorText("Account doesn't exist...");
             return false;
         }
 
@@ -1278,13 +1277,13 @@ class CloseRealmCommand : Command
 
         if (gw == null)
         {
-            player.SendError("Must be in realm to close.");
+            player.SendErrorText("Must be in realm to close.");
             return false;
         }
 
         if (gw.IsClosing())
         {
-            player.SendError("Realm already closing.");
+            player.SendErrorText("Realm already closing.");
             return false;
         }
 
@@ -1359,7 +1358,7 @@ class VisitCommand : Command
 
         if (target?.Player?.Owner == null)
         {
-            player.SendError("Player not found!");
+            player.SendErrorText("Player not found!");
             return false;
         }
 
@@ -1381,13 +1380,13 @@ class LinkCommand : Command
         var world = player.Owner;
         if (world.Id < 0 || (!player.Client.Account.Admin && !(world is Test)))
         {
-            player.SendError("Forbidden.");
+            player.SendErrorText("Forbidden.");
             return false;
         }
 
         if (!player.Manager.Monitor.AddPortal(world.Id))
         {
-            player.SendError("Link already exists.");
+            player.SendErrorText("Link already exists.");
             return false;
         }
 
@@ -1407,12 +1406,12 @@ class UnLinkCommand : Command
         var world = player.Owner;
         if (world.Id < 0 || (!player.Client.Account.Admin && !(world is Test)))
         {
-            player.SendError("Forbidden.");
+            player.SendErrorText("Forbidden.");
             return false;
         }
 
         if (!player.Manager.Monitor.RemovePortal(player.Owner.Id))
-            player.SendError("Link not found.");
+            player.SendErrorText("Link not found.");
         else
             player.SendInfo("Link removed.");
 
@@ -1457,14 +1456,14 @@ class RenameCommand : Command
         var id = player.Manager.Database.ResolveId(playerName);
         if (id == 0)
         {
-            player.SendError("Player account not found!");
+            player.SendErrorText("Player account not found!");
             return false;
         }
 
         if (newPlayerName.Length < 3 || newPlayerName.Length > 15 || !newPlayerName.All(char.IsLetter) ||
             Database.GuestNames.Contains(newPlayerName, StringComparer.InvariantCultureIgnoreCase))
         {
-            player.SendError("New name is invalid. Must be between 3-15 char long and contain only letters.");
+            player.SendErrorText("New name is invalid. Must be between 3-15 char long and contain only letters.");
             return false;
         }
 
@@ -1478,14 +1477,14 @@ class RenameCommand : Command
 
             if (db.Conn.HashExists("names", newPlayerName.ToUpperInvariant()))
             {
-                player.SendError("Name already taken");
+                player.SendErrorText("Name already taken");
                 return false;
             }
 
             var acc = db.GetAccount(id);
             if (acc == null)
             {
-                player.SendError("Account doesn't exist.");
+                player.SendErrorText("Account doesn't exist.");
                 return false;
             }
 
@@ -1496,7 +1495,7 @@ class RenameCommand : Command
                     player.SendInfo("Rename successful.");
                 }
                 else
-                    player.SendError("Account in use.");
+                    player.SendErrorText("Account in use.");
         }
         finally
         {
@@ -1525,7 +1524,7 @@ class UnnameCommand : Command
         var id = player.Manager.Database.ResolveId(playerName);
         if (id == 0)
         {
-            player.SendError("Player account not found!");
+            player.SendErrorText("Player account not found!");
             return false;
         }
 
@@ -1540,7 +1539,7 @@ class UnnameCommand : Command
             var acc = db.GetAccount(id);
             if (acc == null)
             {
-                player.SendError("Account doesn't exist.");
+                player.SendErrorText("Account doesn't exist.");
                 return false;
             }
 
@@ -1551,7 +1550,7 @@ class UnnameCommand : Command
                     player.SendInfo("Account succesfully unnamed.");
                 }
                 else
-                    player.SendError("Account in use.");
+                    player.SendErrorText("Account in use.");
         }
         finally
         {

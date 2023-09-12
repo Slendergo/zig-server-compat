@@ -206,13 +206,7 @@ public partial class Player
             var newQuest = FindQuest(destination);
             if (newQuest != null && newQuest != questEntity)
             {
-                Owner.Timers.Add(new WorldTimer(100, (w, t) =>
-                {
-                    _client.SendPacket(new QuestObjId()
-                    {
-                        ObjectId = newQuest.Id
-                    });
-                }));
+                _client.SendQuestObjectId(newQuest.Id);
                 questEntity = newQuest;
             }
         }

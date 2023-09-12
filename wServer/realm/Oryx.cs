@@ -779,7 +779,7 @@ class Oryx
 
     private void BroadcastMsg(string message)
     {
-        _world.Manager.Chat.Oryx(_world, message);
+        ChatManager.Oryx(_world, message);
     }
 
     public void OnPlayerEntered(Player player)

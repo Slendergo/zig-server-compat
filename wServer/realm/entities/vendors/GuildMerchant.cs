@@ -32,7 +32,7 @@ class GuildMerchant : SellableObject
 
         if (guild.IsNull || account.GuildRank < 30)
         {
-            player.SendError("Verification failed.");
+            player.SendErrorText("Verification failed.");
             return;
         }
 
@@ -49,7 +49,7 @@ class GuildMerchant : SellableObject
         // change guild level
         if (!player.Manager.Database.ChangeGuildLevel(guild, _upgradeLevel))
         {
-            player.SendError("Internal server error.");
+            player.SendErrorText("Internal server error.");
             return;
         }
 

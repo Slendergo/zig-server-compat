@@ -210,6 +210,8 @@ public struct ObjectSlot
 public struct MoveRecord
 {
     public long Time;
+    public float X;
+    public float Y;
     public Position Position;
 
     public static MoveRecord Read(NReader rdr) => new MoveRecord()

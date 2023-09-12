@@ -25,7 +25,7 @@ class ChangeGuildRankHandler : PacketHandlerBase<ChangeGuildRank>
         var targetId = client.Manager.Database.ResolveId(name);
         if (targetId == 0)
         {
-            srcPlayer.SendError("A player with that name does not exist.");
+            srcPlayer.SendErrorText("A player with that name does not exist.");
             return;
         }
 
@@ -42,21 +42,21 @@ class ChangeGuildRankHandler : PacketHandlerBase<ChangeGuildRank>
             rank == 40 ||
             srcAcnt.GuildId != targetAcnt.GuildId)
         {
-            srcPlayer.SendError("No permission");
+            srcPlayer.SendErrorText("No permission");
             return;
         }
 
         var targetRank = targetAcnt.GuildRank;
         if (targetRank == rank)
         {
-            srcPlayer.SendError("Player is already a " + ResolveRank(rank));
+            srcPlayer.SendErrorText("Player is already a " + ResolveRank(rank));
             return;
         }
 
         // change rank
         if (!client.Manager.Database.ChangeGuildRank(targetAcnt, rank))
         {
-            srcPlayer.SendError("Failed to change rank.");
+            srcPlayer.SendErrorText("Failed to change rank.");
             return;
         }
 

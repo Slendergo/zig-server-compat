@@ -21,7 +21,7 @@ class JoinGuildHandler : PacketHandlerBase<JoinGuild>
 
         if (src.Player.GuildInvite == null)
         {
-            src.Player.SendError("You have not been invited to a guild.");
+            src.Player.SendErrorText("You have not been invited to a guild.");
             return;
         }
 
@@ -29,20 +29,20 @@ class JoinGuildHandler : PacketHandlerBase<JoinGuild>
 
         if (guild == null)
         {
-            src.Player.SendError("Internal server error.");
+            src.Player.SendErrorText("Internal server error.");
             return;
         }
 
         if (!guild.Name.Equals(guildName, StringComparison.InvariantCultureIgnoreCase))
         {
-            src.Player.SendError("You have not been invited to join " + guildName + ".");
+            src.Player.SendErrorText("You have not been invited to join " + guildName + ".");
             return;
         }
 
         var result = src.Manager.Database.AddGuildMember(guild, src.Account);
         if (result != AddGuildMemberStatus.OK)
         {
-            src.Player.SendError("Could not join guild. (" + result + ")");
+            src.Player.SendErrorText("Could not join guild. (" + result + ")");
             return;
         }
 

@@ -31,7 +31,7 @@ public abstract class Command
     {
         if (!bypassPermission && !HasPermission(player))
         {
-            player.SendError("No permission!");
+            player.SendErrorText("No permission!");
             return false;
         }
 
@@ -42,7 +42,7 @@ public abstract class Command
         catch (Exception ex)
         {
             Log.Error("Error when executing the command.", ex);
-            player.SendError("Error when executing the command.");
+            player.SendErrorText("Error when executing the command.");
             return false;
         }
     }
@@ -84,7 +84,7 @@ public class CommandManager
         Command command;
         if (!_cmds.TryGetValue(cmd, out command))
         {
-            player.SendError("Unknown command!");
+            player.SendErrorText("Unknown command!");
             return false;
         }
 

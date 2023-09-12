@@ -51,7 +51,7 @@ class ChangeTradeHandler : PacketHandlerBase<ChangeTrade>
         if (sb)
         {
             CheatLog.Info("User {0} tried to trade a Soulbound item.", player.Name);
-            player.SendError("You can't trade Soulbound items.");
+            player.SendErrorText("You can't trade Soulbound items.");
         }
     }
 }

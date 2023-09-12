@@ -2,9 +2,7 @@
 using NLog;
 using wServer.networking.packets;
 using wServer.networking.packets.incoming;
-using wServer.networking.packets.outgoing;
 using wServer.realm;
-using wServer.realm.entities;
 
 namespace wServer.networking.handlers;
 

@@ -42,7 +42,7 @@ class InvSwapHandler : PacketHandlerBase<InvSwap>
         {
             a.ForceUpdate(slotA);
             b.ForceUpdate(slotB);
-            player.Client.SendPacket(new InvResult() { Result = 1 });
+            player.Client.SendInventoryResult(1);
             return;
         }
 
@@ -60,7 +60,7 @@ class InvSwapHandler : PacketHandlerBase<InvSwap>
                     {
                         stackTrans[slotA] = null;
                         Inventory.Execute(stackTrans);
-                        player.Client.SendPacket(new InvResult() { Result = 0 });
+                        player.Client.SendInventoryResult(1);
                         return;
                     }
                 }
@@ -72,7 +72,7 @@ class InvSwapHandler : PacketHandlerBase<InvSwap>
         {
             a.ForceUpdate(slotA);
             b.ForceUpdate(slotB);
-            player.Client.SendPacket(new InvResult() { Result = 1 });
+            player.Client.SendInventoryResult(1);
             return;
         }
 
@@ -103,13 +103,13 @@ class InvSwapHandler : PacketHandlerBase<InvSwap>
             while (queue.Count > 0)
                 queue.Dequeue()();
 
-            player.Client.SendPacket(new InvResult() { Result = 0 });
+            player.Client.SendInventoryResult(0);
             return;
         }
 
         a.ForceUpdate(slotA);
         b.ForceUpdate(slotB);
-        player.Client.SendPacket(new InvResult() { Result = 1 });
+        player.Client.SendInventoryResult(1);
     }
 
     bool ValidateEntities(Player p, Entity a, Entity b)

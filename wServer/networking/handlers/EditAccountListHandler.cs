@@ -25,7 +25,7 @@ class EditAccountListHandler : PacketHandlerBase<EditAccountList>
         var targetPlayer = client.Player.Owner.GetEntity(objId) as Player;
         if (targetPlayer == null || targetPlayer.Client.Account == null)
         {
-            client.Player.SendError("Player not found.");
+            client.Player.SendErrorText("Player not found.");
             return;
         }
 

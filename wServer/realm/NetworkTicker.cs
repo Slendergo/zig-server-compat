@@ -46,12 +46,6 @@ public class NetworkTicker
             if (pending.client.State == ProtocolState.Disconnected)
                 continue;
             
-            if (pending.client.Reconnecting)
-            {
-                Console.WriteLine($"Ignoring packet handler during reconnect.");
-                continue;
-            }
-
             try
             {
                 // Console.WriteLine("Handling: " + pending.id);

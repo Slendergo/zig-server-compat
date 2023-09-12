@@ -61,7 +61,7 @@ public class Portal : StaticObject
             {
                 if (string.IsNullOrEmpty(player.Guild))
                 {
-                    player.SendError("You are not in a guild.");
+                    player.SendErrorText("You are not in a guild.");
                     return;
                 }
 
@@ -84,7 +84,7 @@ public class Portal : StaticObject
         if(world == null)
         {
             world = Manager.GetWorld(World.Nexus);
-            player.SendError("Unable to find world, sent to nexus");
+            player.SendErrorText("Unable to find world, sent to nexus");
         }
 
         WorldInstance = world;
