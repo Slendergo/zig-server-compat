@@ -305,6 +305,8 @@ public struct ObjectStats
         Position.Write(wtr);
 
         wtr.Write((ushort)Stats.Length);
+        var byteLenIdx = wtr.BaseStream.Position;
+        wtr.Write((ushort)0);
         foreach (var i in Stats)
         {
             wtr.Write((byte)i.Key);
@@ -346,5 +348,11 @@ public struct ObjectStats
                         $"Stat '{i.Key}' of type '{i.Value?.GetType().ToString() ?? "null"}' not supported.");
             }
         }
+
+        var endIdx = wtr.BaseStream.Position;
+        var byteLen = endIdx - byteLenIdx - 2;
+        wtr.BaseStream.Position = byteLenIdx;
+        wtr.Write((ushort)byteLen);
+        wtr.BaseStream.Position = endIdx;
     }
 }
