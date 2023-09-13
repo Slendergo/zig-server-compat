@@ -26,28 +26,29 @@ class PlayerShootHandler : PacketHandlerBase<PlayerShoot>
     {
         if (!player.Manager.Resources.GameData.Items.TryGetValue(packet.ContainerType, out var item))
         {
-            player.Client.Disconnect("Invalid Shoot ContainerType");
+            CheatLog.Info($"Attempted to use invalid item in PlayerShoot ({player.Name}:{player.AccountId}): Not found");
+            player.Client.Random.NextInt();
             return;
         }
 
-        if (item == player.Inventory[1])
+        if (item != player.Inventory[0])
         {
-            // todo mabye dropt he shoot?
-            player.Client.Disconnect("Attempt to shoot ability for inventory");
-            return; // ability shoot handled by useitem
+            CheatLog.Info($"Attempted to use invalid item in PlayerShoot ({player.Name}:{player.AccountId}): Wrong slot");
+            player.Client.Random.NextInt();
+            return;
         }
+        
+        var prjDesc = item.Projectiles[0]; //Assume only one
 
         // validate
         var result = player.ValidatePlayerShoot(item, packet.Time);
         if (result != PlayerShootStatus.OK)
         {
-            player.Client.Disconnect("Invalid Shoot State");
-            //CheatLog.Info($"PlayerShoot validation failure ({player.Name}:{player.AccountId}): {result}");
-            //player.Client.Random.NextInt(prjDesc.MinDamage, prjDesc.MaxDamage);
+            CheatLog.Info($"PlayerShoot validation failure ({player.Name}:{player.AccountId}): {result}");
+            player.Client.Random.NextInt();
             return;
         }
 
-        var prjDesc = item.Projectiles[0]; //Assume only one
 
         // create projectile and show other players
         var prj = player.PlayerShootProjectile(
