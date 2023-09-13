@@ -7,4 +7,4 @@ A C# GameServer for the zig-client repository
   
 ## Prerequisites
 - .NET Core 7.0
-- C# compatiable IDE (Visual Studio, Rider)
+- IDE (Visual Studio, Rider)
