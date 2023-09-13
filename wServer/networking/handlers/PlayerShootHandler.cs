@@ -31,7 +31,11 @@ class PlayerShootHandler : PacketHandlerBase<PlayerShoot>
         }
 
         if (item == player.Inventory[1])
+        {
+            // todo mabye dropt he shoot?
+            player.Client.Disconnect("Attempt to shoot ability for inventory");
             return; // ability shoot handled by useitem
+        }
 
         // validate
         var result = player.ValidatePlayerShoot(item, packet.Time);

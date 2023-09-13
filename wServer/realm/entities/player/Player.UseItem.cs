@@ -987,9 +987,7 @@ partial class Player
         var sPkts = new Packet[item.NumProjectiles];
         for (var i = 0; i < item.NumProjectiles; i++)
         {
-            var proj = CreateProjectile(prjDesc, item.ObjectType,
-                (int)Stats.GetClientDamage(prjDesc.MinDamage, prjDesc.MaxDamage, true),
-                time.TotalElapsedMs, new Position() { X = X, Y = Y }, (float)(startAngle + arcGap * i));
+            var proj = CreateProjectile(prjDesc, item.ObjectType, Stats.GetClientDamage(prjDesc.MinDamage, prjDesc.MaxDamage, true), time.TotalElapsedMs, new Position() { X = X, Y = Y }, (float)(startAngle + arcGap * i));
             Owner.EnterWorld(proj);
             sPkts[i] = new AllyShoot()
             {

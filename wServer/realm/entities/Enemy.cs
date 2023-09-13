@@ -108,7 +108,10 @@ public class Enemy : Character
     }
     public override bool HitByProjectile(Projectile projectile, RealmTime time)
     {
-        if (stat) return false;
+        Console.WriteLine("HIT BY PROJECTILE");
+
+        if (stat) 
+            return false;
         if (HasConditionEffect(ConditionEffects.Invincible))
             return false;
         if (projectile.ProjectileOwner is Player &&
@@ -118,7 +121,7 @@ public class Enemy : Character
             var dmg = DamageWithDefense(projectile.Damage, Defense, projectile.ProjDesc.ArmorPiercing);
             HP -= dmg;
 
-            Console.WriteLine(dmg);
+            Console.WriteLine("DAMAGE TOOK: " + dmg);
 
             ApplyConditionEffect(projectile.ProjDesc.Effects);
             Owner.BroadcastPacketNearby(new Damage()
