@@ -24,8 +24,6 @@ class EnemyHitHandler : PacketHandlerBase<EnemyHit>
         if (entity?.Owner == null)
             return;
 
-        Console.WriteLine("ENEMY HIT");
-
         var prj = (player as IProjectileOwner).Projectiles[pkt.BulletId];
         if (prj == null)
             Log.Debug("prj is dead...");

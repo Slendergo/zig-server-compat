@@ -746,8 +746,6 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
         var d = (int)Math.Max(min, origDamage - def);
         if (HasConditionEffect(ConditionEffects.Invulnerable) || HasConditionEffect(ConditionEffects.Invincible))
             d = 0;
-
-        Console.WriteLine($"DamageWithDefense: {d} | {origDamage} {targetDefense} {armorPiercing}");
         return d;
     }
 
