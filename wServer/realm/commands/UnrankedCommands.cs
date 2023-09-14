@@ -192,42 +192,6 @@ class GCommand : Command
     }
 }
 
-class LocalCommand : Command
-{
-    public LocalCommand() : base("l") { }
-
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
-        if (!player.NameChosen)
-        {
-            player.SendErrorText("Choose a name!");
-            return false;
-        }
-
-        if (player.Muted)
-        {
-            player.SendErrorText("Muted. You can not local chat at this time.");
-            return false;
-        }
-
-        if (player.CompareAndCheckSpam(args, time.TotalElapsedMs))
-        {
-            return false;
-        }
-
-        var sent = ChatManager.Local(player, args);
-        if (!sent)
-        {
-            player.SendErrorText("Failed to send message. Use of extended ascii characters and ascii whitespace (other than space) is not allowed.");
-        }
-        else
-        {
-            player.Owner.ChatReceived(player, args);
-        }
-        return sent;
-    }
-}
-
 class HelpCommand : Command
 {
     //actually the command is 'help', but /help is intercepted by client

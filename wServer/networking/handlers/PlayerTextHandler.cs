@@ -52,11 +52,6 @@ class PlayerTextHandler : PacketHandlerBase<PlayerText>
                 return;
             }
 
-            if (player.CompareAndCheckSpam(text, time.TotalElapsedMs))
-            {
-                return;
-            }
-
             // save message for mob behaviors
             player.Owner.ChatReceived(player, text);
 
