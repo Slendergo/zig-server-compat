@@ -1,30 +1,26 @@
-﻿using common;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using common;
 using wServer.realm;
 
 namespace wServer.logic.transitions;
 
-class GroundTransition : Transition
-{
+internal class GroundTransition : Transition {
     //State storage: none
 
     private readonly string _ground;
     private ushort? _groundType;
 
     public GroundTransition(XElement e)
-    : base(e.ParseString("@targetState", "root"))
-    {
+        : base(e.ParseString("@targetState", "root")) {
         _ground = e.ParseString("@ground");
     }
 
     public GroundTransition(string ground, string targetState)
-        : base(targetState)
-    {
+        : base(targetState) {
         _ground = ground;
     }
 
-    protected override bool TickCore(Entity host, RealmTime time, ref object state)
-    {
+    protected override bool TickCore(Entity host, RealmTime time, ref object state) {
         if (_groundType == null)
             _groundType = host.Manager.Resources.GameData.IdToTileType[_ground];
 

@@ -2,18 +2,16 @@
 
 namespace common.resources;
 
-public class AppSettings
-{
-    public readonly XElement Xml;
-
-    public readonly int UseExternalPayments;
+public class AppSettings {
     public readonly int MaxStackablePotions;
     public readonly NewAccounts NewAccounts;
     public readonly NewCharacters NewCharacters;
 
-    public AppSettings(string dir)
-    {
-        XElement e = XElement.Parse(Utils.Read(dir));
+    public readonly int UseExternalPayments;
+    public readonly XElement Xml;
+
+    public AppSettings(string dir) {
+        var e = XElement.Parse(Utils.Read(dir));
         Xml = e;
         UseExternalPayments = e.GetValue<int>("UseExternalPayments");
         MaxStackablePotions = e.GetValue<int>("MaxStackablePotions");
@@ -28,42 +26,38 @@ public class AppSettings
     }
 }
 
-public class NewAccounts
-{
-    public readonly int MaxCharSlot;
-    public readonly int VaultCount;
-    public readonly int Fame;
+public class NewAccounts {
+    public readonly bool ClassesUnlocked;
     public readonly int Credits;
+    public readonly int Fame;
+    public readonly int MaxCharSlot;
+    public readonly bool SkinsUnlocked;
     public readonly int SlotCost;
     public readonly CurrencyType SlotCurrency;
-    public readonly bool ClassesUnlocked;
-    public readonly bool SkinsUnlocked;
+    public readonly int VaultCount;
 
-    public NewAccounts(XElement e)
-    {
-        MaxCharSlot = e.GetValue<int>("MaxCharSlot", 1);
-        VaultCount = e.GetValue<int>("VaultCount", 1);
-        Fame = e.GetValue<int>("Fame", 0);
-        Credits = e.GetValue<int>("Credits", 0);
+    public NewAccounts(XElement e) {
+        MaxCharSlot = e.GetValue("MaxCharSlot", 1);
+        VaultCount = e.GetValue("VaultCount", 1);
+        Fame = e.GetValue<int>("Fame");
+        Credits = e.GetValue<int>("Credits");
 
         ClassesUnlocked = e.HasElement("ClassesUnlocked");
         SkinsUnlocked = e.HasElement("SkinsUnlocked");
 
-        SlotCost = e.GetValue<int>("SlotCost", 1000);
-        SlotCurrency = (CurrencyType)e.GetValue<int>("SlotCurrency", 0);
+        SlotCost = e.GetValue("SlotCost", 1000);
+        SlotCurrency = (CurrencyType) e.GetValue<int>("SlotCurrency");
         if (SlotCurrency != CurrencyType.Fame && SlotCurrency != CurrencyType.Gold)
             SlotCurrency = CurrencyType.Gold;
     }
 }
 
-public class NewCharacters
-{
-    public readonly bool Maxed;
+public class NewCharacters {
     public readonly int Level;
+    public readonly bool Maxed;
 
-    public NewCharacters(XElement e)
-    {
+    public NewCharacters(XElement e) {
         Maxed = e.HasElement("Maxed");
-        Level = e.GetValue<int>("Level", 1);
+        Level = e.GetValue("Level", 1);
     }
 }

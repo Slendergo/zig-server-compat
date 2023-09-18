@@ -20,53 +20,51 @@
 
 using DungeonGenerator.Dungeon;
 
-
 namespace DungeonGenerator.Templates;
 
 public abstract class DungeonTemplate {
-	protected Random Rand { get; private set; }
+    protected Random Rand { get; private set; }
 
-	internal void SetRandom(Random rand) {
-		Rand = rand;
-	}
+    public abstract int MaxDepth { get; }
+    public abstract NormDist TargetDepth { get; }
+    public virtual Range NumRoomRate => new(3, 5);
 
-	public abstract int MaxDepth { get; }
-	public abstract NormDist TargetDepth { get; }
-	public virtual Range NumRoomRate { get { return new Range(3, 5); } }
+    public abstract NormDist SpecialRmCount { get; }
+    public abstract NormDist SpecialRmDepthDist { get; }
 
-	public abstract NormDist SpecialRmCount { get; }
-	public abstract NormDist SpecialRmDepthDist { get; }
+    public abstract int CorridorWidth { get; }
+    public abstract Range RoomSeparation { get; }
 
-	public abstract int CorridorWidth { get; }
-	public abstract Range RoomSeparation { get; }
+    internal void SetRandom(Random rand) {
+        Rand = rand;
+    }
 
-	public virtual void Initialize() {
-	}
+    public virtual void Initialize() { }
 
-	public abstract Room CreateStart(int depth);
-	public abstract Room CreateTarget(int depth, Room prev);
-	public abstract Room CreateSpecial(int depth, Room prev);
-	public abstract Room CreateNormal(int depth, Room prev);
+    public abstract Room CreateStart(int depth);
+    public abstract Room CreateTarget(int depth, Room prev);
+    public abstract Room CreateSpecial(int depth, Room prev);
+    public abstract Room CreateNormal(int depth, Room prev);
 
-	public virtual void InitializeRasterization(DungeonGraph graph) {
-	}
+    public virtual void InitializeRasterization(DungeonGraph graph) { }
 
-	public virtual MapRender CreateBackground() {
-		return new MapRender();
-	}
+    public virtual MapRender CreateBackground() {
+        return new MapRender();
+    }
 
-	public virtual MapRender CreateOverlay() {
-		return new MapRender();
-	}
+    public virtual MapRender CreateOverlay() {
+        return new MapRender();
+    }
 
-	public virtual MapCorridor CreateCorridor() {
-		return new MapCorridor();
-	}
+    public virtual MapCorridor CreateCorridor() {
+        return new MapCorridor();
+    }
 
-	protected static DungeonTile[,] ReadTemplate(Type templateType) {
-		var templateName = templateType.Namespace + ".template.jm";
-		var stream = templateType.Assembly.GetManifestResourceStream(templateName);
-		using (var reader = new StreamReader(stream))
-			return JsonMap.Load(reader.ReadToEnd());
-	}
+    protected static DungeonTile[,] ReadTemplate(Type templateType) {
+        var templateName = templateType.Namespace + ".template.jm";
+        var stream = templateType.Assembly.GetManifestResourceStream(templateName);
+        using (var reader = new StreamReader(stream)) {
+            return JsonMap.Load(reader.ReadToEnd());
+        }
+    }
 }

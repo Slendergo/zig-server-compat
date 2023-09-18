@@ -1,50 +1,45 @@
 ﻿using common.resources;
-using wServer.networking.packets.outgoing;
 
 namespace wServer.realm.entities;
 
-class Trap : StaticObject
-{
-    const int LIFETIME = 10;
+internal class Trap : StaticObject {
+    private const int LIFETIME = 10;
+    private int dmg;
+    private int duration;
+    private ConditionEffectIndex effect;
+    private int p;
 
-    Player player;
-    float radius;
-    int dmg;
-    ConditionEffectIndex effect;
-    int duration;
+    private Player player;
+    private float radius;
+
+    private int t;
+
     public Trap(Player player, float radius, int dmg, ConditionEffectIndex eff, float effDuration)
-        : base(player.Manager, 0x0711, LIFETIME * 1000, true, true, false)
-    {
+        : base(player.Manager, 0x0711, LIFETIME * 1000, true, true, false) {
         this.player = player;
         this.radius = radius;
         this.dmg = dmg;
-        this.effect = eff;
-        this.duration = (int)(effDuration * 1000);
+        effect = eff;
+        duration = (int) (effDuration * 1000);
     }
 
-    int t = 0;
-    int p = 0;
-    public override void Tick(RealmTime time)
-    {
-        if (t / 500 == p)
-        {
-            Owner.BroadcastPacketNearby(new ShowEffect()
-            {
-                EffectType = EffectType.Trap,
-                Color = new ARGB(0xff9000ff),
-                TargetObjectId = Id,
-                Pos1 = new Position() { X = radius / 2 }
-            }, this, null);
+    public override void Tick(RealmTime time) {
+        if (t / 500 == p) {
+            foreach (var otherPlayer in Owner.Players.Values)
+                if (otherPlayer.DistSqr(this) < Player.RadiusSqr)
+                    otherPlayer.Client.SendShowEffect(EffectType.Trap, Id, new Position {X = radius / 2},
+                        new Position(), new ARGB(0xff9000ff));
+
             p++;
-            if (p == LIFETIME * 2)
-            {
+            if (p == LIFETIME * 2) {
                 Explode(time);
                 return;
             }
         }
-        t += time.ElaspedMsDelta;
 
-        bool monsterNearby = false;
+        t += time.ElapsedMsDelta;
+
+        var monsterNearby = false;
         this.AOE(radius / 2, false, enemy => monsterNearby = true);
         if (monsterNearby)
             Explode(time);
@@ -52,19 +47,14 @@ class Trap : StaticObject
         base.Tick(time);
     }
 
-    void Explode(RealmTime time)
-    {
-        Owner.BroadcastPacketNearby(new ShowEffect()
-        {
-            EffectType = EffectType.AreaBlast,
-            Color = new ARGB(0xff9000ff),
-            TargetObjectId = Id,
-            Pos1 = new Position() { X = radius }
-        }, this, null);
-        this.AOE(radius, false, enemy =>
-        {
-            (enemy as Enemy).Damage(player, time, dmg, false, new ConditionEffect()
-            {
+    private void Explode(RealmTime time) {
+        foreach (var otherPlayer in Owner.Players.Values)
+            if (otherPlayer.DistSqr(this) < Player.RadiusSqr)
+                otherPlayer.Client.SendShowEffect(EffectType.AreaBlast, Id, new Position {X = radius}, new Position(),
+                    new ARGB(0xff9000ff));
+
+        this.AOE(radius, false, enemy => {
+            (enemy as Enemy).Damage(player, time, dmg, false, new ConditionEffect {
                 Effect = effect,
                 DurationMS = duration
             });

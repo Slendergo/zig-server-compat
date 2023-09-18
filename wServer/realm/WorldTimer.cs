@@ -2,39 +2,33 @@
 
 namespace wServer.realm;
 
-public class WorldTimer
-{
+public class WorldTimer {
     private readonly Action<World, RealmTime> _cb;
     private readonly Func<World, RealmTime, bool> _rcb;
     private readonly int _total;
     private int _remain;
 
-    public WorldTimer(int tickMs, Action<World, RealmTime> callback)
-    {
+    public WorldTimer(int tickMs, Action<World, RealmTime> callback) {
         _remain = _total = tickMs;
         _cb = callback;
     }
 
-    public WorldTimer(int tickMs, Func<World, RealmTime, bool> callback)
-    {
+    public WorldTimer(int tickMs, Func<World, RealmTime, bool> callback) {
         _remain = _total = tickMs;
         _rcb = callback;
     }
 
-    public void Reset()
-    {
+    public void Reset() {
         _remain = _total;
     }
 
-    public bool Tick(World world, RealmTime time)
-    {
-        _remain -= time.ElaspedMsDelta;
+    public bool Tick(World world, RealmTime time) {
+        _remain -= time.ElapsedMsDelta;
 
         if (_remain >= 0)
             return false;
 
-        if (_cb != null)
-        {
+        if (_cb != null) {
             _cb(world, time);
             return true;
         }

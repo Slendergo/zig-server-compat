@@ -2,10 +2,7 @@
 
 namespace wServer.realm.entities;
 
-public class Wall : StaticObject
-{
+public class Wall : StaticObject {
     public Wall(RealmManager manager, ushort objType, XElement node)
-        : base(manager, objType, GetHP(node), true, false, true)
-    {
-    }
+        : base(manager, objType, GetHP(node), true, false, true) { }
 }

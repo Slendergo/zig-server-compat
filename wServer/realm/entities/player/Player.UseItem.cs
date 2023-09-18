@@ -1,97 +1,77 @@
 ﻿using common.resources;
-using wServer.networking.packets;
-using wServer.networking.packets.outgoing;
 using wServer.realm.worlds;
 
 namespace wServer.realm.entities;
 
-partial class Player
-{
+partial class Player {
     public const int MaxAbilityDist = 14;
 
-    public static readonly ConditionEffect[] NegativeEffs = new ConditionEffect[]
-    {
-        new()
-        {
+    public static readonly ConditionEffect[] NegativeEffs = {
+        new() {
             Effect = ConditionEffectIndex.Slowed,
             DurationMS = 0
         },
-        new()
-        {
+        new() {
             Effect = ConditionEffectIndex.Paralyzed,
             DurationMS = 0
         },
-        new()
-        {
+        new() {
             Effect = ConditionEffectIndex.Weak,
             DurationMS = 0
         },
-        new()
-        {
+        new() {
             Effect = ConditionEffectIndex.Stunned,
             DurationMS = 0
         },
-        new()
-        {
+        new() {
             Effect = ConditionEffectIndex.Confused,
             DurationMS = 0
         },
-        new()
-        {
+        new() {
             Effect = ConditionEffectIndex.Blind,
             DurationMS = 0
         },
-        new()
-        {
+        new() {
             Effect = ConditionEffectIndex.Quiet,
             DurationMS = 0
         },
-        new()
-        {
+        new() {
             Effect = ConditionEffectIndex.ArmorBroken,
             DurationMS = 0
         },
-        new()
-        {
+        new() {
             Effect = ConditionEffectIndex.Bleeding,
             DurationMS = 0
         },
-        new()
-        {
+        new() {
             Effect = ConditionEffectIndex.Dazed,
             DurationMS = 0
         },
-        new()
-        {
+        new() {
             Effect = ConditionEffectIndex.Sick,
             DurationMS = 0
         },
-        new()
-        {
+        new() {
             Effect = ConditionEffectIndex.Drunk,
             DurationMS = 0
         },
-        new()
-        {
+        new() {
             Effect = ConditionEffectIndex.Hallucinating,
             DurationMS = 0
         },
-        new()
-        {
+        new() {
             Effect = ConditionEffectIndex.Hexed,
             DurationMS = 0
-        },
+        }
     };
 
     private readonly object _useLock = new();
-    public void UseItem(RealmTime time, int objId, int slot, Position pos)
-    {
-        using (TimedLock.Lock(_useLock))
-        {
+
+    public void UseItem(RealmTime time, int objId, int slot, Position pos) {
+        using (TimedLock.Lock(_useLock)) {
             //Log.Debug(objId + ":" + slot);
             var entity = Owner.GetEntity(objId);
-            if (entity == null || entity is Player && objId != Id)
-            {
+            if (entity == null || (entity is Player && objId != Id)) {
                 Client.SendInventoryResult(1);
                 return;
             }
@@ -99,8 +79,7 @@ partial class Player
             var container = entity as IContainer;
 
             // eheh no more clearing BBQ loot bags
-            if (this.Dist(entity) > 3)
-            {
+            if (this.Dist(entity) > 3) {
                 Client.SendInventoryResult(1);
                 return;
             }
@@ -109,8 +88,7 @@ partial class Player
 
             // get item
             Item item = null;
-            foreach (var stack in Stacks.Where(stack => stack.Slot == slot))
-            {
+            foreach (var stack in Stacks.Where(stack => stack.Slot == slot)) {
                 item = stack.Pull();
 
                 if (item == null)
@@ -118,8 +96,8 @@ partial class Player
 
                 break;
             }
-            if (item == null)
-            {
+
+            if (item == null) {
                 if (container == null)
                     return;
 
@@ -133,8 +111,7 @@ partial class Player
             if (tradeTarget != null && item.Consumable)
                 return;
 
-            if (MP < item.MpCost)
-            {
+            if (MP < item.MpCost) {
                 Client.SendInventoryResult(1);
                 return;
             }
@@ -142,17 +119,14 @@ partial class Player
 
             // use item
             var slotType = 10;
-            if (slot < cInv.Length)
-            {
+            if (slot < cInv.Length) {
                 slotType = container.SlotTypes[slot];
 
-                if (item.TypeOfConsumable)
-                {
+                if (item.TypeOfConsumable) {
                     var gameData = Manager.Resources.GameData;
                     var db = Manager.Database;
 
-                    if (item.Consumable)
-                    {
+                    if (item.Consumable) {
                         Item successor = null;
                         if (item.SuccessorId != null)
                             successor = gameData.Items[gameData.IdToObjectType[item.SuccessorId]];
@@ -165,53 +139,40 @@ partial class Player
                         return;
                     }
 
-                    if (slotType > 0)
-                    {
+                    if (slotType > 0) {
                         FameCounter.UseAbility();
                     }
-                    else
-                    {
+                    else {
                         if (item.ActivateEffects.Any(eff => eff.Effect == ActivateEffects.Heal ||
                                                             eff.Effect == ActivateEffects.HealNova ||
                                                             eff.Effect == ActivateEffects.Magic ||
                                                             eff.Effect == ActivateEffects.MagicNova))
-                        {
                             FameCounter.DrinkPot();
-                        }
                     }
 
                     Activate(time, item, pos);
                     return;
                 }
 
-                if (slotType > 0)
-                {
-                    FameCounter.UseAbility();
-                }
+                if (slotType > 0) FameCounter.UseAbility();
             }
-            else
-            {
+            else {
                 FameCounter.DrinkPot();
             }
 
             //Log.Debug(item.SlotType + ":" + slotType);
             if (item.Consumable || item.SlotType == slotType)
-            {
                 //Log.Debug("HUH");
                 Activate(time, item, pos);
-            }
             else
                 Client.SendInventoryResult(1);
         }
     }
 
-    private void Activate(RealmTime time, Item item, Position target)
-    {
+    private void Activate(RealmTime time, Item item, Position target) {
         MP -= item.MpCost;
         foreach (var eff in item.ActivateEffects)
-        {
-            switch (eff.Effect)
-            {
+            switch (eff.Effect) {
                 case ActivateEffects.Create:
                     AECreate(time, item, target, eff);
                     break;
@@ -304,16 +265,13 @@ partial class Player
                     Log.Warn("Activate effect {0} not implemented.", eff.Effect);
                     break;
             }
-        }
     }
 
-    private void AEBackpack(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AEBackpack(RealmTime time, Item item, Position target, ActivateEffect eff) {
         HasBackpack = true;
     }
 
-    private void AEPermaPet(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AEPermaPet(RealmTime time, Item item, Position target, ActivateEffect eff) {
         var type = Manager.Resources.GameData.IdToObjectType[eff.ObjectId];
         var desc = Manager.Resources.GameData.ObjectDescs[type];
         //Log.Debug(desc.ObjectType);
@@ -322,8 +280,7 @@ partial class Player
         //Log.Debug("hey!");
     }
 
-    private void AEUnlockPortal(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AEUnlockPortal(RealmTime time, Item item, Position target, ActivateEffect eff) {
         //var gameData = Manager.Resources.GameData;
 
         //// find locked portal
@@ -400,54 +357,36 @@ partial class Player
         //foreach (var player in Owner.Players.Values)
         //    player.SendInfo(string.Format("{0} unlocked by {1}!", world.DispalyName, Name));
     }
-    private void AEBulletNova(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+
+    private void AEBulletNova(RealmTime time, Item item, Position target, ActivateEffect eff) {
         var prjs = new Projectile[20];
         var prjDesc = item.Projectiles[0]; //Assume only one
-        var batch = new Packet[21];
-        for (var i = 0; i < 20; i++)
-        {
+        for (var i = 0; i < 20; i++) {
             var proj = CreateProjectile(prjDesc, item.ObjectType,
                 Random.Next(prjDesc.MinDamage, prjDesc.MaxDamage),
-                time.TotalElapsedMs, target, (float)(i * (Math.PI * 2) / 20));
+                time.TotalElapsedMs, target, (float) (i * (Math.PI * 2) / 20));
             Owner.EnterWorld(proj);
             FameCounter.Shoot(proj);
-            batch[i] = new ServerPlayerShoot()
-            {
-                BulletId = proj.ProjectileId,
-                OwnerId = Id,
-                ContainerType = item.ObjectType,
-                StartingPos = target,
-                Angle = proj.Angle,
-                Damage = (short)proj.Damage
-            };
+            foreach (var player in Owner.Players.Values)
+                if (player.DistSqr(this) < RadiusSqr)
+                    player.Client.SendServerPlayerShoot(proj.ProjectileId, Id, item.ObjectType, target, proj.Angle,
+                        (short) proj.Damage);
+
             prjs[i] = proj;
         }
-        batch[20] = new ShowEffect()
-        {
-            EffectType = EffectType.Trail,
-            Pos1 = target,
-            TargetObjectId = Id,
-            Color = new ARGB(0xFFFF00AA)
-        };
 
-        foreach (var plr in Owner.Players.Values
-                     .Where(p => p.DistSqr(this) < RadiusSqr))
-        {
-            plr.Client.SendPackets(batch);
-        }
+        foreach (var player in Owner.Players.Values)
+            if (player.DistSqr(this) < RadiusSqr)
+                player.Client.SendShowEffect(EffectType.Trail, Id, target, new Position(), new ARGB(0xFFFF00AA));
     }
 
-    private void AEShurikenAbility(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
-        if (!HasConditionEffect(ConditionEffects.NinjaSpeedy))
-        {
+    private void AEShurikenAbility(RealmTime time, Item item, Position target, ActivateEffect eff) {
+        if (!HasConditionEffect(ConditionEffects.NinjaSpeedy)) {
             ApplyConditionEffect(ConditionEffectIndex.NinjaSpeedy);
             return;
         }
 
-        if (MP >= item.MpEndCost)
-        {
+        if (MP >= item.MpEndCost) {
             MP -= item.MpEndCost;
             AEShoot(time, item, target, eff);
         }
@@ -455,20 +394,17 @@ partial class Player
         ApplyConditionEffect(ConditionEffectIndex.NinjaSpeedy, 0);
     }
 
-    private void AEDye(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AEDye(RealmTime time, Item item, Position target, ActivateEffect eff) {
         if (item.Texture1 != 0)
             Texture1 = item.Texture1;
         if (item.Texture2 != 0)
             Texture2 = item.Texture2;
     }
 
-    private void AECreate(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AECreate(RealmTime time, Item item, Position target, ActivateEffect eff) {
         var gameData = Manager.Resources.GameData;
 
-        ushort objType;
-        if (!gameData.IdToObjectType.TryGetValue(eff.Id, out objType) ||
+        if (!gameData.IdToObjectType.TryGetValue(eff.Id, out var objType) ||
             !gameData.Portals.ContainsKey(objType))
             return; // object not found, ignore
 
@@ -480,25 +416,20 @@ partial class Player
 
         Owner.Timers.Add(new WorldTimer(timeoutTime * 1000, (world, t) => world.LeaveWorld(entity)));
 
-        string openedByMsg = gameData.Portals[objType].DungeonName + " opened by " + Name + "!";
-        Owner.BroadcastPacket(new Notification
-        {
-            Color = new ARGB(0xFF00FF00),
-            ObjectId = Id,
-            Message = openedByMsg
-        }, null);
+        var openedByMsg = gameData.Portals[objType].DungeonName + " opened by " + Name + "!";
         foreach (var player in Owner.Players.Values)
-            player.SendInfo(openedByMsg);
+            if (player.DistSqr(this) < RadiusSqr) {
+                player.Client.SendNotification(Id, openedByMsg, new ARGB(0xff00ff00));
+                player.SendInfo(openedByMsg);
+            }
     }
 
-    private void AEIncrementStat(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
-        var idx = StatsManager.GetStatIndex((StatsType)eff.Stats);
+    private void AEIncrementStat(RealmTime time, Item item, Position target, ActivateEffect eff) {
+        var idx = StatsManager.GetStatIndex((StatsType) eff.Stats);
         var statInfo = Manager.Resources.GameData.Classes[ObjectType].Stats;
 
         Stats.Base[idx] += eff.Amount;
-        if (Stats.Base[idx] > statInfo[idx].MaxValue)
-        {
+        if (Stats.Base[idx] > statInfo[idx].MaxValue) {
             Stats.Base[idx] = statInfo[idx].MaxValue;
 
             // pot boosting
@@ -509,105 +440,77 @@ partial class Player
             Stats.ReCalculateValues();
             SendInfo("Already maxed... Stat boosted!");
         }
-        else
-        {
+        else {
             SendInfo("Potion consumed...");
         }
     }
-    private void AERemoveNegativeConditionSelf(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+
+    private void AERemoveNegativeConditionSelf(RealmTime time, Item item, Position target, ActivateEffect eff) {
         ApplyConditionEffect(NegativeEffs);
-        BroadcastSync(new ShowEffect()
-        {
-            EffectType = EffectType.AreaBlast,
-            TargetObjectId = Id,
-            Color = new ARGB(0xffffffff),
-            Pos1 = new Position() { X = 1 }
-        }, p => this.DistSqr(p) < RadiusSqr);
+        foreach (var player in Owner.Players.Values)
+            if (player.DistSqr(this) < RadiusSqr)
+                player.Client.SendShowEffect(EffectType.AreaBlast, Id, new Position {X = 1}, new Position(),
+                    new ARGB(0xffffffff));
     }
 
-    private void AERemoveNegativeConditions(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AERemoveNegativeConditions(RealmTime time, Item item, Position target, ActivateEffect eff) {
         this.AOE(eff.Range, true, player => player.ApplyConditionEffect(NegativeEffs));
-        BroadcastSync(new ShowEffect()
-        {
-            EffectType = EffectType.AreaBlast,
-            TargetObjectId = Id,
-            Color = new ARGB(0xffffffff),
-            Pos1 = new Position() { X = eff.Range }
-        }, p => this.DistSqr(p) < RadiusSqr);
+        foreach (var player in Owner.Players.Values)
+            if (player.DistSqr(this) < RadiusSqr)
+                player.Client.SendShowEffect(EffectType.AreaBlast, Id, new Position {X = eff.Range}, new Position(),
+                    new ARGB(0xffffffff));
     }
 
-    private void AEPoisonGrenade(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
-        BroadcastSync(new ShowEffect()
-        {
-            EffectType = EffectType.Throw,
-            Color = new ARGB(0xffddff00),
-            TargetObjectId = Id,
-            Pos1 = target
-        }, p => this.DistSqr(p) < RadiusSqr);
+    private void AEPoisonGrenade(RealmTime time, Item item, Position target, ActivateEffect eff) {
+        foreach (var player in Owner.Players.Values)
+            if (player.DistSqr(this) < RadiusSqr)
+                player.Client.SendShowEffect(EffectType.Throw, Id, target, new Position(), new ARGB(0xffddff00));
 
         var x = new Placeholder(Manager, 1500);
         x.Move(target.X, target.Y);
         Owner.EnterWorld(x);
-        Owner.Timers.Add(new WorldTimer(1500, (world, t) =>
-        {
-            world.BroadcastPacketNearby(new ShowEffect()
-            {
-                EffectType = EffectType.AreaBlast,
-                Color = new ARGB(0xffddff00),
-                TargetObjectId = x.Id,
-                Pos1 = new Position() { X = eff.Radius }
-            }, x, null);
+        Owner.Timers.Add(new WorldTimer(1500, (world, t) => {
+            foreach (var player in world.Players.Values)
+                if (player.DistSqr(this) < RadiusSqr)
+                    player.Client.SendShowEffect(EffectType.AreaBlast, x.Id, new Position {X = eff.Radius},
+                        new Position(), new ARGB(0xffddff00));
 
             world.AOE(target, eff.Radius, false,
                 enemy => PoisonEnemy(world, enemy as Enemy, eff));
         }));
     }
 
-    private void AELightning(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AELightning(RealmTime time, Item item, Position target, ActivateEffect eff) {
         const double coneRange = Math.PI / 4;
         var mouseAngle = Math.Atan2(target.Y - Y, target.X - X);
 
         // get starting target
         var startTarget = this.GetNearestEntity(MaxAbilityDist, false, e => e is Enemy &&
-                                                                            Math.Abs(mouseAngle - Math.Atan2(e.Y - Y, e.X - X)) <= coneRange);
+                                                                            Math.Abs(mouseAngle -
+                                                                                Math.Atan2(e.Y - Y, e.X - X)) <=
+                                                                            coneRange);
 
         // no targets? bolt air animation
-        if (startTarget == null)
-        {
-            var noTargets = new Packet[3];
-            var angles = new double[] { mouseAngle, mouseAngle - coneRange, mouseAngle + coneRange };
-            for (var i = 0; i < 3; i++)
-            {
-                var x = (int)(MaxAbilityDist * Math.Cos(angles[i])) + X;
-                var y = (int)(MaxAbilityDist * Math.Sin(angles[i])) + Y;
-                noTargets[i] = new ShowEffect()
-                {
-                    EffectType = EffectType.Trail,
-                    TargetObjectId = Id,
-                    Color = new ARGB(0xffff0088),
-                    Pos1 = new Position()
-                    {
-                        X = x,
-                        Y = y
-                    },
-                    Pos2 = new Position() { X = 350 }
-                };
+        if (startTarget == null) {
+            var angles = new[] {mouseAngle, mouseAngle - coneRange, mouseAngle + coneRange};
+            for (var i = 0; i < 3; i++) {
+                var x = (int) (MaxAbilityDist * Math.Cos(angles[i])) + X;
+                var y = (int) (MaxAbilityDist * Math.Sin(angles[i])) + Y;
+
+                foreach (var player in Owner.Players.Values)
+                    if (player.DistSqr(this) < RadiusSqr)
+                        player.Client.SendShowEffect(EffectType.Trail, Id, new Position {X = x, Y = y},
+                            new Position {X = 350}, new ARGB(0xffff0088));
             }
-            BroadcastSync(noTargets, p => this.DistSqr(p) < RadiusSqr);
+
             return;
         }
 
         var current = startTarget;
         var targets = new Entity[eff.MaxTargets];
-        for (int i = 0; i < targets.Length; i++)
-        {
+        for (var i = 0; i < targets.Length; i++) {
             targets[i] = current;
-            var next = current.GetNearestEntity(10, false, e =>
-            {
+            var next = current.GetNearestEntity(10, false, e => {
                 if (!(e is Enemy) ||
                     e.HasConditionEffect(ConditionEffects.Invincible) ||
                     e.HasConditionEffect(ConditionEffects.Stasis) ||
@@ -623,9 +526,7 @@ partial class Player
             current = next;
         }
 
-        var pkts = new List<Packet>();
-        for (var i = 0; i < targets.Length; i++)
-        {
+        for (var i = 0; i < targets.Length; i++) {
             if (targets[i] == null)
                 break;
 
@@ -634,90 +535,57 @@ partial class Player
             (targets[i] as Enemy).Damage(this, time, eff.TotalDamage, false);
 
             if (eff.ConditionEffect != null)
-                targets[i].ApplyConditionEffect(new ConditionEffect()
-                {
+                targets[i].ApplyConditionEffect(new ConditionEffect {
                     Effect = eff.ConditionEffect.Value,
-                    DurationMS = (int)(eff.EffectDuration * 1000)
+                    DurationMS = (int) (eff.EffectDuration * 1000)
                 });
 
-            pkts.Add(new ShowEffect()
-            {
-                EffectType = EffectType.Lightning,
-                TargetObjectId = prev.Id,
-                Color = new ARGB(0xffff0088),
-                Pos1 = new Position()
-                {
-                    X = targets[i].X,
-                    Y = targets[i].Y
-                },
-                Pos2 = new Position() { X = 350 }
-            });
+            foreach (var player in Owner.Players.Values)
+                if (player.DistSqr(this) < RadiusSqr)
+                    player.Client.SendShowEffect(EffectType.Lightning, prev.Id, new Position {
+                        X = targets[i].X,
+                        Y = targets[i].Y
+                    }, new Position {X = 350}, new ARGB(0xffff0088));
         }
-        BroadcastSync(pkts, p => this.DistSqr(p) < RadiusSqr);
     }
 
-    private void AEDecoy(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AEDecoy(RealmTime time, Item item, Position target, ActivateEffect eff) {
         var decoy = new Decoy(this, eff.DurationMS, 4);
         decoy.Move(X, Y);
         Owner.EnterWorld(decoy);
     }
 
-    private void StasisBlast(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
-        var pkts = new List<Packet>
-        {
-            new ShowEffect()
-            {
-                EffectType = EffectType.Concentrate,
-                TargetObjectId = Id,
-                Pos1 = target,
-                Pos2 = new Position() {X = target.X + 3, Y = target.Y},
-                Color = new ARGB(0xffffffff)
-            }
-        };
+    private void StasisBlast(RealmTime time, Item item, Position target, ActivateEffect eff) {
+        foreach (var player in Owner.Players.Values)
+            if (player.DistSqr(this) < RadiusSqr)
+                player.Client.SendShowEffect(EffectType.Concentrate, Id, target,
+                    new Position {X = target.X + 3, Y = target.Y}, new ARGB(0xffffffff));
 
-        Owner.AOE(target, 3, false, enemy =>
-        {
-            if (enemy.HasConditionEffect(ConditionEffects.StasisImmune))
-            {
-                pkts.Add(new Notification()
-                {
-                    ObjectId = enemy.Id,
-                    Color = new ARGB(0xff00ff00),
-                    Message = "Immune"
-                });
+        Owner.AOE(target, 3, false, enemy => {
+            if (enemy.HasConditionEffect(ConditionEffects.StasisImmune)) {
+                foreach (var player in Owner.Players.Values)
+                    if (player.DistSqr(this) < RadiusSqr)
+                        player.Client.SendNotification(enemy.Id, "Immune", new ARGB(0xff00ff00));
             }
-            else if (!enemy.HasConditionEffect(ConditionEffects.Stasis))
-            {
+            else if (!enemy.HasConditionEffect(ConditionEffects.Stasis)) {
                 enemy.ApplyConditionEffect(ConditionEffectIndex.Stasis, eff.DurationMS);
 
                 Owner.Timers.Add(new WorldTimer(eff.DurationMS, (world, t) =>
                     enemy.ApplyConditionEffect(ConditionEffectIndex.StasisImmune, 3000)));
 
-                pkts.Add(new Notification()
-                {
-                    ObjectId = enemy.Id,
-                    Color = new ARGB(0xffff0000),
-                    Message = "Stasis"
-                });
+                foreach (var player in Owner.Players.Values)
+                    if (player.DistSqr(this) < RadiusSqr)
+                        player.Client.SendNotification(enemy.Id, "Stasis", new ARGB(0xffff0000));
             }
         });
-        BroadcastSync(pkts, p => this.DistSqr(p) < RadiusSqr);
     }
 
-    private void AETrap(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
-        BroadcastSync(new ShowEffect()
-        {
-            EffectType = EffectType.Throw,
-            Color = new ARGB(0xff9000ff),
-            TargetObjectId = Id,
-            Pos1 = target
-        }, p => this.DistSqr(p) < RadiusSqr);
+    private void AETrap(RealmTime time, Item item, Position target, ActivateEffect eff) {
+        foreach (var player in Owner.Players.Values)
+            if (player.DistSqr(this) < RadiusSqr)
+                player.Client.SendShowEffect(EffectType.Throw, Id, target, new Position(), new ARGB(0xff9000ff));
 
-        Owner.Timers.Add(new WorldTimer(1500, (world, t) =>
-        {
+        Owner.Timers.Add(new WorldTimer(1500, (world, t) => {
             var trap = new Trap(
                 this,
                 eff.Radius,
@@ -729,132 +597,85 @@ partial class Player
         }));
     }
 
-    private void AEVampireBlast(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
-        var pkts = new List<Packet>
-        {
-            new ShowEffect()
-            {
-                EffectType = EffectType.Trail,
-                TargetObjectId = Id,
-                Pos1 = target,
-                Color = new ARGB(0xFFFF0000)
-            },
-            new ShowEffect
-            {
-                EffectType = EffectType.Diffuse,
-                Color = new ARGB(0xFFFF0000),
-                TargetObjectId = Id,
-                Pos1 = target,
-                Pos2 = new Position { X = target.X + eff.Radius, Y = target.Y }
-            }
-        };
-
+    private void AEVampireBlast(RealmTime time, Item item, Position target, ActivateEffect eff) {
         var totalDmg = 0;
         var enemies = new List<Enemy>();
-        Owner.AOE(target, eff.Radius, false, enemy =>
-        {
+        Owner.AOE(target, eff.Radius, false, enemy => {
             enemies.Add(enemy as Enemy);
             totalDmg += (enemy as Enemy).Damage(this, time, eff.TotalDamage, false);
         });
 
         var players = new List<Player>();
-        this.AOE(eff.Radius, true, player =>
-        {
-            if (!player.HasConditionEffect(ConditionEffects.Sick))
-            {
+        this.AOE(eff.Radius, true, player => {
+            if (!player.HasConditionEffect(ConditionEffects.Sick)) {
                 players.Add(player as Player);
-                ActivateHealHp(player as Player, totalDmg, pkts);
+                ActivateHealHp(player as Player, totalDmg);
             }
         });
 
-        if (enemies.Count > 0)
-        {
+        foreach (var player in Owner.Players.Values)
+            if (player.DistSqr(player) < RadiusSqr) {
+                player.Client.SendShowEffect(EffectType.Trail, Id, target, new Position(), new ARGB(0xFFFF0000));
+                player.Client.SendShowEffect(EffectType.Diffuse, Id, target,
+                    new Position {X = target.X + eff.Radius, Y = target.Y}, new ARGB(0xFFFF0000));
+            }
+
+        if (enemies.Count > 0) {
             var rand = new Random();
-            for (var i = 0; i < 5; i++)
-            {
+            for (var i = 0; i < 5; i++) {
                 var a = enemies[rand.Next(0, enemies.Count)];
                 var b = players[rand.Next(0, players.Count)];
-                pkts.Add(new ShowEffect()
-                {
-                    EffectType = EffectType.Flow,
-                    TargetObjectId = b.Id,
-                    Pos1 = new Position() { X = a.X, Y = a.Y },
-                    Color = new ARGB(0xffffffff)
-                });
+                foreach (var player in Owner.Players.Values)
+                    if (player.DistSqr(player) < RadiusSqr)
+                        player.Client.SendShowEffect(EffectType.Flow, b.Id, new Position {X = a.X, Y = a.Y},
+                            new Position(), new ARGB(0xffffffff));
             }
         }
-
-        BroadcastSync(pkts, p => this.DistSqr(p) < RadiusSqr);
     }
 
-    private void AETeleport(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AETeleport(RealmTime time, Item item, Position target, ActivateEffect eff) {
         TeleportPosition(time, target, true);
     }
 
-    private void AEMagicNova(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
-        var pkts = new List<Packet>();
+    private void AEMagicNova(RealmTime time, Item item, Position target, ActivateEffect eff) {
         this.AOE(eff.Range, true, player =>
-            ActivateHealMp(player as Player, eff.Amount, pkts));
-        pkts.Add(new ShowEffect()
-        {
-            EffectType = EffectType.AreaBlast,
-            TargetObjectId = Id,
-            Color = new ARGB(0xffffffff),
-            Pos1 = new Position() { X = eff.Range }
-        });
-        BroadcastSync(pkts, p => this.DistSqr(p) < RadiusSqr);
+            ActivateHealMp(player as Player, eff.Amount));
+
+        foreach (var player in Owner.Players.Values)
+            if (player.DistSqr(this) < RadiusSqr)
+                player.Client.SendShowEffect(EffectType.AreaBlast, Id, new Position {X = eff.Range}, new Position(),
+                    new ARGB(0xffffffff));
     }
 
-    private void AEMagic(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
-        var pkts = new List<Packet>();
-        ActivateHealMp(this, eff.Amount, pkts);
-        BroadcastSync(pkts, p => this.DistSqr(p) < RadiusSqr);
+    private void AEMagic(RealmTime time, Item item, Position target, ActivateEffect eff) {
+        ActivateHealMp(this, eff.Amount);
     }
 
-    private void AEHealNova(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AEHealNova(RealmTime time, Item item, Position target, ActivateEffect eff) {
         var amount = eff.Amount;
         var range = eff.Range;
 
-        var pkts = new List<Packet>();
-        this.AOE(range, true, player =>
-        {
+        this.AOE(range, true, player => {
             if (!player.HasConditionEffect(ConditionEffects.Sick))
-                ActivateHealHp(player as Player, amount, pkts);
+                ActivateHealHp(player as Player, amount);
         });
-        pkts.Add(new ShowEffect()
-        {
-            EffectType = EffectType.AreaBlast,
-            TargetObjectId = Id,
-            Color = new ARGB(0xffffffff),
-            Pos1 = new Position() { X = range }
-        });
-        BroadcastSync(pkts, p => this.DistSqr(p) < RadiusSqr);
+
+        foreach (var player in Owner.Players.Values)
+            if (player.DistSqr(this) < RadiusSqr)
+                player.Client.SendShowEffect(EffectType.AreaBlast, Id, new Position {X = range}, new Position(),
+                    new ARGB(0xffffffff));
     }
 
-    private void AEHeal(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
-        if (!HasConditionEffect(ConditionEffects.Sick))
-        {
-            var pkts = new List<Packet>();
-            ActivateHealHp(this, eff.Amount, pkts);
-            BroadcastSync(pkts, p => this.DistSqr(p) < RadiusSqr);
-        }
+    private void AEHeal(RealmTime time, Item item, Position target, ActivateEffect eff) {
+        if (!HasConditionEffect(ConditionEffects.Sick)) ActivateHealHp(this, eff.Amount);
     }
 
-    private void AEConditionEffectAura(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AEConditionEffectAura(RealmTime time, Item item, Position target, ActivateEffect eff) {
         var duration = eff.DurationMS;
         var range = eff.Range;
 
-        this.AOE(range, true, player =>
-        {
-            player.ApplyConditionEffect(new ConditionEffect()
-            {
+        this.AOE(range, true, player => {
+            player.ApplyConditionEffect(new ConditionEffect {
                 Effect = eff.ConditionEffect.Value,
                 DurationMS = duration
             });
@@ -862,80 +683,61 @@ partial class Player
         var color = 0xffffffff;
         if (eff.ConditionEffect.Value == ConditionEffectIndex.Damaging)
             color = 0xffff0000;
-        BroadcastSync(new ShowEffect()
-        {
-            EffectType = EffectType.AreaBlast,
-            TargetObjectId = Id,
-            Color = new ARGB(color),
-            Pos1 = new Position() { X = range }
-        }, p => this.DistSqr(p) < RadiusSqr);
+        foreach (var player in Owner.Players.Values)
+            if (player.DistSqr(player) < RadiusSqr)
+                player.Client.SendShowEffect(EffectType.AreaBlast, Id, new Position {X = range}, new Position(),
+                    new ARGB(0xffffffff));
     }
 
-    private void AEClearConditionEffectSelf(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AEClearConditionEffectSelf(RealmTime time, Item item, Position target, ActivateEffect eff) {
         var condition = eff.CheckExistingEffect;
         ConditionEffects conditions = 0;
 
         if (condition.HasValue)
-            conditions |= (ConditionEffects)(1 << (Byte)condition.Value);
+            conditions |= (ConditionEffects) (1 << (byte) condition.Value);
 
         if (!condition.HasValue || HasConditionEffect(conditions))
-        {
-            ApplyConditionEffect(new ConditionEffect()
-            {
+            ApplyConditionEffect(new ConditionEffect {
                 Effect = eff.ConditionEffect.Value,
                 DurationMS = 0
             });
-        }
     }
 
-    private void AEClearConditionEffectAura(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
-        this.AOE(eff.Range, true, player =>
-        {
+    private void AEClearConditionEffectAura(RealmTime time, Item item, Position target, ActivateEffect eff) {
+        this.AOE(eff.Range, true, player => {
             var condition = eff.CheckExistingEffect;
             ConditionEffects conditions = 0;
-            conditions |= (ConditionEffects)(1 << (Byte)condition.Value);
+            conditions |= (ConditionEffects) (1 << (byte) condition.Value);
             if (!condition.HasValue || player.HasConditionEffect(conditions))
-            {
-                player.ApplyConditionEffect(new ConditionEffect()
-                {
+                player.ApplyConditionEffect(new ConditionEffect {
                     Effect = eff.ConditionEffect.Value,
                     DurationMS = 0
                 });
-            }
         });
     }
 
-    private void AEConditionEffectSelf(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AEConditionEffectSelf(RealmTime time, Item item, Position target, ActivateEffect eff) {
         var duration = eff.DurationMS;
 
-        ApplyConditionEffect(new ConditionEffect()
-        {
+        ApplyConditionEffect(new ConditionEffect {
             Effect = eff.ConditionEffect.Value,
             DurationMS = duration
         });
-        BroadcastSync(new ShowEffect()
-        {
-            EffectType = EffectType.AreaBlast,
-            TargetObjectId = Id,
-            Color = new ARGB(0xffffffff),
-            Pos1 = new Position() { X = 1 }
-        }, p => this.DistSqr(p) < RadiusSqr);
+        foreach (var player in Owner.Players.Values)
+            if (player.DistSqr(player) < RadiusSqr)
+                player.Client.SendShowEffect(EffectType.AreaBlast, Id, new Position {X = 1}, new Position(),
+                    new ARGB(0xffffffff));
     }
 
-    private void AEStatBoostAura(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
-        var idx = StatsManager.GetStatIndex((StatsType)eff.Stats);
+    private void AEStatBoostAura(RealmTime time, Item item, Position target, ActivateEffect eff) {
+        var idx = StatsManager.GetStatIndex((StatsType) eff.Stats);
         var amount = eff.Amount;
         var duration = eff.DurationMS;
         var range = eff.Range;
 
-        this.AOE(range, true, player =>
-        {
-            ((Player)player).Stats.Boost.ActivateBoost[idx].Push(amount, false);
-            ((Player)player).Stats.ReCalculateValues();
+        this.AOE(range, true, player => {
+            ((Player) player).Stats.Boost.ActivateBoost[idx].Push(amount);
+            ((Player) player).Stats.ReCalculateValues();
 
             // hack job to allow instant heal of nostack boosts
             //if (eff.NoStack && amount > 0 && idx == 0)
@@ -943,121 +745,91 @@ partial class Player
             //    ((Player)player).HP = Math.Min(((Player)player).Stats[0], ((Player)player).HP + amount);
             //}
 
-            Owner.Timers.Add(new WorldTimer(duration, (world, t) =>
-            {
-                ((Player)player).Stats.Boost.ActivateBoost[idx].Pop(amount, false);
-                ((Player)player).Stats.ReCalculateValues();
+            Owner.Timers.Add(new WorldTimer(duration, (world, t) => {
+                ((Player) player).Stats.Boost.ActivateBoost[idx].Pop(amount);
+                ((Player) player).Stats.ReCalculateValues();
             }));
         });
 
-        BroadcastSync(new ShowEffect()
-        {
-            EffectType = EffectType.AreaBlast,
-            TargetObjectId = Id,
-            Color = new ARGB(0xffffffff),
-            Pos1 = new Position() { X = range }
-        }, p => this.DistSqr(p) < RadiusSqr);
+        foreach (var player in Owner.Players.Values)
+            if (player.DistSqr(player) < RadiusSqr)
+                player.Client.SendShowEffect(EffectType.AreaBlast, Id, new Position {X = range}, new Position(),
+                    new ARGB(0xffffffff));
     }
 
-    private void AEStatBoostSelf(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
-        var idx = StatsManager.GetStatIndex((StatsType)eff.Stats);
+    private void AEStatBoostSelf(RealmTime time, Item item, Position target, ActivateEffect eff) {
+        var idx = StatsManager.GetStatIndex((StatsType) eff.Stats);
         var s = eff.Amount;
-        Stats.Boost.ActivateBoost[idx].Push(s, false);
+        Stats.Boost.ActivateBoost[idx].Push(s);
         Stats.ReCalculateValues();
-        Owner.Timers.Add(new WorldTimer(eff.DurationMS, (world, t) =>
-        {
-            Stats.Boost.ActivateBoost[idx].Pop(s, false);
+        Owner.Timers.Add(new WorldTimer(eff.DurationMS, (world, t) => {
+            Stats.Boost.ActivateBoost[idx].Pop(s);
             Stats.ReCalculateValues();
         }));
-        BroadcastSync(new ShowEffect()
-        {
-            EffectType = EffectType.Potion,
-            TargetObjectId = Id,
-            Color = new ARGB(0xffffffff)
-        }, p => this.DistSqr(p) < RadiusSqr);
+        foreach (var player in Owner.Players.Values)
+            if (player.DistSqr(player) < RadiusSqr)
+                player.Client.SendShowEffect(EffectType.Potion, player.Id, new Position(), new Position(),
+                    new ARGB(0xffffffff));
     }
 
-    private void AEShoot(RealmTime time, Item item, Position target, ActivateEffect eff)
-    {
+    private void AEShoot(RealmTime time, Item item, Position target, ActivateEffect eff) {
         var arcGap = item.ArcGap * Math.PI / 180;
         var startAngle = Math.Atan2(target.Y - Y, target.X - X) - (item.NumProjectiles - 1) / 2 * arcGap;
         var prjDesc = item.Projectiles[0]; //Assume only one
 
-        var sPkts = new Packet[item.NumProjectiles];
-        for (var i = 0; i < item.NumProjectiles; i++)
-        {
-            var proj = CreateProjectile(prjDesc, item.ObjectType, Stats.GetClientDamage(prjDesc.MinDamage, prjDesc.MaxDamage, true), time.TotalElapsedMs, new Position() { X = X, Y = Y }, (float)(startAngle + arcGap * i));
+        for (var i = 0; i < item.NumProjectiles; i++) {
+            var proj = CreateProjectile(prjDesc, item.ObjectType,
+                Stats.GetClientDamage(prjDesc.MinDamage, prjDesc.MaxDamage, true), time.TotalElapsedMs,
+                new Position {X = X, Y = Y}, (float) (startAngle + arcGap * i));
             Owner.EnterWorld(proj);
-            sPkts[i] = new AllyShoot()
-            {
-                OwnerId = Id,
-                Angle = proj.Angle,
-                ContainerType = item.ObjectType,
-                BulletId = proj.ProjectileId
-            };
-            FameCounter.Shoot(proj);
+
+            foreach (var otherPlayer in Owner.Players.Values)
+                if (otherPlayer.Id != Id && otherPlayer.DistSqr(this) < RadiusSqr)
+                    otherPlayer.Client.SendAllyShoot(proj.ProjectileId, Id, item.ObjectType, proj.Angle);
         }
-        BroadcastSync(sPkts, p => p != this && this.DistSqr(p) < RadiusSqr);
     }
 
 
-    static void ActivateHealHp(Player player, int amount, List<Packet> pkts)
-    {
+    private static void ActivateHealHp(Player player, int amount) {
         var maxHp = player.Stats[0];
         var newHp = Math.Min(maxHp, player.HP + amount);
         if (newHp == player.HP)
             return;
 
-        pkts.Add(new ShowEffect()
-        {
-            EffectType = EffectType.Potion,
-            TargetObjectId = player.Id,
-            Color = new ARGB(0xffffffff)
-        });
-        pkts.Add(new Notification()
-        {
-            Color = new ARGB(0xff00ff00),
-            ObjectId = player.Id,
-            Message = "+" + (newHp - player.HP)
-        });
+        foreach (var otherPlayer in player.Owner.Players.Values)
+            if (player.Id != otherPlayer.Id && otherPlayer.DistSqr(player) < RadiusSqr) {
+                otherPlayer.Client.SendShowEffect(EffectType.Potion, player.Id, new Position(), new Position(),
+                    new ARGB(0xffffffff));
+                otherPlayer.Client.SendNotification(player.Id, "+" + (newHp - player.HP), new ARGB(0xff00ff00));
+            }
 
         player.HP = newHp;
     }
 
-    static void ActivateHealMp(Player player, int amount, List<Packet> pkts)
-    {
+    private static void ActivateHealMp(Player player, int amount) {
         var maxMp = player.Stats[1];
         var newMp = Math.Min(maxMp, player.MP + amount);
         if (newMp == player.MP)
             return;
 
-        pkts.Add(new ShowEffect()
-        {
-            EffectType = EffectType.Potion,
-            TargetObjectId = player.Id,
-            Color = new ARGB(0xffffffff)
-        });
-        pkts.Add(new Notification()
-        {
-            Color = new ARGB(0xff9000ff),
-            ObjectId = player.Id,
-            Message = "+" + (newMp - player.MP)
-        });
+        foreach (var otherPlayer in player.Owner.Players.Values)
+            if (player.Id != otherPlayer.Id && otherPlayer.DistSqr(player) < RadiusSqr) {
+                otherPlayer.Client.SendShowEffect(EffectType.Potion, player.Id, new Position(), new Position(),
+                    new ARGB(0xffffffff));
+                otherPlayer.Client.SendNotification(player.Id, "+" + (newMp - player.MP), new ARGB(0xff9000ff));
+            }
 
         player.MP = newMp;
     }
 
-    void PoisonEnemy(World world, Enemy enemy, ActivateEffect eff)
-    {
+    private void PoisonEnemy(World world, Enemy enemy, ActivateEffect eff) {
         var remainingDmg = enemy.DamageWithDefense(eff.TotalDamage, enemy.Defense, false);
-        var perDmg = (remainingDmg * 1000) / eff.DurationMS;
+        var perDmg = remainingDmg * 1000 / eff.DurationMS;
 
         WorldTimer tmr = null;
         var x = 0;
 
-        Func<World, RealmTime, bool> poisonTick = (w, t) =>
-        {
+        Func<World, RealmTime, bool> poisonTick = (w, t) => {
             if (enemy.Owner == null || w == null)
                 return true;
 
@@ -1079,6 +851,7 @@ partial class Player
                 if (remainingDmg <= 0)
                     return true;
             }
+
             x++;
 
             tmr.Reset();
@@ -1089,16 +862,14 @@ partial class Player
         world.Timers.Add(tmr);
     }
 
-    void HealingPlayersPoison(World world, Player player, ActivateEffect eff)
-    {
+    private void HealingPlayersPoison(World world, Player player, ActivateEffect eff) {
         var remainingHeal = eff.TotalDamage;
         var perHeal = eff.TotalDamage * 1000 / eff.DurationMS;
 
         WorldTimer tmr = null;
         var x = 0;
 
-        Func<World, RealmTime, bool> healTick = (w, t) =>
-        {
+        Func<World, RealmTime, bool> healTick = (w, t) => {
             if (player.Owner == null || w == null)
                 return true;
 
@@ -1108,14 +879,12 @@ partial class Player
                 if (remainingHeal < thisHeal)
                     thisHeal = remainingHeal;
 
-                List<Packet> pkts = new List<Packet>();
-
-                Player.ActivateHealHp(player, thisHeal, pkts);
-                w.BroadcastPackets(pkts, null);
+                ActivateHealHp(player, thisHeal);
                 remainingHeal -= thisHeal;
                 if (remainingHeal <= 0)
                     return true;
             }
+
             x++;
 
             tmr.Reset();
@@ -1125,6 +894,4 @@ partial class Player
         tmr = new WorldTimer(250, healTick);
         world.Timers.Add(tmr);
     }
-
-  
 }

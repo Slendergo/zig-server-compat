@@ -4,23 +4,20 @@ using NLog;
 
 namespace wServer.realm.entities.vendors;
 
-public class ShopItem : ISellableItem
-{
-    public ushort ItemId { get; private set; }
-    public int Price { get; }
-    public int Count { get; }
-    public string Name { get; }
-
-    public ShopItem(string name, ushort price, int count = -1)
-    {
+public class ShopItem : ISellableItem {
+    public ShopItem(string name, ushort price, int count = -1) {
         ItemId = ushort.MaxValue;
         Price = price;
         Count = count;
         Name = name;
     }
 
-    public void SetItem(ushort item)
-    {
+    public string Name { get; }
+    public ushort ItemId { get; private set; }
+    public int Price { get; }
+    public int Count { get; }
+
+    public void SetItem(ushort item) {
         if (ItemId != ushort.MaxValue)
             throw new AccessViolationException("Can't change item after it has been set.");
 
@@ -28,12 +25,10 @@ public class ShopItem : ISellableItem
     }
 }
 
-internal static class MerchantLists
-{
+internal static class MerchantLists {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-    private static readonly List<ISellableItem> Weapons = new()
-    {
+    private static readonly List<ISellableItem> Weapons = new() {
         new ShopItem("Dagger of Foul Malevolence", 500),
         new ShopItem("Bow of Covert Havens", 500),
         new ShopItem("Staff of the Cosmic Whole", 500),
@@ -42,8 +37,7 @@ internal static class MerchantLists
         new ShopItem("Masamune", 500)
     };
 
-    private static readonly List<ISellableItem> Abilities = new()
-    {
+    private static readonly List<ISellableItem> Abilities = new() {
         new ShopItem("Cloak of Ghostly Concealment", 500),
         new ShopItem("Quiver of Elvish Mastery", 500),
         new ShopItem("Elemental Detonation Spell", 500),
@@ -60,8 +54,7 @@ internal static class MerchantLists
         new ShopItem("Doom Circle", 500)
     };
 
-    private static readonly List<ISellableItem> Armor = new()
-    {
+    private static readonly List<ISellableItem> Armor = new() {
         new ShopItem("Robe of the Illusionist", 50),
         new ShopItem("Robe of the Grand Sorcerer", 500),
         new ShopItem("Studded Leather Armor", 50),
@@ -70,8 +63,7 @@ internal static class MerchantLists
         new ShopItem("Acropolis Armor", 500)
     };
 
-    private static readonly List<ISellableItem> Rings = new()
-    {
+    private static readonly List<ISellableItem> Rings = new() {
         new ShopItem("Ring of Paramount Attack", 100),
         new ShopItem("Ring of Paramount Defense", 100),
         new ShopItem("Ring of Paramount Speed", 100),
@@ -90,12 +82,9 @@ internal static class MerchantLists
         new ShopItem("Ring of Unbound Magic", 750)
     };
 
-    private static readonly List<ISellableItem> Keys = new()
-    {
-    };
+    private static readonly List<ISellableItem> Keys = new();
 
-    private static readonly List<ISellableItem> Store1 = new()
-    {
+    private static readonly List<ISellableItem> Store1 = new() {
         new ShopItem("Pirate Cave Key", 25),
         new ShopItem("Spider Den Key", 25),
         new ShopItem("Undead Lair Key", 50),
@@ -113,17 +102,15 @@ internal static class MerchantLists
         new ShopItem("Tomb of the Ancients Key", 400)
     };
 
-    private static readonly List<ISellableItem> Store2 = new()
-    {
+    private static readonly List<ISellableItem> Store2 = new() {
         new ShopItem("Amulet of Resurrection", 11250),
         new ShopItem("Backpack", 2000),
         new ShopItem("Elixir of Health 7", 500),
         new ShopItem("Elixir of Magic 7", 500),
-        new ShopItem("Transformation Potion", 500),
+        new ShopItem("Transformation Potion", 500)
     };
 
-    private static readonly List<ISellableItem> Store3 = new()
-    {
+    private static readonly List<ISellableItem> Store3 = new() {
         new ShopItem("Black Cat Generator", 1750),
         new ShopItem("Grey Cat Generator", 1200),
         new ShopItem("Orange Cat Generator", 1200),
@@ -139,11 +126,10 @@ internal static class MerchantLists
         new ShopItem("Lion Generator", 1750),
         new ShopItem("Penguin Generator", 2500),
         new ShopItem("Sheepdog Generator", 1750),
-        new ShopItem("Panda Generator", 7500),
+        new ShopItem("Panda Generator", 7500)
     };
 
-    private static readonly List<ISellableItem> Store4 = new()
-    {
+    private static readonly List<ISellableItem> Store4 = new() {
         new ShopItem("Tincture of Fear", 100),
         new ShopItem("Tincture of Courage", 150),
         new ShopItem("Tincture of Dexterity", 100),
@@ -153,43 +139,35 @@ internal static class MerchantLists
         new ShopItem("Effusion of Dexterity", 250),
         new ShopItem("Effusion of Life", 250),
         new ShopItem("Effusion of Mana", 250),
-        new ShopItem("Effusion of Defense", 250),
+        new ShopItem("Effusion of Defense", 250)
     };
 
     public static readonly Dictionary<TileRegion, Tuple<List<ISellableItem>, CurrencyType, /*Rank Req*/int>> Shops =
-        new()
-        {
-            { TileRegion.Store_1, new Tuple<List<ISellableItem>, CurrencyType, int>(Store1, CurrencyType.Gold, 0) },
-            { TileRegion.Store_2, new Tuple<List<ISellableItem>, CurrencyType, int>(Store2, CurrencyType.Fame, 0) },
-            { TileRegion.Store_3, new Tuple<List<ISellableItem>, CurrencyType, int>(Store3, CurrencyType.Gold, 0) },
-            { TileRegion.Store_4, new Tuple<List<ISellableItem>, CurrencyType, int>(Store4, CurrencyType.Fame, 0) },
+        new() {
+            {TileRegion.Store_1, new Tuple<List<ISellableItem>, CurrencyType, int>(Store1, CurrencyType.Gold, 0)},
+            {TileRegion.Store_2, new Tuple<List<ISellableItem>, CurrencyType, int>(Store2, CurrencyType.Fame, 0)},
+            {TileRegion.Store_3, new Tuple<List<ISellableItem>, CurrencyType, int>(Store3, CurrencyType.Gold, 0)},
+            {TileRegion.Store_4, new Tuple<List<ISellableItem>, CurrencyType, int>(Store4, CurrencyType.Fame, 0)}
         };
 
-    public static void Init(RealmManager manager)
-    {
+    public static void Init(RealmManager manager) {
         InitDyes(manager);
         foreach (var shop in Shops)
         foreach (var shopItem in shop.Value.Item1.OfType<ShopItem>())
-        {
-            ushort id;
-            if (!manager.Resources.GameData.IdToObjectType.TryGetValue(shopItem.Name, out id))
+            if (!manager.Resources.GameData.IdToObjectType.TryGetValue(shopItem.Name, out var id))
                 Log.Warn("Item name: {0}, not found.", shopItem.Name);
             else
                 shopItem.SetItem(id);
-        }
     }
 
-    static void InitDyes(RealmManager manager)
-    {
+    private static void InitDyes(RealmManager manager) {
         var d1 = new List<ISellableItem>();
         var d2 = new List<ISellableItem>();
-        foreach (var i in manager.Resources.GameData.Items.Values)
-        {
+        foreach (var i in manager.Resources.GameData.Items.Values) {
             if (!i.Class.Equals("Dye"))
                 continue;
 
-            if (i.Texture1 != 0)
-            {
+            if (i.Texture1 != 0) {
                 ushort price = 60;
                 if (i.ObjectId.Contains("Cloth") && i.ObjectId.Contains("Large"))
                     price *= 2;
@@ -197,15 +175,14 @@ internal static class MerchantLists
                 continue;
             }
 
-            if (i.Texture2 != 0)
-            {
+            if (i.Texture2 != 0) {
                 ushort price = 60;
                 if (i.ObjectId.Contains("Cloth") && i.ObjectId.Contains("Small"))
                     price *= 2;
                 d2.Add(new ShopItem(i.ObjectId, price));
-                continue;
             }
         }
+
         Shops[TileRegion.Store_5] = new Tuple<List<ISellableItem>, CurrencyType, int>(d1, CurrencyType.Gold, 0);
         Shops[TileRegion.Store_6] = new Tuple<List<ISellableItem>, CurrencyType, int>(d2, CurrencyType.Gold, 0);
     }

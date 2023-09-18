@@ -1,244 +1,253 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-  <BehaviorEntry id="Mysterious Crystal">
-    <State id="Waiting">
-      <PlayerWithinTransition targetState="Idle" dist="10" seeInvis="true" />
-    </State>
-    <State id="Idle">
-      <Taunt text="Break the crystal for great rewards..." probability="0.1" />
-      <Taunt text="Help me..." probability="0.1" />
-      <HpLessTransition targetState="Instructions" threshold="0.9999" />
-      <TimedTransition targetState="Idle" time="10000" />
-    </State>
-    <State id="Instructions">
-      <Flash color="0xFFFFFFFF" flashPeriod="2" flashRepeats="100" />
-      <Taunt text="Fire upon this crystal with all your might for 5 seconds" probability="0.8" />
-      <Taunt text="If your attacks are weak, the crystal magically heals" probability="0.8" />
-      <Taunt text="Gather a large group to smash it open" probability="0.8" />
-      <HpLessTransition targetState="Evaluation" threshold="0.998" />
-    </State>
-    <State id="Evaluation">
-      <HealGroup range="1" cooldown="5000" group="Crystals" />
-      <HpLessTransition targetState="StartBreak" threshold="0.95" />
-      <TimedTransition targetState="Fail" time="60000" />
-      <State id="Comment1">
-        <Taunt text="Sweet treasure awaits for powerful adventurers!" broadcast="true" />
-        <Taunt text="Yes!  Smash my prison for great rewards!" probability="0.4" />
-        <TimedTransition targetState="Comment2" time="5000" />
-      </State>
-      <State id="Comment2">
-        <Taunt text="If you are not very strong, this could kill you|If you are not yet powerful, stay away from the Crystal|New adventurers should stay away|That's the spirit. Lay your fire upon me.|So close..." probability="0.3" />
-        <TimedTransition targetState="Comment3" time="5000" />
-      </State>
-      <State id="Comment3">
-        <Taunt text="I think you need more people...|Call all your friends to help you break the crystal!" probability="0.4" />
-        <TimedTransition targetState="Comment2" time="10000" />
-      </State>
-    </State>
-    <State id="Fail">
-      <Taunt text="Perhaps you need a bigger group. Ask others to join you!" />
-      <Flash color="0xFF000000" flashPeriod="5" flashRepeats="1" />
-      <Shoot radius="10" count="16" shootAngle="22.5" fixedAngle="0" cooldown="100000" />
-      <HealGroup range="1" cooldown="1000" group="Crystals" />
-      <TimedTransition targetState="Idle" time="5000" />
-    </State>
-    <State id="StartBreak">
-      <Taunt text="You cracked the crystal! Soon we shall emerge!" />
-      <ChangeSize rate="-2" target="80" />
-      <ConditionalEffect effect="Invulnerable" />
-      <Flash color="0xFF000000" flashPeriod="2" flashRepeats="10" />
-      <TimedTransition targetState="BreakCrystal" time="4000" />
-    </State>
-    <State id="BreakCrystal">
-      <Taunt text="This your reward! Imagine what evil even Oryx needs to keep locked up!" />
-      <Shoot radius="0" count="16" shootAngle="22.5" fixedAngle="0" cooldown="100000" />
-      <Spawn children="Crystal Prisoner" maxChildren="1" initialSpawn="1" cooldown="100000" givesNoXp="false" />
-      <Decay time="0" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Crystal Prisoner">
-    <Spawn children="Crystal Prisoner Steed" maxChildren="3" initialSpawn="0" cooldown="200" givesNoXp="false" />
-    <State id="pause">
-      <ConditionalEffect effect="Invulnerable" />
-      <TimedTransition targetState="start_the_fun" time="2000" />
-    </State>
-    <State id="start_the_fun">
-      <ConditionalEffect effect="Invulnerable" />
-      <Taunt text="I'm finally free! Yesss!!!" />
-      <TimedTransition targetState="Daisy_attack" time="1500" />
-    </State>
-    <State id="Daisy_attack">
-      <Prioritize>
-        <StayCloseToSpawn speed="0.3" range="7" />
-        <Wander speed="0.3" />
-      </Prioritize>
-      <HpLessTransition targetState="Whoa_nelly" threshold="0.3" />
-      <TimedTransition targetState="Warning" time="18000" />
-      <State id="Quadforce1">
-        <ConditionalEffect effect="Invulnerable" />
-        <Shoot radius="0" count="4" shootAngle="90" fixedAngle="0" cooldown="300" />
-        <TimedTransition targetState="Quadforce2" time="200" />
-      </State>
-      <State id="Quadforce2">
-        <ConditionalEffect effect="Invulnerable" />
-        <Shoot radius="0" count="4" shootAngle="90" fixedAngle="15" cooldown="300" />
-        <TimedTransition targetState="Quadforce3" time="200" />
-      </State>
-      <State id="Quadforce3">
-        <ConditionalEffect effect="Invulnerable" />
-        <Shoot radius="0" count="4" shootAngle="90" fixedAngle="30" cooldown="300" />
-        <TimedTransition targetState="Quadforce4" time="200" />
-      </State>
-      <State id="Quadforce4">
-        <Shoot radius="10" shootAngle="0" projectileIndex="3" cooldown="1000" />
-        <Shoot radius="0" count="4" shootAngle="90" fixedAngle="45" cooldown="300" />
-        <TimedTransition targetState="Quadforce5" time="200" />
-      </State>
-      <State id="Quadforce5">
-        <Shoot radius="0" count="4" shootAngle="90" fixedAngle="60" cooldown="300" />
-        <TimedTransition targetState="Quadforce6" time="200" />
-      </State>
-      <State id="Quadforce6">
-        <ConditionalEffect effect="Invulnerable" />
-        <Shoot radius="0" count="4" shootAngle="90" fixedAngle="75" cooldown="300" />
-        <TimedTransition targetState="Quadforce7" time="200" />
-      </State>
-      <State id="Quadforce7">
-        <ConditionalEffect effect="Invulnerable" />
-        <Shoot radius="0" count="4" shootAngle="90" fixedAngle="90" cooldown="300" />
-        <TimedTransition targetState="Quadforce8" time="200" />
-      </State>
-      <State id="Quadforce8">
-        <ConditionalEffect effect="Invulnerable" />
-        <Shoot radius="10" shootAngle="0" projectileIndex="3" cooldown="1000" />
-        <Shoot radius="0" count="4" shootAngle="90" fixedAngle="105" cooldown="300" />
-        <TimedTransition targetState="Quadforce1" time="200" />
-      </State>
-    </State>
-    <State id="Warning">
-      <Prioritize>
-        <StayCloseToSpawn speed="0.5" range="7" />
-        <Wander speed="0.5" />
-      </Prioritize>
-      <ConditionalEffect effect="Invulnerable" />
-      <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="15" />
-      <Follow speed="0.4" acquireRange="9" range="2" cooldown="0" />
-      <TimedTransition targetState="Summon_the_clones" time="3000" />
-    </State>
-    <State id="Summon_the_clones">
-      <Prioritize>
-        <StayCloseToSpawn speed="0.85" range="7" />
-        <Wander speed="0.85" />
-      </Prioritize>
-      <Shoot radius="10" shootAngle="0" cooldown="1000" />
-      <Spawn children="Crystal Prisoner Clone" maxChildren="4" initialSpawn="0" cooldown="200" />
-      <TossObject child="Crystal Prisoner Clone" angle="0" cooldown="100000" />
-      <TossObject child="Crystal Prisoner Clone" angle="240" cooldown="100000" />
-      <TossObject child="Crystal Prisoner Clone" range="7" angle="60" cooldown="100000" />
-      <TossObject child="Crystal Prisoner Clone" range="7" angle="300" cooldown="100000" />
-      <TimedTransition targetState="Warning2" time="16000" />
-      <State id="invulnerable_clone">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="vulnerable_clone" time="3000" />
-      </State>
-      <State id="vulnerable_clone">
-        <TimedTransition targetState="invulnerable_clone" time="1200" />
-      </State>
-    </State>
-    <State id="Warning2">
-      <Prioritize>
-        <StayCloseToSpawn speed="0.85" range="7" />
-        <Wander speed="0.85" />
-      </Prioritize>
-      <ConditionalEffect effect="Invulnerable" />
-      <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="25" />
-      <TimedTransition targetState="Whoa_nelly" time="5000" />
-    </State>
-    <State id="Whoa_nelly">
-      <Prioritize>
-        <StayCloseToSpawn speed="0.6" range="7" />
-        <Wander speed="0.6" />
-      </Prioritize>
-      <Shoot radius="10" count="3" shootAngle="120" projectileIndex="3" cooldown="900" />
-      <Shoot radius="10" count="3" shootAngle="15" projectileIndex="2" fixedAngle="40" cooldown="1600" />
-      <Shoot radius="10" count="3" shootAngle="15" projectileIndex="2" fixedAngle="220" cooldown="1600" />
-      <Shoot radius="10" count="3" shootAngle="15" projectileIndex="2" fixedAngle="130" coolDownOffset="800" cooldown="1600" />
-      <Shoot radius="10" count="3" shootAngle="15" projectileIndex="2" fixedAngle="310" coolDownOffset="800" cooldown="1600" />
-      <TimedTransition targetState="Absolutely_Massive" time="10000" />
-      <State id="invulnerable_whoa">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="vulnerable_whoa" time="2600" />
-      </State>
-      <State id="vulnerable_whoa">
-        <TimedTransition targetState="invulnerable_whoa" time="1200" />
-      </State>
-    </State>
-    <State id="Absolutely_Massive">
-      <ChangeSize rate="13" target="260" />
-      <Prioritize>
-        <StayCloseToSpawn speed="0.2" range="7" />
-        <Wander speed="0.2" />
-      </Prioritize>
-      <Shoot radius="10" count="9" shootAngle="40" projectileIndex="1" fixedAngle="40" coolDownOffset="400" cooldown="2000" />
-      <Shoot radius="10" count="9" shootAngle="40" projectileIndex="1" fixedAngle="60" coolDownOffset="800" cooldown="2000" />
-      <Shoot radius="10" count="9" shootAngle="40" projectileIndex="1" fixedAngle="50" coolDownOffset="1200" cooldown="2000" />
-      <Shoot radius="10" count="9" shootAngle="40" projectileIndex="1" fixedAngle="70" coolDownOffset="1600" cooldown="2000" />
-      <TimedTransition targetState="Start_over_again" time="14000" />
-      <State id="invulnerable_mass">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="vulnerable_mass" time="2600" />
-      </State>
-      <State id="vulnerable_mass">
-        <TimedTransition targetState="invulnerable_mass" time="1000" />
-      </State>
-    </State>
-    <State id="Start_over_again">
-      <ChangeSize rate="-20" target="100" />
-      <ConditionalEffect effect="Invulnerable" />
-      <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="15" />
-      <TimedTransition targetState="Daisy_attack" time="3000" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Crystal Prisoner Clone">
-    <Prioritize>
-      <StayCloseToSpawn speed="0.85" />
-      <Wander speed="0.85" />
-    </Prioritize>
-    <Shoot radius="10" shootAngle="0" cooldown="1400" />
-    <Decay time="17000" />
-    <State id="taunt">
-      <Taunt text="I am everywhere and nowhere!" probability="0.09" />
-      <TimedTransition targetState="no_taunt" time="1000" />
-    </State>
-    <State id="no_taunt">
-      <TimedTransition targetState="taunt" time="1000" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Crystal Prisoner Steed">
-    <State id="change_position_fast">
-      <ConditionalEffect effect="Invulnerable" />
-      <Prioritize>
-        <StayCloseToSpawn speed="3.6" range="12" />
-        <Wander speed="3.6" />
-      </Prioritize>
-      <TimedTransition targetState="attack" time="800" />
-    </State>
-    <State id="attack">
-      <Shoot radius="10" shootAngle="0" predictive="0.3" cooldown="500" />
-      <State id="keep_distance">
+    <BehaviorEntry id="Mysterious Crystal">
+        <State id="Waiting">
+            <PlayerWithinTransition targetState="Idle" dist="10" seeInvis="true"/>
+        </State>
+        <State id="Idle">
+            <Taunt text="Break the crystal for great rewards..." probability="0.1"/>
+            <Taunt text="Help me..." probability="0.1"/>
+            <HpLessTransition targetState="Instructions" threshold="0.9999"/>
+            <TimedTransition targetState="Idle" time="10000"/>
+        </State>
+        <State id="Instructions">
+            <Flash color="0xFFFFFFFF" flashPeriod="2" flashRepeats="100"/>
+            <Taunt text="Fire upon this crystal with all your might for 5 seconds" probability="0.8"/>
+            <Taunt text="If your attacks are weak, the crystal magically heals" probability="0.8"/>
+            <Taunt text="Gather a large group to smash it open" probability="0.8"/>
+            <HpLessTransition targetState="Evaluation" threshold="0.998"/>
+        </State>
+        <State id="Evaluation">
+            <HealGroup range="1" cooldown="5000" group="Crystals"/>
+            <HpLessTransition targetState="StartBreak" threshold="0.95"/>
+            <TimedTransition targetState="Fail" time="60000"/>
+            <State id="Comment1">
+                <Taunt text="Sweet treasure awaits for powerful adventurers!" broadcast="true"/>
+                <Taunt text="Yes!  Smash my prison for great rewards!" probability="0.4"/>
+                <TimedTransition targetState="Comment2" time="5000"/>
+            </State>
+            <State id="Comment2">
+                <Taunt text="If you are not very strong, this could kill you|If you are not yet powerful, stay away from the Crystal|New adventurers should stay away|That's the spirit. Lay your fire upon me.|So close..."
+                       probability="0.3"/>
+                <TimedTransition targetState="Comment3" time="5000"/>
+            </State>
+            <State id="Comment3">
+                <Taunt text="I think you need more people...|Call all your friends to help you break the crystal!"
+                       probability="0.4"/>
+                <TimedTransition targetState="Comment2" time="10000"/>
+            </State>
+        </State>
+        <State id="Fail">
+            <Taunt text="Perhaps you need a bigger group. Ask others to join you!"/>
+            <Flash color="0xFF000000" flashPeriod="5" flashRepeats="1"/>
+            <Shoot radius="10" count="16" shootAngle="22.5" fixedAngle="0" cooldown="100000"/>
+            <HealGroup range="1" cooldown="1000" group="Crystals"/>
+            <TimedTransition targetState="Idle" time="5000"/>
+        </State>
+        <State id="StartBreak">
+            <Taunt text="You cracked the crystal! Soon we shall emerge!"/>
+            <ChangeSize rate="-2" target="80"/>
+            <ConditionalEffect effect="Invulnerable"/>
+            <Flash color="0xFF000000" flashPeriod="2" flashRepeats="10"/>
+            <TimedTransition targetState="BreakCrystal" time="4000"/>
+        </State>
+        <State id="BreakCrystal">
+            <Taunt text="This your reward! Imagine what evil even Oryx needs to keep locked up!"/>
+            <Shoot radius="0" count="16" shootAngle="22.5" fixedAngle="0" cooldown="100000"/>
+            <Spawn children="Crystal Prisoner" maxChildren="1" initialSpawn="1" cooldown="100000" givesNoXp="false"/>
+            <Decay time="0"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Crystal Prisoner">
+        <Spawn children="Crystal Prisoner Steed" maxChildren="3" initialSpawn="0" cooldown="200" givesNoXp="false"/>
+        <State id="pause">
+            <ConditionalEffect effect="Invulnerable"/>
+            <TimedTransition targetState="start_the_fun" time="2000"/>
+        </State>
+        <State id="start_the_fun">
+            <ConditionalEffect effect="Invulnerable"/>
+            <Taunt text="I'm finally free! Yesss!!!"/>
+            <TimedTransition targetState="Daisy_attack" time="1500"/>
+        </State>
+        <State id="Daisy_attack">
+            <Prioritize>
+                <StayCloseToSpawn speed="0.3" range="7"/>
+                <Wander speed="0.3"/>
+            </Prioritize>
+            <HpLessTransition targetState="Whoa_nelly" threshold="0.3"/>
+            <TimedTransition targetState="Warning" time="18000"/>
+            <State id="Quadforce1">
+                <ConditionalEffect effect="Invulnerable"/>
+                <Shoot radius="0" count="4" shootAngle="90" fixedAngle="0" cooldown="300"/>
+                <TimedTransition targetState="Quadforce2" time="200"/>
+            </State>
+            <State id="Quadforce2">
+                <ConditionalEffect effect="Invulnerable"/>
+                <Shoot radius="0" count="4" shootAngle="90" fixedAngle="15" cooldown="300"/>
+                <TimedTransition targetState="Quadforce3" time="200"/>
+            </State>
+            <State id="Quadforce3">
+                <ConditionalEffect effect="Invulnerable"/>
+                <Shoot radius="0" count="4" shootAngle="90" fixedAngle="30" cooldown="300"/>
+                <TimedTransition targetState="Quadforce4" time="200"/>
+            </State>
+            <State id="Quadforce4">
+                <Shoot radius="10" shootAngle="0" projectileIndex="3" cooldown="1000"/>
+                <Shoot radius="0" count="4" shootAngle="90" fixedAngle="45" cooldown="300"/>
+                <TimedTransition targetState="Quadforce5" time="200"/>
+            </State>
+            <State id="Quadforce5">
+                <Shoot radius="0" count="4" shootAngle="90" fixedAngle="60" cooldown="300"/>
+                <TimedTransition targetState="Quadforce6" time="200"/>
+            </State>
+            <State id="Quadforce6">
+                <ConditionalEffect effect="Invulnerable"/>
+                <Shoot radius="0" count="4" shootAngle="90" fixedAngle="75" cooldown="300"/>
+                <TimedTransition targetState="Quadforce7" time="200"/>
+            </State>
+            <State id="Quadforce7">
+                <ConditionalEffect effect="Invulnerable"/>
+                <Shoot radius="0" count="4" shootAngle="90" fixedAngle="90" cooldown="300"/>
+                <TimedTransition targetState="Quadforce8" time="200"/>
+            </State>
+            <State id="Quadforce8">
+                <ConditionalEffect effect="Invulnerable"/>
+                <Shoot radius="10" shootAngle="0" projectileIndex="3" cooldown="1000"/>
+                <Shoot radius="0" count="4" shootAngle="90" fixedAngle="105" cooldown="300"/>
+                <TimedTransition targetState="Quadforce1" time="200"/>
+            </State>
+        </State>
+        <State id="Warning">
+            <Prioritize>
+                <StayCloseToSpawn speed="0.5" range="7"/>
+                <Wander speed="0.5"/>
+            </Prioritize>
+            <ConditionalEffect effect="Invulnerable"/>
+            <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="15"/>
+            <Follow speed="0.4" acquireRange="9" range="2" cooldown="0"/>
+            <TimedTransition targetState="Summon_the_clones" time="3000"/>
+        </State>
+        <State id="Summon_the_clones">
+            <Prioritize>
+                <StayCloseToSpawn speed="0.85" range="7"/>
+                <Wander speed="0.85"/>
+            </Prioritize>
+            <Shoot radius="10" shootAngle="0" cooldown="1000"/>
+            <Spawn children="Crystal Prisoner Clone" maxChildren="4" initialSpawn="0" cooldown="200"/>
+            <TossObject child="Crystal Prisoner Clone" angle="0" cooldown="100000"/>
+            <TossObject child="Crystal Prisoner Clone" angle="240" cooldown="100000"/>
+            <TossObject child="Crystal Prisoner Clone" range="7" angle="60" cooldown="100000"/>
+            <TossObject child="Crystal Prisoner Clone" range="7" angle="300" cooldown="100000"/>
+            <TimedTransition targetState="Warning2" time="16000"/>
+            <State id="invulnerable_clone">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="vulnerable_clone" time="3000"/>
+            </State>
+            <State id="vulnerable_clone">
+                <TimedTransition targetState="invulnerable_clone" time="1200"/>
+            </State>
+        </State>
+        <State id="Warning2">
+            <Prioritize>
+                <StayCloseToSpawn speed="0.85" range="7"/>
+                <Wander speed="0.85"/>
+            </Prioritize>
+            <ConditionalEffect effect="Invulnerable"/>
+            <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="25"/>
+            <TimedTransition targetState="Whoa_nelly" time="5000"/>
+        </State>
+        <State id="Whoa_nelly">
+            <Prioritize>
+                <StayCloseToSpawn speed="0.6" range="7"/>
+                <Wander speed="0.6"/>
+            </Prioritize>
+            <Shoot radius="10" count="3" shootAngle="120" projectileIndex="3" cooldown="900"/>
+            <Shoot radius="10" count="3" shootAngle="15" projectileIndex="2" fixedAngle="40" cooldown="1600"/>
+            <Shoot radius="10" count="3" shootAngle="15" projectileIndex="2" fixedAngle="220" cooldown="1600"/>
+            <Shoot radius="10" count="3" shootAngle="15" projectileIndex="2" fixedAngle="130" coolDownOffset="800"
+                   cooldown="1600"/>
+            <Shoot radius="10" count="3" shootAngle="15" projectileIndex="2" fixedAngle="310" coolDownOffset="800"
+                   cooldown="1600"/>
+            <TimedTransition targetState="Absolutely_Massive" time="10000"/>
+            <State id="invulnerable_whoa">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="vulnerable_whoa" time="2600"/>
+            </State>
+            <State id="vulnerable_whoa">
+                <TimedTransition targetState="invulnerable_whoa" time="1200"/>
+            </State>
+        </State>
+        <State id="Absolutely_Massive">
+            <ChangeSize rate="13" target="260"/>
+            <Prioritize>
+                <StayCloseToSpawn speed="0.2" range="7"/>
+                <Wander speed="0.2"/>
+            </Prioritize>
+            <Shoot radius="10" count="9" shootAngle="40" projectileIndex="1" fixedAngle="40" coolDownOffset="400"
+                   cooldown="2000"/>
+            <Shoot radius="10" count="9" shootAngle="40" projectileIndex="1" fixedAngle="60" coolDownOffset="800"
+                   cooldown="2000"/>
+            <Shoot radius="10" count="9" shootAngle="40" projectileIndex="1" fixedAngle="50" coolDownOffset="1200"
+                   cooldown="2000"/>
+            <Shoot radius="10" count="9" shootAngle="40" projectileIndex="1" fixedAngle="70" coolDownOffset="1600"
+                   cooldown="2000"/>
+            <TimedTransition targetState="Start_over_again" time="14000"/>
+            <State id="invulnerable_mass">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="vulnerable_mass" time="2600"/>
+            </State>
+            <State id="vulnerable_mass">
+                <TimedTransition targetState="invulnerable_mass" time="1000"/>
+            </State>
+        </State>
+        <State id="Start_over_again">
+            <ChangeSize rate="-20" target="100"/>
+            <ConditionalEffect effect="Invulnerable"/>
+            <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="15"/>
+            <TimedTransition targetState="Daisy_attack" time="3000"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Crystal Prisoner Clone">
         <Prioritize>
-          <StayCloseToSpawn speed="1" range="12" />
-          <Orbit speed="1" radius="9" target="Crystal Prisoner" speedVariance="0.1" radiusVariance="0" orbitClockwise="false" />
+            <StayCloseToSpawn speed="0.85"/>
+            <Wander speed="0.85"/>
         </Prioritize>
-        <TimedTransition targetState="go_anywhere" time="2000" />
-      </State>
-      <State id="go_anywhere">
-        <Prioritize>
-          <StayCloseToSpawn speed="1" range="12" />
-          <Wander speed="1" />
-        </Prioritize>
-        <TimedTransition targetState="keep_distance" time="2000" />
-      </State>
-    </State>
-  </BehaviorEntry>
+        <Shoot radius="10" shootAngle="0" cooldown="1400"/>
+        <Decay time="17000"/>
+        <State id="taunt">
+            <Taunt text="I am everywhere and nowhere!" probability="0.09"/>
+            <TimedTransition targetState="no_taunt" time="1000"/>
+        </State>
+        <State id="no_taunt">
+            <TimedTransition targetState="taunt" time="1000"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Crystal Prisoner Steed">
+        <State id="change_position_fast">
+            <ConditionalEffect effect="Invulnerable"/>
+            <Prioritize>
+                <StayCloseToSpawn speed="3.6" range="12"/>
+                <Wander speed="3.6"/>
+            </Prioritize>
+            <TimedTransition targetState="attack" time="800"/>
+        </State>
+        <State id="attack">
+            <Shoot radius="10" shootAngle="0" predictive="0.3" cooldown="500"/>
+            <State id="keep_distance">
+                <Prioritize>
+                    <StayCloseToSpawn speed="1" range="12"/>
+                    <Orbit speed="1" radius="9" target="Crystal Prisoner" speedVariance="0.1" radiusVariance="0"
+                           orbitClockwise="false"/>
+                </Prioritize>
+                <TimedTransition targetState="go_anywhere" time="2000"/>
+            </State>
+            <State id="go_anywhere">
+                <Prioritize>
+                    <StayCloseToSpawn speed="1" range="12"/>
+                    <Wander speed="1"/>
+                </Prioritize>
+                <TimedTransition targetState="keep_distance" time="2000"/>
+            </State>
+        </State>
+    </BehaviorEntry>
 </BehaviorEntries>

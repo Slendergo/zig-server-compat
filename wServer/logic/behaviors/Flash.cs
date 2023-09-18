@@ -1,42 +1,35 @@
-﻿using common;
-using System.Xml.Linq;
-using wServer.networking.packets.outgoing;
+﻿using System.Xml.Linq;
+using common;
 using wServer.realm;
+using wServer.realm.entities;
 
 namespace wServer.logic.behaviors;
 
-class Flash : Behavior
-{
+internal class Flash : Behavior {
     //State storage: none
 
-    uint color;
-    float flashPeriod;
-    int flashRepeats;
+    private uint color;
+    private float flashPeriod;
+    private int flashRepeats;
 
-    public Flash(XElement e)
-    {
+    public Flash(XElement e) {
         color = e.ParseUInt("@color");
         flashPeriod = e.ParseFloat("@flashPeriod");
         flashRepeats = e.ParseInt("@flashRepeats");
     }
 
-    public Flash(uint color, double flashPeriod, int flashRepeats)
-    {
+    public Flash(uint color, double flashPeriod, int flashRepeats) {
         this.color = color;
-        this.flashPeriod = (float)flashPeriod;
+        this.flashPeriod = (float) flashPeriod;
         this.flashRepeats = flashRepeats;
     }
 
     protected override void TickCore(Entity host, RealmTime time, ref object state) { }
 
-    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-    {
-        host.Owner.BroadcastPacketNearby(new ShowEffect()
-        {
-            EffectType = EffectType.Flashing,
-            Pos1 = new Position() { X = flashPeriod, Y = flashRepeats },
-            TargetObjectId = host.Id,
-            Color = new ARGB(color)
-        }, host, null);
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state) {
+        foreach (var player in host.Owner.Players.Values)
+            if (player.DistSqr(host) < Player.RadiusSqr)
+                player.Client.SendShowEffect(EffectType.Flashing, host.Id,
+                    new Position {X = flashPeriod, Y = flashRepeats}, new Position(), new ARGB(color));
     }
 }

@@ -20,26 +20,25 @@
 
 using DungeonGenerator.Dungeon;
 
-
 namespace DungeonGenerator.Templates.Lab;
 
 internal class BossRoom : FixedRoom {
-	static readonly Rect template = new(0, 0, 24, 50);
+    private static readonly Rect template = new(0, 0, 24, 50);
 
-	public override RoomType Type { get { return RoomType.Target; } }
+    private static readonly Tuple<Direction, int>[] connections = {
+        Tuple.Create(Direction.South, 10)
+    };
 
-	public override int Width { get { return template.MaxX - template.X; } }
+    public override RoomType Type => RoomType.Target;
 
-	public override int Height { get { return template.MaxY - template.Y; } }
+    public override int Width => template.MaxX - template.X;
 
-	static readonly Tuple<Direction, int>[] connections = {
-		Tuple.Create(Direction.South, 10)
-	};
+    public override int Height => template.MaxY - template.Y;
 
-	public override Tuple<Direction, int>[] ConnectionPoints { get { return connections; } }
+    public override Tuple<Direction, int>[] ConnectionPoints => connections;
 
-	public override void Rasterize(BitmapRasterizer<DungeonTile> rasterizer, Random rand) {
-		rasterizer.Copy(LabTemplate.MapTemplate, template, Pos);
-		LabTemplate.DrawSpiderWeb(rasterizer, Bounds, rand);
-	}
+    public override void Rasterize(BitmapRasterizer<DungeonTile> rasterizer, Random rand) {
+        rasterizer.Copy(LabTemplate.MapTemplate, template, Pos);
+        LabTemplate.DrawSpiderWeb(rasterizer, Bounds, rand);
+    }
 }

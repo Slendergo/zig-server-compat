@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Diagnostics;
 
 namespace common;
 
@@ -6,22 +7,17 @@ namespace common;
 // the Create factory method is used in place of a constructor
 // to handle the case where target is null, but we want the 
 // reference to still appear to be alive.
-public class WeakReference<T> : WeakReference where T : class
-{
-    public static WeakReference<T> Create(T target)
-    {
+public class WeakReference<T> : WeakReference where T : class {
+    protected WeakReference(T target)
+        : base(target, false) { }
+
+    public new T Target => (T) base.Target;
+
+    public static WeakReference<T> Create(T target) {
         if (target == null)
             return WeakNullReference<T>.Singleton;
 
         return new WeakReference<T>(target);
-    }
-
-    protected WeakReference(T target)
-        : base(target, false) { }
-
-    public new T Target
-    {
-        get { return (T)base.Target; }
     }
 }
 
@@ -29,31 +25,25 @@ public class WeakReference<T> : WeakReference where T : class
 // other weak references, is always considered to be alive. This 
 // facilitates handling null dictionary values, which are perfectly
 // legal.
-internal class WeakNullReference<T> : WeakReference<T> where T : class
-{
+internal class WeakNullReference<T> : WeakReference<T> where T : class {
     public static readonly WeakNullReference<T> Singleton = new();
 
     private WeakNullReference() : base(null) { }
 
-    public override bool IsAlive
-    {
-        get { return true; }
-    }
+    public override bool IsAlive => true;
 }
 
 // Provides a weak reference to an object of the given type to be used in
 // a WeakDictionary along with the given comparer.
-internal sealed class WeakKeyReference<T> : WeakReference<T> where T : class
-{
+internal sealed class WeakKeyReference<T> : WeakReference<T> where T : class {
     public readonly int HashCode;
 
     public WeakKeyReference(T key, WeakKeyComparer<T> comparer)
-        : base(key)
-    {
+        : base(key) {
         // retain the object's hash code immediately so that even
         // if the target is GC'ed we will be able to find and
         // remove the dead weak reference.
-        this.HashCode = comparer.GetHashCode(key);
+        HashCode = comparer.GetHashCode(key);
     }
 }
 
@@ -64,24 +54,19 @@ internal sealed class WeakKeyReference<T> : WeakReference<T> where T : class
 // single comparer to handle both types because we don't want to
 // allocate a new weak reference for every lookup.
 internal sealed class WeakKeyComparer<T> : IEqualityComparer<object>
-    where T : class
-{
-
+    where T : class {
     private IEqualityComparer<T> comparer;
 
-    internal WeakKeyComparer(IEqualityComparer<T> comparer)
-    {
+    internal WeakKeyComparer(IEqualityComparer<T> comparer) {
         if (comparer == null)
             comparer = EqualityComparer<T>.Default;
 
         this.comparer = comparer;
     }
 
-    public int GetHashCode(object obj)
-    {
-        WeakKeyReference<T> weakKey = obj as WeakKeyReference<T>;
-        if (weakKey != null) return weakKey.HashCode;
-        return this.comparer.GetHashCode((T)obj);
+    public int GetHashCode(object obj) {
+        if (obj is WeakKeyReference<T> weakKey) return weakKey.HashCode;
+        return comparer.GetHashCode((T) obj);
     }
 
     // Note: There are actually 9 cases to handle here.
@@ -102,11 +87,9 @@ internal sealed class WeakKeyComparer<T> : IEqualityComparer<object>
     //  S  | Wd | false
     //  S  | S  | comparer.Equals(x, y)
     // -------------------------------------------------
-    public new bool Equals(object x, object y)
-    {
-        bool xIsDead, yIsDead;
-        T first = GetTarget(x, out xIsDead);
-        T second = GetTarget(y, out yIsDead);
+    public new bool Equals(object x, object y) {
+        var first = GetTarget(x, out var xIsDead);
+        var second = GetTarget(y, out var yIsDead);
 
         if (xIsDead)
             return yIsDead ? x == y : false;
@@ -114,47 +97,42 @@ internal sealed class WeakKeyComparer<T> : IEqualityComparer<object>
         if (yIsDead)
             return false;
 
-        return this.comparer.Equals(first, second);
+        return comparer.Equals(first, second);
     }
 
-    private static T GetTarget(object obj, out bool isDead)
-    {
-        WeakKeyReference<T> wref = obj as WeakKeyReference<T>;
+    private static T GetTarget(object obj, out bool isDead) {
         T target;
-        if (wref != null)
-        {
+        if (obj is WeakKeyReference<T> wref) {
             target = wref.Target;
             isDead = !wref.IsAlive;
         }
-        else
-        {
-            target = (T)obj;
+        else {
+            target = (T) obj;
             isDead = false;
         }
+
         return target;
     }
 }
 
 /// <summary>
-/// Represents a dictionary mapping keys to values.
+///     Represents a dictionary mapping keys to values.
 /// </summary>
-/// 
 /// <remarks>
-/// Provides the plumbing for the portions of IDictionary<TKey,
-/// TValue> which can reasonably be implemented without any
-/// dependency on the underlying representation of the dictionary.
+///     Provides the plumbing for the portions of IDictionary
+///     <TKey,
+///         TValue>
+///         which can reasonably be implemented without any
+///         dependency on the underlying representation of the dictionary.
 /// </remarks>
 [DebuggerDisplay("Count = {Count}")]
 [DebuggerTypeProxy(PREFIX + "DictionaryDebugView`2" + SUFFIX)]
-public abstract class BaseDictionary<TKey, TValue> : IDictionary<TKey, TValue>
-{
+public abstract class BaseDictionary<TKey, TValue> : IDictionary<TKey, TValue> {
     private const string PREFIX = "System.Collections.Generic.Mscorlib_";
     private const string SUFFIX = ",mscorlib,Version=2.0.0.0,Culture=neutral,PublicKeyToken=b77a5c561934e089";
 
     private KeyCollection keys;
     private ValueCollection values;
-
-    protected BaseDictionary() { }
 
     public abstract int Count { get; }
     public abstract void Clear();
@@ -163,196 +141,157 @@ public abstract class BaseDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     public abstract bool Remove(TKey key);
     public abstract bool TryGetValue(TKey key, out TValue value);
     public abstract IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator();
-    protected abstract void SetValue(TKey key, TValue value);
 
-    public bool IsReadOnly
-    {
-        get { return false; }
-    }
+    public bool IsReadOnly => false;
 
-    public ICollection<TKey> Keys
-    {
-        get
-        {
-            if (this.keys == null)
-                this.keys = new KeyCollection(this);
+    public ICollection<TKey> Keys {
+        get {
+            if (keys == null)
+                keys = new KeyCollection(this);
 
-            return this.keys;
+            return keys;
         }
     }
 
-    public ICollection<TValue> Values
-    {
-        get
-        {
-            if (this.values == null)
-                this.values = new ValueCollection(this);
+    public ICollection<TValue> Values {
+        get {
+            if (values == null)
+                values = new ValueCollection(this);
 
-            return this.values;
+            return values;
         }
     }
 
-    public TValue this[TKey key]
-    {
-        get
-        {
-            TValue value;
-            if (!this.TryGetValue(key, out value))
+    public TValue this[TKey key] {
+        get {
+            if (!TryGetValue(key, out var value))
                 throw new KeyNotFoundException();
 
             return value;
         }
-        set
-        {
-            SetValue(key, value);
-        }
+        set => SetValue(key, value);
     }
 
-    public void Add(KeyValuePair<TKey, TValue> item)
-    {
-        this.Add(item.Key, item.Value);
+    public void Add(KeyValuePair<TKey, TValue> item) {
+        Add(item.Key, item.Value);
     }
 
-    public bool Contains(KeyValuePair<TKey, TValue> item)
-    {
-        TValue value;
-        if (!this.TryGetValue(item.Key, out value))
+    public bool Contains(KeyValuePair<TKey, TValue> item) {
+        if (!TryGetValue(item.Key, out var value))
             return false;
 
         return EqualityComparer<TValue>.Default.Equals(value, item.Value);
     }
 
-    public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
-    {
+    public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) {
         Copy(this, array, arrayIndex);
     }
 
-    public bool Remove(KeyValuePair<TKey, TValue> item)
-    {
-        if (!this.Contains(item))
+    public bool Remove(KeyValuePair<TKey, TValue> item) {
+        if (!Contains(item))
             return false;
 
-        return this.Remove(item.Key);
+        return Remove(item.Key);
     }
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() {
+        return GetEnumerator();
     }
 
-    private abstract class Collection<T> : ICollection<T>
-    {
-        protected readonly IDictionary<TKey, TValue> dictionary;
+    protected abstract void SetValue(TKey key, TValue value);
 
-        protected Collection(IDictionary<TKey, TValue> dictionary)
-        {
-            this.dictionary = dictionary;
-        }
-
-        public int Count
-        {
-            get { return this.dictionary.Count; }
-        }
-
-        public bool IsReadOnly
-        {
-            get { return true; }
-        }
-
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            Copy(this, array, arrayIndex);
-        }
-
-        public virtual bool Contains(T item)
-        {
-            foreach (T element in this)
-                if (EqualityComparer<T>.Default.Equals(element, item))
-                    return true;
-            return false;
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            foreach (KeyValuePair<TKey, TValue> pair in this.dictionary)
-                yield return GetItem(pair);
-        }
-
-        protected abstract T GetItem(KeyValuePair<TKey, TValue> pair);
-
-        public bool Remove(T item)
-        {
-            throw new NotSupportedException("Collection is read-only.");
-        }
-
-        public void Add(T item)
-        {
-            throw new NotSupportedException("Collection is read-only.");
-        }
-
-        public void Clear()
-        {
-            throw new NotSupportedException("Collection is read-only.");
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-    }
-
-    [DebuggerDisplay("Count = {Count}")]
-    [DebuggerTypeProxy(PREFIX + "DictionaryKeyCollectionDebugView`2" + SUFFIX)]
-    private class KeyCollection : Collection<TKey>
-    {
-        public KeyCollection(IDictionary<TKey, TValue> dictionary)
-            : base(dictionary) { }
-
-        protected override TKey GetItem(KeyValuePair<TKey, TValue> pair)
-        {
-            return pair.Key;
-        }
-        public override bool Contains(TKey item)
-        {
-            return this.dictionary.ContainsKey(item);
-        }
-    }
-
-    [DebuggerDisplay("Count = {Count}")]
-    [DebuggerTypeProxy(PREFIX + "DictionaryValueCollectionDebugView`2" + SUFFIX)]
-    private class ValueCollection : Collection<TValue>
-    {
-        public ValueCollection(IDictionary<TKey, TValue> dictionary)
-            : base(dictionary) { }
-
-        protected override TValue GetItem(KeyValuePair<TKey, TValue> pair)
-        {
-            return pair.Value;
-        }
-    }
-
-    private static void Copy<T>(ICollection<T> source, T[] array, int arrayIndex)
-    {
+    private static void Copy<T>(ICollection<T> source, T[] array, int arrayIndex) {
         if (array == null)
             throw new ArgumentNullException("array");
 
         if (arrayIndex < 0 || arrayIndex > array.Length)
             throw new ArgumentOutOfRangeException("arrayIndex");
 
-        if ((array.Length - arrayIndex) < source.Count)
+        if (array.Length - arrayIndex < source.Count)
             throw new ArgumentException("Destination array is not large enough. Check array.Length and arrayIndex.");
 
-        foreach (T item in source)
+        foreach (var item in source)
             array[arrayIndex++] = item;
+    }
+
+    private abstract class Collection<T> : ICollection<T> {
+        protected readonly IDictionary<TKey, TValue> dictionary;
+
+        protected Collection(IDictionary<TKey, TValue> dictionary) {
+            this.dictionary = dictionary;
+        }
+
+        public int Count => dictionary.Count;
+
+        public bool IsReadOnly => true;
+
+        public void CopyTo(T[] array, int arrayIndex) {
+            Copy(this, array, arrayIndex);
+        }
+
+        public virtual bool Contains(T item) {
+            foreach (var element in this)
+                if (EqualityComparer<T>.Default.Equals(element, item))
+                    return true;
+            return false;
+        }
+
+        public IEnumerator<T> GetEnumerator() {
+            foreach (var pair in dictionary)
+                yield return GetItem(pair);
+        }
+
+        public bool Remove(T item) {
+            throw new NotSupportedException("Collection is read-only.");
+        }
+
+        public void Add(T item) {
+            throw new NotSupportedException("Collection is read-only.");
+        }
+
+        public void Clear() {
+            throw new NotSupportedException("Collection is read-only.");
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
+        }
+
+        protected abstract T GetItem(KeyValuePair<TKey, TValue> pair);
+    }
+
+    [DebuggerDisplay("Count = {Count}")]
+    [DebuggerTypeProxy(PREFIX + "DictionaryKeyCollectionDebugView`2" + SUFFIX)]
+    private class KeyCollection : Collection<TKey> {
+        public KeyCollection(IDictionary<TKey, TValue> dictionary)
+            : base(dictionary) { }
+
+        protected override TKey GetItem(KeyValuePair<TKey, TValue> pair) {
+            return pair.Key;
+        }
+
+        public override bool Contains(TKey item) {
+            return dictionary.ContainsKey(item);
+        }
+    }
+
+    [DebuggerDisplay("Count = {Count}")]
+    [DebuggerTypeProxy(PREFIX + "DictionaryValueCollectionDebugView`2" + SUFFIX)]
+    private class ValueCollection : Collection<TValue> {
+        public ValueCollection(IDictionary<TKey, TValue> dictionary)
+            : base(dictionary) { }
+
+        protected override TValue GetItem(KeyValuePair<TKey, TValue> pair) {
+            return pair.Value;
+        }
     }
 }
 
 public sealed class WeakDictionary<TKey, TValue> : BaseDictionary<TKey, TValue>
-    where TKey : class
-{
+    where TKey : class {
+    private WeakKeyComparer<TKey> comparer;
 
     private Dictionary<object, TValue> dictionary;
-    private WeakKeyComparer<TKey> comparer;
 
     public WeakDictionary()
         : this(0, null) { }
@@ -363,68 +302,55 @@ public sealed class WeakDictionary<TKey, TValue> : BaseDictionary<TKey, TValue>
     public WeakDictionary(IEqualityComparer<TKey> comparer)
         : this(0, comparer) { }
 
-    public WeakDictionary(int capacity, IEqualityComparer<TKey> comparer)
-    {
+    public WeakDictionary(int capacity, IEqualityComparer<TKey> comparer) {
         this.comparer = new WeakKeyComparer<TKey>(comparer);
-        this.dictionary = new Dictionary<object, TValue>(capacity, this.comparer);
+        dictionary = new Dictionary<object, TValue>(capacity, this.comparer);
     }
 
     // WARNING: The count returned here may include entries for which
     // either the key or value objects have already been garbage
     // collected. Call RemoveCollectedEntries to weed out collected
     // entries and update the count accordingly.
-    public override int Count
-    {
-        get { return this.dictionary.Count; }
-    }
+    public override int Count => dictionary.Count;
 
-    public override void Add(TKey key, TValue value)
-    {
+    public override void Add(TKey key, TValue value) {
         if (key == null) throw new ArgumentNullException("key");
-        WeakReference<TKey> weakKey = new WeakKeyReference<TKey>(key, this.comparer);
-        this.dictionary.Add(weakKey, value);
+        WeakReference<TKey> weakKey = new WeakKeyReference<TKey>(key, comparer);
+        dictionary.Add(weakKey, value);
     }
 
-    public override bool ContainsKey(TKey key)
-    {
-        return this.dictionary.ContainsKey(key);
+    public override bool ContainsKey(TKey key) {
+        return dictionary.ContainsKey(key);
     }
 
-    public override bool Remove(TKey key)
-    {
-        return this.dictionary.Remove(key);
+    public override bool Remove(TKey key) {
+        return dictionary.Remove(key);
     }
 
-    public override bool TryGetValue(TKey key, out TValue value)
-    {
-        TValue weakValue;
-        if (this.dictionary.TryGetValue(key, out weakValue))
-        {
+    public override bool TryGetValue(TKey key, out TValue value) {
+        if (dictionary.TryGetValue(key, out var weakValue)) {
             value = weakValue;
             return true;
         }
-        value = default(TValue);
+
+        value = default;
         return false;
     }
 
-    protected override void SetValue(TKey key, TValue value)
-    {
-        WeakReference<TKey> weakKey = new WeakKeyReference<TKey>(key, this.comparer);
-        this.dictionary[weakKey] = value;
+    protected override void SetValue(TKey key, TValue value) {
+        WeakReference<TKey> weakKey = new WeakKeyReference<TKey>(key, comparer);
+        dictionary[weakKey] = value;
     }
 
-    public override void Clear()
-    {
-        this.dictionary.Clear();
+    public override void Clear() {
+        dictionary.Clear();
     }
 
-    public override IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-    {
-        foreach (KeyValuePair<object, TValue> kvp in this.dictionary)
-        {
-            WeakReference<TKey> weakKey = (WeakReference<TKey>)(kvp.Key);
-            TValue value = kvp.Value;
-            TKey key = weakKey.Target;
+    public override IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
+        foreach (var kvp in dictionary) {
+            var weakKey = (WeakReference<TKey>) kvp.Key;
+            var value = kvp.Value;
+            var key = weakKey.Target;
             if (weakKey.IsAlive)
                 yield return new KeyValuePair<TKey, TValue>(key, value);
         }
@@ -434,15 +360,12 @@ public sealed class WeakDictionary<TKey, TValue> : BaseDictionary<TKey, TValue>
     // whose key or value has already been reclaimed by the garbage
     // collector. This will reduce the dictionary's Count by the number
     // of dead key-value pairs that were eliminated.
-    public void RemoveCollectedEntries()
-    {
+    public void RemoveCollectedEntries() {
         List<object> toRemove = null;
-        foreach (KeyValuePair<object, TValue> pair in this.dictionary)
-        {
-            WeakReference<TKey> weakKey = (WeakReference<TKey>)(pair.Key);
+        foreach (var pair in dictionary) {
+            var weakKey = (WeakReference<TKey>) pair.Key;
 
-            if (!weakKey.IsAlive)
-            {
+            if (!weakKey.IsAlive) {
                 if (toRemove == null)
                     toRemove = new List<object>();
                 toRemove.Add(weakKey);
@@ -450,9 +373,7 @@ public sealed class WeakDictionary<TKey, TValue> : BaseDictionary<TKey, TValue>
         }
 
         if (toRemove != null)
-        {
-            foreach (object key in toRemove)
-                this.dictionary.Remove(key);
-        }
+            foreach (var key in toRemove)
+                dictionary.Remove(key);
     }
 }

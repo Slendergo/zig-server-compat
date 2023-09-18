@@ -1,24 +1,21 @@
-﻿using common;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using common;
 using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
-class DropPortalOnDeath : Behavior
-{
-    private readonly ushort _target;
+internal class DropPortalOnDeath : Behavior {
     private readonly float _probability;
+    private readonly ushort _target;
     private readonly int? _timeout;
 
-    public DropPortalOnDeath(XElement e)
-    {
+    public DropPortalOnDeath(XElement e) {
         _target = GetObjType(e.ParseString("@target"));
         _probability = e.ParseFloat("@probability", 1);
         _timeout = e.ParseNInt("@timeout");
     }
 
-    public DropPortalOnDeath(string target, double probability = 1, int? timeout = null)
-    {
+    public DropPortalOnDeath(string target, double probability = 1, int? timeout = null) {
         _target = GetObjType(target);
         _probability = (float) probability;
         _timeout = timeout; // a value of 0 means never timeout, 
@@ -26,21 +23,18 @@ class DropPortalOnDeath : Behavior
         // a value means override xml timeout with that value (in seconds)
     }
 
-    protected internal override void Resolve(State parent)
-    {
-        parent.Death += (sender, e) =>
-        {
+    protected internal override void Resolve(State parent) {
+        parent.Death += (sender, e) => {
             var owner = e.Host.Owner;
 
-            if (owner.IdName.Contains("Arena") || e.Host.Spawned) 
+            if (owner.IdName.Contains("Arena") || e.Host.Spawned)
                 return;
-                
+
             if (e.Host.CurrentState.Is(parent) &&
-                Random.NextDouble() < _probability)
-            {
+                Random.NextDouble() < _probability) {
                 var manager = e.Host.Manager;
                 var gameData = manager.Resources.GameData;
-                var timeoutTime = (_timeout == null)
+                var timeoutTime = _timeout == null
                     ? gameData.Portals[_target].Timeout
                     : _timeout.Value;
 
@@ -49,10 +43,9 @@ class DropPortalOnDeath : Behavior
                 owner.EnterWorld(entity);
 
                 if (timeoutTime != 0)
-                    owner.Timers.Add(new WorldTimer(timeoutTime*1000, (world, t) => //default portal close time * 1000
+                    owner.Timers.Add(new WorldTimer(timeoutTime * 1000, (world, t) => //default portal close time * 1000
                     {
-                        try
-                        {
+                        try {
                             world.LeaveWorld(entity);
                         }
                         catch
@@ -65,7 +58,5 @@ class DropPortalOnDeath : Behavior
         };
     }
 
-    protected override void TickCore(Entity host, RealmTime time, ref object state)
-    {
-    }
+    protected override void TickCore(Entity host, RealmTime time, ref object state) { }
 }

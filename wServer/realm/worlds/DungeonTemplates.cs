@@ -2,12 +2,10 @@
 
 namespace wServer.realm.worlds;
 
-public static class DungeonTemplates
-{
+public static class DungeonTemplates {
     private static readonly List<Type> Templates;
 
-    static DungeonTemplates()
-    {
+    static DungeonTemplates() {
         Templates = new List<Type>();
 
         var type = typeof(DungeonTemplate);
@@ -18,16 +16,15 @@ public static class DungeonTemplates
             Templates.Add(i);
     }
 
-    public static DungeonTemplate GetTemplate(string worldName)
-    {
+    public static DungeonTemplate GetTemplate(string worldName) {
         var template = $"{worldName}Template";
-        foreach (var type in Templates)
-        {
+        foreach (var type in Templates) {
             if (!type.Name.Equals(template))
                 continue;
 
-            return (DungeonTemplate)Activator.CreateInstance(type);
+            return (DungeonTemplate) Activator.CreateInstance(type);
         }
+
         return null;
     }
 }

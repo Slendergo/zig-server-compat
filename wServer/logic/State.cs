@@ -3,30 +3,22 @@ using wServer.realm;
 
 namespace wServer.logic;
 
-public interface IStateChildren
-{
-}
+public interface IStateChildren { }
 
-public class State : IStateChildren
-{
-    public State(params IStateChildren[] children) : this("", children)
-    {
-    }
+public class State : IStateChildren {
+    public static readonly State NullState = new();
 
-    public State(XElement elem, params IStateChildren[] children) : this(elem.Attribute("id").Value, children)
-    {
-    }
+    public State(params IStateChildren[] children) : this("", children) { }
 
-    public State(string name, params IStateChildren[] children)
-    {
+    public State(XElement elem, params IStateChildren[] children) : this(elem.Attribute("id").Value, children) { }
+
+    public State(string name, params IStateChildren[] children) {
         Name = name;
         States = new List<State>();
         Behaviors = new List<Behavior>();
         Transitions = new List<Transition>();
         foreach (var i in children)
-        {
-            switch (i)
-            {
+            switch (i) {
                 case State state:
                     state.Parent = this;
                     States.Add(state);
@@ -40,7 +32,6 @@ public class State : IStateChildren
                 default:
                     throw new NotSupportedException("Unknown children type.");
             }
-        }
     }
 
     public string Name { get; }
@@ -49,43 +40,37 @@ public class State : IStateChildren
     public IList<Behavior> Behaviors { get; }
     public IList<Transition> Transitions { get; }
 
-    public static State CommonParent(State a, State b)
-    {
+    public static State CommonParent(State a, State b) {
         if (a == null || b == null) return null;
         return _CommonParent(a, a, b);
     }
 
-    private static State _CommonParent(State current, State a, State b)
-    {
+    private static State _CommonParent(State current, State a, State b) {
         if (b.Is(current)) return current;
         return a.Parent == null ? null : _CommonParent(current.Parent, a, b);
     }
 
     //child is parent
     //parent is not child
-    public bool Is(State state)
-    {
+    public bool Is(State state) {
         if (this == state) return true;
         return Parent != null && Parent.Is(state);
     }
 
     public event EventHandler<BehaviorEventArgs> Death;
 
-    internal void OnDeath(BehaviorEventArgs e)
-    {
+    internal void OnDeath(BehaviorEventArgs e) {
         Death?.Invoke(this, e);
         Parent?.OnDeath(e);
     }
 
-    internal void Resolve(Dictionary<string, State> states)
-    {
+    internal void Resolve(Dictionary<string, State> states) {
         states[Name] = this;
         foreach (var i in States)
             i.Resolve(states);
     }
 
-    internal void ResolveChildren(Dictionary<string, State> states)
-    {
+    internal void ResolveChildren(Dictionary<string, State> states) {
         foreach (var i in States)
             i.ResolveChildren(states);
         foreach (var j in Transitions)
@@ -94,24 +79,18 @@ public class State : IStateChildren
             j.Resolve(this);
     }
 
-    private void ResolveTransition(Dictionary<string, State> states)
-    {
+    private void ResolveTransition(Dictionary<string, State> states) {
         foreach (var i in Transitions)
             i.Resolve(states);
     }
 
-    public override string ToString()
-    {
+    public override string ToString() {
         return Name;
     }
-
-    public static readonly State NullState = new();
 }
 
-public class BehaviorEventArgs : EventArgs
-{
-    public BehaviorEventArgs(Entity host, RealmTime time)
-    {
+public class BehaviorEventArgs : EventArgs {
+    public BehaviorEventArgs(Entity host, RealmTime time) {
         Host = host;
         Time = time;
     }

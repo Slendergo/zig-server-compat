@@ -1,44 +1,40 @@
-﻿using common;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using common;
 using wServer.realm;
 
 namespace wServer.logic.transitions;
 
-class TimedTransition : Transition
-{
+internal class TimedTransition : Transition {
+    private bool randomized;
     //State storage: cooldown timer
 
-    int time;
-    bool randomized;
+    private int time;
 
     public TimedTransition(XElement e)
-    : base(e.ParseString("@targetState", "root"))
-    {
+        : base(e.ParseString("@targetState", "root")) {
         time = e.ParseInt("@time");
         randomized = e.ParseBool("@randomizedTime");
     }
 
     public TimedTransition(int time, string targetState, bool randomized = false)
-        : base(targetState)
-    {
+        : base(targetState) {
         this.time = time;
         this.randomized = randomized;
     }
 
-    protected override bool TickCore(Entity host, RealmTime time, ref object state)
-    {
+    protected override bool TickCore(Entity host, RealmTime time, ref object state) {
         int cool;
         if (state == null) cool = randomized ? Random.Next(this.time) : this.time;
-        else cool = (int)state;
+        else cool = (int) state;
 
-        bool ret = false;
-        if (cool <= 0)
-        {
+        var ret = false;
+        if (cool <= 0) {
             ret = true;
             cool = this.time;
         }
-        else
-            cool -= time.ElaspedMsDelta;
+        else {
+            cool -= time.ElapsedMsDelta;
+        }
 
         state = cool;
         return ret;

@@ -3,8 +3,7 @@ using wServer.realm.entities;
 
 namespace wServer.realm;
 
-public class StatsManager
-{
+public class StatsManager {
     //static readonly ILog Log = LogManager.GetLogger(typeof(StatsManager));
 
     internal const int NumStatTypes = 8;
@@ -13,27 +12,26 @@ public class StatsManager
     private const float MinAttackFreq = 0.0015f;
     private const float MaxAttackFreq = 0.008f;
 
-    internal readonly Player Owner;
+    private readonly SV<int>[] _stats;
     internal readonly BaseStatManager Base;
     internal readonly BoostStatManager Boost;
 
-    private readonly SV<int>[] _stats;
+    internal readonly Player Owner;
 
-    public int this[int index] => Base[index] + Boost[index];
-
-    public StatsManager(Player owner)
-    {
+    public StatsManager(Player owner) {
         Owner = owner;
         Base = new BaseStatManager(this);
         Boost = new BoostStatManager(this);
 
         _stats = new SV<int>[NumStatTypes];
         for (var i = 0; i < NumStatTypes; i++)
-            _stats[i] = new SV<int>(Owner, GetStatType(i), this[i], i != 0 && i != 1); // make maxHP and maxMP global update
+            _stats[i] = new SV<int>(Owner, GetStatType(i), this[i],
+                i != 0 && i != 1); // make maxHP and maxMP global update
     }
 
-    public void ReCalculateValues(InventoryChangedEventArgs e = null)
-    {
+    public int this[int index] => Base[index] + Boost[index];
+
+    public void ReCalculateValues(InventoryChangedEventArgs e = null) {
         Base.ReCalculateValues(e);
         Boost.ReCalculateValues(e);
 
@@ -41,32 +39,28 @@ public class StatsManager
             _stats[i].SetValue(this[i]);
     }
 
-    internal void StatChanged(int index)
-    {
+    internal void StatChanged(int index) {
         _stats[index].SetValue(this[index]);
     }
 
-    public int GetClientDamage(int min, int max, bool useMult = false)
-    {
+    public int GetClientDamage(int min, int max, bool useMult = false) {
         var mult = useMult ? GetAttackMult() : 1.0;
-        return (int)(Owner.Client.Random.NextIntRange((uint)min, (uint)max) * mult);
+        return (int) (Owner.Client.Random.NextIntRange((uint) min, (uint) max) * mult);
     }
 
-    public float GetAttackMult()
-    {
+    public float GetAttackMult() {
         if (Owner.HasConditionEffect(ConditionEffects.Weak))
             return MinAttackMult;
-        var mult = MinAttackMult + (this[2] / 75f) * (MaxAttackMult - MinAttackMult);
+        var mult = MinAttackMult + this[2] / 75f * (MaxAttackMult - MinAttackMult);
         if (Owner.HasConditionEffect(ConditionEffects.Damaging))
             mult *= 1.5f;
         return mult;
     }
 
-    public float GetAttackFrequency()
-    {
+    public float GetAttackFrequency() {
         if (Owner.HasConditionEffect(ConditionEffects.Dazed))
             return MinAttackFreq;
-        var rof = MinAttackFreq + this[5] / (float)75.0f * (MaxAttackFreq - MinAttackFreq);
+        var rof = MinAttackFreq + this[5] / 75.0f * (MaxAttackFreq - MinAttackFreq);
         if (Owner.HasConditionEffect(ConditionEffects.Berserk))
             rof *= 1.5f;
         return rof;
@@ -92,8 +86,7 @@ public class StatsManager
     //    return ret;
     //}
 
-    public static float GetSpeed(Entity entity, float stat)
-    {
+    public static float GetSpeed(Entity entity, float stat) {
         var ret = 4 + 5.6f * (stat / 75f);
         if (entity.HasConditionEffect(ConditionEffects.Speedy))
             ret *= 1.5f;
@@ -104,22 +97,19 @@ public class StatsManager
         return ret;
     }
 
-    public float GetSpeed()
-    {
+    public float GetSpeed() {
         return GetSpeed(Owner, this[4]);
     }
 
-    public float GetHPRegen()
-    {
+    public float GetHPRegen() {
         var vit = this[6];
         if (Owner.HasConditionEffect(ConditionEffects.Sick))
             vit = 0;
         return 1 + vit / 8f;
     }
 
-    public float GetMPRegen()
-    {
-        int wis = this[7];
+    public float GetMPRegen() {
+        var wis = this[7];
         if (Owner.HasConditionEffect(ConditionEffects.Quiet))
             return 0;
         return 0.8f + wis / 16.7f;
@@ -139,10 +129,8 @@ public class StatsManager
         return ret;
     }*/
 
-    public static string StatIndexToName(int index)
-    {
-        switch (index)
-        {
+    public static string StatIndexToName(int index) {
+        switch (index) {
             case 0: return "MaxHitPoints";
             case 1: return "MaxMagicPoints";
             case 2: return "Attack";
@@ -152,13 +140,12 @@ public class StatsManager
             case 6: return "HpRegen";
             case 7: return "MpRegen";
         }
+
         return null;
     }
 
-    public static int GetStatIndex(string name)
-    {
-        switch (name)
-        {
+    public static int GetStatIndex(string name) {
+        switch (name) {
             case "MaxHitPoints": return 0;
             case "MaxMagicPoints": return 1;
             case "Attack": return 2;
@@ -168,13 +155,12 @@ public class StatsManager
             case "HpRegen": return 6;
             case "MpRegen": return 7;
         }
+
         return -1;
     }
 
-    public static int GetStatIndex(StatsType stat)
-    {
-        switch (stat)
-        {
+    public static int GetStatIndex(StatsType stat) {
+        switch (stat) {
             case StatsType.MaximumHP:
                 return 0;
             case StatsType.MaximumMP:
@@ -196,10 +182,8 @@ public class StatsManager
         }
     }
 
-    public static StatsType GetStatType(int stat)
-    {
-        switch (stat)
-        {
+    public static StatsType GetStatType(int stat) {
+        switch (stat) {
             case 0:
                 return StatsType.MaximumHP;
             case 1:
@@ -221,10 +205,8 @@ public class StatsManager
         }
     }
 
-    public static StatsType GetBoostStatType(int stat)
-    {
-        switch (stat)
-        {
+    public static StatsType GetBoostStatType(int stat) {
+        switch (stat) {
             case 0:
                 return StatsType.HPBoost;
             case 1:

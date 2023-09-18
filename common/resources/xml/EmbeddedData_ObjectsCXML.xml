@@ -1,10 +1,13 @@
 <Objects>
-    
+
     <Object type="0x023b" id="Test Chicken">
         <Group>Test Chickens</Group>
         <Enemy/>
         <Class>Character</Class>
-        <Texture><File>lofiChar8x8</File><Index>0xcd</Index></Texture>
+        <Texture>
+            <File>lofiChar8x8</File>
+            <Index>0xcd</Index>
+        </Texture>
         <HitSound>monster/chicken_hit</HitSound>
         <DeathSound>monster/chicken_death</DeathSound>
         <Sound id="0">monster/chicken_hit</Sound>
@@ -27,14 +30,16 @@
         <XpMult>0.0</XpMult>
 
 
-
     </Object>
 
     <Object type="0x023c" id="Test Chicken Minions">
         <Group>Test Chickens</Group>
         <Enemy/>
         <Class>Character</Class>
-        <Texture><File>lofiChar8x8</File><Index>0xcd</Index></Texture>
+        <Texture>
+            <File>lofiChar8x8</File>
+            <Index>0xcd</Index>
+        </Texture>
         <HitSound>monster/chicken_hit</HitSound>
         <DeathSound>monster/chicken_death</DeathSound>
         <MaxHitPoints>300</MaxHitPoints>
@@ -61,7 +66,10 @@
     <Object type="0x21b" id="Spider Egg Sac">
         <Enemy/>
         <Class>Character</Class>
-        <Texture><File>lofiChar8x8</File><Index>0xe9</Index></Texture>
+        <Texture>
+            <File>lofiChar8x8</File>
+            <Index>0xe9</Index>
+        </Texture>
         <HitSound>monster/eggs_hit</HitSound>
         <DeathSound>monster/eggs_death</DeathSound>
         <Size>75</Size>
@@ -171,18 +179,24 @@
     <Object type="0x01ff" id="Sheep">
         <Group>Sheep</Group>
         <Class>Character</Class>
-        <AnimatedTexture><File>chars8x8rBeach</File><Index>0</Index></AnimatedTexture>
+        <AnimatedTexture>
+            <File>chars8x8rBeach</File>
+            <Index>0</Index>
+        </AnimatedTexture>
         <Size>100</Size>
         <XpMult>0.0</XpMult>
     </Object>
 
-    
+
     <Object type="0x0500" id="Loot Bag">
         <Class>Container</Class>
         <Container/>
         <CanPutNormalObjects/>
         <Loot/>
-        <Texture><File>lofiObj</File><Index>0x08</Index></Texture>
+        <Texture>
+            <File>lofiObj</File>
+            <Index>0x08</Index>
+        </Texture>
         <Size>80</Size>
         <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     </Object>
@@ -190,7 +204,10 @@
         <Class>Container</Class>
         <Container/>
         <CanPutNormalObjects/>
-        <Texture><File>lofiObj</File><Index>0x02</Index></Texture>
+        <Texture>
+            <File>lofiObj</File>
+            <Index>0x02</Index>
+        </Texture>
         <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     </Object>
     <Object type="0x0502" id="Gravestone">
@@ -198,7 +215,10 @@
         <Container/>
         <ShowName/>
         <CanPutNormalObjects/>
-        <Texture><File>lofiObj</File><Index>0x13</Index></Texture>
+        <Texture>
+            <File>lofiObj</File>
+            <Index>0x13</Index>
+        </Texture>
         <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     </Object>
     <Object type="0x0503" id="Soulbound Loot Bag">
@@ -206,7 +226,10 @@
         <Container/>
         <CanPutSoulboundObjects/>
         <Loot/>
-        <Texture><File>lofiObj2</File><Index>0x76</Index></Texture>
+        <Texture>
+            <File>lofiObj2</File>
+            <Index>0x76</Index>
+        </Texture>
         <Size>80</Size>
         <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     </Object>
@@ -215,12 +238,18 @@
         <Container/>
         <CanPutNormalObjects/>
         <CanPutSoulboundObjects/>
-        <Texture><File>lofiObj2</File><Index>0x0e</Index></Texture>
+        <Texture>
+            <File>lofiObj2</File>
+            <Index>0x0e</Index>
+        </Texture>
         <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     </Object>
     <Object type="0x0505" id="Closed Vault Chest">
         <Class>ClosedVaultChest</Class>
-        <Texture><File>lofiObj2</File><Index>0x0f</Index></Texture>
+        <Texture>
+            <File>lofiObj2</File>
+            <Index>0x0f</Index>
+        </Texture>
     </Object>
     <Object type="0x0506" id="Loot Bag 2">
         <DisplayId>Loot Bag</DisplayId>
@@ -229,7 +258,10 @@
         <CanPutNormalObjects/>
         <CanPutSoulboundObjects/>
         <Loot/>
-        <Texture><File>lofiObj4</File><Index>0x91</Index></Texture>
+        <Texture>
+            <File>lofiObj4</File>
+            <Index>0x91</Index>
+        </Texture>
         <Size>80</Size>
         <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     </Object>
@@ -240,7 +272,10 @@
         <CanPutNormalObjects/>
         <CanPutSoulboundObjects/>
         <Loot/>
-        <Texture><File>lofiObj4</File><Index>0x92</Index></Texture>
+        <Texture>
+            <File>lofiObj4</File>
+            <Index>0x92</Index>
+        </Texture>
         <Size>80</Size>
         <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     </Object>
@@ -251,7 +286,10 @@
         <CanPutNormalObjects/>
         <CanPutSoulboundObjects/>
         <Loot/>
-        <Texture><File>lofiObj4</File><Index>0x93</Index></Texture>
+        <Texture>
+            <File>lofiObj4</File>
+            <Index>0x93</Index>
+        </Texture>
         <Size>80</Size>
         <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     </Object>
@@ -262,7 +300,10 @@
         <CanPutNormalObjects/>
         <CanPutSoulboundObjects/>
         <Loot/>
-        <Texture><File>lofiObj4</File><Index>0x94</Index></Texture>
+        <Texture>
+            <File>lofiObj4</File>
+            <Index>0x94</Index>
+        </Texture>
         <Size>80</Size>
         <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     </Object>
@@ -273,54 +314,81 @@
         <CanPutNormalObjects/>
         <CanPutSoulboundObjects/>
         <Loot/>
-        <Texture><File>lofiObj4</File><Index>0x95</Index></Texture>
+        <Texture>
+            <File>lofiObj4</File>
+            <Index>0x95</Index>
+        </Texture>
         <Size>80</Size>
         <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     </Object>
 
-    
+
     <Object type="0x0700" id="Dungeon Portal">
         <Class>Portal</Class>
         <IntergamePortal/>
-        <Texture><File>lofiEnvironment</File><Index>0x7c</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment</File>
+            <Index>0x7c</Index>
+        </Texture>
     </Object>
     <Object type="0x0703" id="Portal of Cowardice">
         <Class>Portal</Class>
         <IntergamePortal/>
-        <Texture><File>lofiEnvironment</File><Index>0x7c</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment</File>
+            <Index>0x7c</Index>
+        </Texture>
         <SpawnPoint/>
     </Object>
     <Object type="0x0704" id="Realm Portal">
         <Class>Portal</Class>
         <IntergamePortal/>
-        <Texture><File>lofiEnvironment</File><Index>0x7c</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment</File>
+            <Index>0x7c</Index>
+        </Texture>
     </Object>
     <Object type="0x070c" id="Glowing Portal">
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Sprite World</DungeonName>
-        <Texture><File>lofiEnvironment2</File><Index>0x36</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x36</Index>
+        </Texture>
     </Object>
     <Object type="0x070d" id="Glowing Portal of Cowardice">
         <Class>Portal</Class>
         <IntergamePortal/>
-        <Texture><File>lofiEnvironment2</File><Index>0x36</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x36</Index>
+        </Texture>
         <SpawnPoint/>
     </Object>
     <Object type="0x070e" id="Glowing Realm Portal">
         <Class>Portal</Class>
         <IntergamePortal/>
-        <Texture><File>lofiEnvironment2</File><Index>0x36</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x36</Index>
+        </Texture>
     </Object>
     <Object type="0x070f" id="Invisible Placeholder">
         <Class>Character</Class>
-        <Texture><File>lofiChar8x8</File><Index>0xb5</Index></Texture>
+        <Texture>
+            <File>lofiChar8x8</File>
+            <Index>0xb5</Index>
+        </Texture>
         <NoMiniMap/>
         <Size>0</Size>
     </Object>
     <Object type="0x0711" id="Trap">
         <Class>Character</Class>
-        <Texture><File>lofiEnvironment</File><Index>0xff</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment</File>
+            <Index>0xff</Index>
+        </Texture>
         <Size>0</Size>
         <Z>-0.2</Z>
         <NoMiniMap/>
@@ -330,12 +398,18 @@
         <Size>80</Size>
         <IntergamePortal/>
         <NexusPortal/>
-        <Texture><File>lofiChar216x16</File><Index>0x3f</Index></Texture>
+        <Texture>
+            <File>lofiChar216x16</File>
+            <Index>0x3f</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0715" id="Decoy">
         <Class>Character</Class>
-        <AnimatedTexture><File>players</File><Index>11</Index></AnimatedTexture>
+        <AnimatedTexture>
+            <File>players</File>
+            <Index>11</Index>
+        </AnimatedTexture>
         <Friendly/>
         <CanUseTexes/>
         <NoMiniMap/>
@@ -345,7 +419,10 @@
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Pirate Cave</DungeonName>
-        <Texture><File>lofiEnvironment</File><Index>0x7c</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment</File>
+            <Index>0x7c</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0718" id="Snake Pit Portal">
@@ -353,13 +430,36 @@
         <IntergamePortal/>
         <DungeonName>Snake Pit</DungeonName>
 
-        <Texture><File>lofiEnvironment2</File><Index>0x8c</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x8c</Index>
+        </Texture>
 
         <Animation prob="0.6" period="1.6">
-            <Frame time="0.4"><Texture><File>lofiEnvironment2</File><Index>0x8d</Index></Texture></Frame>
-            <Frame time="0.4"><Texture><File>lofiEnvironment2</File><Index>0x8e</Index></Texture></Frame>
-            <Frame time="0.4"><Texture><File>lofiEnvironment2</File><Index>0x8d</Index></Texture></Frame>
-            <Frame time="0.4"><Texture><File>lofiEnvironment2</File><Index>0x8e</Index></Texture></Frame>
+            <Frame time="0.4">
+                <Texture>
+                    <File>lofiEnvironment2</File>
+                    <Index>0x8d</Index>
+                </Texture>
+            </Frame>
+            <Frame time="0.4">
+                <Texture>
+                    <File>lofiEnvironment2</File>
+                    <Index>0x8e</Index>
+                </Texture>
+            </Frame>
+            <Frame time="0.4">
+                <Texture>
+                    <File>lofiEnvironment2</File>
+                    <Index>0x8d</Index>
+                </Texture>
+            </Frame>
+            <Frame time="0.4">
+                <Texture>
+                    <File>lofiEnvironment2</File>
+                    <Index>0x8e</Index>
+                </Texture>
+            </Frame>
         </Animation>
 
     </Object>
@@ -368,7 +468,10 @@
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Spider Den</DungeonName>
-        <Texture><File>lofiEnvironment2</File><Index>0x8f</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x8f</Index>
+        </Texture>
     </Object>
 
     <Object type="0x071a" id="Undead Lair Portal">
@@ -376,50 +479,79 @@
         <IntergamePortal/>
         <DungeonName>Undead Lair</DungeonName>
 
-        <Texture><File>lofiEnvironment2</File><Index>0x97</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x97</Index>
+        </Texture>
 
         <Animation prob="1.0" period="0.0">
             <Frame time="0.2">
                 <RandomTexture>
-                    <Texture><File>lofiEnvironment2</File><Index>0x98</Index></Texture>
-                    <Texture><File>lofiEnvironment2</File><Index>0x99</Index></Texture>
-                    <Texture><File>lofiEnvironment2</File><Index>0x9a</Index></Texture>
+                    <Texture>
+                        <File>lofiEnvironment2</File>
+                        <Index>0x98</Index>
+                    </Texture>
+                    <Texture>
+                        <File>lofiEnvironment2</File>
+                        <Index>0x99</Index>
+                    </Texture>
+                    <Texture>
+                        <File>lofiEnvironment2</File>
+                        <Index>0x9a</Index>
+                    </Texture>
 
-                    <Texture><File>lofiEnvironment2</File><Index>0x9b</Index></Texture>
-                    <Texture><File>lofiEnvironment2</File><Index>0x9c</Index></Texture>
+                    <Texture>
+                        <File>lofiEnvironment2</File>
+                        <Index>0x9b</Index>
+                    </Texture>
+                    <Texture>
+                        <File>lofiEnvironment2</File>
+                        <Index>0x9c</Index>
+                    </Texture>
                 </RandomTexture>
             </Frame>
         </Animation>
     </Object>
 
 
-
     <Object type="0x071b" id="Abyss of Demons Portal">
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Abyss of Demons</DungeonName>
-        <Texture><File>lofiEnvironment2</File><Index>0x9d</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x9d</Index>
+        </Texture>
     </Object>
 
     <Object type="0x071c" id="Random Realm Portal">
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Random Realm</DungeonName>
-        <Texture><File>lofiEnvironment2</File><Index>0x36</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x36</Index>
+        </Texture>
     </Object>
 
     <Object type="0x071d" id="Portal to Nexus">
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Nexus</DungeonName>
-        <Texture><File>lofiEnvironment2</File><Index>0x36</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x36</Index>
+        </Texture>
     </Object>
 
     <Object type="0x071e" id="Kitchen Portal">
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Kitchen</DungeonName>
-        <Texture><File>lofiEnvironment</File><Index>0x7c</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment</File>
+            <Index>0x7c</Index>
+        </Texture>
         <Size>120</Size>
     </Object>
 
@@ -427,113 +559,167 @@
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Vault</DungeonName>
-        <Texture><File>lofiEnvironment3</File><Index>0xf8</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment3</File>
+            <Index>0xf8</Index>
+        </Texture>
         <ShadowSize>0</ShadowSize>
     </Object>
 
     <Object type="0x0721" id="Locked Wine Cellar Portal">
         <Class>Portal</Class>
         <LockedPortal/>
-        <Texture><File>lofiObj2</File><Index>0xba</Index></Texture>
+        <Texture>
+            <File>lofiObj2</File>
+            <Index>0xba</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0723" id="Gravestone 1">
         <Class>GameObject</Class>
         <ShowName/>
-        <Texture><File>lofiChar28x8</File><Index>0x6c</Index></Texture>
+        <Texture>
+            <File>lofiChar28x8</File>
+            <Index>0x6c</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0724" id="Gravestone 2">
         <Class>GameObject</Class>
         <ShowName/>
-        <Texture><File>lofiChar28x8</File><Index>0x6d</Index></Texture>
+        <Texture>
+            <File>lofiChar28x8</File>
+            <Index>0x6d</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0725" id="Gravestone 3">
         <Class>GameObject</Class>
         <ShowName/>
-        <Texture><File>lofiChar28x8</File><Index>0x6e</Index></Texture>
+        <Texture>
+            <File>lofiChar28x8</File>
+            <Index>0x6e</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0726" id="Gravestone 4">
         <Class>GameObject</Class>
         <ShowName/>
-        <Texture><File>lofiChar28x8</File><Index>0x6f</Index></Texture>
+        <Texture>
+            <File>lofiChar28x8</File>
+            <Index>0x6f</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0727" id="Gravestone 5">
         <Class>GameObject</Class>
         <ShowName/>
-        <Texture><File>lofiChar216x16</File><Index>0x13</Index></Texture>
+        <Texture>
+            <File>lofiChar216x16</File>
+            <Index>0x13</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0728" id="Gravestone 6">
         <Class>GameObject</Class>
         <ShowName/>
-        <Texture><File>lofiChar216x16</File><Index>0x14</Index></Texture>
+        <Texture>
+            <File>lofiChar216x16</File>
+            <Index>0x14</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0729" id="Gravestone 7">
         <Class>GameObject</Class>
         <ShowName/>
-        <Texture><File>lofiChar216x16</File><Index>0x15</Index></Texture>
+        <Texture>
+            <File>lofiChar216x16</File>
+            <Index>0x15</Index>
+        </Texture>
     </Object>
 
     <Object type="0x072a" id="Gravestone 8">
         <Class>GameObject</Class>
         <ShowName/>
-        <Texture><File>lofiChar216x16</File><Index>0x16</Index></Texture>
+        <Texture>
+            <File>lofiChar216x16</File>
+            <Index>0x16</Index>
+        </Texture>
     </Object>
 
     <Object type="0x072b" id="Gravestone 9">
         <Class>GameObject</Class>
         <ShowName/>
-        <Texture><File>lofiChar216x16</File><Index>0x17</Index></Texture>
+        <Texture>
+            <File>lofiChar216x16</File>
+            <Index>0x17</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0734" id="Gravestone 10">
         <Class>GameObject</Class>
         <ShowName/>
-        <Texture><File>lofiChar216x16</File><Index>0x27</Index></Texture>
+        <Texture>
+            <File>lofiChar216x16</File>
+            <Index>0x27</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0735" id="Gravestone 11">
         <Class>GameObject</Class>
         <ShowName/>
-        <Texture><File>lofiChar216x16</File><Index>0x3d</Index></Texture>
+        <Texture>
+            <File>lofiChar216x16</File>
+            <Index>0x3d</Index>
+        </Texture>
     </Object>
 
     <Object type="0x072c" id="Tomb of the Ancients Portal">
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Tomb of the Ancients</DungeonName>
-        <Texture><File>lofiEnvironment2</File><Index>0x9e</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x9e</Index>
+        </Texture>
     </Object>
 
     <Object type="0x072d" id="Dreamscape Labyrinth Portal">
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Dreamscape Labyrinth</DungeonName>
-        <Texture><File>lofiEnvironment</File><Index>0x7c</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment</File>
+            <Index>0x7c</Index>
+        </Texture>
     </Object>
 
     <Object type="0x01ca" id="Merchant">
         <Class>Merchant</Class>
-        <Texture><File>lofiObj2</File><Index>0x77</Index></Texture>
+        <Texture>
+            <File>lofiObj2</File>
+            <Index>0x77</Index>
+        </Texture>
     </Object>
 
     <Object type="0x01c7" id="White Fountain">
         <Class>GameObject</Class>
         <Model>Tower</Model>
         <Effect>Fountain</Effect>
-        <Texture><File>lofiEnvironment2</File><Index>0x96</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x96</Index>
+        </Texture>
     </Object>
 
     <Object type="0x072f" id="Guild Hall Portal">
         <Class>GuildHallPortal</Class>
         <IntergamePortal/>
         <DungeonName>Guild Hall</DungeonName>
-        <Texture><File>lofiEnvironment2</File><Index>0x54</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x54</Index>
+        </Texture>
         <ShadowSize>0</ShadowSize>
     </Object>
 
@@ -541,25 +727,43 @@
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Ocean Trench</DungeonName>
-        <Texture><File>lofiEnvironment2</File><Index>0x9f</Index></Texture>
-        
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x9f</Index>
+        </Texture>
+
     </Object>
 
     <Object type="0x0731" id="Ocean Vent">
         <Class>GameObject</Class>
         <DrawOnGround/>
         <Effect>Vent</Effect>
-        <Texture><File>lofiEnvironment2</File><Index>0x26</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x26</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0732" id="Spider Web">
         <Class>SpiderWeb</Class>
         <Model>Web</Model>
         <RandomTexture>
-            <Texture><File>lofiEnvironment2</File><Index>0xa4</Index></Texture>
-            <Texture><File>lofiEnvironment2</File><Index>0xa5</Index></Texture>
-            <Texture><File>lofiEnvironment2</File><Index>0xa6</Index></Texture>
-            <Texture><File>lofiEnvironment2</File><Index>0xa7</Index></Texture>
+            <Texture>
+                <File>lofiEnvironment2</File>
+                <Index>0xa4</Index>
+            </Texture>
+            <Texture>
+                <File>lofiEnvironment2</File>
+                <Index>0xa5</Index>
+            </Texture>
+            <Texture>
+                <File>lofiEnvironment2</File>
+                <Index>0xa6</Index>
+            </Texture>
+            <Texture>
+                <File>lofiEnvironment2</File>
+                <Index>0xa7</Index>
+            </Texture>
         </RandomTexture>
         <Static/>
         <ShadowSize>0</ShadowSize>
@@ -569,7 +773,10 @@
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Forbidden Jungle</DungeonName>
-        <Texture><File>lofiEnvironment2</File><Index>0xa8</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0xa8</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0736" id="Guild Hall Upgrade 1">
@@ -578,8 +785,13 @@
         <Price>10000</Price>
         <GuildItem>GuildHallUpgrade</GuildItem>
         <GuildItemParam>Guild Hall 2</GuildItemParam>
-        <Description>This will make your Guild Hall larger and more attractive.  Note that this will take effect after the Guild Hall is empty for a few minutes.</Description>
-        <Texture><File>lofiEnvironment3</File><Index>0x98</Index></Texture>
+        <Description>This will make your Guild Hall larger and more attractive. Note that this will take effect after
+            the Guild Hall is empty for a few minutes.
+        </Description>
+        <Texture>
+            <File>lofiEnvironment3</File>
+            <Index>0x98</Index>
+        </Texture>
         <OccupySquare/>
         <Static/>
     </Object>
@@ -590,8 +802,13 @@
         <Price>100000</Price>
         <GuildItem>GuildHallUpgrade</GuildItem>
         <GuildItemParam>Guild Hall 3</GuildItemParam>
-        <Description>This will make your Guild Hall larger and more attractive.  Note that this will take effect after the Guild Hall is empty for a few minutes.</Description>
-        <Texture><File>lofiEnvironment3</File><Index>0x98</Index></Texture>
+        <Description>This will make your Guild Hall larger and more attractive. Note that this will take effect after
+            the Guild Hall is empty for a few minutes.
+        </Description>
+        <Texture>
+            <File>lofiEnvironment3</File>
+            <Index>0x98</Index>
+        </Texture>
         <OccupySquare/>
         <Static/>
     </Object>
@@ -602,8 +819,13 @@
         <Price>250000</Price>
         <GuildItem>GuildHallUpgrade</GuildItem>
         <GuildItemParam>Guild Hall 4</GuildItemParam>
-        <Description>This will make your Guild Hall larger and more attractive.  Note that this will take effect after the Guild Hall is empty for a few minutes.</Description>
-        <Texture><File>lofiEnvironment3</File><Index>0x98</Index></Texture>
+        <Description>This will make your Guild Hall larger and more attractive. Note that this will take effect after
+            the Guild Hall is empty for a few minutes.
+        </Description>
+        <Texture>
+            <File>lofiEnvironment3</File>
+            <Index>0x98</Index>
+        </Texture>
         <OccupySquare/>
         <Static/>
     </Object>
@@ -612,7 +834,10 @@
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Manor of the Immortals</DungeonName>
-        <Texture><File>lofiEnvironment2</File><Index>0x4c</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x4c</Index>
+        </Texture>
     </Object>
 
     <Object type="0x073a" id="Cube">
@@ -648,62 +873,114 @@
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Davy Jones's Locker</DungeonName>
-        <Texture><File>lofiObj3</File><Index>0x151</Index></Texture>
+        <Texture>
+            <File>lofiObj3</File>
+            <Index>0x151</Index>
+        </Texture>
         <Animation prob="1" period="2">
-            <Frame time="0.4"><Texture><File>lofiObj3</File><Index>0x151</Index></Texture></Frame>
-            <Frame time="0.4"><Texture><File>lofiObj3</File><Index>0x157</Index></Texture></Frame>
-            <Frame time="0.4"><Texture><File>lofiObj3</File><Index>0x158</Index></Texture></Frame>
-            <Frame time="0.4"><Texture><File>lofiObj3</File><Index>0x159</Index></Texture></Frame>
-            <Frame time="0.4"><Texture><File>lofiObj3</File><Index>0x15a</Index></Texture></Frame>
+            <Frame time="0.4">
+                <Texture>
+                    <File>lofiObj3</File>
+                    <Index>0x151</Index>
+                </Texture>
+            </Frame>
+            <Frame time="0.4">
+                <Texture>
+                    <File>lofiObj3</File>
+                    <Index>0x157</Index>
+                </Texture>
+            </Frame>
+            <Frame time="0.4">
+                <Texture>
+                    <File>lofiObj3</File>
+                    <Index>0x158</Index>
+                </Texture>
+            </Frame>
+            <Frame time="0.4">
+                <Texture>
+                    <File>lofiObj3</File>
+                    <Index>0x159</Index>
+                </Texture>
+            </Frame>
+            <Frame time="0.4">
+                <Texture>
+                    <File>lofiObj3</File>
+                    <Index>0x15a</Index>
+                </Texture>
+            </Frame>
         </Animation>
     </Object>
     <Object type="0x0742" id="Beachzone Portal">
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Beachzone</DungeonName>
-        <Texture><File>lofiObj3</File><Index>0x192</Index></Texture>
+        <Texture>
+            <File>lofiObj3</File>
+            <Index>0x192</Index>
+        </Texture>
     </Object>
     <Object type="0x0743" id="Gift Chest Closed">
         <Class>ClosedGiftChest</Class>
-        <Texture><File>lofiObj2</File><Index>0x7e</Index></Texture>
+        <Texture>
+            <File>lofiObj2</File>
+            <Index>0x7e</Index>
+        </Texture>
         <Size>120</Size>
     </Object>
     <Object type="0x0744" id="Gift Chest">
         <Class>OneWayContainer</Class>
         <Container/>
-        <Texture><File>lofiObj2</File><Index>0x7f</Index></Texture>
+        <Texture>
+            <File>lofiObj2</File>
+            <Index>0x7f</Index>
+        </Texture>
         <Size>120</Size>
         <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     </Object>
     <Object type="0x0745" id="Nexus Explanation Obj">
         <Class>Character</Class>
-        <Texture><File>invisible</File><Index>0</Index></Texture>
+        <Texture>
+            <File>invisible</File>
+            <Index>0</Index>
+        </Texture>
         <ShadowSize>0</ShadowSize>
     </Object>
     <Object type="0x0746" id="Nexus Explanation Portal">
         <Class>Portal</Class>
         <DungeonName>Nexus Explanation</DungeonName>
         <IntergamePortal/>
-        <Texture><File>lofiEnvironment2</File><Index>0x36</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x36</Index>
+        </Texture>
     </Object>
     <Object type="0x0747" id="Vault Explanation Portal">
         <Class>Portal</Class>
         <DungeonName>Vault Explanation</DungeonName>
         <IntergamePortal/>
-        <Texture><File>lofiEnvironment2</File><Index>0x37</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x37</Index>
+        </Texture>
     </Object>
 
     <Object type="0x0748" id="Guild Explanation Portal">
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Guild Explanation</DungeonName>
-        <Texture><File>lofiEnvironment2</File><Index>0x54</Index></Texture>
+        <Texture>
+            <File>lofiEnvironment2</File>
+            <Index>0x54</Index>
+        </Texture>
         <ShadowSize>0</ShadowSize>
     </Object>
 
     <Object type="0x0749" id="G Door Opener">
         <Class>GameObject</Class>
-        <Texture><File>invisible</File><Index>0</Index></Texture>
+        <Texture>
+            <File>invisible</File>
+            <Index>0</Index>
+        </Texture>
         <ShadowSize>0</ShadowSize>
     </Object>
 
@@ -711,58 +988,89 @@
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Candyland Hunting Grounds</DungeonName>
-        <Texture><File>lofiObj3</File><Index>0x2a5</Index></Texture>
+        <Texture>
+            <File>lofiObj3</File>
+            <Index>0x2a5</Index>
+        </Texture>
         <ShadowSize>0</ShadowSize>
     </Object>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     <Object type="0x074b" id="Haunted Cemetery Portal">
         <Class>Portal</Class>
         <IntergamePortal/>
         <DungeonName>Haunted Cemetery</DungeonName>
-        <Texture><File>lofiObj3</File><Index>0x318</Index></Texture>
-		<Animation prob="0.4" period="1.8">
-			<Frame time="0.2"><Texture><File>lofiObj3</File><Index>0x319</Index></Texture></Frame>
-			<Frame time="0.2"><Texture><File>lofiObj3</File><Index>0x31a</Index></Texture></Frame>
-			<Frame time="0.6"><Texture><File>lofiObj3</File><Index>0x31b</Index></Texture></Frame>
-			<Frame time="0.2"><Texture><File>lofiObj3</File><Index>0x31a</Index></Texture></Frame>
-			<Frame time="0.2"><Texture><File>lofiObj3</File><Index>0x319</Index></Texture></Frame>
-			<Frame time="0.4"><Texture><File>lofiObj3</File><Index>0x318</Index></Texture></Frame>
-		</Animation>
+        <Texture>
+            <File>lofiObj3</File>
+            <Index>0x318</Index>
+        </Texture>
+        <Animation prob="0.4" period="1.8">
+            <Frame time="0.2">
+                <Texture>
+                    <File>lofiObj3</File>
+                    <Index>0x319</Index>
+                </Texture>
+            </Frame>
+            <Frame time="0.2">
+                <Texture>
+                    <File>lofiObj3</File>
+                    <Index>0x31a</Index>
+                </Texture>
+            </Frame>
+            <Frame time="0.6">
+                <Texture>
+                    <File>lofiObj3</File>
+                    <Index>0x31b</Index>
+                </Texture>
+            </Frame>
+            <Frame time="0.2">
+                <Texture>
+                    <File>lofiObj3</File>
+                    <Index>0x31a</Index>
+                </Texture>
+            </Frame>
+            <Frame time="0.2">
+                <Texture>
+                    <File>lofiObj3</File>
+                    <Index>0x319</Index>
+                </Texture>
+            </Frame>
+            <Frame time="0.4">
+                <Texture>
+                    <File>lofiObj3</File>
+                    <Index>0x318</Index>
+                </Texture>
+            </Frame>
+        </Animation>
     </Object>
-    
+
     <Object type="0x5e29" id="Halloween Bat">
-		<Enemy/>
-		<Class>Character</Class>
-		<AnimatedTexture><File>chars8x8rEncounters</File><Index>26</Index></AnimatedTexture>
-		<HitSound>monster/bats_hit</HitSound>
-		<DeathSound>monster/bats_death</DeathSound>
-		
-		<MaxHitPoints>125</MaxHitPoints>
-		<Defense>25</Defense>
-		<XpMult>1</XpMult>
-		<Z>0.24</Z>
-		<Flying/>
-   		<Size>80</Size>
-		<ShadowSize>80</ShadowSize>
-		
-	</Object>
-    
+        <Enemy/>
+        <Class>Character</Class>
+        <AnimatedTexture>
+            <File>chars8x8rEncounters</File>
+            <Index>26</Index>
+        </AnimatedTexture>
+        <HitSound>monster/bats_hit</HitSound>
+        <DeathSound>monster/bats_death</DeathSound>
+
+        <MaxHitPoints>125</MaxHitPoints>
+        <Defense>25</Defense>
+        <XpMult>1</XpMult>
+        <Z>0.24</Z>
+        <Flying/>
+        <Size>80</Size>
+        <ShadowSize>80</ShadowSize>
+
+    </Object>
+
     <Object type="0x074c" id="Nexus Turkey">
         <DisplayId>Turkey</DisplayId>
         <Class>Character</Class>
-        <AnimatedTexture><File>chars8x8rPets1</File><Index>44</Index></AnimatedTexture>
+        <AnimatedTexture>
+            <File>chars8x8rPets1</File>
+            <Index>44</Index>
+        </AnimatedTexture>
         <Size>110</Size>
         <XpMult>0.0</XpMult>
     </Object>

@@ -1,26 +1,23 @@
-﻿using common;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using common;
 using wServer.realm;
 
 namespace wServer.logic.transitions;
 
-class EntitiesNotExistsTransition : Transition
-{
+internal class EntitiesNotExistsTransition : Transition {
     //State storage: none
 
     private readonly double _dist;
     private readonly ushort[] _targets;
 
     public EntitiesNotExistsTransition(XElement e)
-    : base(e.ParseString("@targetState", "root"))
-    {
+        : base(e.ParseString("@targetState", "root")) {
         _dist = e.ParseFloat("@dist");
         _targets = e.ParseStringArray("@targets", ',', new string[0]).Select(x => Behavior.GetObjType(x)).ToArray();
     }
 
     public EntitiesNotExistsTransition(double dist, string targetState, params string[] targets)
-        : base(targetState)
-    {
+        : base(targetState) {
         _dist = dist;
 
         if (targets.Length <= 0)
@@ -31,8 +28,7 @@ class EntitiesNotExistsTransition : Transition
             .ToArray();
     }
 
-    protected override bool TickCore(Entity host, RealmTime time, ref object state)
-    {
+    protected override bool TickCore(Entity host, RealmTime time, ref object state) {
         if (_targets == null)
             return false;
 

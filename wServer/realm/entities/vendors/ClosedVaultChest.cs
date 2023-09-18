@@ -1,21 +1,18 @@
 ﻿using common.resources;
+using wServer.networking;
 using wServer.realm.worlds.logic;
 
 namespace wServer.realm.entities.vendors;
 
-class ClosedVaultChest : SellableObject
-{
-    public ClosedVaultChest(RealmManager manager, ushort objType) : base(manager, objType)
-    {
+internal class ClosedVaultChest : SellableObject {
+    public ClosedVaultChest(RealmManager manager, ushort objType) : base(manager, objType) {
         Price = 750;
         Currency = CurrencyType.Fame;
     }
 
-    public override void Buy(Player player)
-    {
+    public override void Buy(Player player) {
         var result = ValidateCustomer(player, null);
-        if (result != BuyResult.Ok)
-        {
+        if (result != BuyResult.Ok) {
             SendFailed(player, result);
             return;
         }
@@ -27,10 +24,8 @@ class ClosedVaultChest : SellableObject
         Manager.Database.CreateChest(acc, trans);
         var t1 = db.UpdateCurrency(acc, -Price, Currency, trans);
         var t2 = trans.ExecuteAsync();
-        Task.WhenAll(t1, t2).ContinueWith(t =>
-        {
-            if (t.IsCanceled)
-            {
+        Task.WhenAll(t1, t2).ContinueWith(t => {
+            if (t.IsCanceled) {
                 SendFailed(player, BuyResult.TransactionFailed);
                 return;
             }
@@ -39,11 +34,7 @@ class ClosedVaultChest : SellableObject
             player.CurrentFame = acc.Fame;
 
             (Owner as Vault)?.AddChest(this);
-            player.Client.SendPacket(new networking.packets.outgoing.BuyResult()
-            {
-                Result = 0,
-                ResultString = "Vault chest purchased!"
-            });
+            player.Client.SendBuyResult(BuyResultType.Success, "Vault chest purchased!");
         }).ContinueWith(e =>
                 Log.Error(e.Exception.InnerException.ToString()),
             TaskContinuationOptions.OnlyOnFaulted);

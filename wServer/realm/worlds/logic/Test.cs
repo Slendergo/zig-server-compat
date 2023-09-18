@@ -1,23 +1,17 @@
 ﻿using common.resources;
-using terrain;
 
 namespace wServer.realm.worlds.logic;
 
-public class Test : World
-{
-    public bool JsonLoaded { get; private set; }
-
+public class Test : World {
     public Test(RealmManager manager, WorldTemplateData template)
-        : base(manager, template)
-    {
-    }
+        : base(manager, template) { }
+
+    public bool JsonLoaded { get; private set; }
 
     public override void Init() { }
 
-    public void LoadJson(string json)
-    {
-        if (!JsonLoaded)
-        {
+    public void LoadJson(string json) {
+        if (!JsonLoaded) {
             FromJson(json);
             JsonLoaded = true;
         }

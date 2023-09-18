@@ -1,7 +1,7 @@
-﻿using common;
+﻿using System.Collections.Concurrent;
+using common;
 using common.resources;
 using NLog;
-using System.Collections.Concurrent;
 using wServer.logic;
 using wServer.networking;
 using wServer.realm.commands;
@@ -12,56 +12,30 @@ using wServer.realm.worlds.parser;
 
 namespace wServer.realm;
 
-public struct RealmTime
-{
+public struct RealmTime {
     public long TickCount;
     public long TotalElapsedMs;
     public long TotalElapsedMicroSeconds;
-    public int ElaspedMsDelta;
+    public int ElapsedMsDelta;
 }
 
-public enum PendingPriority
-{
+public enum PendingPriority {
     Emergent,
     Destruction,
     Normal,
-    Creation,
+    Creation
 }
 
-public class RealmManager
-{
+public class RealmManager {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
-    public string InstanceId { get; private set; }
-    public bool Terminating { get; private set; }
-
-    public Resources Resources { get; private set; }
-    public Database Database { get; private set; }
-    public ServerConfig Config { get; private set; }
-
-    public ConnectManager ConMan { get; private set; }
-    public BehaviorDb Behaviors { get; private set; }
-    public ISManager InterServer { get; private set; }
-    public ISControl ISControl { get; private set; }
-    public ChatManager Chat { get; private set; }
-    public DbServerManager DbServerController { get; private set; }
-    public CommandManager Commands { get; private set; }
-    public PortalMonitor Monitor { get; private set; }
-    public DbEvents DbEvents { get; private set; }
-
-    private Thread _network;
-    private Thread _logic;
-    public NetworkTicker Network { get; private set; }
-    public LogicTicker Logic { get; private set; }
-
-    public readonly ConcurrentDictionary<int, World> Worlds = new();
     public readonly ConcurrentDictionary<Client, PlayerInfo> Clients = new();
 
-    private int _nextWorldId = 0;
-    private int _nextClientId = 0;
+    public readonly ConcurrentDictionary<int, World> Worlds = new();
+    private int _nextClientId;
 
-    public RealmManager(Resources resources, Database db, ServerConfig config)
-    {
+    private int _nextWorldId;
+
+    public RealmManager(Resources resources, Database db, ServerConfig config) {
         Log.Info("Initalizing Realm Manager...");
 
         Resources = resources;
@@ -95,8 +69,25 @@ public class RealmManager
         Log.Info("Realm Manager initialized.");
     }
 
-    public void Run()
-    {
+    public string InstanceId { get; private set; }
+    public bool Terminating { get; private set; }
+
+    public Resources Resources { get; }
+    public Database Database { get; }
+    public ServerConfig Config { get; }
+
+    public ConnectManager ConMan { get; }
+    public BehaviorDb Behaviors { get; private set; }
+    public ISManager InterServer { get; }
+    public ISControl ISControl { get; private set; }
+    public ChatManager Chat { get; private set; }
+    public DbServerManager DbServerController { get; private set; }
+    public CommandManager Commands { get; private set; }
+    public PortalMonitor Monitor { get; }
+    public DbEvents DbEvents { get; private set; }
+    public LogicTicker Logic { get; private set; }
+
+    public void Run() {
         Log.Info("Starting Realm Manager...");
 
         // start server logic management
@@ -105,35 +96,25 @@ public class RealmManager
         logic.ContinueWith(Program.Stop, TaskContinuationOptions.OnlyOnFaulted);
         logic.Start();
 
-        // start received packet processor
-        Network = new NetworkTicker(this);
-        var network = new Task(() => Network.TickLoop(), TaskCreationOptions.LongRunning);
-        network.ContinueWith(Program.Stop, TaskContinuationOptions.OnlyOnFaulted);
-        network.Start();
-
         Log.Info("Realm Manager started.");
     }
 
-    public void Stop()
-    {
+    public void Stop() {
         Log.Info("Stopping Realm Manager...");
 
         Terminating = true;
         InterServer.Dispose();
         Resources.Dispose();
-        Network.Shutdown();
 
         Log.Info("Realm Manager stopped.");
     }
 
-    public bool TryConnect(Client client)
-    {
+    public bool TryConnect(Client client) {
         if (client?.Account == null)
             return false;
 
         client.Id = Interlocked.Increment(ref _nextClientId);
-        var plrInfo = new PlayerInfo()
-        {
+        var plrInfo = new PlayerInfo {
             AccountId = client.Account.AccountId,
             GuildId = client.Account.GuildId,
             Name = client.Account.Name,
@@ -148,37 +129,34 @@ public class RealmManager
         return true;
     }
 
-    public void Disconnect(Client client)
-    {
+    public void Disconnect(Client client) {
         var player = client.Player;
         player?.Owner?.LeaveWorld(player);
 
-        PlayerInfo plrInfo;
-        Clients.TryRemove(client, out plrInfo);
+        Clients.TryRemove(client, out var plrInfo);
 
         // recalculate usage statistics
         Config.serverInfo.players = ConMan.GetPlayerCount();
         Config.serverInfo.playerList.Remove(plrInfo);
     }
 
-    public void CreateNewRealm()
-    {
+    public void CreateNewRealm() {
         var world = CreateNewWorld("Realm of the Mad God");
         _ = Monitor.AddPortal(world.Id);
     }
 
-    public World CreateNewWorld(string name, Client client = null) => CreateNewWorld(Program.Resources.GameData.WorldTemplates.GetValueOrDefault(name), client);
-    public World CreateNewWorld(WorldTemplateData template, Client client = null)
-    {
-        if(template == null)
-        {
+    public World CreateNewWorld(string name, Client client = null) {
+        return CreateNewWorld(Program.Resources.GameData.WorldTemplates.GetValueOrDefault(name), client);
+    }
+
+    public World CreateNewWorld(WorldTemplateData template, Client client = null) {
+        if (template == null) {
             Console.WriteLine($"Unable to find template: {template}");
             return null;
         }
 
         World world;
-        switch (template.Specialized)
-        {
+        switch (template.Specialized) {
             case SpeicalizedDungeonType.Nexus:
                 // dont make two nexus's
                 if (Worlds.ContainsKey(World.Nexus))
@@ -210,11 +188,11 @@ public class RealmManager
             world.Id = Interlocked.Increment(ref _nextWorldId);
 
         var selectedMapData = MapParser.GetOrLoad(world.SelectMap(template));
-        if (selectedMapData == null)
-        {
+        if (selectedMapData == null) {
             Console.WriteLine($"Unable to find MapData: {selectedMapData}");
             return null;
         }
+
         world.LoadMapFromData(selectedMapData);
         world.Init();
 
@@ -223,37 +201,34 @@ public class RealmManager
         return world;
     }
 
-    public World GetWorld(int id) => Worlds.GetValueOrDefault(id);
+    public World GetWorld(int id) {
+        return Worlds.GetValueOrDefault(id);
+    }
 
-    public bool RemoveWorld(World world)
-    {
+    public bool RemoveWorld(World world) {
         if (world.Manager == null)
             throw new InvalidOperationException("World is not added.");
 
-        if (Worlds.TryRemove(world.Id, out world))
-        {
+        if (Worlds.TryRemove(world.Id, out world)) {
             OnWorldRemoved(world);
             return true;
         }
+
         return false;
     }
 
-    void OnWorldRemoved(World world)
-    {
+    private void OnWorldRemoved(World world) {
         //world.Manager = null;
         Monitor.RemovePortal(world.Id);
         Log.Info("World {0}({1}) removed.", world.Id, world.IdName);
     }
 
-    public World GetRandomRealm()
-    {
+    public World GetRandomRealm() {
         var realms = Worlds.Values
             .OfType<RealmOfTheMadGod>()
             .Where(w => !w.Closed)
             .ToArray();
 
-        return realms.Length == 0 ?
-            Worlds[World.Nexus] :
-            realms[Environment.TickCount % realms.Length];
+        return realms.Length == 0 ? Worlds[World.Nexus] : realms[Environment.TickCount % realms.Length];
     }
 }

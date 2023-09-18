@@ -1,155 +1,141 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text;
+using Newtonsoft.Json;
 using NLog;
 using StackExchange.Redis;
-using System.Text;
 
 namespace common;
 
-public abstract class RedisObject
-{
+public abstract class RedisObject {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
     //Note do not modify returning buffer
     private Dictionary<RedisValue, KeyValuePair<byte[], bool>> _entries;
 
-    protected void Init(IDatabase db, string key, string field = null)
-    {
+    private List<HashEntry> _update;
+
+    public IDatabase Database { get; private set; }
+    public string Key { get; private set; }
+
+    public IEnumerable<RedisValue> AllKeys => _entries.Keys;
+
+    public bool IsNull => _entries.Count == 0;
+
+    protected void Init(IDatabase db, string key, string field = null) {
         Key = key;
         Database = db;
 
-        if (field == null)
+        if (field == null) {
             _entries = db.HashGetAll(key)
                 .ToDictionary(
                     x => x.Name,
                     x => new KeyValuePair<byte[], bool>(x.Value, false));
-        else
-        {
-            var entry = new HashEntry[] { new(field, db.HashGet(key, field)) };
+        }
+        else {
+            var entry = new HashEntry[] {new(field, db.HashGet(key, field))};
             _entries = entry.ToDictionary(x => x.Name,
                 x => new KeyValuePair<byte[], bool>(x.Value, false));
         }
     }
 
-    public IDatabase Database { get; private set; }
-    public string Key { get; private set; }
-
-    public IEnumerable<RedisValue> AllKeys
-    {
-        get { return _entries.Keys; }
-    }
-
-    public bool IsNull
-    {
-        get { return _entries.Count == 0; }
-    }
-
-    protected byte[] GetValueRaw(RedisValue key)
-    {
-        KeyValuePair<byte[], bool> val;
-        if (!_entries.TryGetValue(key, out val))
+    protected byte[] GetValueRaw(RedisValue key) {
+        if (!_entries.TryGetValue(key, out var val))
             return null;
 
         if (val.Key == null)
             return null;
 
-        return (byte[])val.Key.Clone();
+        return (byte[]) val.Key.Clone();
     }
 
-    protected T GetValue<T>(RedisValue key, T def = default(T))
-    {
-        KeyValuePair<byte[], bool> val;
-        if (!_entries.TryGetValue(key, out val) || val.Key == null)
+    protected T GetValue<T>(RedisValue key, T def = default) {
+        if (!_entries.TryGetValue(key, out var val) || val.Key == null)
             return def;
 
         if (typeof(T) == typeof(int))
-            return (T)(object)int.Parse(Encoding.UTF8.GetString(val.Key));
+            return (T) (object) int.Parse(Encoding.UTF8.GetString(val.Key));
 
         if (typeof(T) == typeof(uint))
-            return (T)(object)uint.Parse(Encoding.UTF8.GetString(val.Key));
+            return (T) (object) uint.Parse(Encoding.UTF8.GetString(val.Key));
 
         if (typeof(T) == typeof(ushort))
-            return (T)(object)ushort.Parse(Encoding.UTF8.GetString(val.Key));
+            return (T) (object) ushort.Parse(Encoding.UTF8.GetString(val.Key));
 
         if (typeof(T) == typeof(bool))
-            return (T)(object)(val.Key[0] != 0);
+            return (T) (object) (val.Key[0] != 0);
 
         if (typeof(T) == typeof(DateTime))
-            return (T)(object)DateTime.FromBinary(BitConverter.ToInt64(val.Key, 0));
+            return (T) (object) DateTime.FromBinary(BitConverter.ToInt64(val.Key, 0));
 
         if (typeof(T) == typeof(byte[]))
-            return (T)(object)val.Key;
+            return (T) (object) val.Key;
 
-        if (typeof(T) == typeof(ushort[]))
-        {
+        if (typeof(T) == typeof(ushort[])) {
             var ret = new ushort[val.Key.Length / 2];
             Buffer.BlockCopy(val.Key, 0, ret, 0, val.Key.Length);
-            return (T)(object)ret;
+            return (T) (object) ret;
         }
 
         if (typeof(T) == typeof(int[]) ||
-            typeof(T) == typeof(uint[]))
-        {
+            typeof(T) == typeof(uint[])) {
             var ret = new int[val.Key.Length / 4];
             Buffer.BlockCopy(val.Key, 0, ret, 0, val.Key.Length);
-            return (T)(object)ret;
+            return (T) (object) ret;
         }
 
         if (typeof(T) == typeof(string))
-            return (T)(object)Encoding.UTF8.GetString(val.Key);
+            return (T) (object) Encoding.UTF8.GetString(val.Key);
 
         throw new NotSupportedException();
     }
 
-    protected void SetValue<T>(RedisValue key, T val)
-    {
+    protected void SetValue<T>(RedisValue key, T val) {
         byte[] buff;
         if (typeof(T) == typeof(int) || typeof(T) == typeof(uint) ||
-            typeof(T) == typeof(ushort) || typeof(T) == typeof(string))
+            typeof(T) == typeof(ushort) || typeof(T) == typeof(string)) {
             buff = Encoding.UTF8.GetBytes(val.ToString());
+        }
 
-        else if (typeof(T) == typeof(bool))
-            buff = new byte[] { (byte)((bool)(object)val ? 1 : 0) };
+        else if (typeof(T) == typeof(bool)) {
+            buff = new[] {(byte) ((bool) (object) val ? 1 : 0)};
+        }
 
-        else if (typeof(T) == typeof(DateTime))
-            buff = BitConverter.GetBytes(((DateTime)(object)val).ToBinary());
+        else if (typeof(T) == typeof(DateTime)) {
+            buff = BitConverter.GetBytes(((DateTime) (object) val).ToBinary());
+        }
 
-        else if (typeof(T) == typeof(byte[]))
-            buff = (byte[])(object)val;
+        else if (typeof(T) == typeof(byte[])) {
+            buff = (byte[]) (object) val;
+        }
 
-        else if (typeof(T) == typeof(ushort[]))
-        {
-            var v = (ushort[])(object)val;
+        else if (typeof(T) == typeof(ushort[])) {
+            var v = (ushort[]) (object) val;
             buff = new byte[v.Length * 2];
             Buffer.BlockCopy(v, 0, buff, 0, buff.Length);
         }
 
         else if (typeof(T) == typeof(int[]) ||
-                 typeof(T) == typeof(uint[]))
-        {
-            var v = (int[])(object)val;
+                 typeof(T) == typeof(uint[])) {
+            var v = (int[]) (object) val;
             buff = new byte[v.Length * 4];
             Buffer.BlockCopy(v, 0, buff, 0, buff.Length);
         }
 
-        else
+        else {
             throw new NotSupportedException();
+        }
 
         if (!_entries.ContainsKey(Key) || _entries[Key].Key == null || !buff.SequenceEqual(_entries[Key].Key))
             _entries[key] = new KeyValuePair<byte[], bool>(buff, true);
     }
 
-    private List<HashEntry> _update;
-
-    public Task FlushAsync(ITransaction transaction = null)
-    {
+    public Task FlushAsync(ITransaction transaction = null) {
         ReadyFlush();
-        return transaction == null ?
-            Database.HashSetAsync(Key, _update.ToArray()) :
-            transaction.HashSetAsync(Key, _update.ToArray());
+        return transaction == null
+            ? Database.HashSetAsync(Key, _update.ToArray())
+            : transaction.HashSetAsync(Key, _update.ToArray());
     }
 
-    private void ReadyFlush()
-    {
+    private void ReadyFlush() {
         if (_update == null)
             _update = new List<HashEntry>();
         _update.Clear();
@@ -162,30 +148,23 @@ public abstract class RedisObject
             _entries[update.Name] = new KeyValuePair<byte[], bool>(_entries[update.Name].Key, false);
     }
 
-    public async Task ReloadAsync(ITransaction trans = null, string field = null)
-    {
-        if (field != null && _entries != null)
-        {
-            var tf = trans != null ?
-                trans.HashGetAsync(Key, field) :
-                Database.HashGetAsync(Key, field);
+    public async Task ReloadAsync(ITransaction trans = null, string field = null) {
+        if (field != null && _entries != null) {
+            var tf = trans != null ? trans.HashGetAsync(Key, field) : Database.HashGetAsync(Key, field);
 
-            try
-            {
+            try {
                 await tf;
                 _entries[field] = new KeyValuePair<byte[], bool>(
                     tf.Result, false);
             }
             catch { }
+
             return;
         }
 
-        var t = trans != null ?
-            trans.HashGetAllAsync(Key) :
-            Database.HashGetAllAsync(Key);
+        var t = trans != null ? trans.HashGetAllAsync(Key) : Database.HashGetAllAsync(Key);
 
-        try
-        {
+        try {
             await t;
             _entries = t.Result.ToDictionary(
                 x => x.Name, x => new KeyValuePair<byte[], bool>(x.Value, false));
@@ -193,10 +172,8 @@ public abstract class RedisObject
         catch { }
     }
 
-    public void Reload(string field = null)
-    {
-        if (field != null && _entries != null)
-        {
+    public void Reload(string field = null) {
+        if (field != null && _entries != null) {
             _entries[field] = new KeyValuePair<byte[], bool>(
                 Database.HashGet(Key, field), false);
             return;
@@ -209,41 +186,34 @@ public abstract class RedisObject
     }
 }
 
-public class DbLoginInfo
-{
+public class DbLoginInfo {
     private IDatabase db;
 
-    internal DbLoginInfo(IDatabase db, string uuid)
-    {
+    internal DbLoginInfo(IDatabase db, string uuid) {
         this.db = db;
         UUID = uuid;
-        var json = (string)db.HashGet("logins", uuid.ToUpperInvariant());
+        var json = (string) db.HashGet("logins", uuid.ToUpperInvariant());
         if (json == null)
             IsNull = true;
         else
             JsonConvert.PopulateObject(json, this);
     }
 
-    [JsonIgnore]
-    public string UUID { get; private set; }
+    [JsonIgnore] public string UUID { get; }
 
-    [JsonIgnore]
-    public bool IsNull { get; private set; }
+    [JsonIgnore] public bool IsNull { get; private set; }
 
     public string Salt { get; set; }
     public string HashedPassword { get; set; }
     public int AccountId { get; set; }
 
-    public void Flush()
-    {
+    public void Flush() {
         db.HashSet("logins", UUID.ToUpperInvariant(), JsonConvert.SerializeObject(this));
     }
 }
 
-public class DbAccount : RedisObject
-{
-    public DbAccount(IDatabase db, int accId, string field = null)
-    {
+public class DbAccount : RedisObject {
+    public DbAccount(IDatabase db, int accId, string field = null) {
         AccountId = accId;
         Init(db, "account." + accId, field);
 
@@ -251,424 +221,357 @@ public class DbAccount : RedisObject
             return;
 
         var time = Utils.FromUnixTimestamp(BanLiftTime);
-        if (!Banned || (BanLiftTime <= -1 || time > DateTime.UtcNow)) return;
+        if (!Banned || BanLiftTime <= -1 || time > DateTime.UtcNow) return;
         Banned = false;
         BanLiftTime = 0;
         FlushAsync();
     }
 
-    public int AccountId { get; private set; }
+    public int AccountId { get; }
 
     internal string LockToken { get; set; }
 
-    public string UUID
-    {
-        get { return GetValue<string>("uuid"); }
-        set { SetValue<string>("uuid", value); }
+    public string UUID {
+        get => GetValue<string>("uuid");
+        set => SetValue("uuid", value);
     }
 
-    public string Name
-    {
-        get { return GetValue<string>("name"); }
-        set { SetValue<string>("name", value); }
+    public string Name {
+        get => GetValue<string>("name");
+        set => SetValue("name", value);
     }
 
-    public bool Admin
-    {
-        get { return GetValue<bool>("admin"); }
-        set { SetValue<bool>("admin", value); }
+    public bool Admin {
+        get => GetValue<bool>("admin");
+        set => SetValue("admin", value);
     }
 
-    public bool NameChosen
-    {
-        get { return GetValue<bool>("nameChosen"); }
-        set { SetValue<bool>("nameChosen", value); }
+    public bool NameChosen {
+        get => GetValue<bool>("nameChosen");
+        set => SetValue("nameChosen", value);
     }
 
-    public bool FirstDeath
-    {
-        get { return GetValue<bool>("firstDeath"); }
-        set { SetValue<bool>("firstDeath", value); }
+    public bool FirstDeath {
+        get => GetValue<bool>("firstDeath");
+        set => SetValue("firstDeath", value);
     }
 
-    public int GuildId
-    {
-        get { return GetValue<int>("guildId"); }
-        set { SetValue<int>("guildId", value); }
+    public int GuildId {
+        get => GetValue<int>("guildId");
+        set => SetValue("guildId", value);
     }
 
-    public int GuildRank
-    {
-        get { return GetValue<int>("guildRank"); }
-        set { SetValue<int>("guildRank", value); }
+    public int GuildRank {
+        get => GetValue<int>("guildRank");
+        set => SetValue("guildRank", value);
     }
 
-    public int GuildFame
-    {
-        get { return GetValue<int>("guildFame"); }
-        set { SetValue<int>("guildFame", value); }
+    public int GuildFame {
+        get => GetValue<int>("guildFame");
+        set => SetValue("guildFame", value);
     }
 
-    public int VaultCount
-    {
-        get { return GetValue<int>("vaultCount"); }
-        set { SetValue<int>("vaultCount", value); }
+    public int VaultCount {
+        get => GetValue<int>("vaultCount");
+        set => SetValue("vaultCount", value);
     }
 
-    public int MaxCharSlot
-    {
-        get { return GetValue<int>("maxCharSlot"); }
-        set { SetValue<int>("maxCharSlot", value); }
+    public int MaxCharSlot {
+        get => GetValue<int>("maxCharSlot");
+        set => SetValue("maxCharSlot", value);
     }
 
-    public bool Guest
-    {
-        get { return GetValue<bool>("guest"); }
-        set { SetValue<bool>("guest", value); }
+    public bool Guest {
+        get => GetValue<bool>("guest");
+        set => SetValue("guest", value);
     }
 
-    public int Credits
-    {
-        get { return GetValue<int>("credits"); }
-        set { SetValue<int>("credits", value); }
+    public int Credits {
+        get => GetValue<int>("credits");
+        set => SetValue("credits", value);
     }
 
-    public int TotalCredits
-    {
-        get { return GetValue<int>("totalCredits"); }
-        set { SetValue<int>("totalCredits", value); }
+    public int TotalCredits {
+        get => GetValue<int>("totalCredits");
+        set => SetValue("totalCredits", value);
     }
 
-    public int Fame
-    {
-        get { return GetValue<int>("fame"); }
-        set { SetValue<int>("fame", value); }
+    public int Fame {
+        get => GetValue<int>("fame");
+        set => SetValue("fame", value);
     }
 
-    public int TotalFame
-    {
-        get { return GetValue<int>("totalFame"); }
-        set { SetValue<int>("totalFame", value); }
+    public int TotalFame {
+        get => GetValue<int>("totalFame");
+        set => SetValue("totalFame", value);
     }
 
-    public int NextCharId
-    {
-        get { return GetValue<int>("nextCharId"); }
-        set { SetValue<int>("nextCharId", value); }
+    public int NextCharId {
+        get => GetValue<int>("nextCharId");
+        set => SetValue("nextCharId", value);
     }
 
-    public ushort[] Skins
-    {
-        get { return GetValue<ushort[]>("skins") ?? new ushort[0]; }
-        set { SetValue<ushort[]>("skins", value); }
+    public ushort[] Skins {
+        get => GetValue<ushort[]>("skins") ?? new ushort[0];
+        set => SetValue("skins", value);
     }
 
-    public int[] LockList
-    {
-        get { return GetValue<int[]>("lockList") ?? new int[0]; }
-        set { SetValue<int[]>("lockList", value); }
+    public int[] LockList {
+        get => GetValue<int[]>("lockList") ?? new int[0];
+        set => SetValue("lockList", value);
     }
 
-    public int[] IgnoreList
-    {
-        get { return GetValue<int[]>("ignoreList") ?? new int[0]; }
-        set { SetValue<int[]>("ignoreList", value); }
+    public int[] IgnoreList {
+        get => GetValue<int[]>("ignoreList") ?? new int[0];
+        set => SetValue("ignoreList", value);
     }
 
-    public bool Banned
-    {
-        get { return GetValue<bool>("banned"); }
-        set { SetValue<bool>("banned", value); }
+    public bool Banned {
+        get => GetValue<bool>("banned");
+        set => SetValue("banned", value);
     }
 
-    public int BanLiftTime
-    {
-        get { return GetValue<int>("banLiftTime"); }
-        set { SetValue<int>("banLiftTime", value); }
+    public int BanLiftTime {
+        get => GetValue<int>("banLiftTime");
+        set => SetValue("banLiftTime", value);
     }
 
-    public string IP
-    {
-        get { return GetValue<string>("ip"); }
-        set { SetValue<string>("ip", value); }
+    public string IP {
+        get => GetValue<string>("ip");
+        set => SetValue("ip", value);
     }
 
-    public string Notes
-    {
-        get { return GetValue<string>("notes"); }
-        set { SetValue<string>("notes", value); }
+    public string Notes {
+        get => GetValue<string>("notes");
+        set => SetValue("notes", value);
     }
 
-    public string PassResetToken
-    {
-        get { return GetValue<string>("passResetToken"); }
-        set { SetValue<string>("passResetToken", value); }
+    public string PassResetToken {
+        get => GetValue<string>("passResetToken");
+        set => SetValue("passResetToken", value);
     }
 
-    public DateTime RegTime
-    {
-        get { return GetValue<DateTime>("regTime"); }
-        set { SetValue<DateTime>("regTime", value); }
+    public DateTime RegTime {
+        get => GetValue<DateTime>("regTime");
+        set => SetValue("regTime", value);
     }
 
-    public Int32 LastSeen
-    {
-        get { return GetValue<Int32>("lastSeen"); }
-        set { SetValue<Int32>("lastSeen", value); }
+    public int LastSeen {
+        get => GetValue<int>("lastSeen");
+        set => SetValue("lastSeen", value);
     }
 
-    public void RefreshLastSeen()
-    {
-        LastSeen = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+    public void RefreshLastSeen() {
+        LastSeen = (int) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
     }
 }
 
-public struct DbClassStatsEntry
-{
+public struct DbClassStatsEntry {
     public int BestLevel;
     public int BestFame;
 }
 
-public class DbClassStats : RedisObject
-{
-    public DbAccount Account { get; private set; }
-
-    public DbClassStats(DbAccount acc, ushort? type = null)
-    {
+public class DbClassStats : RedisObject {
+    public DbClassStats(DbAccount acc, ushort? type = null) {
         Account = acc;
         Init(acc.Database, "classStats." + acc.AccountId, type?.ToString());
     }
 
-    public void Unlock(ushort type)
-    {
+    public DbAccount Account { get; private set; }
+
+    public DbClassStatsEntry this[ushort type] {
+        get {
+            var v = GetValue<string>(type.ToString());
+            if (v != null) return JsonConvert.DeserializeObject<DbClassStatsEntry>(v);
+            return default;
+        }
+        set => SetValue(type.ToString(), JsonConvert.SerializeObject(value));
+    }
+
+    public void Unlock(ushort type) {
         var field = type.ToString();
-        string json = GetValue<string>(field);
+        var json = GetValue<string>(field);
         if (json == null)
-            SetValue<string>(field, JsonConvert.SerializeObject(new DbClassStatsEntry()
-            {
+            SetValue(field, JsonConvert.SerializeObject(new DbClassStatsEntry {
                 BestLevel = 0,
                 BestFame = 0
             }));
     }
 
-    public void Update(DbChar character)
-    {
+    public void Update(DbChar character) {
         var field = character.ObjectType.ToString();
         var finalFame = Math.Max(character.Fame, character.FinalFame);
-        string json = GetValue<string>(field);
-        if (json == null)
-            SetValue<string>(field, JsonConvert.SerializeObject(new DbClassStatsEntry()
-            {
+        var json = GetValue<string>(field);
+        if (json == null) {
+            SetValue(field, JsonConvert.SerializeObject(new DbClassStatsEntry {
                 BestLevel = character.Level,
                 BestFame = finalFame
             }));
-        else
-        {
+        }
+        else {
             var entry = JsonConvert.DeserializeObject<DbClassStatsEntry>(json);
             if (character.Level > entry.BestLevel)
                 entry.BestLevel = character.Level;
             if (finalFame > entry.BestFame)
                 entry.BestFame = finalFame;
-            SetValue<string>(field, JsonConvert.SerializeObject(entry));
+            SetValue(field, JsonConvert.SerializeObject(entry));
         }
-    }
-
-    public DbClassStatsEntry this[ushort type]
-    {
-        get
-        {
-            string v = GetValue<string>(type.ToString());
-            if (v != null) return JsonConvert.DeserializeObject<DbClassStatsEntry>(v);
-            else return default(DbClassStatsEntry);
-        }
-        set { SetValue<string>(type.ToString(), JsonConvert.SerializeObject(value)); }
     }
 }
 
-public class DbChar : RedisObject
-{
-    public DbAccount Account { get; private set; }
-    public int CharId { get; private set; }
-
-    public DbChar(DbAccount acc, int charId)
-    {
+public class DbChar : RedisObject {
+    public DbChar(DbAccount acc, int charId) {
         Account = acc;
         CharId = charId;
         Init(acc.Database, "char." + acc.AccountId + "." + charId);
     }
 
-    public ushort ObjectType
-    {
-        get { return GetValue<ushort>("charType"); }
-        set { SetValue<ushort>("charType", value); }
-    }
-
-    public int Level
-    {
-        get { return GetValue<int>("level"); }
-        set { SetValue<int>("level", value); }
-    }
-
-    public int Experience
-    {
-        get { return GetValue<int>("exp"); }
-        set { SetValue<int>("exp", value); }
-    }
-
-    public int Fame
-    {
-        get { return GetValue<int>("fame"); }
-        set { SetValue<int>("fame", value); }
-    }
-
-    public int FinalFame
-    {
-        get { return GetValue<int>("finalFame"); }
-        set { SetValue<int>("finalFame", value); }
-    }
-
-    public ushort[] Items
-    {
-        get { return GetValue<ushort[]>("items"); }
-        set { SetValue<ushort[]>("items", value); }
-    }
-
-    public int HP
-    {
-        get { return GetValue<int>("hp"); }
-        set { SetValue<int>("hp", value); }
-    }
-
-    public int MP
-    {
-        get { return GetValue<int>("mp"); }
-        set { SetValue<int>("mp", value); }
-    }
-
-    public int[] Stats
-    {
-        get { return GetValue<int[]>("stats"); }
-        set { SetValue<int[]>("stats", value); }
-    }
-
-    public int Tex1
-    {
-        get { return GetValue<int>("tex1"); }
-        set { SetValue<int>("tex1", value); }
-    }
-
-    public int Tex2
-    {
-        get { return GetValue<int>("tex2"); }
-        set { SetValue<int>("tex2", value); }
-    }
-
-    public int Skin
-    {
-        get { return GetValue<int>("skin"); }
-        set { SetValue<int>("skin", value); }
-    }
-
-    public int PetId
-    {
-        get { return GetValue<int>("petId"); }
-        set { SetValue<int>("petId", value); }
-    }
-
-    public byte[] FameStats
-    {
-        get { return GetValue<byte[]>("fameStats"); }
-        set { SetValue<byte[]>("fameStats", value); }
-    }
-
-    public DateTime CreateTime
-    {
-        get { return GetValue<DateTime>("createTime"); }
-        set { SetValue<DateTime>("createTime", value); }
-    }
-
-    public DateTime LastSeen
-    {
-        get { return GetValue<DateTime>("lastSeen"); }
-        set { SetValue<DateTime>("lastSeen", value); }
-    }
-
-    public bool Dead
-    {
-        get { return GetValue<bool>("dead"); }
-        set { SetValue<bool>("dead", value); }
-    }
-
-    public int HealthStackCount
-    {
-        get { return GetValue<int>("hpPotCount"); }
-        set { SetValue<int>("hpPotCount", value); }
-    }
-
-    public int MagicStackCount
-    {
-        get { return GetValue<int>("mpPotCount"); }
-        set { SetValue<int>("mpPotCount", value); }
-    }
-
-    public bool HasBackpack
-    {
-        get { return GetValue<bool>("hasBackpack"); }
-        set { SetValue<bool>("hasBackpack", value); }
-    }
-}
-
-public class DbDeath : RedisObject
-{
     public DbAccount Account { get; private set; }
     public int CharId { get; private set; }
 
-    public DbDeath(DbAccount acc, int charId)
-    {
+    public ushort ObjectType {
+        get => GetValue<ushort>("charType");
+        set => SetValue("charType", value);
+    }
+
+    public int Level {
+        get => GetValue<int>("level");
+        set => SetValue("level", value);
+    }
+
+    public int Experience {
+        get => GetValue<int>("exp");
+        set => SetValue("exp", value);
+    }
+
+    public int Fame {
+        get => GetValue<int>("fame");
+        set => SetValue("fame", value);
+    }
+
+    public int FinalFame {
+        get => GetValue<int>("finalFame");
+        set => SetValue("finalFame", value);
+    }
+
+    public ushort[] Items {
+        get => GetValue<ushort[]>("items");
+        set => SetValue("items", value);
+    }
+
+    public int HP {
+        get => GetValue<int>("hp");
+        set => SetValue("hp", value);
+    }
+
+    public int MP {
+        get => GetValue<int>("mp");
+        set => SetValue("mp", value);
+    }
+
+    public int[] Stats {
+        get => GetValue<int[]>("stats");
+        set => SetValue("stats", value);
+    }
+
+    public int Tex1 {
+        get => GetValue<int>("tex1");
+        set => SetValue("tex1", value);
+    }
+
+    public int Tex2 {
+        get => GetValue<int>("tex2");
+        set => SetValue("tex2", value);
+    }
+
+    public int Skin {
+        get => GetValue<int>("skin");
+        set => SetValue("skin", value);
+    }
+
+    public int PetId {
+        get => GetValue<int>("petId");
+        set => SetValue("petId", value);
+    }
+
+    public byte[] FameStats {
+        get => GetValue<byte[]>("fameStats");
+        set => SetValue("fameStats", value);
+    }
+
+    public DateTime CreateTime {
+        get => GetValue<DateTime>("createTime");
+        set => SetValue("createTime", value);
+    }
+
+    public DateTime LastSeen {
+        get => GetValue<DateTime>("lastSeen");
+        set => SetValue("lastSeen", value);
+    }
+
+    public bool Dead {
+        get => GetValue<bool>("dead");
+        set => SetValue("dead", value);
+    }
+
+    public int HealthStackCount {
+        get => GetValue<int>("hpPotCount");
+        set => SetValue("hpPotCount", value);
+    }
+
+    public int MagicStackCount {
+        get => GetValue<int>("mpPotCount");
+        set => SetValue("mpPotCount", value);
+    }
+
+    public bool HasBackpack {
+        get => GetValue<bool>("hasBackpack");
+        set => SetValue("hasBackpack", value);
+    }
+}
+
+public class DbDeath : RedisObject {
+    public DbDeath(DbAccount acc, int charId) {
         Account = acc;
         CharId = charId;
         Init(acc.Database, "death." + acc.AccountId + "." + charId);
     }
 
-    public ushort ObjectType
-    {
-        get { return GetValue<ushort>("objType"); }
-        set { SetValue<ushort>("objType", value); }
+    public DbAccount Account { get; private set; }
+    public int CharId { get; private set; }
+
+    public ushort ObjectType {
+        get => GetValue<ushort>("objType");
+        set => SetValue("objType", value);
     }
 
-    public int Level
-    {
-        get { return GetValue<int>("level"); }
-        set { SetValue<int>("level", value); }
+    public int Level {
+        get => GetValue<int>("level");
+        set => SetValue("level", value);
     }
 
-    public int TotalFame
-    {
-        get { return GetValue<int>("totalFame"); }
-        set { SetValue<int>("totalFame", value); }
+    public int TotalFame {
+        get => GetValue<int>("totalFame");
+        set => SetValue("totalFame", value);
     }
 
-    public string Killer
-    {
-        get { return GetValue<string>("killer"); }
-        set { SetValue<string>("killer", value); }
+    public string Killer {
+        get => GetValue<string>("killer");
+        set => SetValue("killer", value);
     }
 
-    public bool FirstBorn
-    {
-        get { return GetValue<bool>("firstBorn"); }
-        set { SetValue<bool>("firstBorn", value); }
+    public bool FirstBorn {
+        get => GetValue<bool>("firstBorn");
+        set => SetValue("firstBorn", value);
     }
 
-    public DateTime DeathTime
-    {
-        get { return GetValue<DateTime>("deathTime"); }
-        set { SetValue<DateTime>("deathTime", value); }
+    public DateTime DeathTime {
+        get => GetValue<DateTime>("deathTime");
+        set => SetValue("deathTime", value);
     }
 }
 
-public struct DbNewsEntry
-{
+public struct DbNewsEntry {
     [JsonIgnore] public DateTime Date;
     public string Icon;
     public string Title;
@@ -678,62 +581,46 @@ public struct DbNewsEntry
 
 public class DbNews // TODO. Check later, range results might be bugged...
 {
-    public DbNews(IDatabase db, int count)
-    {
-        news = db.SortedSetRangeByRankWithScores("news", 0, 10)
-            .Select(x =>
-            {
-                DbNewsEntry ret = JsonConvert.DeserializeObject<DbNewsEntry>(
+    public DbNews(IDatabase db, int count) {
+        Entries = db.SortedSetRangeByRankWithScores("news", 0, 10)
+            .Select(x => {
+                var ret = JsonConvert.DeserializeObject<DbNewsEntry>(
                     Encoding.UTF8.GetString(x.Element));
-                ret.Date = new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds((double)x.Score);
+                ret.Date = new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(x.Score);
                 return ret;
             }).ToArray();
     }
 
-    private DbNewsEntry[] news;
-
-    public DbNewsEntry[] Entries
-    {
-        get { return news; }
-    }
+    public DbNewsEntry[] Entries { get; }
 }
 
-public class DbVault : RedisObject
-{
-    public DbAccount Account { get; private set; }
-
-    public DbVault(DbAccount acc)
-    {
+public class DbVault : RedisObject {
+    public DbVault(DbAccount acc) {
         Account = acc;
         Init(acc.Database, "vault." + acc.AccountId);
     }
 
-    public ushort[] this[int index]
-    {
-        get
-        {
-            return GetValue<ushort[]>("vault." + index) ??
-                   Enumerable.Repeat((ushort)0xffff, 8).ToArray();
-        }
-        set { SetValue<ushort[]>("vault." + index, value); }
+    public DbAccount Account { get; private set; }
+
+    public ushort[] this[int index] {
+        get =>
+            GetValue<ushort[]>("vault." + index) ??
+            Enumerable.Repeat((ushort) 0xffff, 8).ToArray();
+        set => SetValue("vault." + index, value);
     }
 }
 
-public abstract class RInventory : RedisObject
-{
+public abstract class RInventory : RedisObject {
     public string Field { get; protected set; }
 
-    public ushort[] Items
-    {
-        get { return GetValue<ushort[]>(Field) ?? Enumerable.Repeat((ushort)0xffff, 20).ToArray(); }
-        set { SetValue<ushort[]>(Field, value); }
+    public ushort[] Items {
+        get => GetValue<ushort[]>(Field) ?? Enumerable.Repeat((ushort) 0xffff, 20).ToArray();
+        set => SetValue(Field, value);
     }
 }
 
-public class DbVaultSingle : RInventory
-{
-    public DbVaultSingle(DbAccount acc, int vaultIndex)
-    {
+public class DbVaultSingle : RInventory {
+    public DbVaultSingle(DbAccount acc, int vaultIndex) {
         Field = "vault." + vaultIndex;
         Init(acc.Database, "vault." + acc.AccountId, Field);
 
@@ -742,50 +629,42 @@ public class DbVaultSingle : RInventory
             return;
 
         var trans = Database.CreateTransaction();
-        SetValue<ushort[]>(Field, Items);
+        SetValue(Field, Items);
         FlushAsync(trans);
         trans.Execute(CommandFlags.FireAndForget);
     }
 }
 
-public class DbCharInv : RInventory
-{
-    public DbCharInv(DbAccount acc, int charId)
-    {
+public class DbCharInv : RInventory {
+    public DbCharInv(DbAccount acc, int charId) {
         Field = "items";
         Init(acc.Database, "char." + acc.AccountId + "." + charId, Field);
     }
 }
 
-public struct DbLegendEntry
-{
+public struct DbLegendEntry {
     public readonly int AccId;
     public readonly int ChrId;
 
-    public DbLegendEntry(int accId, int chrId)
-    {
+    public DbLegendEntry(int accId, int chrId) {
         AccId = accId;
         ChrId = chrId;
     }
 }
 
-public static class DbLegend
-{
+public static class DbLegend {
     private const int MaxListings = 20;
-    private static readonly Dictionary<string, TimeSpan> TimeSpans = new()
-    {
-        {"week", TimeSpan.FromDays(7) },
-        {"month", TimeSpan.FromDays(30) },
-        {"all", TimeSpan.MaxValue }
+
+    private static readonly Dictionary<string, TimeSpan> TimeSpans = new() {
+        {"week", TimeSpan.FromDays(7)},
+        {"month", TimeSpan.FromDays(30)},
+        {"all", TimeSpan.MaxValue}
     };
 
-    public static void Clean(IDatabase db)
-    {
+    public static void Clean(IDatabase db) {
         // remove legend entries that expired
-        foreach (var span in TimeSpans)
-        {
-            if (span.Value == TimeSpan.MaxValue)
-            {
+        foreach (var span in TimeSpans) {
+            if (span.Value == TimeSpan.MaxValue) {
                 // bound legend by count
                 db.SortedSetRemoveRangeByRankAsync($"legends:{span.Key}:byFame",
                     0, -MaxListings - 1, CommandFlags.FireAndForget);
@@ -805,19 +684,17 @@ public static class DbLegend
 
         // refresh legend hash
         db.KeyDeleteAsync("legend", CommandFlags.FireAndForget);
-        foreach (var span in TimeSpans)
-        {
+        foreach (var span in TimeSpans) {
             var legendTask = db.SortedSetRangeByRankAsync($"legends:{span.Key}:byFame",
                 0, MaxListings - 1, Order.Descending);
-            legendTask.ContinueWith(r =>
-            {
+            legendTask.ContinueWith(r => {
                 var trans = db.CreateTransaction();
-                foreach (var e in r.Result)
-                {
+                foreach (var e in r.Result) {
                     var accId = BitConverter.ToInt32(e, 0);
                     trans.HashSetAsync("legend", accId, "",
                         flags: CommandFlags.FireAndForget);
                 }
+
                 trans.ExecuteAsync(CommandFlags.FireAndForget);
             });
         }
@@ -827,16 +704,14 @@ public static class DbLegend
     }
 
     public static void Insert(IDatabase db,
-        int accId, int chrId, int totalFame)
-    {
+        int accId, int chrId, int totalFame) {
         var buff = new byte[8];
         Buffer.BlockCopy(BitConverter.GetBytes(accId), 0, buff, 0, 4);
         Buffer.BlockCopy(BitConverter.GetBytes(chrId), 0, buff, 4, 4);
 
         // add entry to each legends list
         var trans = db.CreateTransaction();
-        foreach (var span in TimeSpans)
-        {
+        foreach (var span in TimeSpans) {
             trans.SortedSetAddAsync($"legends:{span.Key}:byFame",
                 buff, totalFame, CommandFlags.FireAndForget);
 
@@ -847,28 +722,25 @@ public static class DbLegend
             trans.SortedSetAddAsync($"legends:{span.Key}:byTimeOfDeath",
                 buff, t, CommandFlags.FireAndForget);
         }
+
         trans.ExecuteAsync();
 
         // add legend if character falls within MaxGlowingRank
         foreach (var span in TimeSpans)
-        {
             db.SortedSetRankAsync($"legends:{span.Key}:byFame", buff, Order.Descending)
-                .ContinueWith(r =>
-                {
+                .ContinueWith(r => {
                     if (r.Result >= MaxListings)
                         return;
 
                     db.HashSetAsync("legend", accId, "",
                         flags: CommandFlags.FireAndForget);
                 });
-        }
 
         db.StringSetAsync("legends:updateTime", DateTime.UtcNow.ToUnixTimestamp(),
             flags: CommandFlags.FireAndForget);
     }
 
-    public static DbLegendEntry[] Get(IDatabase db, string timeSpan)
-    {
+    public static DbLegendEntry[] Get(IDatabase db, string timeSpan) {
         if (!TimeSpans.ContainsKey(timeSpan))
             return new DbLegendEntry[0];
 
@@ -884,92 +756,79 @@ public static class DbLegend
     }
 }
 
-public class DbGuild : RedisObject
-{
+public class DbGuild : RedisObject {
     internal readonly object MemberLock; // maybe use redis locking?
 
-    internal DbGuild(IDatabase db, int id)
-    {
+    internal DbGuild(IDatabase db, int id) {
         MemberLock = new object();
 
         Id = id;
         Init(db, "guild." + id);
     }
 
-    public DbGuild(DbAccount acc)
-    {
+    public DbGuild(DbAccount acc) {
         MemberLock = new object();
 
         Id = acc.GuildId;
         Init(acc.Database, "guild." + Id);
     }
 
-    public int Id { get; private set; }
+    public int Id { get; }
 
-    public string Name
-    {
-        get { return GetValue<string>("name"); }
-        set { SetValue<string>("name", value); }
+    public string Name {
+        get => GetValue<string>("name");
+        set => SetValue("name", value);
     }
 
-    public int Level
-    {
-        get { return GetValue<int>("level"); }
-        set { SetValue<int>("level", value); }
+    public int Level {
+        get => GetValue<int>("level");
+        set => SetValue("level", value);
     }
 
-    public int Fame
-    {
-        get { return GetValue<int>("fame"); }
-        set { SetValue<int>("fame", value); }
+    public int Fame {
+        get => GetValue<int>("fame");
+        set => SetValue("fame", value);
     }
 
-    public int TotalFame
-    {
-        get { return GetValue<int>("totalFame"); }
-        set { SetValue<int>("totalFame", value); }
+    public int TotalFame {
+        get => GetValue<int>("totalFame");
+        set => SetValue("totalFame", value);
     }
 
     public int[] Members // list of member account id's
     {
-        get { return GetValue<int[]>("members") ?? new int[0]; }
-        set { SetValue<int[]>("members", value); }
+        get => GetValue<int[]>("members") ?? new int[0];
+        set => SetValue("members", value);
     }
 
-    public string Board
-    {
-        get { return GetValue<string>("board") ?? ""; }
-        set { SetValue<string>("board", value); }
+    public string Board {
+        get => GetValue<string>("board") ?? "";
+        set => SetValue("board", value);
     }
 }
 
-public class DbIpInfo
-{
+public class DbIpInfo {
     private readonly IDatabase _db;
 
-    internal DbIpInfo(IDatabase db, string ip)
-    {
+    internal DbIpInfo(IDatabase db, string ip) {
         _db = db;
         IP = ip;
-        var json = (string)db.HashGet("ips", ip);
+        var json = (string) db.HashGet("ips", ip);
         if (json == null)
             IsNull = true;
         else
             JsonConvert.PopulateObject(json, this);
     }
 
-    [JsonIgnore]
-    public string IP { get; private set; }
+    [JsonIgnore] public string IP { get; }
 
-    [JsonIgnore]
-    public bool IsNull { get; private set; }
+    [JsonIgnore] public bool IsNull { get; private set; }
 
     public HashSet<int> Accounts { get; set; }
     public bool Banned { get; set; }
     public string Notes { get; set; }
 
-    public void Flush()
-    {
+    public void Flush() {
         _db.HashSetAsync("ips", IP, JsonConvert.SerializeObject(this));
     }
 }

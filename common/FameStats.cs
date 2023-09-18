@@ -2,118 +2,8 @@
 
 namespace common;
 
-public class FameStats
-{
-    public int Shots { get; set; }
-    public int ShotsThatDamage { get; set; }
-    public int SpecialAbilityUses { get; set; }
-    public int TilesUncovered { get; set; }
-    public int Teleports { get; set; }
-    public int PotionsDrunk { get; set; }
-    public int MonsterKills { get; set; }
-    public int MonsterAssists { get; set; }
-    public int GodKills { get; set; }
-    public int GodAssists { get; set; }
-    public int CubeKills { get; set; }
-    public int OryxKills { get; set; }
-    public int QuestsCompleted { get; set; }
-    public int PirateCavesCompleted { get; set; }
-    public int UndeadLairsCompleted { get; set; }
-    public int AbyssOfDemonsCompleted { get; set; }
-    public int SnakePitsCompleted { get; set; }
-    public int SpiderDensCompleted { get; set; }
-    public int SpriteWorldsCompleted { get; set; }
-    public int LevelUpAssists { get; set; }
-    public int MinutesActive { get; set; }
-    public int TombsCompleted { get; set; }
-    public int TrenchesCompleted { get; set; }
-    public int JunglesCompleted { get; set; }
-    public int ManorsCompleted { get; set; }
-
-    public static FameStats Read(byte[] bytes)
-    {
-        var ret = new FameStats();
-        NReader reader = new NReader(new MemoryStream(bytes));
-        byte id;
-        while (reader.PeekChar() != -1)
-        {
-            id = reader.ReadByte();
-            switch (id)
-            {
-                case 0: ret.Shots = reader.ReadInt32(); break;
-                case 1: ret.ShotsThatDamage = reader.ReadInt32(); break;
-                case 2: ret.SpecialAbilityUses = reader.ReadInt32(); break;
-                case 3: ret.TilesUncovered = reader.ReadInt32(); break;
-                case 4: ret.Teleports = reader.ReadInt32(); break;
-                case 5: ret.PotionsDrunk = reader.ReadInt32(); break;
-                case 6: ret.MonsterKills = reader.ReadInt32(); break;
-                case 7: ret.MonsterAssists = reader.ReadInt32(); break;
-                case 8: ret.GodKills = reader.ReadInt32(); break;
-                case 9: ret.GodAssists = reader.ReadInt32(); break;
-                case 10: ret.CubeKills = reader.ReadInt32(); break;
-                case 11: ret.OryxKills = reader.ReadInt32(); break;
-                case 12: ret.QuestsCompleted = reader.ReadInt32(); break;
-                case 13: ret.PirateCavesCompleted = reader.ReadInt32(); break;
-                case 14: ret.UndeadLairsCompleted = reader.ReadInt32(); break;
-                case 15: ret.AbyssOfDemonsCompleted = reader.ReadInt32(); break;
-                case 16: ret.SnakePitsCompleted = reader.ReadInt32(); break;
-                case 17: ret.SpiderDensCompleted = reader.ReadInt32(); break;
-                case 18: ret.SpriteWorldsCompleted = reader.ReadInt32(); break;
-                case 19: ret.LevelUpAssists = reader.ReadInt32(); break;
-                case 20: ret.MinutesActive = reader.ReadInt32(); break;
-                case 21: ret.TombsCompleted = reader.ReadInt32(); break;
-                case 22: ret.TrenchesCompleted = reader.ReadInt32(); break;
-                case 23: ret.JunglesCompleted = reader.ReadInt32(); break;
-                case 24: ret.ManorsCompleted = reader.ReadInt32(); break;
-            }
-        }
-        return ret;
-    }
-
-    public byte[] Write()
-    {
-        var dat = new Tuple<byte, int>[]
-        {
-            new(0, Shots),
-            new(1, ShotsThatDamage),
-            new(2, SpecialAbilityUses),
-            new(3, TilesUncovered),
-            new(4, Teleports),
-            new(5, PotionsDrunk),
-            new(6, MonsterKills),
-            new(7, MonsterAssists),
-            new(8, GodKills),
-            new(9, GodAssists),
-            new(10, CubeKills),
-            new(11, OryxKills),
-            new(12, QuestsCompleted),
-            new(13, PirateCavesCompleted),
-            new(14, UndeadLairsCompleted),
-            new(15, AbyssOfDemonsCompleted),
-            new(16, SnakePitsCompleted),
-            new(17, SpiderDensCompleted),
-            new(18, SpriteWorldsCompleted),
-            new(19, LevelUpAssists),
-            new(20, MinutesActive),
-            new(21, TombsCompleted),
-            new(22, TrenchesCompleted),
-            new(23, JunglesCompleted),
-            new(24, ManorsCompleted),
-        };
-
-        MemoryStream ret = new MemoryStream();
-        using (NWriter wtr = new NWriter(ret))
-        {
-            foreach (var i in dat)
-            {
-                wtr.Write(i.Item1);
-                wtr.Write(i.Item2);
-            }
-        }
-        return ret.ToArray();
-    }
-
-    static Tuple<string, string, Func<FameStats, DbChar, int, bool>, Func<double, int>>[] bonusDat = new[] {
+public class FameStats {
+    private static Tuple<string, string, Func<FameStats, DbChar, int, bool>, Func<double, int>>[] bonusDat = {
         Tuple.Create("Ancestor", "First death of any of your characters",
             new Func<FameStats, DbChar, int, bool>(
                 (fStats, character, baseFame) =>
@@ -166,13 +56,13 @@ public class FameStats
         Tuple.Create("Enemy of the Gods", "More than 10% of kills are gods (requires level 20)",
             new Func<FameStats, DbChar, int, bool>(
                 (fStats, character, baseFame) =>
-                    character.Level == 20 && (double)fStats.GodKills / (fStats.GodKills + fStats.MonsterKills) > 0.1),
+                    character.Level == 20 && (double) fStats.GodKills / (fStats.GodKills + fStats.MonsterKills) > 0.1),
             new Func<double, int>(f => (int) (f * 0.1))
         ),
         Tuple.Create("Slayer of the Gods", "More than 50% of kills are gods (requires level 20)",
             new Func<FameStats, DbChar, int, bool>(
                 (fStats, character, baseFame) =>
-                    character.Level == 20 && (double)fStats.GodKills / (fStats.GodKills + fStats.MonsterKills) > 0.5),
+                    character.Level == 20 && (double) fStats.GodKills / (fStats.GodKills + fStats.MonsterKills) > 0.5),
             new Func<double, int>(f => (int) (f * 0.1))
         ),
 
@@ -186,19 +76,19 @@ public class FameStats
         Tuple.Create("Accurate", "Accuracy of better than 25% (requires level 20)",
             new Func<FameStats, DbChar, int, bool>(
                 (fStats, character, baseFame) =>
-                    character.Level == 20 && (double)fStats.ShotsThatDamage / fStats.Shots > 0.25),
+                    character.Level == 20 && (double) fStats.ShotsThatDamage / fStats.Shots > 0.25),
             new Func<double, int>(f => (int) (f * 0.1))
         ),
         Tuple.Create("Sharpshooter", "Accuracy of better than 50% (requires level 20)",
             new Func<FameStats, DbChar, int, bool>(
                 (fStats, character, baseFame) =>
-                    character.Level == 20 && (double)fStats.ShotsThatDamage / fStats.Shots > 0.5),
+                    character.Level == 20 && (double) fStats.ShotsThatDamage / fStats.Shots > 0.5),
             new Func<double, int>(f => (int) (f * 0.1))
         ),
         Tuple.Create("Sniper", "Accuracy of better than 75% (requires level 20)",
             new Func<FameStats, DbChar, int, bool>(
                 (fStats, character, baseFame) =>
-                    character.Level == 20 && (double)fStats.ShotsThatDamage / fStats.Shots > 0.75),
+                    character.Level == 20 && (double) fStats.ShotsThatDamage / fStats.Shots > 0.75),
             new Func<double, int>(f => (int) (f * 0.1))
         ),
 
@@ -240,60 +130,210 @@ public class FameStats
                 (fStats, character, baseFame) =>
                     character.Level == 20 && fStats.CubeKills == 0),
             new Func<double, int>(f => (int) (f * 0.05))
-        ),
+        )
     };
 
+    public int Shots { get; set; }
+    public int ShotsThatDamage { get; set; }
+    public int SpecialAbilityUses { get; set; }
+    public int TilesUncovered { get; set; }
+    public int Teleports { get; set; }
+    public int PotionsDrunk { get; set; }
+    public int MonsterKills { get; set; }
+    public int MonsterAssists { get; set; }
+    public int GodKills { get; set; }
+    public int GodAssists { get; set; }
+    public int CubeKills { get; set; }
+    public int OryxKills { get; set; }
+    public int QuestsCompleted { get; set; }
+    public int PirateCavesCompleted { get; set; }
+    public int UndeadLairsCompleted { get; set; }
+    public int AbyssOfDemonsCompleted { get; set; }
+    public int SnakePitsCompleted { get; set; }
+    public int SpiderDensCompleted { get; set; }
+    public int SpriteWorldsCompleted { get; set; }
+    public int LevelUpAssists { get; set; }
+    public int MinutesActive { get; set; }
+    public int TombsCompleted { get; set; }
+    public int TrenchesCompleted { get; set; }
+    public int JunglesCompleted { get; set; }
+    public int ManorsCompleted { get; set; }
+
+    public static FameStats Read(byte[] bytes) {
+        var ret = new FameStats();
+        var reader = new NReader(new MemoryStream(bytes));
+        byte id;
+        while (reader.PeekChar() != -1) {
+            id = reader.ReadByte();
+            switch (id) {
+                case 0:
+                    ret.Shots = reader.ReadInt32();
+                    break;
+                case 1:
+                    ret.ShotsThatDamage = reader.ReadInt32();
+                    break;
+                case 2:
+                    ret.SpecialAbilityUses = reader.ReadInt32();
+                    break;
+                case 3:
+                    ret.TilesUncovered = reader.ReadInt32();
+                    break;
+                case 4:
+                    ret.Teleports = reader.ReadInt32();
+                    break;
+                case 5:
+                    ret.PotionsDrunk = reader.ReadInt32();
+                    break;
+                case 6:
+                    ret.MonsterKills = reader.ReadInt32();
+                    break;
+                case 7:
+                    ret.MonsterAssists = reader.ReadInt32();
+                    break;
+                case 8:
+                    ret.GodKills = reader.ReadInt32();
+                    break;
+                case 9:
+                    ret.GodAssists = reader.ReadInt32();
+                    break;
+                case 10:
+                    ret.CubeKills = reader.ReadInt32();
+                    break;
+                case 11:
+                    ret.OryxKills = reader.ReadInt32();
+                    break;
+                case 12:
+                    ret.QuestsCompleted = reader.ReadInt32();
+                    break;
+                case 13:
+                    ret.PirateCavesCompleted = reader.ReadInt32();
+                    break;
+                case 14:
+                    ret.UndeadLairsCompleted = reader.ReadInt32();
+                    break;
+                case 15:
+                    ret.AbyssOfDemonsCompleted = reader.ReadInt32();
+                    break;
+                case 16:
+                    ret.SnakePitsCompleted = reader.ReadInt32();
+                    break;
+                case 17:
+                    ret.SpiderDensCompleted = reader.ReadInt32();
+                    break;
+                case 18:
+                    ret.SpriteWorldsCompleted = reader.ReadInt32();
+                    break;
+                case 19:
+                    ret.LevelUpAssists = reader.ReadInt32();
+                    break;
+                case 20:
+                    ret.MinutesActive = reader.ReadInt32();
+                    break;
+                case 21:
+                    ret.TombsCompleted = reader.ReadInt32();
+                    break;
+                case 22:
+                    ret.TrenchesCompleted = reader.ReadInt32();
+                    break;
+                case 23:
+                    ret.JunglesCompleted = reader.ReadInt32();
+                    break;
+                case 24:
+                    ret.ManorsCompleted = reader.ReadInt32();
+                    break;
+            }
+        }
+
+        return ret;
+    }
+
+    public byte[] Write() {
+        var dat = new Tuple<byte, int>[] {
+            new(0, Shots),
+            new(1, ShotsThatDamage),
+            new(2, SpecialAbilityUses),
+            new(3, TilesUncovered),
+            new(4, Teleports),
+            new(5, PotionsDrunk),
+            new(6, MonsterKills),
+            new(7, MonsterAssists),
+            new(8, GodKills),
+            new(9, GodAssists),
+            new(10, CubeKills),
+            new(11, OryxKills),
+            new(12, QuestsCompleted),
+            new(13, PirateCavesCompleted),
+            new(14, UndeadLairsCompleted),
+            new(15, AbyssOfDemonsCompleted),
+            new(16, SnakePitsCompleted),
+            new(17, SpiderDensCompleted),
+            new(18, SpriteWorldsCompleted),
+            new(19, LevelUpAssists),
+            new(20, MinutesActive),
+            new(21, TombsCompleted),
+            new(22, TrenchesCompleted),
+            new(23, JunglesCompleted),
+            new(24, ManorsCompleted)
+        };
+
+        var ret = new MemoryStream();
+        using (var wtr = new NWriter(ret)) {
+            foreach (var i in dat) {
+                wtr.Write(i.Item1);
+                wtr.Write(i.Item2);
+            }
+        }
+
+        return ret.ToArray();
+    }
+
     public int CalculateTotal(
-        XmlData data, DbChar character, DbClassStats stats, out bool firstBorn)
-    {
-        int f = 0;
+        XmlData data, DbChar character, DbClassStats stats, out bool firstBorn) {
+        var f = 0;
         foreach (var i in bonusDat)
             if (i.Item3(this, character, character.Fame))
                 f += i.Item4(character.Fame + f);
 
         //Well Equiped
         var bonus = character.Items.Take(4).Where(x => x != 0xffff).Sum(x => data.Items[x].FameBonus) / 100.0;
-        f += (int)((character.Fame + f) * bonus);
+        f += (int) ((character.Fame + f) * bonus);
 
         //First born
         var bestFames = stats.AllKeys.Select(x => stats[ushort.Parse(x)].BestFame).ToArray();
-        if (bestFames.Length <= 0 || character.Fame + f > bestFames.Max())
-        {
-            f += (int)((character.Fame + f) * 0.1);
+        if (bestFames.Length <= 0 || character.Fame + f > bestFames.Max()) {
+            f += (int) ((character.Fame + f) * 0.1);
             firstBorn = true;
         }
-        else
+        else {
             firstBorn = false;
+        }
 
         return character.Fame + f;
     }
 
     public int CalculateTotal(
-        XmlData data, DbChar character, bool firstBorn)
-    {
-        int f = 0;
+        XmlData data, DbChar character, bool firstBorn) {
+        var f = 0;
         foreach (var i in bonusDat)
             if (i.Item3(this, character, character.Fame))
                 f += i.Item4(character.Fame + f);
 
         //Well Equiped
         var bonus = character.Items.Take(4).Where(x => x != 0xffff).Sum(x => data.Items[x].FameBonus) / 100.0;
-        f += (int)((character.Fame + f) * bonus);
+        f += (int) ((character.Fame + f) * bonus);
 
         //First born
         if (firstBorn)
-            f += (int)((character.Fame + f) * 0.1);
+            f += (int) ((character.Fame + f) * 0.1);
 
         return character.Fame + f;
     }
 
     public IEnumerable<Tuple<string, string, int>> GetBonuses(
-        XmlData data, DbChar character, bool firstBorn)
-    {
-        int f = 0;
+        XmlData data, DbChar character, bool firstBorn) {
+        var f = 0;
         foreach (var i in bonusDat)
-            if (i.Item3(this, character, character.Fame + f))
-            {
+            if (i.Item3(this, character, character.Fame + f)) {
                 var val = i.Item4(character.Fame + f);
                 f += val;
                 yield return Tuple.Create(i.Item1, i.Item2, val);
@@ -302,17 +342,15 @@ public class FameStats
 
         //Well Equiped
         var bonus = character.Items.Take(4).Where(x => x != 0xffff).Sum(x => data.Items[x].FameBonus) / 100.0;
-        if (bonus > 0)
-        {
-            var val = (int)((character.Fame + f) * bonus);
+        if (bonus > 0) {
+            var val = (int) ((character.Fame + f) * bonus);
             f += val;
             yield return Tuple.Create("Well Equipped", "Bonus for equipment", val);
         }
 
         //First born
-        if (firstBorn)
-        {
-            var val = (int)((character.Fame + f) * 0.1);
+        if (firstBorn) {
+            var val = (int) ((character.Fame + f) * 0.1);
             yield return Tuple.Create("First Born", "Best fame of any of your previous incarnations", val);
         }
     }

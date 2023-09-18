@@ -1,38 +1,14 @@
 ﻿using common.resources;
 using NLog;
-using wServer.realm.terrain;
 using wServer.realm.worlds;
 using wServer.realm.worlds.parser;
 
 namespace wServer.realm.setpieces;
 
-partial class SetPieces
-{
-    static Logger log = LogManager.GetCurrentClassLogger();
+internal class SetPieces {
+    private static Logger log = LogManager.GetCurrentClassLogger();
 
-    struct Rect
-    {
-        public int x;
-        public int y;
-        public int w;
-        public int h;
-
-        public static bool Intersects(Rect r1, Rect r2)
-        {
-            return !(r2.x > r1.x + r1.w ||
-                     r2.x + r2.w < r1.x ||
-                     r2.y > r1.y + r1.h ||
-                     r2.y + r2.h < r1.y);
-        }
-    }
-
-    static Tuple<ISetPiece, int, int, TerrainType[]> SetPiece(ISetPiece piece, int min, int max, params TerrainType[] terrains)
-    {
-        return Tuple.Create(piece, min, max, terrains);
-    }
-
-    static readonly List<Tuple<ISetPiece, int, int, TerrainType[]>> setPieces = new()
-    {
+    private static readonly List<Tuple<ISetPiece, int, int, TerrainType[]>> setPieces = new() {
         SetPiece(new Building(), 80, 100, TerrainType.LowForest, TerrainType.LowPlains, TerrainType.MidForest),
         SetPiece(new Graveyard(), 5, 10, TerrainType.LowSand, TerrainType.LowPlains),
         SetPiece(new Grove(), 17, 25, TerrainType.MidForest, TerrainType.MidPlains),
@@ -48,75 +24,70 @@ partial class SetPieces
         SetPiece(new KageKami(), 2, 3, TerrainType.HighForest, TerrainType.HighPlains)
     };
 
-    public static int[,] rotateCW(int[,] mat)
-    {
-        int M = mat.GetLength(0);
-        int N = mat.GetLength(1);
-        int[,] ret = new int[N, M];
-        for (int r = 0; r < M; r++)
-        {
-            for (int c = 0; c < N; c++)
-            {
-                ret[c, M - 1 - r] = mat[r, c];
-            }
-        }
+    private static Tuple<ISetPiece, int, int, TerrainType[]> SetPiece(ISetPiece piece, int min, int max,
+        params TerrainType[] terrains) {
+        return Tuple.Create(piece, min, max, terrains);
+    }
+
+    public static int[,] rotateCW(int[,] mat) {
+        var M = mat.GetLength(0);
+        var N = mat.GetLength(1);
+        var ret = new int[N, M];
+        for (var r = 0; r < M; r++)
+        for (var c = 0; c < N; c++)
+            ret[c, M - 1 - r] = mat[r, c];
         return ret;
     }
 
-    public static int[,] reflectVert(int[,] mat)
-    {
-        int M = mat.GetLength(0);
-        int N = mat.GetLength(1);
-        int[,] ret = new int[M, N];
-        for (int x = 0; x < M; x++)
-        for (int y = 0; y < N; y++)
+    public static int[,] reflectVert(int[,] mat) {
+        var M = mat.GetLength(0);
+        var N = mat.GetLength(1);
+        var ret = new int[M, N];
+        for (var x = 0; x < M; x++)
+        for (var y = 0; y < N; y++)
             ret[x, N - y - 1] = mat[x, y];
         return ret;
     }
-    public static int[,] reflectHori(int[,] mat)
-    {
-        int M = mat.GetLength(0);
-        int N = mat.GetLength(1);
-        int[,] ret = new int[M, N];
-        for (int x = 0; x < M; x++)
-        for (int y = 0; y < N; y++)
+
+    public static int[,] reflectHori(int[,] mat) {
+        var M = mat.GetLength(0);
+        var N = mat.GetLength(1);
+        var ret = new int[M, N];
+        for (var x = 0; x < M; x++)
+        for (var y = 0; y < N; y++)
             ret[M - x - 1, y] = mat[x, y];
         return ret;
     }
 
-    static int DistSqr(IntPoint a, IntPoint b)
-    {
+    private static int DistSqr(IntPoint a, IntPoint b) {
         return (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
     }
 
-    public static void ApplySetPieces(World world)
-    {
+    public static void ApplySetPieces(World world) {
         log.Info("Applying set pieces to world {0}({1}).", world.Id, world.IdName);
 
         var map = world.Map;
         int w = map.Width, h = map.Height;
 
-        Random rand = new Random();
-        HashSet<Rect> rects = new HashSet<Rect>();
-        foreach (var dat in setPieces)
-        {
-            int size = dat.Item1.Size;
-            int count = rand.Next(dat.Item2, dat.Item3);
-            for (int i = 0; i < count; i++)
-            {
-                IntPoint pt = new IntPoint();
+        var rand = new Random();
+        var rects = new HashSet<Rect>();
+        foreach (var dat in setPieces) {
+            var size = dat.Item1.Size;
+            var count = rand.Next(dat.Item2, dat.Item3);
+            for (var i = 0; i < count; i++) {
+                var pt = new IntPoint();
                 Rect rect;
 
-                int max = 50;
-                do
-                {
+                var max = 50;
+                do {
                     pt.X = rand.Next(0, w);
                     pt.Y = rand.Next(0, h);
-                    rect = new Rect() { x = pt.X, y = pt.Y, w = size, h = size };
+                    rect = new Rect {x = pt.X, y = pt.Y, w = size, h = size};
                     max--;
                 } while ((Array.IndexOf(dat.Item4, map[pt.X, pt.Y].Terrain) == -1 ||
                           rects.Any(_ => Rect.Intersects(rect, _))) &&
                          max > 0);
+
                 if (max <= 0) continue;
                 dat.Item1.RenderSetPiece(world, pt);
                 rects.Add(rect);
@@ -126,15 +97,24 @@ partial class SetPieces
         log.Info("Set pieces applied.");
     }
 
-    public static void RenderSetpiece(World world, IntPoint pos, string map)
-    {
+    public static void RenderSetpiece(World world, IntPoint pos, string map) {
         var mapData = MapParser.GetOrLoad(map);
-        if (mapData == null)
-        {
-            log.Error("MapData: {0} not found.", map);
-            return;
-        }
+        if (mapData == null) log.Error("MapData: {0} not found.", map);
 
         // todo
+    }
+
+    private struct Rect {
+        public int x;
+        public int y;
+        public int w;
+        public int h;
+
+        public static bool Intersects(Rect r1, Rect r2) {
+            return !(r2.x > r1.x + r1.w ||
+                     r2.x + r2.w < r1.x ||
+                     r2.y > r1.y + r1.h ||
+                     r2.y + r2.h < r1.y);
+        }
     }
 }

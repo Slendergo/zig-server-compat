@@ -5,83 +5,70 @@ using wServer.realm.worlds;
 
 namespace wServer.realm.setpieces;
 
-class Oasis : ISetPiece
-{
-    public int Size
-    {
-        get { return 30; }
-    }
+internal class Oasis : ISetPiece {
+    private static readonly string Floor = "Light Grass";
+    private static readonly string Water = "Shallow Water";
+    private static readonly string Tree = "Palm Tree";
 
-    static readonly string Floor = "Light Grass";
-    static readonly string Water = "Shallow Water";
-    static readonly string Tree = "Palm Tree";
-
-    static readonly Loot chest = new(
+    private static readonly Loot chest = new(
         new TierLoot(5, ItemType.Weapon, 0.3),
         new TierLoot(6, ItemType.Weapon, 0.2),
         new TierLoot(7, ItemType.Weapon, 0.1),
-
         new TierLoot(4, ItemType.Armor, 0.3),
         new TierLoot(5, ItemType.Armor, 0.2),
         new TierLoot(6, ItemType.Armor, 0.1),
-
         new TierLoot(2, ItemType.Ability, 0.3),
         new TierLoot(3, ItemType.Ability, 0.2),
-
         new TierLoot(1, ItemType.Ring, 0.25),
         new TierLoot(2, ItemType.Ring, 0.15),
-
         new TierLoot(1, ItemType.Potion, 0.5)
     );
 
-    Random rand = new();
-    public void RenderSetPiece(World world, IntPoint pos)
-    {
-        int outerRadius = 13;
-        int waterRadius = 10;
-        int islandRadius = 3;
-        List<IntPoint> border = new List<IntPoint>();
+    private Random rand = new();
 
-        int[,] t = new int[Size, Size];
-        for (int y = 0; y < Size; y++)      //Outer
-        for (int x = 0; x < Size; x++)
-        {
-            double dx = x - (Size / 2.0);
-            double dy = y - (Size / 2.0);
-            double r = Math.Sqrt(dx * dx + dy * dy);
+    public int Size => 30;
+
+    public void RenderSetPiece(World world, IntPoint pos) {
+        var outerRadius = 13;
+        var waterRadius = 10;
+        var islandRadius = 3;
+        var border = new List<IntPoint>();
+
+        var t = new int[Size, Size];
+        for (var y = 0; y < Size; y++) //Outer
+        for (var x = 0; x < Size; x++) {
+            var dx = x - Size / 2.0;
+            var dy = y - Size / 2.0;
+            var r = Math.Sqrt(dx * dx + dy * dy);
             if (r <= outerRadius)
                 t[x, y] = 1;
         }
 
-        for (int y = 0; y < Size; y++)      //Water
-        for (int x = 0; x < Size; x++)
-        {
-            double dx = x - (Size / 2.0);
-            double dy = y - (Size / 2.0);
-            double r = Math.Sqrt(dx * dx + dy * dy);
-            if (r <= waterRadius)
-            {
+        for (var y = 0; y < Size; y++) //Water
+        for (var x = 0; x < Size; x++) {
+            var dx = x - Size / 2.0;
+            var dy = y - Size / 2.0;
+            var r = Math.Sqrt(dx * dx + dy * dy);
+            if (r <= waterRadius) {
                 t[x, y] = 2;
                 if (waterRadius - r < 1)
                     border.Add(new IntPoint(x, y));
             }
         }
 
-        for (int y = 0; y < Size; y++)      //Island
-        for (int x = 0; x < Size; x++)
-        {
-            double dx = x - (Size / 2.0);
-            double dy = y - (Size / 2.0);
-            double r = Math.Sqrt(dx * dx + dy * dy);
-            if (r <= islandRadius)
-            {
+        for (var y = 0; y < Size; y++) //Island
+        for (var x = 0; x < Size; x++) {
+            var dx = x - Size / 2.0;
+            var dy = y - Size / 2.0;
+            var r = Math.Sqrt(dx * dx + dy * dy);
+            if (r <= islandRadius) {
                 t[x, y] = 1;
                 if (islandRadius - r < 1)
                     border.Add(new IntPoint(x, y));
             }
         }
 
-        HashSet<IntPoint> trees = new HashSet<IntPoint>();
+        var trees = new HashSet<IntPoint>();
         while (trees.Count < border.Count * 0.5)
             trees.Add(border[rand.Next(0, border.Count)]);
 
@@ -89,25 +76,21 @@ class Oasis : ISetPiece
             t[i.X, i.Y] = 3;
 
         var dat = world.Manager.Resources.GameData;
-        for (int x = 0; x < Size; x++)
-        for (int y = 0; y < Size; y++)
-        {
-            if (t[x, y] == 1)
-            {
+        for (var x = 0; x < Size; x++)
+        for (var y = 0; y < Size; y++)
+            if (t[x, y] == 1) {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Floor];
                 tile.ObjectType = 0;
                 tile.UpdateCount++;
             }
-            else if (t[x, y] == 2)
-            {
+            else if (t[x, y] == 2) {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Water];
                 tile.ObjectType = 0;
                 tile.UpdateCount++;
             }
-            else if (t[x, y] == 3)
-            {
+            else if (t[x, y] == 3) {
                 var tile = world.Map[x + pos.X, y + pos.Y];
                 tile.TileId = dat.IdToTileType[Floor];
                 tile.ObjectType = dat.IdToObjectType[Tree];
@@ -116,15 +99,14 @@ class Oasis : ISetPiece
                 if (tile.ObjectId == 0) tile.ObjectId = world.GetNextEntityId();
                 tile.UpdateCount++;
             }
-        }
 
-        Entity giant = Entity.Resolve(world.Manager, "Oasis Giant");
+        var giant = Entity.Resolve(world.Manager, "Oasis Giant");
         giant.Move(pos.X + 15.5f, pos.Y + 15.5f);
         world.EnterWorld(giant);
 
-        Container container = new Container(world.Manager, 0x0501, null, false);
-        Item[] items = chest.GetLoots(world.Manager, 5, 8).ToArray();
-        for (int i = 0; i < items.Length; i++)
+        var container = new Container(world.Manager, 0x0501, null, false);
+        var items = chest.GetLoots(world.Manager, 5, 8).ToArray();
+        for (var i = 0; i < items.Length; i++)
             container.Inventory[i] = items[i];
         container.Move(pos.X + 15.5f, pos.Y + 15.5f);
         world.EnterWorld(container);

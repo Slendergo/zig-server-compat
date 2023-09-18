@@ -2,18 +2,13 @@
 
 namespace common;
 
-public enum Channel
-{
-    [Description("Network")]
-    Network,
-    [Description("Control")]
-    Control,
-    [Description("Chat")]
-    Chat
+public enum Channel {
+    [Description("Network")] Network,
+    [Description("Control")] Control,
+    [Description("Chat")] Chat
 }
 
-public enum ChatType
-{
+public enum ChatType {
     Tell,
     Guild,
     Announce,
@@ -21,27 +16,23 @@ public enum ChatType
     Info
 }
 
-public enum NetworkCode
-{
+public enum NetworkCode {
     Join,
     Ping,
     Quit,
     Timeout
 }
 
-public enum ControlType
-{
+public enum ControlType {
     Reboot
 }
 
-public struct NetworkMsg
-{
+public struct NetworkMsg {
     public NetworkCode Code;
     public ServerInfo Info;
 }
 
-public struct ChatMsg
-{
+public struct ChatMsg {
     public ChatType Type;
     public string Inst;
     public int ObjId;
@@ -53,8 +44,7 @@ public struct ChatMsg
     public string SrcIP;
 }
 
-public struct ControlMsg
-{
+public struct ControlMsg {
     public ControlType Type;
     public string TargetInst;
     public string Issuer;

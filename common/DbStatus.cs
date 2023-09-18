@@ -1,27 +1,23 @@
 ﻿namespace common;
 
-public enum LoginStatus
-{
+public enum LoginStatus {
     OK,
     AccountNotExists,
     InvalidCredentials
 }
 
-public enum RegisterStatus
-{
+public enum RegisterStatus {
     OK,
-    UsedName,
+    UsedName
 }
 
-public enum GuildCreateStatus
-{
+public enum GuildCreateStatus {
     OK,
     InvalidName,
     UsedName
 }
 
-public enum AddGuildMemberStatus
-{
+public enum AddGuildMemberStatus {
     OK,
     NameNotChosen,
     AlreadyInGuild,
@@ -31,20 +27,16 @@ public enum AddGuildMemberStatus
     Error
 }
 
-public enum CreateStatus
-{
+public enum CreateStatus {
     OK,
     ReachCharLimit,
     SkinUnavailable,
     Locked
 }
 
-public static class StatusInfo
-{
-    public static string GetInfo(this LoginStatus status)
-    {
-        switch (status)
-        {
+public static class StatusInfo {
+    public static string GetInfo(this LoginStatus status) {
+        switch (status) {
             case LoginStatus.InvalidCredentials:
                 return "Bad Login";
             case LoginStatus.AccountNotExists:
@@ -52,30 +44,29 @@ public static class StatusInfo
             case LoginStatus.OK:
                 return "OK";
         }
+
         throw new ArgumentException("status");
     }
 
-    public static string GetInfo(this RegisterStatus status)
-    {
-        switch (status)
-        {
+    public static string GetInfo(this RegisterStatus status) {
+        switch (status) {
             case RegisterStatus.UsedName:
                 return "Duplicate Email"; // maybe not wise to give this info out...
             case RegisterStatus.OK:
                 return "OK";
         }
+
         throw new ArgumentException("status");
     }
 
-    public static string GetInfo(this CreateStatus status)
-    {
-        switch (status)
-        {
+    public static string GetInfo(this CreateStatus status) {
+        switch (status) {
             case CreateStatus.ReachCharLimit:
                 return "Too many characters";
             case CreateStatus.OK:
                 return "OK";
         }
+
         throw new ArgumentException("status");
     }
 }

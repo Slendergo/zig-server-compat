@@ -4,18 +4,15 @@ using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
-internal class WhileEntityNotWithin : Behavior
-{
+internal class WhileEntityNotWithin : Behavior {
     private Behavior[] children;
     private string entityName;
     private double range;
 
-    public WhileEntityNotWithin(XElement e, IStateChildren[] behaviors)
-    {
+    public WhileEntityNotWithin(XElement e, IStateChildren[] behaviors) {
         children = new Behavior[behaviors.Length];
         var filledIdx = 0;
-        for (var i = 0; i < behaviors.Length; i++)
-        {
+        for (var i = 0; i < behaviors.Length; i++) {
             var behav = behaviors[i];
             if (behav is Behavior behavior)
                 children[filledIdx++] = behavior;
@@ -27,14 +24,12 @@ internal class WhileEntityNotWithin : Behavior
         range = e.ParseFloat("@range");
     }
 
-    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-    {
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state) {
         foreach (var behav in children)
             behav.OnStateEntry(host, time);
     }
 
-    protected override void TickCore(Entity host, RealmTime time, ref object state)
-    {
+    protected override void TickCore(Entity host, RealmTime time, ref object state) {
         if (host.GetNearestEntityByName(range, entityName) != null)
             return;
 

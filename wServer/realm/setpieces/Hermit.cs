@@ -2,12 +2,10 @@
 
 namespace wServer.realm.setpieces;
 
-class Hermit : ISetPiece
-{
-    public int Size { get { return 32; } }
+internal class Hermit : ISetPiece {
+    public int Size => 32;
 
-    public void RenderSetPiece(World world, IntPoint pos)
-    {
+    public void RenderSetPiece(World world, IntPoint pos) {
         SetPieces.RenderSetpiece(world, pos, "hermit.pmap");
     }
 }

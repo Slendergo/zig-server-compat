@@ -1,28 +1,25 @@
-﻿using common;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using common;
 using wServer.realm;
 
 namespace wServer.logic.transitions;
 
-class EntityNotExistsTransition : Transition
-{
+internal class EntityNotExistsTransition : Transition {
+    private readonly bool _attackTarget;
     //State storage: none
 
     private readonly double _dist;
     private readonly ushort? _target;
-    private readonly bool _attackTarget;
 
     public EntityNotExistsTransition(XElement e)
-    : base(e.ParseString("@targetState", "root"))
-    {
+        : base(e.ParseString("@targetState", "root")) {
         _dist = e.ParseFloat("@dist");
         _target = Behavior.GetObjType(e.ParseString("@target"));
         _attackTarget = e.ParseBool("@checkAttackTarget");
     }
 
     public EntityNotExistsTransition(string target, double dist, string targetState, bool checkAttackTarget = false)
-        : base(targetState)
-    {
+        : base(targetState) {
         _dist = dist;
 
         if (target != null)
@@ -31,17 +28,16 @@ class EntityNotExistsTransition : Transition
         _attackTarget = checkAttackTarget;
     }
 
-    protected override bool TickCore(Entity host, RealmTime time, ref object state)
-    {
-        if (_attackTarget)
-        {
-            if (host.AttackTarget == null || !host.Owner.Players.Values.Contains(host.AttackTarget))
-            {
+    protected override bool TickCore(Entity host, RealmTime time, ref object state) {
+        if (_attackTarget) {
+            if (host.AttackTarget == null || !host.Owner.Players.Values.Contains(host.AttackTarget)) {
                 host.AttackTarget = null;
                 return true;
             }
+
             return false;
         }
+
         return host.GetNearestEntity(_dist, _target) == null;
     }
 }

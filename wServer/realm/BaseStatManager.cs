@@ -2,13 +2,11 @@
 
 namespace wServer.realm;
 
-class BaseStatManager
-{
-    private readonly StatsManager _parent;
+internal class BaseStatManager {
     private readonly int[] _base;
+    private readonly StatsManager _parent;
 
-    public BaseStatManager(StatsManager parent)
-    {
+    public BaseStatManager(StatsManager parent) {
         _parent = parent;
         _base = Utils.ResizeArray(
             parent.Owner.Client.Character.Stats,
@@ -17,22 +15,17 @@ class BaseStatManager
         ReCalculateValues();
     }
 
-    public int[] GetStats()
-    {
-        return (int[])_base.Clone();
-    }
-
-    public int this[int index]
-    {
-        get { return _base[index]; }
-        set
-        {
+    public int this[int index] {
+        get => _base[index];
+        set {
             _base[index] = value;
             _parent.StatChanged(index);
         }
     }
 
-    protected internal void ReCalculateValues(InventoryChangedEventArgs e = null)
-    {
+    public int[] GetStats() {
+        return (int[]) _base.Clone();
     }
+
+    protected internal void ReCalculateValues(InventoryChangedEventArgs e = null) { }
 }

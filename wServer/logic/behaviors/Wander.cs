@@ -1,37 +1,27 @@
-﻿using common.resources;
-using wServer.realm;
-using Mono.Game;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using common;
+using common.resources;
+using Mono.Game;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
-class Wander : CycleBehavior
-{
-    //State storage: direction & remain time
-    class WanderStorage
-    {
-        public Vector2 Direction;
-        public float RemainingDistance;
-    }
-    float speed;
+internal class Wander : CycleBehavior {
+    private float speed;
 
-    public Wander(XElement e)
-    {
+    public Wander(XElement e) {
         speed = e.ParseFloat("@speed");
     }
 
-    public Wander(double speed)
-    {
-        this.speed = (float)speed;
+    public Wander(double speed) {
+        this.speed = (float) speed;
     }
 
     //static Cooldown period = new Cooldown(500, 200);
-    protected override void TickCore(Entity host, RealmTime time, ref object state)
-    {
+    protected override void TickCore(Entity host, RealmTime time, ref object state) {
         WanderStorage storage;
         if (state == null) storage = new WanderStorage();
-        else storage = (WanderStorage)state;
+        else storage = (WanderStorage) state;
 
         Status = CycleStatus.NotStarted;
 
@@ -39,8 +29,7 @@ class Wander : CycleBehavior
             return;
 
         Status = CycleStatus.InProgress;
-        if (storage.RemainingDistance <= 0)
-        {
+        if (storage.RemainingDistance <= 0) {
             // old wander
             //storage.Direction = new Vector2(Random.Next(-1, 2), Random.Next(-1, 2));
             //storage.Direction.Normalize();
@@ -53,11 +42,18 @@ class Wander : CycleBehavior
             storage.RemainingDistance = 600 / 1000f;
             Status = CycleStatus.Completed;
         }
-        float dist = host.GetSpeed(speed) * (time.ElaspedMsDelta / 1000f);
+
+        var dist = host.GetSpeed(speed) * (time.ElapsedMsDelta / 1000f);
         host.ValidateAndMove(host.X + storage.Direction.X * dist, host.Y + storage.Direction.Y * dist);
 
         storage.RemainingDistance -= dist;
 
         state = storage;
+    }
+
+    //State storage: direction & remain time
+    private class WanderStorage {
+        public Vector2 Direction;
+        public float RemainingDistance;
     }
 }

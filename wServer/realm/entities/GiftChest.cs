@@ -2,15 +2,10 @@
 
 namespace wServer.realm.entities;
 
-class GiftChest : OneWayContainer
-{
+internal class GiftChest : OneWayContainer {
     public GiftChest(RealmManager manager, ushort objType, int? life, bool dying, RInventory dbLink = null)
-        : base(manager, objType, life, dying, dbLink)
-    {
-    }
+        : base(manager, objType, life, dying, dbLink) { }
 
     public GiftChest(RealmManager manager, ushort id)
-        : base(manager, id)
-    {
-    }
+        : base(manager, id) { }
 }

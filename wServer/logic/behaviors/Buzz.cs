@@ -1,78 +1,71 @@
-﻿using common.resources;
-using wServer.realm;
-using Mono.Game;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using common;
+using common.resources;
+using Mono.Game;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
-class Buzz : CycleBehavior
-{
-    //State storage: direction & remain
-    class BuzzStorage
-    {
-        public Vector2 Direction;
-        public float RemainingDistance;
-        public int RemainingTime;
-    }
+internal class Buzz : CycleBehavior {
+    private Cooldown coolDown;
+    private float dist;
 
 
-    float speed;
-    float dist;
-    Cooldown coolDown;
+    private float speed;
 
-    public Buzz(XElement e)
-    {
+    public Buzz(XElement e) {
         speed = e.ParseFloat("@speed", 2);
         dist = e.ParseFloat("@dist", 0.5f);
         coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1));
     }
 
-    public Buzz(double speed = 2, double dist = 0.5, Cooldown coolDown = new())
-    {
-        this.speed = (float)speed;
-        this.dist = (float)dist;
+    public Buzz(double speed = 2, double dist = 0.5, Cooldown coolDown = new()) {
+        this.speed = (float) speed;
+        this.dist = (float) dist;
         this.coolDown = coolDown.Normalize(1);
     }
 
-    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-    {
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state) {
         state = new BuzzStorage();
     }
 
-    protected override void TickCore(Entity host, RealmTime time, ref object state)
-    {
-        BuzzStorage storage = (BuzzStorage)state;
+    protected override void TickCore(Entity host, RealmTime time, ref object state) {
+        var storage = (BuzzStorage) state;
 
         Status = CycleStatus.NotStarted;
 
         if (host.HasConditionEffect(ConditionEffects.Paralyzed))
             return;
 
-        if (storage.RemainingTime > 0)
-        {
-            storage.RemainingTime -= time.ElaspedMsDelta;
+        if (storage.RemainingTime > 0) {
+            storage.RemainingTime -= time.ElapsedMsDelta;
             Status = CycleStatus.NotStarted;
         }
-        else
-        {
+        else {
             Status = CycleStatus.InProgress;
-            if (storage.RemainingDistance <= 0)
-            {
-                do
-                {
+            if (storage.RemainingDistance <= 0) {
+                do {
                     storage.Direction = new Vector2(Random.Next(-1, 2), Random.Next(-1, 2));
                 } while (storage.Direction.X == 0 && storage.Direction.Y == 0);
+
                 storage.Direction.Normalize();
                 storage.RemainingDistance = this.dist;
                 Status = CycleStatus.Completed;
             }
-            float dist = host.GetSpeed(speed) * (time.ElaspedMsDelta / 1000f);
+
+            var dist = host.GetSpeed(speed) * (time.ElapsedMsDelta / 1000f);
             host.ValidateAndMove(host.X + storage.Direction.X * dist, host.Y + storage.Direction.Y * dist);
 
             storage.RemainingDistance -= dist;
         }
 
         state = storage;
+    }
+
+    //State storage: direction & remain
+    private class BuzzStorage {
+        public Vector2 Direction;
+        public float RemainingDistance;
+        public int RemainingTime;
     }
 }

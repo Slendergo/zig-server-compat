@@ -1,20 +1,18 @@
-﻿using NLog;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using NLog;
 
 namespace common.resources;
 
-public class Resources : IDisposable
-{
-    static readonly Logger Log = LogManager.GetCurrentClassLogger();
+public class Resources : IDisposable {
+    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+    public readonly XmlData GameData;
 
     public readonly string ResourcePath;
-    public readonly XmlData GameData;
-    public readonly Dictionary<string, byte[]> WebFiles = new();
     public readonly AppSettings Settings;
+    public readonly Dictionary<string, byte[]> WebFiles = new();
     public IEnumerable<XElement> XmlBehaviors;
 
-    public Resources(string resourcePath, bool wServer = false)
-    {
+    public Resources(string resourcePath, bool wServer = false) {
         Log.Info("Loading resources...");
         ResourcePath = resourcePath;
         GameData = new XmlData(resourcePath + "/xml");
@@ -25,13 +23,13 @@ public class Resources : IDisposable
             webFiles(resourcePath + "/web");
     }
 
-    void webFiles(string dir)
-    {
+    public void Dispose() { }
+
+    private void webFiles(string dir) {
         Log.Info("Loading web data...");
 
         var files = Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories);
-        foreach (var file in files)
-        {
+        foreach (var file in files) {
             var webPath = file.Substring(dir.Length, file.Length - dir.Length)
                 .Replace("\\", "/");
 
@@ -39,19 +37,12 @@ public class Resources : IDisposable
         }
     }
 
-    private IEnumerable<XElement> LoadBehaviors(string path)
-    {
+    private IEnumerable<XElement> LoadBehaviors(string path) {
         var xmls = Directory.EnumerateFiles(path, "*.xml", SearchOption.AllDirectories).ToArray();
-        for (var i = 0; i < xmls.Length; i++)
-        {
+        for (var i = 0; i < xmls.Length; i++) {
             var xml = XElement.Parse(File.ReadAllText(xmls[i]));
             foreach (var elem in xml.Elements().Where(x => x.Name == "BehaviorEntry"))
                 yield return elem;
         }
-    }
-
-    public void Dispose()
-    {
-
     }
 }

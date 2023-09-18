@@ -2,8 +2,7 @@
 
 namespace common.resources;
 
-public enum ItemType
-{
+public enum ItemType {
     Weapon,
     Ability,
     Armor,
@@ -14,15 +13,13 @@ public enum ItemType
     None
 }
 
-public enum CurrencyType : byte
-{
+public enum CurrencyType : byte {
     Gold = 0,
     Fame = 1,
     GuildFame = 2
 }
 
-public enum TerrainType
-{
+public enum TerrainType {
     None,
     Mountains,
     HighSand,
@@ -39,8 +36,7 @@ public enum TerrainType
     BeachTowels
 }
 
-public enum TileRegion
-{
+public enum TileRegion {
     None = 0,
     Spawn = 1,
     Realm_Portals = 2,
@@ -78,8 +74,7 @@ public enum TileRegion
     Store_24 = 36
 }
 
-public enum ActivateEffects
-{
+public enum ActivateEffects {
     Create,
     Dye,
     Shoot,
@@ -98,7 +93,7 @@ public enum ActivateEffects
     Trap,
     StasisBlast,
     Pet,
-    Decoy, 
+    Decoy,
     Lightning,
     UnlockPortal,
     MagicNova,
@@ -113,8 +108,7 @@ public enum ActivateEffects
 }
 
 [Flags]
-public enum ConditionEffects : ulong
-{
+public enum ConditionEffects : ulong {
     Dead = 1 << 0,
     Quiet = 1 << 1,
     Weak = 1 << 2,
@@ -146,8 +140,7 @@ public enum ConditionEffects : ulong
     NinjaSpeedy = 1 << 28
 }
 
-public enum ConditionEffectIndex
-{
+public enum ConditionEffectIndex {
     Dead = 0,
     Quiet = 1,
     Weak = 2,
@@ -176,61 +169,59 @@ public enum ConditionEffectIndex
     Armored = 25,
     ArmorBroken = 26,
     Hexed = 27,
-    NinjaSpeedy = 28,
+    NinjaSpeedy = 28
 }
 
-public class ObjectDesc
-{
-    public readonly ushort ObjectType;
-    public readonly string ObjectId;
-    public readonly string DisplayId;
-    public readonly string DisplayName;
-    public readonly string Class;
-    public readonly bool Static;
-    public readonly bool OccupySquare;
-    public readonly bool FullOccupy;
-    public readonly bool EnemyOccupySquare;
+public class ObjectDesc {
     public readonly bool BlocksSight;
-    public readonly bool Container;
-    public readonly int[] SlotTypes;
     public readonly bool CanPutNormalObjects;
     public readonly bool CanPutSoulboundObjects;
-    public readonly bool Loot;
-    public readonly int Size;
-    public readonly bool Enemy;
-    public readonly int MaxHP;
-    public readonly int Defense;
-    public readonly float ExpMultiplier;
-    public readonly int MinSize;
-    public readonly int MaxSize;
-    public readonly int SizeStep;
-    public readonly bool SpawnPoint;
-    public readonly string Group;
-    public readonly bool Quest;
-    public readonly int Level;
-    public readonly bool God;
-    public readonly bool NoArticle;
-    public readonly bool StasisImmune;
-    public readonly bool StunImmune;
-    public readonly bool Encounter;
-    public readonly int PerRealmMax;
-    public readonly bool Hero;
-    public readonly bool Cube;
-    public readonly bool Oryx;
-    public readonly bool Player;
-    public readonly bool KeepDamageRecord;
+    public readonly bool Character;
+    public readonly string Class;
     public readonly bool Connects;
+    public readonly bool Container;
+    public readonly bool Cube;
+    public readonly int Defense;
+    public readonly string DisplayId;
+    public readonly string DisplayName;
+    public readonly bool Encounter;
+    public readonly bool Enemy;
+    public readonly bool EnemyOccupySquare;
+    public readonly float ExpMultiplier;
+    public readonly bool FullOccupy;
+    public readonly bool God;
+    public readonly string Group;
+    public readonly bool Hero;
+    public readonly bool KeepDamageRecord;
+    public readonly int Level;
+    public readonly bool Loot;
+    public readonly int MaxHP;
+    public readonly int MaxSize;
+    public readonly int MinSize;
+    public readonly bool NoArticle;
+    public readonly string ObjectId;
+    public readonly ushort ObjectType;
+    public readonly bool OccupySquare;
+    public readonly bool Oryx;
+    public readonly int PerRealmMax;
+    public readonly bool Player;
+    public readonly ProjectileDesc[] Projectiles;
     public readonly bool ProtectFromGroundDamage;
     public readonly bool ProtectFromSink;
-    public readonly bool Character;
-    public readonly ProjectileDesc[] Projectiles;
+    public readonly bool Quest;
+    public readonly int Size;
+    public readonly int SizeStep;
+    public readonly int[] SlotTypes;
+    public readonly SpawnCount Spawn;
+    public readonly bool SpawnPoint;
+    public readonly float SpawnProb;
+    public readonly bool StasisImmune;
+    public readonly bool Static;
+    public readonly bool StunImmune;
 
     public readonly TerrainType Terrain;
-    public readonly float SpawnProb;
-    public readonly SpawnCount Spawn;
 
-    public ObjectDesc(ushort type, XElement e)
-    {
+    public ObjectDesc(ushort type, XElement e) {
         ObjectType = type;
         ObjectId = e.GetAttribute<string>("id");
         DisplayId = e.GetValue<string>("DisplayId");
@@ -247,22 +238,21 @@ public class ObjectDesc
         CanPutNormalObjects = e.HasElement("CanPutNormalObjects");
         CanPutSoulboundObjects = e.HasElement("CanPutSoulboundObjects");
         Loot = e.HasElement("Loot");
-        Size = e.GetValue<int>("Size", 100);
+        Size = e.GetValue("Size", 100);
         Enemy = e.HasElement("Enemy");
         MaxHP = e.GetValue<int>("MaxHitPoints");
         Defense = e.GetValue<int>("Defense");
-        ExpMultiplier = e.GetValue<float>("XpMult", 1.0f);
-        if (e.HasElement("MinSize") && e.HasElement("MaxSize"))
-        {
+        ExpMultiplier = e.GetValue("XpMult", 1.0f);
+        if (e.HasElement("MinSize") && e.HasElement("MaxSize")) {
             MinSize = e.GetValue<int>("MinSize");
             MaxSize = e.GetValue<int>("MaxSize");
-            SizeStep = e.GetValue<int>("SizeStep", 1);
+            SizeStep = e.GetValue("SizeStep", 1);
         }
-        else
-        {
+        else {
             MinSize = MaxSize = Size;
             SizeStep = 0;
         }
+
         Character = Class.Equals("Character");
         SpawnPoint = e.HasElement("SpawnPoint");
         Group = e.GetValue<string>("Group");
@@ -275,7 +265,7 @@ public class ObjectDesc
         SpawnProb = e.GetValue<float>("SpawnProb");
         if (e.HasElement("Spawn"))
             Spawn = new SpawnCount(e.Element("Spawn"));
-        Terrain = (TerrainType)Enum.Parse(typeof(TerrainType), e.GetValue<string>("Terrain", "None"));
+        Terrain = (TerrainType) Enum.Parse(typeof(TerrainType), e.GetValue("Terrain", "None"));
         Encounter = e.HasElement("Encounter");
         PerRealmMax = e.GetValue<int>("PerRealmMax");
         Hero = e.HasElement("Hero");
@@ -294,15 +284,13 @@ public class ObjectDesc
     }
 }
 
-public class SpawnCount
-{
-    public readonly int Mean;
-    public readonly int StdDev;
-    public readonly int Min;
+public class SpawnCount {
     public readonly int Max;
+    public readonly int Mean;
+    public readonly int Min;
+    public readonly int StdDev;
 
-    public SpawnCount(XElement e)
-    {
+    public SpawnCount(XElement e) {
         Mean = e.GetValue<int>("Mean");
         StdDev = e.GetValue<int>("StdDev");
         Min = e.GetValue<int>("Min");
@@ -310,32 +298,28 @@ public class SpawnCount
     }
 }
 
-public class PortalDesc : ObjectDesc
-{
+public class PortalDesc : ObjectDesc {
     public readonly string DungeonName;
     public readonly bool IntergamePortal;
     public readonly bool Locked;
-    public readonly int Timeout;
     public readonly bool NexusPortal;
+    public readonly int Timeout;
 
-    public PortalDesc(ushort type, XElement e) : base(type, e)
-    {
+    public PortalDesc(ushort type, XElement e) : base(type, e) {
         NexusPortal = e.HasElement("NexusPortal");
         DungeonName = e.GetValue<string>("DungeonName");
         IntergamePortal = e.HasElement("IntergamePortal");
         Locked = e.HasElement("LockedPortal");
-        Timeout = e.GetValue<int>("Timeout", 30);
+        Timeout = e.GetValue("Timeout", 30);
     }
 }
 
-public class PlayerDesc : ObjectDesc
-{
+public class PlayerDesc : ObjectDesc {
     public readonly ushort[] Equipment;
     public readonly Stat[] Stats;
     public readonly UnlockClass Unlock;
 
-    public PlayerDesc(ushort type, XElement e) : base(type, e)
-    {
+    public PlayerDesc(ushort type, XElement e) : base(type, e) {
         Equipment = e.GetValue<string>("Equipment").CommaToArray<ushort>();
         Stats = new Stat[8];
         for (var i = 0; i < Stats.Length; i++)
@@ -345,38 +329,32 @@ public class PlayerDesc : ObjectDesc
     }
 }
 
-public class Stat
-{
-    public readonly string Type;
-    public readonly int MaxValue;
-    public readonly int StartingValue;
-    public readonly int MinIncrease;
+public class Stat {
     public readonly int MaxIncrease;
+    public readonly int MaxValue;
+    public readonly int MinIncrease;
+    public readonly int StartingValue;
+    public readonly string Type;
 
-    public Stat(int index, XElement e)
-    {
+    public Stat(int index, XElement e) {
         Type = StatIndexToName(index);
         var x = e.Element(Type);
-        if (x != null)
-        {
+        if (x != null) {
             StartingValue = int.Parse(x.Value);
             MaxValue = x.GetAttribute<int>("max");
         }
 
         var y = e.Elements("LevelIncrease");
         foreach (var s in y)
-            if (s.Value == Type)
-            {
+            if (s.Value == Type) {
                 MinIncrease = s.GetAttribute<int>("min");
                 MaxIncrease = s.GetAttribute<int>("max");
                 break;
             }
     }
 
-    private static string StatIndexToName(int index)
-    {
-        switch (index)
-        {
+    private static string StatIndexToName(int index) {
+        switch (index) {
             case 0: return "MaxHitPoints";
             case 1: return "MaxMagicPoints";
             case 2: return "Attack";
@@ -386,94 +364,85 @@ public class Stat
             case 6: return "HpRegen";
             case 7: return "MpRegen";
         }
+
         return null;
     }
 }
 
-public class UnlockClass
-{
-    public readonly ushort? Type;
-    public readonly ushort? Level;
+public class UnlockClass {
     public readonly uint? Cost;
+    public readonly ushort? Level;
+    public readonly ushort? Type;
 
-    public UnlockClass(XElement e)
-    {
+    public UnlockClass(XElement e) {
         var n = e.Element("UnlockLevel");
-        if(n != null && n.HasAttribute("type") && n.HasAttribute("level"))
-        {
+        if (n != null && n.HasAttribute("type") && n.HasAttribute("level")) {
             Type = n.GetAttribute<ushort>("type");
             Level = n.GetAttribute<ushort>("level");
         }
 
         n = e.Element("UnlockCost");
-        if (n != null)
-        {
-            Cost = (uint)int.Parse(n.Value);
-        }
+        if (n != null) Cost = (uint) int.Parse(n.Value);
     }
 }
 
-public class SkinDesc
-{
-    public readonly ushort Type;
+public class SkinDesc {
+    public readonly int Cost;
     public readonly string ObjectId;
     public readonly ushort PlayerClassType;
-    public readonly int UnlockLevel;
-    public readonly int Cost;
     public readonly int Size;
+    public readonly ushort Type;
+    public readonly int UnlockLevel;
 
-    public SkinDesc(ushort type, XElement e)
-    {
+    public SkinDesc(ushort type, XElement e) {
         Type = type;
         ObjectId = e.GetAttribute<string>("id");
         PlayerClassType = e.GetValue<ushort>("PlayerClassType");
         UnlockLevel = e.GetValue<int>("UnlockLevel");
-        Cost = e.GetValue<int>("Cost", 900);
-        Size = e.GetValue<int>("Size", 100);
+        Cost = e.GetValue("Cost", 900);
+        Size = e.GetValue("Size", 100);
     }
 }
 
-public class Item
-{
-    public readonly ushort ObjectType;
-    public readonly string ObjectId;
+public class Item {
+    public readonly ActivateEffect[] ActivateEffects;
+    public readonly float ArcGap;
+    public readonly bool Backpack;
+    public readonly int BagType;
     public readonly string Class;
+    public readonly bool Consumable;
+    public readonly float Cooldown;
+    public readonly string Description;
     public readonly string DisplayId;
     public readonly string DisplayName;
-    public readonly int Texture1;
-    public readonly int Texture2;
-    public readonly int SlotType;
-    public readonly string Description;
-    public readonly bool Consumable;
-    public readonly bool InvUse;
-    public readonly bool TypeOfConsumable;
-    public readonly bool Soulbound;
-    public readonly bool Potion;
-    public readonly bool Usable;
-    public readonly bool Resurrects;
-    public readonly float RateOfFire;
-    public readonly int? Tier;
-    public readonly int BagType;
-    public readonly int FameBonus;
-    public readonly int NumProjectiles;
-    public readonly float ArcGap;
-    public readonly int MpCost;
-    public readonly float Cooldown;
     public readonly int Doses;
-    public readonly string SuccessorId;
-    public readonly bool Backpack;
+    public readonly int FameBonus;
+    public readonly bool InvUse;
     public readonly bool LDBoosted;
     public readonly bool LTBoosted;
-    public readonly bool XpBoost;
-    public readonly float Timer;
+    public readonly int MpCost;
     public readonly int MpEndCost;
+    public readonly int NumProjectiles;
+    public readonly string ObjectId;
+    public readonly ushort ObjectType;
+    public readonly bool Potion;
+    public readonly ProjectileDesc[] Projectiles;
+    public readonly float RateOfFire;
+    public readonly bool Resurrects;
+    public readonly int SlotType;
+    public readonly bool Soulbound;
 
     public readonly KeyValuePair<int, int>[] StatsBoost;
-    public readonly ActivateEffect[] ActivateEffects;
-    public readonly ProjectileDesc[] Projectiles;
+    public readonly string SuccessorId;
+    public readonly int Texture1;
+    public readonly int Texture2;
+    public readonly int? Tier;
+    public readonly float Timer;
+    public readonly bool TypeOfConsumable;
+    public readonly bool Usable;
+    public readonly bool XpBoost;
 
-    public Item(ushort type, XElement e)
-    {
+    public Item(ushort type, XElement e) {
         ObjectType = type;
         ObjectId = e.GetAttribute<string>("id");
         Class = e.GetValue<string>("Class");
@@ -493,10 +462,10 @@ public class Item
             Tier = e.GetValue<int>("Tier");
         BagType = e.GetValue<int>("BagType");
         FameBonus = e.GetValue<int>("FameBonus");
-        NumProjectiles = e.GetValue<int>("NumProjectiles", 1);
-        ArcGap = e.GetValue<float>("ArcGap", 11.25f);
+        NumProjectiles = e.GetValue("NumProjectiles", 1);
+        ArcGap = e.GetValue("ArcGap", 11.25f);
         MpCost = e.GetValue<int>("MpCost");
-        Cooldown = e.GetValue<float>("Cooldown", 0.5f);
+        Cooldown = e.GetValue("Cooldown", 0.5f);
         Doses = e.GetValue<int>("Doses");
         SuccessorId = e.GetValue<string>("SuccessorId");
         Backpack = e.HasElement("Backpack");
@@ -504,12 +473,12 @@ public class Item
         LTBoosted = e.HasElement("LTBoosted");
         XpBoost = e.HasElement("XpBoost");
         Timer = e.GetValue<float>("Timer");
-        MpEndCost = e.GetValue<int>("MpEndCost", 0);
+        MpEndCost = e.GetValue<int>("MpEndCost");
         InvUse = e.HasElement("InvUse");
         TypeOfConsumable = InvUse || Consumable;
 
         var stats = new List<KeyValuePair<int, int>>();
-        foreach (XElement i in e.Elements("ActivateOnEquip"))
+        foreach (var i in e.Elements("ActivateOnEquip"))
             stats.Add(new KeyValuePair<int, int>(
                 i.GetAttribute<int>("stat"),
                 i.GetAttribute<int>("amount")));
@@ -527,44 +496,41 @@ public class Item
     }
 }
 
-public class ProjectileDesc
-{
-    public readonly int BulletType;
-    public readonly string ObjectId;
-    public readonly float Speed;
-    public readonly int MinDamage;
-    public readonly int MaxDamage;
-    public readonly float LifetimeMS;
-    public readonly bool MultiHit;
-    public readonly bool PassesCover;
-    public readonly bool Parametric;
-    public readonly bool Boomerang;
+public class ProjectileDesc {
+    public readonly float Amplitude;
     public readonly bool ArmorPiercing;
-    public readonly bool Wavy;
+    public readonly bool Boomerang;
+    public readonly int BulletType;
 
     public readonly ConditionEffect[] Effects;
-
-    public readonly float Amplitude;
     public readonly float Frequency;
+    public readonly float LifetimeMS;
     public readonly float Magnitude;
+    public readonly int MaxDamage;
+    public readonly int MinDamage;
+    public readonly bool MultiHit;
+    public readonly string ObjectId;
+    public readonly bool Parametric;
+    public readonly bool PassesCover;
+    public readonly float Speed;
+    public readonly bool Wavy;
 
-    public ProjectileDesc(XElement e)
-    {
+    public ProjectileDesc(XElement e) {
         BulletType = e.GetAttribute<int>("id");
         ObjectId = e.GetValue<string>("ObjectId");
         LifetimeMS = e.GetValue<float>("LifetimeMS");
         Speed = e.GetValue<float>("Speed", 100);
 
         var dmg = e.Element("Damage");
-        if (dmg != null)
+        if (dmg != null) {
             MinDamage = MaxDamage = e.GetValue<int>("Damage");
-        else
-        {
+        }
+        else {
             MinDamage = e.GetValue<int>("MinDamage");
             MaxDamage = e.GetValue<int>("MaxDamage");
         }
 
-        List<ConditionEffect> effects = new List<ConditionEffect>();
+        var effects = new List<ConditionEffect>();
         foreach (var i in e.Elements("ConditionEffect"))
             effects.Add(new ConditionEffect(i));
         Effects = effects.ToArray();
@@ -576,52 +542,49 @@ public class ProjectileDesc
         Parametric = e.HasElement("Parametric");
         Boomerang = e.HasElement("Boomerang");
 
-        Amplitude = e.GetValue<float>("Amplitude", 0);
+        Amplitude = e.GetValue<float>("Amplitude");
         Frequency = e.GetValue<float>("Frequency", 1);
         Magnitude = e.GetValue<float>("Magnitude", 3);
     }
 }
 
-public class ConditionEffect
-{
-    public ConditionEffectIndex Effect;
+public class ConditionEffect {
     public int DurationMS;
+    public ConditionEffectIndex Effect;
 
     public ConditionEffect() { }
-    public ConditionEffect(XElement e)
-    {
+
+    public ConditionEffect(XElement e) {
         Effect = Utils.GetEffect(e.Value);
-        DurationMS = (int)(e.GetAttribute<float>("duration") * 1000.0f);
+        DurationMS = (int) (e.GetAttribute<float>("duration") * 1000.0f);
     }
 }
 
-public class ActivateEffect
-{
-    public readonly ActivateEffects Effect;
-    public readonly ConditionEffectIndex? ConditionEffect;
+public class ActivateEffect {
+    public readonly int Amount;
     public readonly ConditionEffectIndex? CheckExistingEffect;
+    public readonly uint? Color;
+    public readonly ConditionEffectIndex? ConditionEffect;
+    public readonly float Cooldown;
+    public readonly string DungeonName;
+    public readonly int DurationMS;
+    public readonly float DurationSec;
+    public readonly ActivateEffects Effect;
+    public readonly float EffectDuration;
+    public readonly string Id;
+    public readonly string LockedName;
+    public readonly float MaximumDistance;
+    public readonly int MaxTargets;
+    public readonly string ObjectId;
+    public readonly float Radius;
+    public readonly float Range;
+    public readonly bool RemoveSelf;
+    public readonly int Stats;
 
     public readonly int TotalDamage;
-    public readonly float Radius;
-    public readonly float EffectDuration;
-    public readonly float DurationSec;
-    public readonly int DurationMS;
-    public readonly int Amount;
-    public readonly float Range;
-    public readonly float MaximumDistance;
-    public readonly string ObjectId;
-    public readonly string Id;
-    public readonly int MaxTargets;
-    public readonly uint? Color;
-    public readonly int Stats;
-    public readonly float Cooldown;
-    public readonly bool RemoveSelf;
-    public readonly string DungeonName;
-    public readonly string LockedName;
 
-    public ActivateEffect(XElement e)
-    {
-        Effect = (ActivateEffects)Enum.Parse(typeof(ActivateEffects), e.Value);
+    public ActivateEffect(XElement e) {
+        Effect = (ActivateEffects) Enum.Parse(typeof(ActivateEffects), e.Value);
 
         if (e.HasAttribute("effect"))
             ConditionEffect = Utils.GetEffect(e.GetAttribute<string>("effect"));
@@ -632,16 +595,13 @@ public class ActivateEffect
         if (e.HasAttribute("checkExistingEffect"))
             CheckExistingEffect = Utils.GetEffect(e.GetAttribute<string>("checkExistingEffect"));
 
-        if (e.HasAttribute("color"))
-        {
-            Color = e.GetAttribute<uint>("color");
-        }
+        if (e.HasAttribute("color")) Color = e.GetAttribute<uint>("color");
 
         TotalDamage = e.GetAttribute<int>("totalDamage");
         Radius = e.GetAttribute<float>("radius");
         EffectDuration = e.GetAttribute<float>("condDuration");
         DurationSec = e.GetAttribute<float>("duration");
-        DurationMS = (int)(DurationSec * 1000.0f);
+        DurationMS = (int) (DurationSec * 1000.0f);
         Amount = e.GetAttribute<int>("amount");
         Range = e.GetAttribute<float>("range");
         ObjectId = e.GetAttribute<string>("objectId");
@@ -656,35 +616,31 @@ public class ActivateEffect
     }
 }
 
-public class TileDesc
-{
-    public readonly ushort ObjectType;
-    public readonly string ObjectId;
-    public readonly bool NoWalk;
+public class TileDesc {
     public readonly bool Damaging;
-    public readonly int MinDamage;
     public readonly int MaxDamage;
-    public readonly float Speed;
+    public readonly int MinDamage;
+    public readonly bool NoWalk;
+    public readonly string ObjectId;
+    public readonly ushort ObjectType;
     public readonly bool Push;
     public readonly float PushX;
     public readonly float PushY;
     public readonly bool Sink;
     public readonly bool Sinking;
+    public readonly float Speed;
 
-    public TileDesc(ushort type, XElement e)
-    {
+    public TileDesc(ushort type, XElement e) {
         ObjectType = type;
         ObjectId = e.GetAttribute<string>("id");
         NoWalk = e.HasElement("NoWalk");
 
-        if (e.HasElement("MinDamage"))
-        {
+        if (e.HasElement("MinDamage")) {
             MinDamage = e.GetValue<int>("MinDamage");
             Damaging = true;
         }
 
-        if (e.HasElement("MaxDamage"))
-        {
+        if (e.HasElement("MaxDamage")) {
             MaxDamage = e.GetValue<int>("MaxDamage");
             Damaging = true;
         }
@@ -692,10 +648,9 @@ public class TileDesc
         Sink = e.HasElement("Sink");
         Sinking = e.HasElement("Sinking");
 
-        Speed = e.GetValue<float>("Speed", 1.0f);
+        Speed = e.GetValue("Speed", 1.0f);
         Push = e.HasElement("Push");
-        if (Push)
-        {
+        if (Push) {
             var anim = e.Element("Animate");
             if (anim.HasAttribute("dx"))
                 PushX = anim.GetAttribute<float>("dx");

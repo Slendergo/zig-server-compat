@@ -1,88 +1,72 @@
-﻿using common;
+﻿using System.Xml.Linq;
+using common;
 using common.resources;
-using System.Xml.Linq;
-using wServer.networking.packets.outgoing;
 using wServer.realm;
 using wServer.realm.entities;
 
 namespace wServer.logic.behaviors;
 
-class HealGroup : Behavior
-{
+internal class HealGroup : Behavior {
+    private int? amount;
+    private Cooldown coolDown;
+
+    private string group;
     //State storage: cooldown timer
 
-    double range;
-    string group;
-    Cooldown coolDown;
-    int? amount;
+    private double range;
 
-    public HealGroup(XElement e)
-    {
+    public HealGroup(XElement e) {
         range = e.ParseFloat("@range");
         group = e.ParseString("@group");
         amount = e.ParseNInt("@amount");
         coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
     }
 
-    public HealGroup(double range, string group, Cooldown coolDown = new(), int? healAmount = null)
-    {
-        this.range = (float)range;
+    public HealGroup(double range, string group, Cooldown coolDown = new(), int? healAmount = null) {
+        this.range = (float) range;
         this.group = group;
         this.coolDown = coolDown.Normalize();
-        this.amount = healAmount;
+        amount = healAmount;
     }
 
-    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-    {
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state) {
         state = 0;
     }
 
-    protected override void TickCore(Entity host, RealmTime time, ref object state)
-    {
-        int cool = (int)state;
+    protected override void TickCore(Entity host, RealmTime time, ref object state) {
+        var cool = (int) state;
 
-        if (cool <= 0)
-        {
+        if (cool <= 0) {
             if (host.HasConditionEffect(ConditionEffects.Stunned)) return;
 
-            foreach (var entity in host.GetNearestEntitiesByGroup(range, group).OfType<Enemy>())
-            {
-                int newHp = entity.ObjectDesc.MaxHP;
-                if (amount != null)
-                {
+            foreach (var entity in host.GetNearestEntitiesByGroup(range, group).OfType<Enemy>()) {
+                var newHp = entity.ObjectDesc.MaxHP;
+                if (amount != null) {
                     var newHealth = (int) amount + entity.HP;
                     if (newHp > newHealth)
                         newHp = newHealth;
                 }
-                if (newHp != entity.HP)
-                {
-                    int n = newHp - entity.HP;
+
+                if (newHp != entity.HP) {
+                    var n = newHp - entity.HP;
                     entity.HP = newHp;
-                    entity.Owner.BroadcastPacketNearby(new ShowEffect()
-                    {
-                        EffectType = EffectType.Potion,
-                        TargetObjectId = entity.Id,
-                        Color = new ARGB(0xffffffff)
-                    }, entity, null);
-                    entity.Owner.BroadcastPacketNearby(new ShowEffect()
-                    {
-                        EffectType = EffectType.Trail,
-                        TargetObjectId = host.Id,
-                        Pos1 = new Position() { X = entity.X, Y = entity.Y },
-                        Color = new ARGB(0xffffffff)
-                    }, host, null);
-                    entity.Owner.BroadcastPacketNearby(new Notification()
-                    {
-                        ObjectId = entity.Id,
-                        Message = "+" + n,
-                        Color = new ARGB(0xff00ff00)
-                    }, entity, null);
+
+                    foreach (var player in host.Owner.Players.Values)
+                        if (player.DistSqr(host) < Player.RadiusSqr) {
+                            player.Client.SendShowEffect(EffectType.Potion, entity.Id, new Position(), new Position(),
+                                new ARGB(0xffffffff));
+                            player.Client.SendShowEffect(EffectType.Trail, host.Id,
+                                new Position {X = entity.X, Y = entity.Y}, new Position(), new ARGB(0xffffffff));
+                            player.Client.SendNotification(entity.Id, "+" + n, new ARGB(0xff00ff00));
+                        }
                 }
             }
+
             cool = coolDown.Next(Random);
         }
-        else
-            cool -= time.ElaspedMsDelta;
+        else {
+            cool -= time.ElapsedMsDelta;
+        }
 
         state = cool;
     }

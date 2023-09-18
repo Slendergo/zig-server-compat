@@ -1,32 +1,28 @@
-﻿using common;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using common;
 using wServer.realm;
 
 namespace wServer.logic.transitions;
 
-class EntityWithinTransition : Transition
-{
+internal class EntityWithinTransition : Transition {
     //State storage: none
 
     private readonly double _dist;
     private readonly string _entity;
 
     public EntityWithinTransition(XElement e)
-    : base(e.ParseString("@targetState", "root"))
-    {
+        : base(e.ParseString("@targetState", "root")) {
         _dist = e.ParseFloat("@dist");
         _entity = e.ParseString("@entity");
     }
 
     public EntityWithinTransition(double dist, string entity, string targetState)
-        : base(targetState)
-    {
+        : base(targetState) {
         _dist = dist;
         _entity = entity;
     }
 
-    protected override bool TickCore(Entity host, RealmTime time, ref object state)
-    {
+    protected override bool TickCore(Entity host, RealmTime time, ref object state) {
         return host.GetNearestEntityByName(_dist, _entity) != null;
     }
 }

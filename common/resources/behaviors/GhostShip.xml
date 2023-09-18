@@ -1,337 +1,342 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-  <BehaviorEntry id="Ghost Ship">
-    <State id="Waiting Player">
-      <SetAltTexture minValue="1" cooldown="0" />
-      <Prioritize>
-        <Orbit speed="0.2" radius="2" target="Ghost Ship Anchor" speedVariance="0.02" radiusVariance="0.02" orbitClockwise="false" />
-      </Prioritize>
-      <HpLessTransition targetState="Start" threshold="0.98" />
-    </State>
-    <State id="Start">
-      <ConditionalEffect effect="Invulnerable" />
-      <ReturnToSpawn speed="0.5" returnWithinRadius="0" />
-      <SetAltTexture minValue="0" cooldown="0" />
-      <TimedTransition targetState="PreAttack" time="3000" />
-    </State>
-    <State id="PreAttack">
-      <ReturnToSpawn speed="0.5" returnWithinRadius="0" />
-      <ConditionalEffect effect="Invulnerable" />
-      <SetAltTexture minValue="2" cooldown="0" />
-      <OrderOnce range="100" children="Beach Spectre Spawner" targetState="Active" />
-      <TimedTransition targetState="Phase1+2" time="300" />
-    </State>
-    <State id="Phase1+2">
-      <SetAltTexture minValue="0" cooldown="0" />
-      <Reproduce children="Vengeful Spirit" densityRadius="20" densityMax="4" cooldown="4000" />
-      <TossObject child="Water Mine" angle="1" cooldown="5000" minRange="3" maxRange="7" minAngle="1" maxAngle="359" />
-      <State id="Attack">
-        <Prioritize>
-          <Follow speed="0.2" range="3" cooldown="0" />
-          <Wander speed="0.3" />
-          <StayCloseToSpawn speed="0.4" range="7" />
-        </Prioritize>
-        <Taunt text="Fire at will!" probability="0.3" />
-        <Shoot radius="10" count="3" shootAngle="6" cooldown="2000" />
-        <Shoot radius="10" shootAngle="0" cooldown="800" />
-        <HpLessTransition targetState="TransAttack" threshold="0.9" />
-      </State>
-      <State id="TransAttack">
-        <ConditionalEffect effect="Invulnerable" />
-        <State id="TransAttack1">
-          <Taunt text="Ready..." probability="0.99" />
-          <ReturnToSpawn speed="0.3" />
-          <TimedTransition targetState="TransAttack1.1" time="1000" />
+    <BehaviorEntry id="Ghost Ship">
+        <State id="Waiting Player">
+            <SetAltTexture minValue="1" cooldown="0"/>
+            <Prioritize>
+                <Orbit speed="0.2" radius="2" target="Ghost Ship Anchor" speedVariance="0.02" radiusVariance="0.02"
+                       orbitClockwise="false"/>
+            </Prioritize>
+            <HpLessTransition targetState="Start" threshold="0.98"/>
         </State>
-        <State id="TransAttack1.1">
-          <Wander speed="0.3" />
-          <Taunt text="Aim..." probability="0.99" />
-          <TimedTransition targetState="Phase2" time="1000" />
+        <State id="Start">
+            <ConditionalEffect effect="Invulnerable"/>
+            <ReturnToSpawn speed="0.5" returnWithinRadius="0"/>
+            <SetAltTexture minValue="0" cooldown="0"/>
+            <TimedTransition targetState="PreAttack" time="3000"/>
         </State>
-        <State id="Phase2">
-          <Prioritize>
-            <Follow speed="0.2" range="3" cooldown="0" />
-            <Wander speed="0.3" />
-            <StayCloseToSpawn speed="0.4" range="7" />
-          </Prioritize>
-          <HpLessTransition targetState="Phase3" threshold="0.7" />
-          <State id="Attack1.1">
-            <Taunt text="FIRE!" probability="0.99" />
-            <Shoot radius="0" count="3" shootAngle="20" fixedAngle="270" cooldown="3000" />
-            <Shoot radius="0" count="3" shootAngle="20" fixedAngle="90" cooldown="3000" />
-            <TimedTransition targetState="Attack1.2" time="1000" />
-          </State>
-          <State id="Attack1.2">
-            <Shoot radius="0" count="3" shootAngle="20" fixedAngle="0" cooldown="3000" />
-            <Shoot radius="0" count="3" shootAngle="20" fixedAngle="180" cooldown="3000" />
-            <TimedTransition targetState="Attack1.3" time="1000" />
-          </State>
-          <State id="Attack1.3">
-            <ConditionalEffect effect="Invulnerable" />
-            <Shoot radius="0" count="3" shootAngle="20" fixedAngle="270" cooldown="3000" />
-            <Shoot radius="0" count="3" shootAngle="20" fixedAngle="90" cooldown="3000" />
-            <TimedTransition targetState="Attack1.4" time="1000" />
-          </State>
-          <State id="Attack1.4">
-            <ConditionalEffect effect="Invulnerable" />
-            <Shoot radius="0" count="12" shootAngle="0" fixedAngle="30" cooldown="3000" />
-            <TimedTransition targetState="Attack1.5" time="1500" />
-          </State>
-          <State id="Attack1.5">
-            <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="0" cooldown="3000" />
-            <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="90" cooldown="3000" />
-            <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="180" cooldown="3000" />
-            <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="270" cooldown="3000" />
-            <TimedTransition targetState="Attack1.6" time="1000" />
-          </State>
-          <State id="Attack1.6">
-            <ConditionalEffect effect="Invulnerable" />
-            <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="3000" />
-            <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="135" cooldown="3000" />
-            <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="225" cooldown="3000" />
-            <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="315" cooldown="3000" />
-            <TimedTransition targetState="Attack1.7" time="1000" />
-          </State>
-          <State id="Attack1.7">
-            <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="0" cooldown="5000" />
-            <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="90" cooldown="5000" />
-            <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="180" cooldown="5000" />
-            <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="270" cooldown="5000" />
-            <TimedTransition targetState="TransAttack" time="3000" />
-          </State>
+        <State id="PreAttack">
+            <ReturnToSpawn speed="0.5" returnWithinRadius="0"/>
+            <ConditionalEffect effect="Invulnerable"/>
+            <SetAltTexture minValue="2" cooldown="0"/>
+            <OrderOnce range="100" children="Beach Spectre Spawner" targetState="Active"/>
+            <TimedTransition targetState="Phase1+2" time="300"/>
         </State>
-      </State>
-    </State>
-    <State id="Phase3">
-      <Shoot radius="0" count="4" shootAngle="0" fixedAngle="90" rotateAngle="35" cooldown="1000" />
-      <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="1" cooldown="1400" />
-      <Reproduce children="Vengeful Spirit" densityRadius="20" densityMax="4" cooldown="4000" />
-      <Reproduce children="Water Mine" densityRadius="20" cooldown="3000" />
-      <ReturnToSpawn speed="0.4" />
-      <HpLessTransition targetState="Phase4" threshold="0.5" />
-      <State id="Invul">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="Vul" time="2000" />
-      </State>
-      <State id="Vul">
-        <TimedTransition targetState="Invul" time="3000" />
-      </State>
-    </State>
-    <State id="Phase4">
-      <Prioritize>
-        <Follow speed="0.2" range="3" cooldown="0" />
-        <Wander speed="0.4" />
-        <StayCloseToSpawn speed="0.4" range="7" />
-      </Prioritize>
-      <TossObject child="Water Mine" angle="1" cooldown="5000" minRange="3" maxRange="7" minAngle="1" maxAngle="359" />
-      <Shoot radius="20" count="2" shootAngle="8" cooldown="800" />
-      <Shoot radius="20" count="3" shootAngle="8" cooldown="1300" />
-      <Shoot radius="20" count="2" shootAngle="8" projectileIndex="1" cooldown="2000" />
-      <HpLessTransition targetState="PrePhase5" threshold="0.4" />
-      <State id="Invul1">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="Vul1" time="2000" />
-      </State>
-      <State id="Vul1">
-        <TimedTransition targetState="Invul1" time="3000" />
-      </State>
-    </State>
-    <State id="PrePhase5">
-      <TossObject child="Tempest Cloud" range="8" angle="0" cooldown="10000" tossInvis="true" />
-      <TossObject child="Tempest Cloud" range="8" angle="36" cooldown="10000" tossInvis="true" />
-      <TossObject child="Tempest Cloud" range="8" angle="72" cooldown="10000" tossInvis="true" />
-      <TossObject child="Tempest Cloud" range="8" angle="108" cooldown="10000" tossInvis="true" />
-      <TossObject child="Tempest Cloud" range="8" angle="144" cooldown="10000" tossInvis="true" />
-      <TossObject child="Tempest Cloud" range="8" angle="180" cooldown="10000" tossInvis="true" />
-      <TossObject child="Tempest Cloud" range="8" angle="216" cooldown="10000" tossInvis="true" />
-      <TossObject child="Tempest Cloud" range="8" angle="252" cooldown="10000" tossInvis="true" />
-      <TossObject child="Tempest Cloud" range="8" angle="288" cooldown="10000" tossInvis="true" />
-      <TossObject child="Tempest Cloud" range="8" angle="324" cooldown="10000" tossInvis="true" />
-      <EntityExistsTransition targetState="Phase5" dist="10" target="Tempest Cloud" />
-    </State>
-    <State id="Phase5">
-      <OrderOnce range="100" children="Beach Spectre Spawner" targetState="Active" />
-      <Shoot radius="0" count="4" shootAngle="0" fixedAngle="90" rotateAngle="35" cooldown="1000" />
-      <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="1" cooldown="1400" />
-      <Reproduce children="Vengeful Spirit" densityRadius="20" densityMax="4" cooldown="4000" />
-      <Reproduce children="Water Mine" densityRadius="20" cooldown="3000" />
-      <ReturnToSpawn speed="0.4" />
-      <HpLessTransition targetState="PrePhase6" threshold="0.2" />
-      <State id="Invul2">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="Vul2" time="2000" />
-      </State>
-      <State id="Vul2">
-        <TimedTransition targetState="Invul2" time="3000" />
-      </State>
-    </State>
-    <State id="PrePhase6">
-      <Taunt text="Fire at will!!!" probability="0.99" />
-      <TimedTransition targetState="Phase6" time="100" />
-    </State>
-    <State id="Phase6">
-      <Prioritize>
-        <Follow speed="0.2" range="3" cooldown="0" />
-        <Wander speed="0.4" />
-        <StayCloseToSpawn speed="0.4" range="7" />
-      </Prioritize>
-      <TossObject child="Water Mine" angle="1" cooldown="5000" minRange="3" maxRange="7" minAngle="1" maxAngle="359" />
-      <Shoot radius="20" count="2" shootAngle="8" cooldown="800" />
-      <Shoot radius="20" count="3" shootAngle="8" cooldown="1300" />
-      <Shoot radius="20" count="2" shootAngle="8" projectileIndex="1" cooldown="2000" />
-      <State id="Invul3">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="Vul3" time="2000" />
-      </State>
-      <State id="Vul3">
-        <TimedTransition targetState="Invul3" time="3000" />
-      </State>
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Ghost Ship Anchor">
-    <ConditionalEffect effect="Invincible" perm="true" />
-    <State id="Waiting">
-      <EntityNotExistsTransition targetState="Davy Or No ?" dist="20" target="Ghost Ship" />
-    </State>
-    <State id="Davy Or No ?">
-      <TimedRandomTransition targetState="Davy,nah" time="10" />
-    </State>
-    <State id="nah">
-      <Suicide />
-    </State>
-    <State id="nah2">
-      <DropPortalOnDeath target="Davy Jones's Locker Portal" />
-      <Suicide />
-    </State>
-    <State id="Davy">
-      <GroundTransform tileId="Ghost Water Beach" persist="true" relativeX="1" relativeY="0" />
-      <GroundTransform tileId="Ghost Water Beach" persist="true" relativeX="0" relativeY="0" />
-      <GroundTransform tileId="Ghost Water Beach" persist="true" relativeX="-1" relativeY="0" />
-      <GroundTransform tileId="Ghost Water Beach" persist="true" relativeX="0" relativeY="1" />
-      <GroundTransform tileId="Ghost Water Beach" persist="true" relativeX="0" relativeY="-1" />
-      <TossObject child="Palm Tree" range="1" angle="0" cooldown="10000" tossInvis="true" />
-      <TossObject child="Palm Tree" range="1" angle="180" cooldown="10000" tossInvis="true" />
-      <TimedTransition targetState="nah2" time="1000" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Vengeful Spirit">
-    <ChangeSize rate="20" target="100" />
-    <State id="Charge">
-      <Prioritize>
-        <Charge speed="3" cooldown="2000" />
-        <Wander speed="0.1" />
-      </Prioritize>
-      <Shoot radius="5" count="3" shootAngle="8" cooldown="1000" />
-      <EntityNotExistsTransition targetState="Die" dist="20" target="Ghost Ship" />
-    </State>
-    <State id="Die">
-      <Suicide />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Tempest Cloud">
-    <ConditionalEffect effect="Invincible" perm="true" />
-    <State id="Texture">
-      <ChangeSize rate="10" target="140" />
-      <State id="Texture1">
-        <SetAltTexture minValue="1" maxValue="9" cooldown="200" />
-        <TimedTransition targetState="Attack" time="2000" />
-      </State>
-    </State>
-    <State id="Attack">
-      <Prioritize>
-        <Orbit speed="0.4" radius="8" acquireRange="20" target="Ghost Ship" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
-      </Prioritize>
-      <Shoot radius="0" count="10" shootAngle="0" fixedAngle="36" cooldown="700" />
-      <EntityNotExistsTransition targetState="Die" dist="30" target="Ghost Ship" />
-    </State>
-    <State id="Die">
-      <State id="Tex">
-        <SetAltTexture minValue="9" cooldown="0" />
-        <TimedTransition targetState="Tex1" time="200" />
-      </State>
-      <State id="Tex1">
-        <SetAltTexture minValue="8" cooldown="0" />
-        <TimedTransition targetState="Tex2" time="200" />
-      </State>
-      <State id="Tex2">
-        <SetAltTexture minValue="7" cooldown="0" />
-        <TimedTransition targetState="Tex3" time="200" />
-      </State>
-      <State id="Tex3">
-        <SetAltTexture minValue="6" cooldown="0" />
-        <TimedTransition targetState="Tex4" time="200" />
-      </State>
-      <State id="Tex4">
-        <SetAltTexture minValue="5" cooldown="0" />
-        <TimedTransition targetState="Tex5" time="200" />
-      </State>
-      <State id="Tex5">
-        <SetAltTexture minValue="4" cooldown="0" />
-        <TimedTransition targetState="Tex6" time="200" />
-      </State>
-      <State id="Tex6">
-        <SetAltTexture minValue="3" cooldown="0" />
-        <TimedTransition targetState="Tex7" time="200" />
-      </State>
-      <State id="Tex7">
-        <SetAltTexture minValue="2" cooldown="0" />
-        <TimedTransition targetState="Tex8" time="200" />
-      </State>
-      <State id="Tex8">
-        <SetAltTexture minValue="1" cooldown="0" />
-        <TimedTransition targetState="Tex9" time="200" />
-      </State>
-      <State id="Tex9">
-        <SetAltTexture minValue="0" cooldown="0" />
-        <TimedTransition targetState="Tex10" time="200" />
-      </State>
-      <State id="Tex10">
-        <Suicide />
-      </State>
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Water Mine">
-    <Decay />
-    <State id="GRAB IT">
-      <Prioritize>
-        <Follow speed="0.2" range="0" cooldown="0" />
-      </Prioritize>
-      <EntityNotExistsTransition targetState="BOOOM" dist="20" target="Ghost Ship" />
-      <PlayerWithinTransition targetState="BOOOM" dist="3" />
-    </State>
-    <State id="BOOOM">
-      <Shoot radius="0" count="10" shootAngle="0" fixedAngle="36" cooldown="1000" />
-      <Suicide />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Beach Spectre Spawner">
-    <ConditionalEffect effect="Invincible" perm="true" />
-    <EntityNotExistsTransition targetState="Die" dist="60" target="Ghost Ship" />
-    <State id="Waiting Order" />
-    <State id="Active">
-      <PlayerWithinTransition targetState="Spawn" dist="7" />
-    </State>
-    <State id="Spawn">
-      <Reproduce children="Beach Spectre" densityRadius="3" densityMax="1" cooldown="1000" />
-      <NoPlayerWithinTransition targetState="Active" dist="8" />
-    </State>
-    <State id="Die">
-      <Suicide />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Beach Spectre">
-    <ChangeSize rate="20" target="100" />
-    <State id="Attack">
-      <Prioritize>
-        <Wander speed="0.1" />
-      </Prioritize>
-      <Shoot radius="5" count="3" shootAngle="12" cooldown="1300" />
-      <NoPlayerWithinTransition targetState="Die" dist="7" />
-    </State>
-    <State id="Die">
-      <ConditionalEffect effect="Invincible" />
-      <ChangeSize rate="20" target="0" />
-      <Decay time="3000" />
-    </State>
-  </BehaviorEntry>
+        <State id="Phase1+2">
+            <SetAltTexture minValue="0" cooldown="0"/>
+            <Reproduce children="Vengeful Spirit" densityRadius="20" densityMax="4" cooldown="4000"/>
+            <TossObject child="Water Mine" angle="1" cooldown="5000" minRange="3" maxRange="7" minAngle="1"
+                        maxAngle="359"/>
+            <State id="Attack">
+                <Prioritize>
+                    <Follow speed="0.2" range="3" cooldown="0"/>
+                    <Wander speed="0.3"/>
+                    <StayCloseToSpawn speed="0.4" range="7"/>
+                </Prioritize>
+                <Taunt text="Fire at will!" probability="0.3"/>
+                <Shoot radius="10" count="3" shootAngle="6" cooldown="2000"/>
+                <Shoot radius="10" shootAngle="0" cooldown="800"/>
+                <HpLessTransition targetState="TransAttack" threshold="0.9"/>
+            </State>
+            <State id="TransAttack">
+                <ConditionalEffect effect="Invulnerable"/>
+                <State id="TransAttack1">
+                    <Taunt text="Ready..." probability="0.99"/>
+                    <ReturnToSpawn speed="0.3"/>
+                    <TimedTransition targetState="TransAttack1.1" time="1000"/>
+                </State>
+                <State id="TransAttack1.1">
+                    <Wander speed="0.3"/>
+                    <Taunt text="Aim..." probability="0.99"/>
+                    <TimedTransition targetState="Phase2" time="1000"/>
+                </State>
+                <State id="Phase2">
+                    <Prioritize>
+                        <Follow speed="0.2" range="3" cooldown="0"/>
+                        <Wander speed="0.3"/>
+                        <StayCloseToSpawn speed="0.4" range="7"/>
+                    </Prioritize>
+                    <HpLessTransition targetState="Phase3" threshold="0.7"/>
+                    <State id="Attack1.1">
+                        <Taunt text="FIRE!" probability="0.99"/>
+                        <Shoot radius="0" count="3" shootAngle="20" fixedAngle="270" cooldown="3000"/>
+                        <Shoot radius="0" count="3" shootAngle="20" fixedAngle="90" cooldown="3000"/>
+                        <TimedTransition targetState="Attack1.2" time="1000"/>
+                    </State>
+                    <State id="Attack1.2">
+                        <Shoot radius="0" count="3" shootAngle="20" fixedAngle="0" cooldown="3000"/>
+                        <Shoot radius="0" count="3" shootAngle="20" fixedAngle="180" cooldown="3000"/>
+                        <TimedTransition targetState="Attack1.3" time="1000"/>
+                    </State>
+                    <State id="Attack1.3">
+                        <ConditionalEffect effect="Invulnerable"/>
+                        <Shoot radius="0" count="3" shootAngle="20" fixedAngle="270" cooldown="3000"/>
+                        <Shoot radius="0" count="3" shootAngle="20" fixedAngle="90" cooldown="3000"/>
+                        <TimedTransition targetState="Attack1.4" time="1000"/>
+                    </State>
+                    <State id="Attack1.4">
+                        <ConditionalEffect effect="Invulnerable"/>
+                        <Shoot radius="0" count="12" shootAngle="0" fixedAngle="30" cooldown="3000"/>
+                        <TimedTransition targetState="Attack1.5" time="1500"/>
+                    </State>
+                    <State id="Attack1.5">
+                        <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="0" cooldown="3000"/>
+                        <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="90" cooldown="3000"/>
+                        <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="180" cooldown="3000"/>
+                        <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="270" cooldown="3000"/>
+                        <TimedTransition targetState="Attack1.6" time="1000"/>
+                    </State>
+                    <State id="Attack1.6">
+                        <ConditionalEffect effect="Invulnerable"/>
+                        <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="3000"/>
+                        <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="135" cooldown="3000"/>
+                        <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="225" cooldown="3000"/>
+                        <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="315" cooldown="3000"/>
+                        <TimedTransition targetState="Attack1.7" time="1000"/>
+                    </State>
+                    <State id="Attack1.7">
+                        <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="0" cooldown="5000"/>
+                        <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="90" cooldown="5000"/>
+                        <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="180" cooldown="5000"/>
+                        <Shoot radius="0" shootAngle="0" projectileIndex="1" fixedAngle="270" cooldown="5000"/>
+                        <TimedTransition targetState="TransAttack" time="3000"/>
+                    </State>
+                </State>
+            </State>
+        </State>
+        <State id="Phase3">
+            <Shoot radius="0" count="4" shootAngle="0" fixedAngle="90" rotateAngle="35" cooldown="1000"/>
+            <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="1" cooldown="1400"/>
+            <Reproduce children="Vengeful Spirit" densityRadius="20" densityMax="4" cooldown="4000"/>
+            <Reproduce children="Water Mine" densityRadius="20" cooldown="3000"/>
+            <ReturnToSpawn speed="0.4"/>
+            <HpLessTransition targetState="Phase4" threshold="0.5"/>
+            <State id="Invul">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="Vul" time="2000"/>
+            </State>
+            <State id="Vul">
+                <TimedTransition targetState="Invul" time="3000"/>
+            </State>
+        </State>
+        <State id="Phase4">
+            <Prioritize>
+                <Follow speed="0.2" range="3" cooldown="0"/>
+                <Wander speed="0.4"/>
+                <StayCloseToSpawn speed="0.4" range="7"/>
+            </Prioritize>
+            <TossObject child="Water Mine" angle="1" cooldown="5000" minRange="3" maxRange="7" minAngle="1"
+                        maxAngle="359"/>
+            <Shoot radius="20" count="2" shootAngle="8" cooldown="800"/>
+            <Shoot radius="20" count="3" shootAngle="8" cooldown="1300"/>
+            <Shoot radius="20" count="2" shootAngle="8" projectileIndex="1" cooldown="2000"/>
+            <HpLessTransition targetState="PrePhase5" threshold="0.4"/>
+            <State id="Invul1">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="Vul1" time="2000"/>
+            </State>
+            <State id="Vul1">
+                <TimedTransition targetState="Invul1" time="3000"/>
+            </State>
+        </State>
+        <State id="PrePhase5">
+            <TossObject child="Tempest Cloud" range="8" angle="0" cooldown="10000" tossInvis="true"/>
+            <TossObject child="Tempest Cloud" range="8" angle="36" cooldown="10000" tossInvis="true"/>
+            <TossObject child="Tempest Cloud" range="8" angle="72" cooldown="10000" tossInvis="true"/>
+            <TossObject child="Tempest Cloud" range="8" angle="108" cooldown="10000" tossInvis="true"/>
+            <TossObject child="Tempest Cloud" range="8" angle="144" cooldown="10000" tossInvis="true"/>
+            <TossObject child="Tempest Cloud" range="8" angle="180" cooldown="10000" tossInvis="true"/>
+            <TossObject child="Tempest Cloud" range="8" angle="216" cooldown="10000" tossInvis="true"/>
+            <TossObject child="Tempest Cloud" range="8" angle="252" cooldown="10000" tossInvis="true"/>
+            <TossObject child="Tempest Cloud" range="8" angle="288" cooldown="10000" tossInvis="true"/>
+            <TossObject child="Tempest Cloud" range="8" angle="324" cooldown="10000" tossInvis="true"/>
+            <EntityExistsTransition targetState="Phase5" dist="10" target="Tempest Cloud"/>
+        </State>
+        <State id="Phase5">
+            <OrderOnce range="100" children="Beach Spectre Spawner" targetState="Active"/>
+            <Shoot radius="0" count="4" shootAngle="0" fixedAngle="90" rotateAngle="35" cooldown="1000"/>
+            <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="1" cooldown="1400"/>
+            <Reproduce children="Vengeful Spirit" densityRadius="20" densityMax="4" cooldown="4000"/>
+            <Reproduce children="Water Mine" densityRadius="20" cooldown="3000"/>
+            <ReturnToSpawn speed="0.4"/>
+            <HpLessTransition targetState="PrePhase6" threshold="0.2"/>
+            <State id="Invul2">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="Vul2" time="2000"/>
+            </State>
+            <State id="Vul2">
+                <TimedTransition targetState="Invul2" time="3000"/>
+            </State>
+        </State>
+        <State id="PrePhase6">
+            <Taunt text="Fire at will!!!" probability="0.99"/>
+            <TimedTransition targetState="Phase6" time="100"/>
+        </State>
+        <State id="Phase6">
+            <Prioritize>
+                <Follow speed="0.2" range="3" cooldown="0"/>
+                <Wander speed="0.4"/>
+                <StayCloseToSpawn speed="0.4" range="7"/>
+            </Prioritize>
+            <TossObject child="Water Mine" angle="1" cooldown="5000" minRange="3" maxRange="7" minAngle="1"
+                        maxAngle="359"/>
+            <Shoot radius="20" count="2" shootAngle="8" cooldown="800"/>
+            <Shoot radius="20" count="3" shootAngle="8" cooldown="1300"/>
+            <Shoot radius="20" count="2" shootAngle="8" projectileIndex="1" cooldown="2000"/>
+            <State id="Invul3">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="Vul3" time="2000"/>
+            </State>
+            <State id="Vul3">
+                <TimedTransition targetState="Invul3" time="3000"/>
+            </State>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Ghost Ship Anchor">
+        <ConditionalEffect effect="Invincible" perm="true"/>
+        <State id="Waiting">
+            <EntityNotExistsTransition targetState="Davy Or No ?" dist="20" target="Ghost Ship"/>
+        </State>
+        <State id="Davy Or No ?">
+            <TimedRandomTransition targetState="Davy,nah" time="10"/>
+        </State>
+        <State id="nah">
+            <Suicide/>
+        </State>
+        <State id="nah2">
+            <DropPortalOnDeath target="Davy Jones's Locker Portal"/>
+            <Suicide/>
+        </State>
+        <State id="Davy">
+            <GroundTransform tileId="Ghost Water Beach" persist="true" relativeX="1" relativeY="0"/>
+            <GroundTransform tileId="Ghost Water Beach" persist="true" relativeX="0" relativeY="0"/>
+            <GroundTransform tileId="Ghost Water Beach" persist="true" relativeX="-1" relativeY="0"/>
+            <GroundTransform tileId="Ghost Water Beach" persist="true" relativeX="0" relativeY="1"/>
+            <GroundTransform tileId="Ghost Water Beach" persist="true" relativeX="0" relativeY="-1"/>
+            <TossObject child="Palm Tree" range="1" angle="0" cooldown="10000" tossInvis="true"/>
+            <TossObject child="Palm Tree" range="1" angle="180" cooldown="10000" tossInvis="true"/>
+            <TimedTransition targetState="nah2" time="1000"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Vengeful Spirit">
+        <ChangeSize rate="20" target="100"/>
+        <State id="Charge">
+            <Prioritize>
+                <Charge speed="3" cooldown="2000"/>
+                <Wander speed="0.1"/>
+            </Prioritize>
+            <Shoot radius="5" count="3" shootAngle="8" cooldown="1000"/>
+            <EntityNotExistsTransition targetState="Die" dist="20" target="Ghost Ship"/>
+        </State>
+        <State id="Die">
+            <Suicide/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Tempest Cloud">
+        <ConditionalEffect effect="Invincible" perm="true"/>
+        <State id="Texture">
+            <ChangeSize rate="10" target="140"/>
+            <State id="Texture1">
+                <SetAltTexture minValue="1" maxValue="9" cooldown="200"/>
+                <TimedTransition targetState="Attack" time="2000"/>
+            </State>
+        </State>
+        <State id="Attack">
+            <Prioritize>
+                <Orbit speed="0.4" radius="8" acquireRange="20" target="Ghost Ship" speedVariance="0.04"
+                       radiusVariance="0.04" orbitClockwise="false"/>
+            </Prioritize>
+            <Shoot radius="0" count="10" shootAngle="0" fixedAngle="36" cooldown="700"/>
+            <EntityNotExistsTransition targetState="Die" dist="30" target="Ghost Ship"/>
+        </State>
+        <State id="Die">
+            <State id="Tex">
+                <SetAltTexture minValue="9" cooldown="0"/>
+                <TimedTransition targetState="Tex1" time="200"/>
+            </State>
+            <State id="Tex1">
+                <SetAltTexture minValue="8" cooldown="0"/>
+                <TimedTransition targetState="Tex2" time="200"/>
+            </State>
+            <State id="Tex2">
+                <SetAltTexture minValue="7" cooldown="0"/>
+                <TimedTransition targetState="Tex3" time="200"/>
+            </State>
+            <State id="Tex3">
+                <SetAltTexture minValue="6" cooldown="0"/>
+                <TimedTransition targetState="Tex4" time="200"/>
+            </State>
+            <State id="Tex4">
+                <SetAltTexture minValue="5" cooldown="0"/>
+                <TimedTransition targetState="Tex5" time="200"/>
+            </State>
+            <State id="Tex5">
+                <SetAltTexture minValue="4" cooldown="0"/>
+                <TimedTransition targetState="Tex6" time="200"/>
+            </State>
+            <State id="Tex6">
+                <SetAltTexture minValue="3" cooldown="0"/>
+                <TimedTransition targetState="Tex7" time="200"/>
+            </State>
+            <State id="Tex7">
+                <SetAltTexture minValue="2" cooldown="0"/>
+                <TimedTransition targetState="Tex8" time="200"/>
+            </State>
+            <State id="Tex8">
+                <SetAltTexture minValue="1" cooldown="0"/>
+                <TimedTransition targetState="Tex9" time="200"/>
+            </State>
+            <State id="Tex9">
+                <SetAltTexture minValue="0" cooldown="0"/>
+                <TimedTransition targetState="Tex10" time="200"/>
+            </State>
+            <State id="Tex10">
+                <Suicide/>
+            </State>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Water Mine">
+        <Decay/>
+        <State id="GRAB IT">
+            <Prioritize>
+                <Follow speed="0.2" range="0" cooldown="0"/>
+            </Prioritize>
+            <EntityNotExistsTransition targetState="BOOOM" dist="20" target="Ghost Ship"/>
+            <PlayerWithinTransition targetState="BOOOM" dist="3"/>
+        </State>
+        <State id="BOOOM">
+            <Shoot radius="0" count="10" shootAngle="0" fixedAngle="36" cooldown="1000"/>
+            <Suicide/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Beach Spectre Spawner">
+        <ConditionalEffect effect="Invincible" perm="true"/>
+        <EntityNotExistsTransition targetState="Die" dist="60" target="Ghost Ship"/>
+        <State id="Waiting Order"/>
+        <State id="Active">
+            <PlayerWithinTransition targetState="Spawn" dist="7"/>
+        </State>
+        <State id="Spawn">
+            <Reproduce children="Beach Spectre" densityRadius="3" densityMax="1" cooldown="1000"/>
+            <NoPlayerWithinTransition targetState="Active" dist="8"/>
+        </State>
+        <State id="Die">
+            <Suicide/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Beach Spectre">
+        <ChangeSize rate="20" target="100"/>
+        <State id="Attack">
+            <Prioritize>
+                <Wander speed="0.1"/>
+            </Prioritize>
+            <Shoot radius="5" count="3" shootAngle="12" cooldown="1300"/>
+            <NoPlayerWithinTransition targetState="Die" dist="7"/>
+        </State>
+        <State id="Die">
+            <ConditionalEffect effect="Invincible"/>
+            <ChangeSize rate="20" target="0"/>
+            <Decay time="3000"/>
+        </State>
+    </BehaviorEntry>
 </BehaviorEntries>

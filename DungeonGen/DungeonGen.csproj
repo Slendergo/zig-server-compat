@@ -1,32 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>disable</Nullable>
-    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-    <PlatformTarget>x64</PlatformTarget>
-    <BaseOutputPath>..\bin\</BaseOutputPath>
-    <LangVersion>default</LangVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+        <PlatformTarget>x64</PlatformTarget>
+        <BaseOutputPath>..\bin\</BaseOutputPath>
+        <LangVersion>default</LangVersion>
+    </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugType>portable</DebugType>
-  </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DebugType>portable</DebugType>
+    </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugType>full</DebugType>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\common\common.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\common\common.csproj"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Templates\Abyss\template.jm" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Templates\Lab\template.jm" />
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Templates\Abyss\template.jm"/>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Templates\Lab\template.jm"/>
+    </ItemGroup>
 
 </Project>

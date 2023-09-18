@@ -2,8 +2,7 @@
 
 namespace wServer.realm;
 
-public enum StatsType : byte
-{
+public enum StatsType : byte {
     MaximumHP = 0,
     HP = 1,
     Size = 2,
@@ -81,17 +80,16 @@ public enum StatsType : byte
 
     None = 255
 }
-public class SV<T>
-{
+
+public class SV<T> {
     private readonly Entity _owner;
+    private readonly Func<T, T> _transform;
     private readonly StatsType _type;
     private readonly bool _updateSelfOnly;
-    private readonly Func<T, T> _transform;
-    private T _value;
     private T _tValue;
+    private T _value;
 
-    public SV(Entity e, StatsType type, T value, bool updateSelfOnly = false, Func<T, T> transform = null)
-    {
+    public SV(Entity e, StatsType type, T value, bool updateSelfOnly = false, Func<T, T> transform = null) {
         _owner = e;
         _type = type;
         _updateSelfOnly = updateSelfOnly;
@@ -101,13 +99,11 @@ public class SV<T>
         _tValue = Transform(value);
     }
 
-    public T GetValue()
-    {
+    public T GetValue() {
         return _value;
     }
 
-    public void SetValue(T value)
-    {
+    public void SetValue(T value) {
         if (_value != null && _value.Equals(value))
             return;
         _value = value;
@@ -119,30 +115,23 @@ public class SV<T>
 
         // hacky fix to xp
         if (_owner is Player && _type == StatsType.Experience)
-        {
-            _owner.InvokeStatChange(_type, (int)(object)tVal - Player.GetLevelExp((_owner as Player).Level), _updateSelfOnly);
-        }
+            _owner.InvokeStatChange(_type, (int) (object) tVal - Player.GetLevelExp((_owner as Player).Level),
+                _updateSelfOnly);
         else
-        {
             _owner.InvokeStatChange(_type, tVal, _updateSelfOnly);
-        }
     }
 
-    public override string ToString()
-    {
+    public override string ToString() {
         return _value.ToString();
     }
 
-    private T Transform(T value)
-    {
-        return (_transform == null) ? value : _transform(value);
+    private T Transform(T value) {
+        return _transform == null ? value : _transform(value);
     }
 }
 
-public class StatChangedEventArgs : EventArgs
-{
-    public StatChangedEventArgs(StatsType stat, object value, bool updateSelfOnly = false)
-    {
+public class StatChangedEventArgs : EventArgs {
+    public StatChangedEventArgs(StatsType stat, object value, bool updateSelfOnly = false) {
         Stat = stat;
         Value = value;
         UpdateSelfOnly = updateSelfOnly;

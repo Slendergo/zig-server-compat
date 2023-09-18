@@ -1,64 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-  <BehaviorEntry id="Masked Party God">
-    <State id="1">
-      <Taunt text="Oh no, Mixcoatl is my brother, I prefer partying to fighting." broadcast="true" />
-      <SetAltTexture minValue="1" cooldown="0" />
-      <TimedTransition targetState="2" time="500" />
-    </State>
-    <State id="2">
-      <Taunt text="Lets have a fun-time in the sun-shine!" broadcast="true" />
-      <SetAltTexture minValue="2" cooldown="0" />
-      <TimedTransition targetState="3" time="500" />
-    </State>
-    <State id="3">
-      <Taunt text="Nothing like relaxin' on the beach." broadcast="true" />
-      <SetAltTexture minValue="3" cooldown="0" />
-      <TimedTransition targetState="4" time="500" />
-    </State>
-    <State id="4">
-      <Taunt text="Chillin' is the name of the game!" broadcast="true" />
-      <SetAltTexture minValue="1" cooldown="0" />
-      <TimedTransition targetState="5" time="500" />
-    </State>
-    <State id="5">
-      <Taunt text="I hope you're having a good time!" broadcast="true" />
-      <SetAltTexture minValue="2" cooldown="0" />
-      <TimedTransition targetState="6" time="500" />
-    </State>
-    <State id="6">
-      <Taunt text="How do you like my shades?" broadcast="true" />
-      <SetAltTexture minValue="3" cooldown="0" />
-      <TimedTransition targetState="7" time="500" />
-    </State>
-    <State id="7">
-      <Taunt text="EVERYBODY BOOGEY!" broadcast="true" />
-      <SetAltTexture minValue="1" cooldown="0" />
-      <TimedTransition targetState="8" time="500" />
-    </State>
-    <State id="8">
-      <Taunt text="What a beautiful day!" broadcast="true" />
-      <SetAltTexture minValue="2" cooldown="0" />
-      <TimedTransition targetState="9" time="500" />
-    </State>
-    <State id="9">
-      <Taunt text="Whoa there!" broadcast="true" />
-      <SetAltTexture minValue="3" cooldown="0" />
-      <TimedTransition targetState="10" time="500" />
-    </State>
-    <State id="10">
-      <Taunt text="Oh SNAP!" broadcast="true" />
-      <SetAltTexture minValue="1" cooldown="0" />
-      <TimedTransition targetState="11" time="500" />
-    </State>
-    <State id="11">
-      <Taunt text="Ho!" broadcast="true" />
-      <SetAltTexture minValue="2" cooldown="0" />
-      <TimedTransition targetState="end" time="500" />
-    </State>
-    <State id="end">
-      <SetAltTexture minValue="3" cooldown="0" />
-      <TimedTransition targetState="1" time="500" />
-    </State>
-  </BehaviorEntry>
+    <BehaviorEntry id="Masked Party God">
+        <State id="1">
+            <Taunt text="Oh no, Mixcoatl is my brother, I prefer partying to fighting." broadcast="true"/>
+            <SetAltTexture minValue="1" cooldown="0"/>
+            <TimedTransition targetState="2" time="500"/>
+        </State>
+        <State id="2">
+            <Taunt text="Lets have a fun-time in the sun-shine!" broadcast="true"/>
+            <SetAltTexture minValue="2" cooldown="0"/>
+            <TimedTransition targetState="3" time="500"/>
+        </State>
+        <State id="3">
+            <Taunt text="Nothing like relaxin' on the beach." broadcast="true"/>
+            <SetAltTexture minValue="3" cooldown="0"/>
+            <TimedTransition targetState="4" time="500"/>
+        </State>
+        <State id="4">
+            <Taunt text="Chillin' is the name of the game!" broadcast="true"/>
+            <SetAltTexture minValue="1" cooldown="0"/>
+            <TimedTransition targetState="5" time="500"/>
+        </State>
+        <State id="5">
+            <Taunt text="I hope you're having a good time!" broadcast="true"/>
+            <SetAltTexture minValue="2" cooldown="0"/>
+            <TimedTransition targetState="6" time="500"/>
+        </State>
+        <State id="6">
+            <Taunt text="How do you like my shades?" broadcast="true"/>
+            <SetAltTexture minValue="3" cooldown="0"/>
+            <TimedTransition targetState="7" time="500"/>
+        </State>
+        <State id="7">
+            <Taunt text="EVERYBODY BOOGEY!" broadcast="true"/>
+            <SetAltTexture minValue="1" cooldown="0"/>
+            <TimedTransition targetState="8" time="500"/>
+        </State>
+        <State id="8">
+            <Taunt text="What a beautiful day!" broadcast="true"/>
+            <SetAltTexture minValue="2" cooldown="0"/>
+            <TimedTransition targetState="9" time="500"/>
+        </State>
+        <State id="9">
+            <Taunt text="Whoa there!" broadcast="true"/>
+            <SetAltTexture minValue="3" cooldown="0"/>
+            <TimedTransition targetState="10" time="500"/>
+        </State>
+        <State id="10">
+            <Taunt text="Oh SNAP!" broadcast="true"/>
+            <SetAltTexture minValue="1" cooldown="0"/>
+            <TimedTransition targetState="11" time="500"/>
+        </State>
+        <State id="11">
+            <Taunt text="Ho!" broadcast="true"/>
+            <SetAltTexture minValue="2" cooldown="0"/>
+            <TimedTransition targetState="end" time="500"/>
+        </State>
+        <State id="end">
+            <SetAltTexture minValue="3" cooldown="0"/>
+            <TimedTransition targetState="1" time="500"/>
+        </State>
+    </BehaviorEntry>
 </BehaviorEntries>

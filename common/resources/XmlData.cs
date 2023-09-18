@@ -1,33 +1,31 @@
-﻿using NLog;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using NLog;
 
 namespace common.resources;
 
-public class XmlData
-{
-    static readonly Logger Log = LogManager.GetCurrentClassLogger();
+public class XmlData {
+    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+    public Dictionary<ushort, PlayerDesc> Classes = new();
+    public Dictionary<string, ushort> DisplayIdToObjectType = new(StringComparer.InvariantCultureIgnoreCase);
+    public Dictionary<string, ushort> IdToObjectType = new(StringComparer.InvariantCultureIgnoreCase);
+    public Dictionary<string, ushort> IdToTileType = new(StringComparer.InvariantCulture);
+    public Dictionary<ushort, Item> Items = new();
+    public Dictionary<ushort, ObjectDesc> ObjectDescs = new();
 
     public Dictionary<ushort, XElement> ObjectTypeToElement = new();
     public Dictionary<ushort, string> ObjectTypeToId = new();
-    public Dictionary<string, ushort> IdToObjectType = new(StringComparer.InvariantCultureIgnoreCase);
-    public Dictionary<string, ushort> DisplayIdToObjectType = new(StringComparer.InvariantCultureIgnoreCase);
-
-    public Dictionary<ushort, XElement> TileTypeToElement = new();
-    public Dictionary<ushort, string> TileTypeToId = new();
-    public Dictionary<string, ushort> IdToTileType = new(StringComparer.InvariantCulture);
+    public Dictionary<ushort, PortalDesc> Portals = new();
+    public Dictionary<ushort, SkinDesc> Skins = new();
 
     public Dictionary<int, ItemType> SlotTypeToItemType = new();
 
     public Dictionary<ushort, TileDesc> Tiles = new();
-    public Dictionary<ushort, Item> Items = new();
-    public Dictionary<ushort, ObjectDesc> ObjectDescs = new();
-    public Dictionary<ushort, PlayerDesc> Classes = new();
-    public Dictionary<ushort, PortalDesc> Portals = new();
-    public Dictionary<ushort, SkinDesc> Skins = new();
+
+    public Dictionary<ushort, XElement> TileTypeToElement = new();
+    public Dictionary<ushort, string> TileTypeToId = new();
     public Dictionary<string, WorldTemplateData> WorldTemplates = new(StringComparer.InvariantCulture);
 
-    public XmlData(string dir)
-    {
+    public XmlData(string dir) {
         Log.Info("Loading XmlData...");
         LoadXmls(dir);
 
@@ -40,20 +38,16 @@ public class XmlData
         Log.Info("Loaded {0} WorldTemplates...", WorldTemplates.Count);
     }
 
-    private void LoadXmls(string dir)
-    {
+    private void LoadXmls(string dir) {
         var xmls = Directory.EnumerateFiles(dir, "*xml", SearchOption.AllDirectories).ToArray();
-        foreach (string k in xmls)
-        {
+        foreach (var k in xmls) {
             var xml = Utils.Read(k);
             ProcessXml(XElement.Parse(xml));
         }
     }
 
-    private void AddObjects(XElement root)
-    {
-        foreach (var e in root.Elements("Object"))
-        {
+    private void AddObjects(XElement root) {
+        foreach (var e in root.Elements("Object")) {
             var cls = e.GetValue<string>("Class");
             if (string.IsNullOrWhiteSpace(cls))
                 continue;
@@ -74,8 +68,7 @@ public class XmlData
             IdToObjectType[id] = type;
             DisplayIdToObjectType[displayName] = type;
 
-            switch (cls)
-            {
+            switch (cls) {
                 case "Equipment":
                 case "Dye":
                     Items[type] = new Item(type, e);
@@ -103,10 +96,8 @@ public class XmlData
         }
     }
 
-    private void AddGrounds(XElement root)
-    {
-        foreach (var e in root.Elements("Ground"))
-        {
+    private void AddGrounds(XElement root) {
+        foreach (var e in root.Elements("Ground")) {
             var id = e.GetAttribute<string>("id");
             var type = e.GetAttribute<ushort>("type");
 
@@ -123,17 +114,15 @@ public class XmlData
             Tiles[type] = new TileDesc(type, e);
         }
     }
-    private void AddWorlds(XElement root)
-    {
-        foreach (var e in root.Elements("World"))
-        {
+
+    private void AddWorlds(XElement root) {
+        foreach (var e in root.Elements("World")) {
             var template = new WorldTemplateData(e);
-            WorldTemplates[template.IdName] = template; 
+            WorldTemplates[template.IdName] = template;
         }
     }
 
-    private void ProcessXml(XElement root)
-    {
+    private void ProcessXml(XElement root) {
         AddObjects(root);
         AddGrounds(root);
         AddWorlds(root);

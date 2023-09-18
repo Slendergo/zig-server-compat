@@ -1,11 +1,9 @@
 ﻿namespace wServer.realm.entities;
 
-partial class Player
-{
+partial class Player {
     // todo add any more if needed
 
-    public void CleanupReconnect()
-    {
+    public void CleanupReconnect() {
         _clientEntities.Dispose();
         _clientStatic.Clear();
         _newObjects = null;

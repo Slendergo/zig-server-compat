@@ -1,39 +1,34 @@
-﻿using common;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using common;
 using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
-class MultiplyLootValue : Behavior
-{
+internal class MultiplyLootValue : Behavior {
     //State storage: cooldown timer
 
-    int multiplier;
+    private int multiplier;
 
-    public MultiplyLootValue(XElement e)
-    {
+    public MultiplyLootValue(XElement e) {
         multiplier = e.ParseInt("@multiplier");
     }
 
-    public MultiplyLootValue(int multiplier)
-    {
+    public MultiplyLootValue(int multiplier) {
         this.multiplier = multiplier;
     }
 
-    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-    {
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state) {
         state = false;
     }
 
-    protected override void TickCore(Entity host, RealmTime time, ref object state)
-    {
-        bool multiplied = (bool)state;
-        if (!multiplied)
-        {
+    protected override void TickCore(Entity host, RealmTime time, ref object state) {
+        var multiplied = (bool) state;
+        if (!multiplied) {
             var newLootValue = host.LootValue * multiplier;
             host.LootValue = newLootValue;
             multiplied = true;
         }
+
         state = multiplied;
     }
 }

@@ -20,13 +20,12 @@
 
 using DungeonGenerator.Dungeon;
 
-
 namespace DungeonGenerator.Templates.Lab;
 
 internal class Corridor : MapCorridor {
-	public override void Rasterize(Room src, Room dst, Point srcPos, Point dstPos) {
-		Default(srcPos, dstPos, new DungeonTile {
-			TileType = LabTemplate.LabFloor
-		});
-	}
+    public override void Rasterize(Room src, Room dst, Point srcPos, Point dstPos) {
+        Default(srcPos, dstPos, new DungeonTile {
+            TileType = LabTemplate.LabFloor
+        });
+    }
 }

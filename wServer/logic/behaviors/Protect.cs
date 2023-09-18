@@ -1,29 +1,20 @@
-﻿using common.resources;
-using wServer.realm;
-using Mono.Game;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using common;
+using common.resources;
+using Mono.Game;
+using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
-class Protect : CycleBehavior
-{
-    //State storage: protect state
-    enum ProtectState
-    {
-        DontKnowWhere,
-        Protecting,
-        Protected,
-    }
+internal class Protect : CycleBehavior {
+    private float acquireRange;
+    private ushort protectee;
+    private float protectionRange;
+    private float reprotectRange;
 
-    float speed;
-    ushort protectee;
-    float acquireRange;
-    float protectionRange;
-    float reprotectRange;
+    private float speed;
 
-    public Protect(XElement e)
-    {
+    public Protect(XElement e) {
         speed = e.ParseFloat("@speed");
         protectee = GetObjType(e.ParseString("@protectee"));
         acquireRange = e.ParseFloat("@acquireRange");
@@ -31,20 +22,19 @@ class Protect : CycleBehavior
         reprotectRange = e.ParseFloat("@reprotectRange");
     }
 
-    public Protect(double speed, string protectee, double acquireRange = 10, double protectionRange = 2, double reprotectRange = 1)
-    {
-        this.speed = (float)speed;
+    public Protect(double speed, string protectee, double acquireRange = 10, double protectionRange = 2,
+        double reprotectRange = 1) {
+        this.speed = (float) speed;
         this.protectee = GetObjType(protectee);
-        this.acquireRange = (float)acquireRange;
-        this.protectionRange = (float)protectionRange;
-        this.reprotectRange = (float)reprotectRange;
+        this.acquireRange = (float) acquireRange;
+        this.protectionRange = (float) protectionRange;
+        this.reprotectRange = (float) reprotectRange;
     }
 
-    protected override void TickCore(Entity host, RealmTime time, ref object state)
-    {
+    protected override void TickCore(Entity host, RealmTime time, ref object state) {
         ProtectState s;
         if (state == null) s = ProtectState.DontKnowWhere;
-        else s = (ProtectState)state;
+        else s = (ProtectState) state;
 
         Status = CycleStatus.NotStarted;
 
@@ -53,52 +43,56 @@ class Protect : CycleBehavior
 
         var entity = host.GetNearestEntity(acquireRange, protectee);
         Vector2 vect;
-        switch (s)
-        {
+        switch (s) {
             case ProtectState.DontKnowWhere:
-                if (entity != null)
-                {
+                if (entity != null) {
                     s = ProtectState.Protecting;
                     goto case ProtectState.Protecting;
                 }
+
                 break;
             case ProtectState.Protecting:
-                if (entity == null)
-                {
+                if (entity == null) {
                     s = ProtectState.DontKnowWhere;
                     break;
                 }
+
                 vect = new Vector2(entity.X - host.X, entity.Y - host.Y);
-                if (vect.Length() > reprotectRange)
-                {
+                if (vect.Length() > reprotectRange) {
                     Status = CycleStatus.InProgress;
                     vect.Normalize();
-                    float dist = host.GetSpeed(speed) * (time.ElaspedMsDelta / 1000f);
+                    var dist = host.GetSpeed(speed) * (time.ElapsedMsDelta / 1000f);
                     host.ValidateAndMove(host.X + vect.X * dist, host.Y + vect.Y * dist);
                 }
-                else
-                {
+                else {
                     Status = CycleStatus.Completed;
                     s = ProtectState.Protected;
                 }
+
                 break;
             case ProtectState.Protected:
-                if (entity == null)
-                {
+                if (entity == null) {
                     s = ProtectState.DontKnowWhere;
                     break;
                 }
+
                 Status = CycleStatus.Completed;
                 vect = new Vector2(entity.X - host.X, entity.Y - host.Y);
-                if (vect.Length() > protectionRange)
-                {
+                if (vect.Length() > protectionRange) {
                     s = ProtectState.Protecting;
                     goto case ProtectState.Protecting;
                 }
-                break;
 
+                break;
         }
 
         state = s;
+    }
+
+    //State storage: protect state
+    private enum ProtectState {
+        DontKnowWhere,
+        Protecting,
+        Protected
     }
 }

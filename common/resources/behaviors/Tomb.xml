@@ -1,566 +1,625 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-  <BehaviorEntry id="Tomb Defender">
-    <State id="idle">
-      <Taunt text="THIS WILL NOW BE YOUR TOMB!" broadcast="true" />
-      <ConditionalEffect effect="Armored" />
-      <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <HpLessTransition targetState="weakning" threshold="0.989" />
-    </State>
-    <State id="weakning">
-      <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <ConditionalEffect effect="Armored" />
-      <Taunt text="Impudence! I am an Immortal, I needn't waste time on you!" broadcast="true" />
-      <Shoot radius="50" count="20" shootAngle="0" projectileIndex="3" cooldown="6000" />
-      <HpLessTransition targetState="active" threshold="0.979" />
-      <State id="blue shield 1">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 1" time="3000" />
-      </State>
-      <State id="unset blue shield 1" />
-    </State>
-    <State id="active">
-      <Orbit speed="0.7" radius="5" target="Tomb Boss Anchor" speedVariance="0.07" radiusVariance="0.5" orbitClockwise="false" />
-      <ConditionalEffect effect="Armored" />
-      <Shoot radius="50" count="8" shootAngle="45" projectileIndex="2" fixedAngle="0" rotateAngle="0" cooldown="1000" />
-      <Shoot radius="50" count="3" shootAngle="120" projectileIndex="1" fixedAngle="0" rotateAngle="0" cooldown="5000" />
-      <Shoot radius="50" count="5" shootAngle="72" fixedAngle="0" rotateAngle="0" cooldown="5000" />
-      <HpLessTransition targetState="boomerang" threshold="0.7" />
-    </State>
-    <State id="boomerang">
-      <ConditionalEffect effect="Armored" />
-      <Orbit speed="0.6" radius="3" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Taunt text="Nut, disable our foes!" broadcast="true" />
-      <Shoot radius="50" shootAngle="0" cooldown="3000" />
-      <Shoot radius="50" count="8" shootAngle="0" projectileIndex="2" cooldown="1000" />
-      <Shoot radius="50" count="3" shootAngle="15" projectileIndex="1" cooldown="3000" />
-      <Shoot radius="50" count="2" shootAngle="90" projectileIndex="1" cooldown="3000" />
-      <HpLessTransition targetState="double shot" threshold="0.55" />
-      <State id="blue shield 2">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 2" time="3000" />
-      </State>
-      <State id="unset blue shield 2" />
-    </State>
-    <State id="double shot">
-      <Taunt text="Geb, eradicate these cretins from our tomb!" broadcast="true" />
-      <Orbit speed="0.7" radius="5" target="Tomb Boss Anchor" speedVariance="0.07" radiusVariance="0.5" orbitClockwise="false" />
-      <Shoot radius="50" count="8" shootAngle="0" projectileIndex="2" cooldown="1000" />
-      <Shoot radius="50" count="2" shootAngle="10" cooldown="3000" />
-      <Shoot radius="50" count="4" shootAngle="15" projectileIndex="1" cooldown="3000" />
-      <Shoot radius="50" count="2" shootAngle="90" projectileIndex="1" cooldown="3000" />
-      <HpLessTransition targetState="artifacts" threshold="0.4" />
-    </State>
-    <State id="artifacts">
-      <ConditionalEffect effect="Armored" />
-      <Taunt text="Nut, let them wish they were dead!" broadcast="true" />
-      <Orbit speed="0.6" radius="7" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Shoot radius="50" count="8" shootAngle="0" projectileIndex="2" cooldown="1000" />
-      <Shoot radius="50" count="2" shootAngle="10" cooldown="3000" />
-      <Shoot radius="50" count="4" shootAngle="15" projectileIndex="1" cooldown="3000" />
-      <Shoot radius="50" count="2" shootAngle="90" projectileIndex="1" cooldown="3000" />
-      <Spawn children="Pyramid Artifact 1" maxChildren="1" initialSpawn="0" cooldown="0" />
-      <Spawn children="Pyramid Artifact 2" maxChildren="1" initialSpawn="0" cooldown="0" />
-      <HpLessTransition targetState="artifacts 2" threshold="0.25" />
-      <State id="blue shield 3">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 3" time="3000" />
-      </State>
-      <State id="unset blue shield 3" />
-    </State>
-    <State id="artifacts 2">
-      <ConditionalEffect effect="Armored" />
-      <Taunt text="My artifacts shall prove my wall of defense is impenetrable!" broadcast="true" />
-      <Orbit speed="0.6" radius="7" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Shoot radius="50" count="8" shootAngle="0" projectileIndex="2" cooldown="1000" />
-      <Shoot radius="50" count="3" shootAngle="10" cooldown="3000" />
-      <Shoot radius="50" count="5" shootAngle="15" projectileIndex="1" cooldown="3000" />
-      <Shoot radius="50" count="2" shootAngle="80" projectileIndex="1" cooldown="3000" />
-      <Shoot radius="50" count="2" shootAngle="90" projectileIndex="1" cooldown="3000" />
-      <Spawn children="Pyramid Artifact 1" maxChildren="2" initialSpawn="0" cooldown="0" />
-      <HpLessTransition targetState="rage" threshold="0.06" />
-      <State id="blue shield 4">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 4" time="3000" />
-      </State>
-      <State id="unset blue shield 4" />
-    </State>
-    <State id="rage">
-      <ConditionalEffect effect="Armored" />
-      <Taunt text="The end of your path is here!" broadcast="true" />
-      <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-      <Flash color="0xFFF0000" flashPeriod="1" flashRepeats="9000001" />
-      <Shoot radius="50" count="10" shootAngle="10" projectileIndex="4" coolDownOffset="750" cooldown="750" />
-      <Shoot radius="50" count="5" shootAngle="10" projectileIndex="4" angleOffset="180" coolDownOffset="500" cooldown="500" />
-      <Shoot radius="50" shootAngle="0" cooldown="1000" />
-      <Shoot radius="50" count="3" shootAngle="15" projectileIndex="1" cooldown="2000" />
-      <Shoot radius="50" count="2" shootAngle="90" projectileIndex="1" cooldown="2000" />
-      <Spawn children="Pyramid Artifact 1" maxChildren="1" initialSpawn="0" cooldown="0" />
-      <Spawn children="Pyramid Artifact 2" maxChildren="1" initialSpawn="0" cooldown="0" />
-      <Spawn children="Pyramid Artifact 3" maxChildren="1" initialSpawn="0" cooldown="0" />
-      <State id="blue shield 5">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 5" time="3000" />
-      </State>
-      <State id="unset blue shield 5" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Tomb Support">
-    <State id="idle">
-      <Taunt text="ENOUGH OF YOUR VANDALISM!" broadcast="true" />
-      <ConditionalEffect effect="Armored" />
-      <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <HpLessTransition targetState="weakning" threshold="0.9875" />
-    </State>
-    <State id="weakning">
-      <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Taunt text="Impudence! I am an immortal, I needn't take your seriously." />
-      <Shoot radius="50" count="20" shootAngle="0" projectileIndex="7" coolDownOffset="2000" cooldown="6000" />
-      <HpLessTransition targetState="active" threshold="0.97875" />
-      <State id="blue shield 1">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 1" time="3000" />
-      </State>
-      <State id="unset blue shield 1" />
-    </State>
-    <State id="active">
-      <Orbit speed="0.7" radius="4" target="Tomb Boss Anchor" speedVariance="0.07" radiusVariance="0.5" orbitClockwise="false" />
-      <Shoot radius="20" shootAngle="0" projectileIndex="5" cooldown="1000" />
-      <Shoot radius="12" count="3" shootAngle="120" projectileIndex="1" fixedAngle="0" rotateAngle="0" coolDownOffset="1000" cooldown="2500" />
-      <Shoot radius="12" count="4" shootAngle="90" projectileIndex="2" fixedAngle="0" rotateAngle="0" coolDownOffset="1500" cooldown="2500" />
-      <Shoot radius="12" count="5" shootAngle="72" projectileIndex="3" fixedAngle="0" rotateAngle="0" coolDownOffset="2000" cooldown="2500" />
-      <Shoot radius="12" count="6" shootAngle="60" projectileIndex="4" fixedAngle="0" rotateAngle="0" coolDownOffset="2500" cooldown="2500" />
-      <HpLessTransition targetState="boomerang" threshold="0.9" />
-      <State id="blue shield 2">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 2" time="3000" />
-      </State>
-      <State id="unset blue shield 2" />
-    </State>
-    <State id="boomerang">
-      <Orbit speed="0.6" radius="6" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Taunt text="Bes, protect me at once!" broadcast="true" />
-      <Shoot radius="20" shootAngle="0" projectileIndex="5" cooldown="1000" />
-      <Shoot radius="20" shootAngle="0" projectileIndex="6" cooldown="3000" />
-      <Shoot radius="12" count="3" shootAngle="120" projectileIndex="1" fixedAngle="0" rotateAngle="0" coolDownOffset="1000" cooldown="2500" />
-      <Shoot radius="12" count="4" shootAngle="90" projectileIndex="2" fixedAngle="0" rotateAngle="0" coolDownOffset="1500" cooldown="2500" />
-      <Shoot radius="12" count="5" shootAngle="72" projectileIndex="3" fixedAngle="0" rotateAngle="0" coolDownOffset="2000" cooldown="2500" />
-      <Shoot radius="12" count="6" shootAngle="60" projectileIndex="4" fixedAngle="0" rotateAngle="0" coolDownOffset="2500" cooldown="2500" />
-      <HpLessTransition targetState="paralyze" threshold="0.7" />
-    </State>
-    <State id="paralyze">
-      <Orbit speed="0.6" radius="7" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Taunt text="Geb, eradicate these cretins from our tomb!" broadcast="true" />
-      <Shoot radius="20" shootAngle="0" projectileIndex="5" cooldown="1000" />
-      <Shoot radius="20" shootAngle="0" projectileIndex="6" cooldown="3000" />
-      <Shoot radius="999" count="2" shootAngle="10" projectileIndex="8" fixedAngle="0" rotateAngle="180" cooldown="1000" />
-      <Shoot radius="12" count="3" shootAngle="120" projectileIndex="1" fixedAngle="0" rotateAngle="0" coolDownOffset="1000" cooldown="2500" />
-      <Shoot radius="12" count="4" shootAngle="90" projectileIndex="2" fixedAngle="0" rotateAngle="0" coolDownOffset="1500" cooldown="2500" />
-      <Shoot radius="12" count="5" shootAngle="72" projectileIndex="3" fixedAngle="0" rotateAngle="0" coolDownOffset="2000" cooldown="2500" />
-      <Shoot radius="12" count="6" shootAngle="60" projectileIndex="4" fixedAngle="0" rotateAngle="0" coolDownOffset="2500" cooldown="2500" />
-      <HpLessTransition targetState="artifacts" threshold="0.5" />
-    </State>
-    <State id="artifacts">
-      <Orbit speed="0.6" radius="4" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Taunt text="My artifacts shall make your lethargic lives end much more swiftly!" broadcast="true" />
-      <Shoot radius="20" shootAngle="0" projectileIndex="5" cooldown="1000" />
-      <Shoot radius="20" shootAngle="0" projectileIndex="6" cooldown="3000" />
-      <Shoot radius="12" count="3" shootAngle="120" projectileIndex="1" fixedAngle="0" rotateAngle="0" coolDownOffset="1000" cooldown="2500" />
-      <Shoot radius="12" count="4" shootAngle="90" projectileIndex="2" fixedAngle="0" rotateAngle="0" coolDownOffset="1500" cooldown="2500" />
-      <Shoot radius="12" count="5" shootAngle="72" projectileIndex="3" fixedAngle="0" rotateAngle="0" coolDownOffset="2000" cooldown="2500" />
-      <Shoot radius="12" count="6" shootAngle="60" projectileIndex="4" fixedAngle="0" rotateAngle="0" coolDownOffset="2500" cooldown="2500" />
-      <Spawn children="Sphinx Artifact 1" maxChildren="1" initialSpawn="0" cooldown="0" />
-      <HpLessTransition targetState="double shoot" threshold="0.3" />
-      <State id="blue shield 3">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 3" time="3000" />
-      </State>
-      <State id="unset blue shield 3" />
-    </State>
-    <State id="double shoot">
-      <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Shoot radius="20" count="2" shootAngle="15" projectileIndex="5" cooldown="1000" />
-      <Shoot radius="20" count="2" shootAngle="15" projectileIndex="6" cooldown="3000" />
-      <Shoot radius="12" count="3" shootAngle="120" projectileIndex="1" fixedAngle="0" rotateAngle="0" coolDownOffset="1000" cooldown="2500" />
-      <Shoot radius="12" count="4" shootAngle="90" projectileIndex="2" fixedAngle="0" rotateAngle="0" coolDownOffset="1500" cooldown="2500" />
-      <Shoot radius="12" count="5" shootAngle="72" projectileIndex="3" fixedAngle="0" rotateAngle="0" coolDownOffset="2000" cooldown="2500" />
-      <Shoot radius="12" count="6" shootAngle="60" projectileIndex="4" fixedAngle="0" rotateAngle="0" coolDownOffset="2500" cooldown="2500" />
-      <Spawn children="Sphinx Artifact 1" maxChildren="2" initialSpawn="0" cooldown="0" />
-      <HpLessTransition targetState="rage" threshold="0.06" />
-      <State id="blue shield 4">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 4" time="3000" />
-      </State>
-      <State id="unset blue shield 4" />
-    </State>
-    <State id="rage">
-      <Taunt text="This cannot be! You shall not succeed!" broadcast="true" />
-      <Follow speed="0.6" range="1" duration="5000" cooldown="1000" />
-      <Flash color="0xFFF0000" flashPeriod="1" flashRepeats="9000001" />
-      <Shoot radius="20" shootAngle="0" projectileIndex="5" cooldown="1000" />
-      <Shoot radius="20" shootAngle="15" cooldown="750" />
-      <Shoot radius="12" count="4" shootAngle="90" projectileIndex="1" fixedAngle="0" rotateAngle="0" coolDownOffset="1000" cooldown="2500" />
-      <Shoot radius="12" count="5" shootAngle="72" projectileIndex="2" fixedAngle="0" rotateAngle="0" coolDownOffset="1500" cooldown="2500" />
-      <Shoot radius="12" count="6" shootAngle="60" projectileIndex="3" fixedAngle="0" rotateAngle="0" coolDownOffset="2000" cooldown="2500" />
-      <Shoot radius="12" count="8" shootAngle="45" projectileIndex="4" fixedAngle="0" rotateAngle="0" coolDownOffset="2500" cooldown="2500" />
-      <Shoot radius="999" count="6" shootAngle="10" projectileIndex="8" angleOffset="180" cooldown="500" />
-      <Spawn children="Sphinx Artifact 1" maxChildren="1" initialSpawn="0" cooldown="0" />
-      <State id="blue shield 5">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 5" time="3000" />
-      </State>
-      <State id="unset blue shield 5" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Tomb Attacker">
-    <State id="idle">
-      <Taunt text="ENOUGH OF YOUR VANDALISM!" broadcast="true" />
-      <ConditionalEffect effect="Armored" />
-      <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <HpLessTransition targetState="weakning" threshold="0.988" />
-    </State>
-    <State id="weakning">
-      <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Shoot radius="50" count="20" shootAngle="0" projectileIndex="3" coolDownOffset="2000" cooldown="6000" />
-      <HpLessTransition targetState="active" threshold="0.9788" />
-      <State id="blue shield 1">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 1" time="3000" />
-      </State>
-      <State id="unset blue shield 1" />
-    </State>
-    <State id="active">
-      <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Shoot radius="14" count="2" shootAngle="10" projectileIndex="2" cooldown="500" />
-      <Shoot radius="12" shootAngle="0" cooldown="2000" />
-      <HpLessTransition targetState="lets dance" threshold="0.72" />
-      <State id="Grenade 1">
-        <Grenade radius="3" damage="160" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 2" time="1500" />
-      </State>
-      <State id="Grenade 2">
-        <Grenade radius="4" damage="120" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 1" time="1500" />
-      </State>
-    </State>
-    <State id="lets dance">
-      <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Taunt text="Bes, protect me at once!" broadcast="true" />
-      <Shoot radius="14" shootAngle="0" projectileIndex="2" cooldown="500" />
-      <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" cooldown="1000" />
-      <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" angleOffset="270" cooldown="1000" />
-      <Shoot radius="11" count="8" shootAngle="45" projectileIndex="1" fixedAngle="0" cooldown="5000" />
-      <Shoot radius="12" count="2" shootAngle="45" cooldown="1500" />
-      <Shoot radius="99" shootAngle="0" projectileIndex="4" cooldown="500" />
-      <Spawn children="Scarab" maxChildren="3" initialSpawn="0" cooldown="10000" />
-      <HpLessTransition targetState="more muthafucka" threshold="0.675" />
-      <State id="blue shield 2">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 2" time="3000" />
-      </State>
-      <State id="unset blue shield 2">
-        <TimedTransition targetState="Grenade 3" time="3000" />
-      </State>
-      <State id="Grenade 3">
-        <Grenade radius="3" damage="160" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 4" time="1500" />
-      </State>
-      <State id="Grenade 4">
-        <Grenade radius="4" damage="120" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 3" time="1500" />
-      </State>
-    </State>
-    <State id="more muthafucka">
-      <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Taunt text="Nut, disable our foes!" broadcast="true" />
-      <Spawn children="Scarab" maxChildren="3" initialSpawn="0" cooldown="10000" />
-      <Shoot radius="14" count="2" shootAngle="10" projectileIndex="2" cooldown="500" />
-      <Shoot radius="14" shootAngle="0" projectileIndex="2" cooldown="500" />
-      <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" cooldown="1000" />
-      <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" angleOffset="270" cooldown="1000" />
-      <Shoot radius="11" count="10" shootAngle="36" projectileIndex="1" fixedAngle="0" cooldown="5000" />
-      <Shoot radius="12" shootAngle="0" cooldown="2000" />
-      <Shoot radius="12" count="2" shootAngle="45" cooldown="2000" />
-      <Shoot radius="99" shootAngle="0" projectileIndex="4" cooldown="500" />
-      <Shoot radius="99" shootAngle="0" projectileIndex="4" angleOffset="90" cooldown="500" />
-      <HpLessTransition targetState="artifacts" threshold="0.4" />
-      <State id="Grenade 5">
-        <Grenade radius="3" damage="160" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 6" time="1500" />
-      </State>
-      <State id="Grenade 6">
-        <Grenade radius="4" damage="120" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 5" time="1500" />
-      </State>
-    </State>
-    <State id="artifacts">
-      <Orbit speed="0.6" radius="4" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Taunt text="My artifacts shall destroy you from your soul your flesh!" broadcast="true" />
-      <Spawn children="Scarab" maxChildren="3" initialSpawn="0" cooldown="10000" />
-      <Shoot radius="14" count="2" shootAngle="10" projectileIndex="2" cooldown="500" />
-      <Shoot radius="14" shootAngle="0" projectileIndex="2" cooldown="500" />
-      <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" cooldown="1000" />
-      <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" angleOffset="270" cooldown="1000" />
-      <Shoot radius="11" count="10" shootAngle="36" projectileIndex="1" fixedAngle="0" cooldown="5000" />
-      <Shoot radius="12" shootAngle="0" cooldown="2000" />
-      <Shoot radius="12" count="2" shootAngle="45" cooldown="2000" />
-      <Shoot radius="99" shootAngle="0" projectileIndex="4" cooldown="500" />
-      <Shoot radius="99" shootAngle="0" projectileIndex="4" angleOffset="90" cooldown="500" />
-      <Spawn children="Nile Artifact 1" maxChildren="1" initialSpawn="0" cooldown="0" />
-      <HpLessTransition targetState="artifacts 2" threshold="0.2" />
-      <State id="blue shield 3">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 3" time="3000" />
-      </State>
-      <State id="unset blue shield 3">
-        <TimedTransition targetState="Grenade 7" time="3000" />
-      </State>
-      <State id="Grenade 7">
-        <Grenade radius="5" damage="45" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 8" time="1500" />
-      </State>
-      <State id="Grenade 8">
-        <Grenade radius="4" damage="100" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 9" time="1500" />
-      </State>
-      <State id="Grenade 9">
-        <Grenade radius="3" damage="120" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 7" time="1500" />
-      </State>
-    </State>
-    <State id="artifacts 2">
-      <Orbit speed="0.6" radius="4" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5" orbitClockwise="false" />
-      <Taunt text="My artifacts shall destroy you from your soul your flesh!" broadcast="true" />
-      <Spawn children="Scarab" maxChildren="3" initialSpawn="0" cooldown="10000" />
-      <Shoot radius="14" count="2" shootAngle="10" projectileIndex="2" cooldown="500" />
-      <Shoot radius="14" shootAngle="0" projectileIndex="2" cooldown="500" />
-      <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" cooldown="1000" />
-      <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" angleOffset="270" cooldown="1000" />
-      <Shoot radius="11" count="10" shootAngle="36" projectileIndex="1" fixedAngle="0" cooldown="5000" />
-      <Shoot radius="12" shootAngle="0" cooldown="2000" />
-      <Shoot radius="12" count="2" shootAngle="45" cooldown="2000" />
-      <Shoot radius="99" shootAngle="0" projectileIndex="4" cooldown="500" />
-      <Shoot radius="99" shootAngle="0" projectileIndex="4" angleOffset="90" cooldown="500" />
-      <Spawn children="Nile Artifact 1" maxChildren="2" initialSpawn="0" cooldown="0" />
-      <HpLessTransition targetState="rage" threshold="0.06" />
-      <State id="blue shield 4">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 4" time="3000" />
-      </State>
-      <State id="unset blue shield 4">
-        <TimedTransition targetState="Grenade 10" time="3000" />
-      </State>
-      <State id="Grenade 10">
-        <Grenade radius="5" damage="45" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 11" time="1500" />
-      </State>
-      <State id="Grenade 11">
-        <Grenade radius="4" damage="100" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 12" time="1500" />
-      </State>
-      <State id="Grenade 12">
-        <Grenade radius="3" damage="120" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 10" time="1500" />
-      </State>
-    </State>
-    <State id="rage">
-      <Taunt text="This cannot be! You shall not succeed!" broadcast="true" />
-      <Flash color="0xFFF0000" flashPeriod="1" flashRepeats="9000001" />
-      <StayBack speed="0.5" distance="6" />
-      <Shoot radius="11" count="10" shootAngle="36" projectileIndex="1" fixedAngle="0" cooldown="5000" />
-      <Shoot radius="14" count="2" shootAngle="10" projectileIndex="2" cooldown="500" />
-      <Shoot radius="14" shootAngle="0" projectileIndex="2" cooldown="500" />
-      <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" cooldown="1000" />
-      <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" angleOffset="270" cooldown="1000" />
-      <Shoot radius="12" shootAngle="0" cooldown="2000" />
-      <Shoot radius="12" count="2" shootAngle="45" cooldown="2000" />
-      <Spawn children="Scarab" maxChildren="3" initialSpawn="0" cooldown="10000" />
-      <Spawn children="Nile Artifact 1" maxChildren="1" initialSpawn="0" cooldown="0" />
-      <State id="blue shield 5">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unset blue shield 5" time="3000" />
-      </State>
-      <State id="unset blue shield 5">
-        <TimedTransition targetState="Grenade 13" time="3000" />
-      </State>
-      <State id="Grenade 13">
-        <Grenade radius="3" damage="150" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 14" time="1500" />
-      </State>
-      <State id="Grenade 14">
-        <Grenade radius="4" damage="120" range="10" cooldown="1500" />
-        <TimedTransition targetState="Grenade 13" time="1500" />
-      </State>
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Pyramid Artifact 1">
-    <Prioritize>
-      <Orbit speed="1" radius="2" target="Tomb Defender" speedVariance="0.1" radiusVariance="0.5" orbitClockwise="false" />
-      <Follow speed="0.85" range="1" duration="5000" cooldown="1000" />
-    </Prioritize>
-    <Shoot radius="3" count="3" shootAngle="120" cooldown="2500" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Pyramid Artifact 2">
-    <Prioritize>
-      <Orbit speed="1" radius="2" target="Tomb Attacker" speedVariance="0.1" radiusVariance="0.5" orbitClockwise="false" />
-      <Follow speed="0.85" range="1" duration="5000" cooldown="1000" />
-    </Prioritize>
-    <Shoot radius="3" count="3" shootAngle="120" cooldown="2500" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Pyramid Artifact 3">
-    <Prioritize>
-      <Orbit speed="1" radius="2" target="Tomb Support" speedVariance="0.1" radiusVariance="0.5" orbitClockwise="false" />
-      <Follow speed="0.85" range="1" duration="5000" cooldown="1000" />
-    </Prioritize>
-    <Shoot radius="3" count="3" shootAngle="120" cooldown="2500" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Sphinx Artifact 1">
-    <Prioritize>
-      <Orbit speed="1" radius="2" target="Tomb Defender" speedVariance="0.1" radiusVariance="0.5" orbitClockwise="false" />
-      <Follow speed="0.85" range="1" duration="5000" cooldown="1000" />
-    </Prioritize>
-    <Shoot radius="12" count="3" shootAngle="120" cooldown="2500" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Sphinx Artifact 2">
-    <Prioritize>
-      <Orbit speed="1" radius="2" target="Tomb Attacker" speedVariance="0.1" radiusVariance="0.5" orbitClockwise="false" />
-      <Follow speed="0.85" range="1" duration="5000" cooldown="1000" />
-    </Prioritize>
-    <Shoot radius="12" count="3" shootAngle="120" cooldown="2500" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Sphinx Artifact 3">
-    <Prioritize>
-      <Orbit speed="1" radius="2" target="Tomb Support" speedVariance="0.1" radiusVariance="0.5" orbitClockwise="false" />
-      <Follow speed="0.85" range="1" duration="5000" cooldown="1000" />
-    </Prioritize>
-    <Shoot radius="12" count="3" shootAngle="120" cooldown="2500" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Nile Artifact 1">
-    <Prioritize>
-      <Orbit speed="1" radius="2" target="Tomb Defender" speedVariance="0.1" radiusVariance="0.5" orbitClockwise="false" />
-      <Follow speed="0.85" range="1" duration="5000" cooldown="1000" />
-    </Prioritize>
-    <Shoot radius="12" count="3" shootAngle="120" cooldown="2500" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Nile Artifact 2">
-    <Prioritize>
-      <Orbit speed="1" radius="2" target="Tomb Attacker" speedVariance="0.1" radiusVariance="0.5" orbitClockwise="false" />
-      <Follow speed="0.85" range="1" duration="5000" cooldown="1000" />
-    </Prioritize>
-    <Shoot radius="12" count="3" shootAngle="120" cooldown="2500" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Nile Artifact 3">
-    <Prioritize>
-      <Orbit speed="1" radius="2" target="Tomb Support" speedVariance="0.1" radiusVariance="0.5" orbitClockwise="false" />
-      <Follow speed="0.85" range="1" duration="5000" cooldown="1000" />
-    </Prioritize>
-    <Shoot radius="12" count="3" shootAngle="120" cooldown="2500" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Tomb Defender Statue">
-    <State id="noName348">
-      <ConditionalEffect effect="Invulnerable" />
-      <EntityNotExistsTransition targetState="checkActive" dist="1000" target="Inactive Sarcophagus" />
-      <EntityNotExistsTransition targetState="checkInactive" dist="1000" target="Active Sarcophagus" />
-    </State>
-    <State id="checkActive">
-      <ConditionalEffect effect="Invulnerable" />
-      <EntityNotExistsTransition targetState="ItsGoTime" dist="1000" target="Active Sarcophagus" />
-    </State>
-    <State id="checkInactive">
-      <ConditionalEffect effect="Invulnerable" />
-      <EntityNotExistsTransition targetState="ItsGoTime" dist="1000" target="Inactive Sarcophagus" />
-    </State>
-    <State id="ItsGoTime">
-      <Transform target="Tomb Defender" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Tomb Support Statue">
-    <State id="noName350">
-      <ConditionalEffect effect="Invulnerable" />
-      <EntityNotExistsTransition targetState="checkActive" dist="1000" target="Inactive Sarcophagus" />
-      <EntityNotExistsTransition targetState="checkInactive" dist="1000" target="Active Sarcophagus" />
-    </State>
-    <State id="checkActive">
-      <ConditionalEffect effect="Invulnerable" />
-      <EntityNotExistsTransition targetState="ItsGoTime" dist="1000" target="Active Sarcophagus" />
-    </State>
-    <State id="checkInactive">
-      <ConditionalEffect effect="Invulnerable" />
-      <EntityNotExistsTransition targetState="ItsGoTime" dist="1000" target="Inactive Sarcophagus" />
-    </State>
-    <State id="ItsGoTime">
-      <Transform target="Tomb Support" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Tomb Attacker Statue">
-    <State id="noName352">
-      <ConditionalEffect effect="Invulnerable" />
-      <EntityNotExistsTransition targetState="checkActive" dist="1000" target="Inactive Sarcophagus" />
-      <EntityNotExistsTransition targetState="checkInactive" dist="1000" target="Active Sarcophagus" />
-    </State>
-    <State id="checkActive">
-      <ConditionalEffect effect="Invulnerable" />
-      <EntityNotExistsTransition targetState="ItsGoTime" dist="1000" target="Active Sarcophagus" />
-    </State>
-    <State id="checkInactive">
-      <ConditionalEffect effect="Invulnerable" />
-      <EntityNotExistsTransition targetState="ItsGoTime" dist="1000" target="Inactive Sarcophagus" />
-    </State>
-    <State id="ItsGoTime">
-      <Transform target="Tomb Attacker" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Inactive Sarcophagus">
-    <State id="noName354">
-      <ConditionalEffect effect="Invulnerable" />
-      <EntityNotExistsTransition targetState="checkPriest" dist="14" target="Beam Priestess" />
-      <EntityNotExistsTransition targetState="checkPriestess" dist="1000" target="Beam Priest" />
-    </State>
-    <State id="checkPriest">
-      <ConditionalEffect effect="Invulnerable" />
-      <EntityNotExistsTransition targetState="activate" dist="1000" target="Beam Priest" />
-    </State>
-    <State id="checkPriestess">
-      <ConditionalEffect effect="Invulnerable" />
-      <EntityNotExistsTransition targetState="activate" dist="1000" target="Beam Priestess" />
-    </State>
-    <State id="activate">
-      <Transform target="Active Sarcophagus" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Scarab">
-    <NoPlayerWithinTransition targetState="Idle" dist="7" />
-    <PlayerWithinTransition targetState="Chase" dist="7" />
-    <State id="Idle">
-      <Wander speed="0.1" />
-    </State>
-    <State id="Chase">
-      <Follow speed="1.5" acquireRange="7" range="0" cooldown="0" />
-      <Shoot radius="3" shootAngle="0" projectileIndex="1" cooldown="500" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Active Sarcophagus">
-    <State id="noName357">
-      <HpLessTransition targetState="stun" threshold="60" />
-    </State>
-    <State id="stun">
-      <Shoot radius="50" count="8" shootAngle="10" coolDownOffset="500" cooldown="9999999" />
-      <Shoot radius="50" count="8" shootAngle="10" coolDownOffset="1000" cooldown="9999999" />
-      <Shoot radius="50" count="8" shootAngle="10" coolDownOffset="1500" cooldown="9999999" />
-      <TimedTransition targetState="idle" time="1500" />
-    </State>
-    <State id="idle">
-      <ChangeSize rate="100" target="100" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Tomb Boss Anchor">
-    <ConditionalEffect effect="Invincible" perm="true" />
-    <DropPortalOnDeath target="Realm Portal" probability="100" />
-    <State id="Idle">
-      <EntitiesNotExistsTransition targetState="Death" dist="300" targets="Tomb Support,Tomb Attacker,Tomb Defender,Active Sarcophagus,Tomb Defender Statue,Tomb Support Statue,Tomb Attacker Statue" />
-    </State>
-    <State id="Death">
-      <Suicide />
-    </State>
-  </BehaviorEntry>
+    <BehaviorEntry id="Tomb Defender">
+        <State id="idle">
+            <Taunt text="THIS WILL NOW BE YOUR TOMB!" broadcast="true"/>
+            <ConditionalEffect effect="Armored"/>
+            <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <HpLessTransition targetState="weakning" threshold="0.989"/>
+        </State>
+        <State id="weakning">
+            <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <ConditionalEffect effect="Armored"/>
+            <Taunt text="Impudence! I am an Immortal, I needn't waste time on you!" broadcast="true"/>
+            <Shoot radius="50" count="20" shootAngle="0" projectileIndex="3" cooldown="6000"/>
+            <HpLessTransition targetState="active" threshold="0.979"/>
+            <State id="blue shield 1">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 1" time="3000"/>
+            </State>
+            <State id="unset blue shield 1"/>
+        </State>
+        <State id="active">
+            <Orbit speed="0.7" radius="5" target="Tomb Boss Anchor" speedVariance="0.07" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <ConditionalEffect effect="Armored"/>
+            <Shoot radius="50" count="8" shootAngle="45" projectileIndex="2" fixedAngle="0" rotateAngle="0"
+                   cooldown="1000"/>
+            <Shoot radius="50" count="3" shootAngle="120" projectileIndex="1" fixedAngle="0" rotateAngle="0"
+                   cooldown="5000"/>
+            <Shoot radius="50" count="5" shootAngle="72" fixedAngle="0" rotateAngle="0" cooldown="5000"/>
+            <HpLessTransition targetState="boomerang" threshold="0.7"/>
+        </State>
+        <State id="boomerang">
+            <ConditionalEffect effect="Armored"/>
+            <Orbit speed="0.6" radius="3" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Taunt text="Nut, disable our foes!" broadcast="true"/>
+            <Shoot radius="50" shootAngle="0" cooldown="3000"/>
+            <Shoot radius="50" count="8" shootAngle="0" projectileIndex="2" cooldown="1000"/>
+            <Shoot radius="50" count="3" shootAngle="15" projectileIndex="1" cooldown="3000"/>
+            <Shoot radius="50" count="2" shootAngle="90" projectileIndex="1" cooldown="3000"/>
+            <HpLessTransition targetState="double shot" threshold="0.55"/>
+            <State id="blue shield 2">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 2" time="3000"/>
+            </State>
+            <State id="unset blue shield 2"/>
+        </State>
+        <State id="double shot">
+            <Taunt text="Geb, eradicate these cretins from our tomb!" broadcast="true"/>
+            <Orbit speed="0.7" radius="5" target="Tomb Boss Anchor" speedVariance="0.07" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Shoot radius="50" count="8" shootAngle="0" projectileIndex="2" cooldown="1000"/>
+            <Shoot radius="50" count="2" shootAngle="10" cooldown="3000"/>
+            <Shoot radius="50" count="4" shootAngle="15" projectileIndex="1" cooldown="3000"/>
+            <Shoot radius="50" count="2" shootAngle="90" projectileIndex="1" cooldown="3000"/>
+            <HpLessTransition targetState="artifacts" threshold="0.4"/>
+        </State>
+        <State id="artifacts">
+            <ConditionalEffect effect="Armored"/>
+            <Taunt text="Nut, let them wish they were dead!" broadcast="true"/>
+            <Orbit speed="0.6" radius="7" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Shoot radius="50" count="8" shootAngle="0" projectileIndex="2" cooldown="1000"/>
+            <Shoot radius="50" count="2" shootAngle="10" cooldown="3000"/>
+            <Shoot radius="50" count="4" shootAngle="15" projectileIndex="1" cooldown="3000"/>
+            <Shoot radius="50" count="2" shootAngle="90" projectileIndex="1" cooldown="3000"/>
+            <Spawn children="Pyramid Artifact 1" maxChildren="1" initialSpawn="0" cooldown="0"/>
+            <Spawn children="Pyramid Artifact 2" maxChildren="1" initialSpawn="0" cooldown="0"/>
+            <HpLessTransition targetState="artifacts 2" threshold="0.25"/>
+            <State id="blue shield 3">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 3" time="3000"/>
+            </State>
+            <State id="unset blue shield 3"/>
+        </State>
+        <State id="artifacts 2">
+            <ConditionalEffect effect="Armored"/>
+            <Taunt text="My artifacts shall prove my wall of defense is impenetrable!" broadcast="true"/>
+            <Orbit speed="0.6" radius="7" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Shoot radius="50" count="8" shootAngle="0" projectileIndex="2" cooldown="1000"/>
+            <Shoot radius="50" count="3" shootAngle="10" cooldown="3000"/>
+            <Shoot radius="50" count="5" shootAngle="15" projectileIndex="1" cooldown="3000"/>
+            <Shoot radius="50" count="2" shootAngle="80" projectileIndex="1" cooldown="3000"/>
+            <Shoot radius="50" count="2" shootAngle="90" projectileIndex="1" cooldown="3000"/>
+            <Spawn children="Pyramid Artifact 1" maxChildren="2" initialSpawn="0" cooldown="0"/>
+            <HpLessTransition targetState="rage" threshold="0.06"/>
+            <State id="blue shield 4">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 4" time="3000"/>
+            </State>
+            <State id="unset blue shield 4"/>
+        </State>
+        <State id="rage">
+            <ConditionalEffect effect="Armored"/>
+            <Taunt text="The end of your path is here!" broadcast="true"/>
+            <Follow speed="0.6" range="1" duration="5000" cooldown="1000"/>
+            <Flash color="0xFFF0000" flashPeriod="1" flashRepeats="9000001"/>
+            <Shoot radius="50" count="10" shootAngle="10" projectileIndex="4" coolDownOffset="750" cooldown="750"/>
+            <Shoot radius="50" count="5" shootAngle="10" projectileIndex="4" angleOffset="180" coolDownOffset="500"
+                   cooldown="500"/>
+            <Shoot radius="50" shootAngle="0" cooldown="1000"/>
+            <Shoot radius="50" count="3" shootAngle="15" projectileIndex="1" cooldown="2000"/>
+            <Shoot radius="50" count="2" shootAngle="90" projectileIndex="1" cooldown="2000"/>
+            <Spawn children="Pyramid Artifact 1" maxChildren="1" initialSpawn="0" cooldown="0"/>
+            <Spawn children="Pyramid Artifact 2" maxChildren="1" initialSpawn="0" cooldown="0"/>
+            <Spawn children="Pyramid Artifact 3" maxChildren="1" initialSpawn="0" cooldown="0"/>
+            <State id="blue shield 5">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 5" time="3000"/>
+            </State>
+            <State id="unset blue shield 5"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Tomb Support">
+        <State id="idle">
+            <Taunt text="ENOUGH OF YOUR VANDALISM!" broadcast="true"/>
+            <ConditionalEffect effect="Armored"/>
+            <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <HpLessTransition targetState="weakning" threshold="0.9875"/>
+        </State>
+        <State id="weakning">
+            <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Taunt text="Impudence! I am an immortal, I needn't take your seriously."/>
+            <Shoot radius="50" count="20" shootAngle="0" projectileIndex="7" coolDownOffset="2000" cooldown="6000"/>
+            <HpLessTransition targetState="active" threshold="0.97875"/>
+            <State id="blue shield 1">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 1" time="3000"/>
+            </State>
+            <State id="unset blue shield 1"/>
+        </State>
+        <State id="active">
+            <Orbit speed="0.7" radius="4" target="Tomb Boss Anchor" speedVariance="0.07" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Shoot radius="20" shootAngle="0" projectileIndex="5" cooldown="1000"/>
+            <Shoot radius="12" count="3" shootAngle="120" projectileIndex="1" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="1000" cooldown="2500"/>
+            <Shoot radius="12" count="4" shootAngle="90" projectileIndex="2" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="1500" cooldown="2500"/>
+            <Shoot radius="12" count="5" shootAngle="72" projectileIndex="3" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="2000" cooldown="2500"/>
+            <Shoot radius="12" count="6" shootAngle="60" projectileIndex="4" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="2500" cooldown="2500"/>
+            <HpLessTransition targetState="boomerang" threshold="0.9"/>
+            <State id="blue shield 2">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 2" time="3000"/>
+            </State>
+            <State id="unset blue shield 2"/>
+        </State>
+        <State id="boomerang">
+            <Orbit speed="0.6" radius="6" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Taunt text="Bes, protect me at once!" broadcast="true"/>
+            <Shoot radius="20" shootAngle="0" projectileIndex="5" cooldown="1000"/>
+            <Shoot radius="20" shootAngle="0" projectileIndex="6" cooldown="3000"/>
+            <Shoot radius="12" count="3" shootAngle="120" projectileIndex="1" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="1000" cooldown="2500"/>
+            <Shoot radius="12" count="4" shootAngle="90" projectileIndex="2" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="1500" cooldown="2500"/>
+            <Shoot radius="12" count="5" shootAngle="72" projectileIndex="3" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="2000" cooldown="2500"/>
+            <Shoot radius="12" count="6" shootAngle="60" projectileIndex="4" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="2500" cooldown="2500"/>
+            <HpLessTransition targetState="paralyze" threshold="0.7"/>
+        </State>
+        <State id="paralyze">
+            <Orbit speed="0.6" radius="7" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Taunt text="Geb, eradicate these cretins from our tomb!" broadcast="true"/>
+            <Shoot radius="20" shootAngle="0" projectileIndex="5" cooldown="1000"/>
+            <Shoot radius="20" shootAngle="0" projectileIndex="6" cooldown="3000"/>
+            <Shoot radius="999" count="2" shootAngle="10" projectileIndex="8" fixedAngle="0" rotateAngle="180"
+                   cooldown="1000"/>
+            <Shoot radius="12" count="3" shootAngle="120" projectileIndex="1" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="1000" cooldown="2500"/>
+            <Shoot radius="12" count="4" shootAngle="90" projectileIndex="2" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="1500" cooldown="2500"/>
+            <Shoot radius="12" count="5" shootAngle="72" projectileIndex="3" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="2000" cooldown="2500"/>
+            <Shoot radius="12" count="6" shootAngle="60" projectileIndex="4" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="2500" cooldown="2500"/>
+            <HpLessTransition targetState="artifacts" threshold="0.5"/>
+        </State>
+        <State id="artifacts">
+            <Orbit speed="0.6" radius="4" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Taunt text="My artifacts shall make your lethargic lives end much more swiftly!" broadcast="true"/>
+            <Shoot radius="20" shootAngle="0" projectileIndex="5" cooldown="1000"/>
+            <Shoot radius="20" shootAngle="0" projectileIndex="6" cooldown="3000"/>
+            <Shoot radius="12" count="3" shootAngle="120" projectileIndex="1" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="1000" cooldown="2500"/>
+            <Shoot radius="12" count="4" shootAngle="90" projectileIndex="2" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="1500" cooldown="2500"/>
+            <Shoot radius="12" count="5" shootAngle="72" projectileIndex="3" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="2000" cooldown="2500"/>
+            <Shoot radius="12" count="6" shootAngle="60" projectileIndex="4" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="2500" cooldown="2500"/>
+            <Spawn children="Sphinx Artifact 1" maxChildren="1" initialSpawn="0" cooldown="0"/>
+            <HpLessTransition targetState="double shoot" threshold="0.3"/>
+            <State id="blue shield 3">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 3" time="3000"/>
+            </State>
+            <State id="unset blue shield 3"/>
+        </State>
+        <State id="double shoot">
+            <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Shoot radius="20" count="2" shootAngle="15" projectileIndex="5" cooldown="1000"/>
+            <Shoot radius="20" count="2" shootAngle="15" projectileIndex="6" cooldown="3000"/>
+            <Shoot radius="12" count="3" shootAngle="120" projectileIndex="1" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="1000" cooldown="2500"/>
+            <Shoot radius="12" count="4" shootAngle="90" projectileIndex="2" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="1500" cooldown="2500"/>
+            <Shoot radius="12" count="5" shootAngle="72" projectileIndex="3" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="2000" cooldown="2500"/>
+            <Shoot radius="12" count="6" shootAngle="60" projectileIndex="4" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="2500" cooldown="2500"/>
+            <Spawn children="Sphinx Artifact 1" maxChildren="2" initialSpawn="0" cooldown="0"/>
+            <HpLessTransition targetState="rage" threshold="0.06"/>
+            <State id="blue shield 4">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 4" time="3000"/>
+            </State>
+            <State id="unset blue shield 4"/>
+        </State>
+        <State id="rage">
+            <Taunt text="This cannot be! You shall not succeed!" broadcast="true"/>
+            <Follow speed="0.6" range="1" duration="5000" cooldown="1000"/>
+            <Flash color="0xFFF0000" flashPeriod="1" flashRepeats="9000001"/>
+            <Shoot radius="20" shootAngle="0" projectileIndex="5" cooldown="1000"/>
+            <Shoot radius="20" shootAngle="15" cooldown="750"/>
+            <Shoot radius="12" count="4" shootAngle="90" projectileIndex="1" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="1000" cooldown="2500"/>
+            <Shoot radius="12" count="5" shootAngle="72" projectileIndex="2" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="1500" cooldown="2500"/>
+            <Shoot radius="12" count="6" shootAngle="60" projectileIndex="3" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="2000" cooldown="2500"/>
+            <Shoot radius="12" count="8" shootAngle="45" projectileIndex="4" fixedAngle="0" rotateAngle="0"
+                   coolDownOffset="2500" cooldown="2500"/>
+            <Shoot radius="999" count="6" shootAngle="10" projectileIndex="8" angleOffset="180" cooldown="500"/>
+            <Spawn children="Sphinx Artifact 1" maxChildren="1" initialSpawn="0" cooldown="0"/>
+            <State id="blue shield 5">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 5" time="3000"/>
+            </State>
+            <State id="unset blue shield 5"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Tomb Attacker">
+        <State id="idle">
+            <Taunt text="ENOUGH OF YOUR VANDALISM!" broadcast="true"/>
+            <ConditionalEffect effect="Armored"/>
+            <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <HpLessTransition targetState="weakning" threshold="0.988"/>
+        </State>
+        <State id="weakning">
+            <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Shoot radius="50" count="20" shootAngle="0" projectileIndex="3" coolDownOffset="2000" cooldown="6000"/>
+            <HpLessTransition targetState="active" threshold="0.9788"/>
+            <State id="blue shield 1">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 1" time="3000"/>
+            </State>
+            <State id="unset blue shield 1"/>
+        </State>
+        <State id="active">
+            <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Shoot radius="14" count="2" shootAngle="10" projectileIndex="2" cooldown="500"/>
+            <Shoot radius="12" shootAngle="0" cooldown="2000"/>
+            <HpLessTransition targetState="lets dance" threshold="0.72"/>
+            <State id="Grenade 1">
+                <Grenade radius="3" damage="160" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 2" time="1500"/>
+            </State>
+            <State id="Grenade 2">
+                <Grenade radius="4" damage="120" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 1" time="1500"/>
+            </State>
+        </State>
+        <State id="lets dance">
+            <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Taunt text="Bes, protect me at once!" broadcast="true"/>
+            <Shoot radius="14" shootAngle="0" projectileIndex="2" cooldown="500"/>
+            <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" cooldown="1000"/>
+            <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" angleOffset="270" cooldown="1000"/>
+            <Shoot radius="11" count="8" shootAngle="45" projectileIndex="1" fixedAngle="0" cooldown="5000"/>
+            <Shoot radius="12" count="2" shootAngle="45" cooldown="1500"/>
+            <Shoot radius="99" shootAngle="0" projectileIndex="4" cooldown="500"/>
+            <Spawn children="Scarab" maxChildren="3" initialSpawn="0" cooldown="10000"/>
+            <HpLessTransition targetState="more muthafucka" threshold="0.675"/>
+            <State id="blue shield 2">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 2" time="3000"/>
+            </State>
+            <State id="unset blue shield 2">
+                <TimedTransition targetState="Grenade 3" time="3000"/>
+            </State>
+            <State id="Grenade 3">
+                <Grenade radius="3" damage="160" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 4" time="1500"/>
+            </State>
+            <State id="Grenade 4">
+                <Grenade radius="4" damage="120" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 3" time="1500"/>
+            </State>
+        </State>
+        <State id="more muthafucka">
+            <Orbit speed="0.6" radius="5" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Taunt text="Nut, disable our foes!" broadcast="true"/>
+            <Spawn children="Scarab" maxChildren="3" initialSpawn="0" cooldown="10000"/>
+            <Shoot radius="14" count="2" shootAngle="10" projectileIndex="2" cooldown="500"/>
+            <Shoot radius="14" shootAngle="0" projectileIndex="2" cooldown="500"/>
+            <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" cooldown="1000"/>
+            <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" angleOffset="270" cooldown="1000"/>
+            <Shoot radius="11" count="10" shootAngle="36" projectileIndex="1" fixedAngle="0" cooldown="5000"/>
+            <Shoot radius="12" shootAngle="0" cooldown="2000"/>
+            <Shoot radius="12" count="2" shootAngle="45" cooldown="2000"/>
+            <Shoot radius="99" shootAngle="0" projectileIndex="4" cooldown="500"/>
+            <Shoot radius="99" shootAngle="0" projectileIndex="4" angleOffset="90" cooldown="500"/>
+            <HpLessTransition targetState="artifacts" threshold="0.4"/>
+            <State id="Grenade 5">
+                <Grenade radius="3" damage="160" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 6" time="1500"/>
+            </State>
+            <State id="Grenade 6">
+                <Grenade radius="4" damage="120" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 5" time="1500"/>
+            </State>
+        </State>
+        <State id="artifacts">
+            <Orbit speed="0.6" radius="4" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Taunt text="My artifacts shall destroy you from your soul your flesh!" broadcast="true"/>
+            <Spawn children="Scarab" maxChildren="3" initialSpawn="0" cooldown="10000"/>
+            <Shoot radius="14" count="2" shootAngle="10" projectileIndex="2" cooldown="500"/>
+            <Shoot radius="14" shootAngle="0" projectileIndex="2" cooldown="500"/>
+            <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" cooldown="1000"/>
+            <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" angleOffset="270" cooldown="1000"/>
+            <Shoot radius="11" count="10" shootAngle="36" projectileIndex="1" fixedAngle="0" cooldown="5000"/>
+            <Shoot radius="12" shootAngle="0" cooldown="2000"/>
+            <Shoot radius="12" count="2" shootAngle="45" cooldown="2000"/>
+            <Shoot radius="99" shootAngle="0" projectileIndex="4" cooldown="500"/>
+            <Shoot radius="99" shootAngle="0" projectileIndex="4" angleOffset="90" cooldown="500"/>
+            <Spawn children="Nile Artifact 1" maxChildren="1" initialSpawn="0" cooldown="0"/>
+            <HpLessTransition targetState="artifacts 2" threshold="0.2"/>
+            <State id="blue shield 3">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 3" time="3000"/>
+            </State>
+            <State id="unset blue shield 3">
+                <TimedTransition targetState="Grenade 7" time="3000"/>
+            </State>
+            <State id="Grenade 7">
+                <Grenade radius="5" damage="45" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 8" time="1500"/>
+            </State>
+            <State id="Grenade 8">
+                <Grenade radius="4" damage="100" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 9" time="1500"/>
+            </State>
+            <State id="Grenade 9">
+                <Grenade radius="3" damage="120" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 7" time="1500"/>
+            </State>
+        </State>
+        <State id="artifacts 2">
+            <Orbit speed="0.6" radius="4" target="Tomb Boss Anchor" speedVariance="0.06" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Taunt text="My artifacts shall destroy you from your soul your flesh!" broadcast="true"/>
+            <Spawn children="Scarab" maxChildren="3" initialSpawn="0" cooldown="10000"/>
+            <Shoot radius="14" count="2" shootAngle="10" projectileIndex="2" cooldown="500"/>
+            <Shoot radius="14" shootAngle="0" projectileIndex="2" cooldown="500"/>
+            <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" cooldown="1000"/>
+            <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" angleOffset="270" cooldown="1000"/>
+            <Shoot radius="11" count="10" shootAngle="36" projectileIndex="1" fixedAngle="0" cooldown="5000"/>
+            <Shoot radius="12" shootAngle="0" cooldown="2000"/>
+            <Shoot radius="12" count="2" shootAngle="45" cooldown="2000"/>
+            <Shoot radius="99" shootAngle="0" projectileIndex="4" cooldown="500"/>
+            <Shoot radius="99" shootAngle="0" projectileIndex="4" angleOffset="90" cooldown="500"/>
+            <Spawn children="Nile Artifact 1" maxChildren="2" initialSpawn="0" cooldown="0"/>
+            <HpLessTransition targetState="rage" threshold="0.06"/>
+            <State id="blue shield 4">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 4" time="3000"/>
+            </State>
+            <State id="unset blue shield 4">
+                <TimedTransition targetState="Grenade 10" time="3000"/>
+            </State>
+            <State id="Grenade 10">
+                <Grenade radius="5" damage="45" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 11" time="1500"/>
+            </State>
+            <State id="Grenade 11">
+                <Grenade radius="4" damage="100" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 12" time="1500"/>
+            </State>
+            <State id="Grenade 12">
+                <Grenade radius="3" damage="120" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 10" time="1500"/>
+            </State>
+        </State>
+        <State id="rage">
+            <Taunt text="This cannot be! You shall not succeed!" broadcast="true"/>
+            <Flash color="0xFFF0000" flashPeriod="1" flashRepeats="9000001"/>
+            <StayBack speed="0.5" distance="6"/>
+            <Shoot radius="11" count="10" shootAngle="36" projectileIndex="1" fixedAngle="0" cooldown="5000"/>
+            <Shoot radius="14" count="2" shootAngle="10" projectileIndex="2" cooldown="500"/>
+            <Shoot radius="14" shootAngle="0" projectileIndex="2" cooldown="500"/>
+            <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" cooldown="1000"/>
+            <Shoot radius="14" count="2" shootAngle="90" projectileIndex="2" angleOffset="270" cooldown="1000"/>
+            <Shoot radius="12" shootAngle="0" cooldown="2000"/>
+            <Shoot radius="12" count="2" shootAngle="45" cooldown="2000"/>
+            <Spawn children="Scarab" maxChildren="3" initialSpawn="0" cooldown="10000"/>
+            <Spawn children="Nile Artifact 1" maxChildren="1" initialSpawn="0" cooldown="0"/>
+            <State id="blue shield 5">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unset blue shield 5" time="3000"/>
+            </State>
+            <State id="unset blue shield 5">
+                <TimedTransition targetState="Grenade 13" time="3000"/>
+            </State>
+            <State id="Grenade 13">
+                <Grenade radius="3" damage="150" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 14" time="1500"/>
+            </State>
+            <State id="Grenade 14">
+                <Grenade radius="4" damage="120" range="10" cooldown="1500"/>
+                <TimedTransition targetState="Grenade 13" time="1500"/>
+            </State>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Pyramid Artifact 1">
+        <Prioritize>
+            <Orbit speed="1" radius="2" target="Tomb Defender" speedVariance="0.1" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Follow speed="0.85" range="1" duration="5000" cooldown="1000"/>
+        </Prioritize>
+        <Shoot radius="3" count="3" shootAngle="120" cooldown="2500"/>
+    </BehaviorEntry>
+    <BehaviorEntry id="Pyramid Artifact 2">
+        <Prioritize>
+            <Orbit speed="1" radius="2" target="Tomb Attacker" speedVariance="0.1" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Follow speed="0.85" range="1" duration="5000" cooldown="1000"/>
+        </Prioritize>
+        <Shoot radius="3" count="3" shootAngle="120" cooldown="2500"/>
+    </BehaviorEntry>
+    <BehaviorEntry id="Pyramid Artifact 3">
+        <Prioritize>
+            <Orbit speed="1" radius="2" target="Tomb Support" speedVariance="0.1" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Follow speed="0.85" range="1" duration="5000" cooldown="1000"/>
+        </Prioritize>
+        <Shoot radius="3" count="3" shootAngle="120" cooldown="2500"/>
+    </BehaviorEntry>
+    <BehaviorEntry id="Sphinx Artifact 1">
+        <Prioritize>
+            <Orbit speed="1" radius="2" target="Tomb Defender" speedVariance="0.1" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Follow speed="0.85" range="1" duration="5000" cooldown="1000"/>
+        </Prioritize>
+        <Shoot radius="12" count="3" shootAngle="120" cooldown="2500"/>
+    </BehaviorEntry>
+    <BehaviorEntry id="Sphinx Artifact 2">
+        <Prioritize>
+            <Orbit speed="1" radius="2" target="Tomb Attacker" speedVariance="0.1" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Follow speed="0.85" range="1" duration="5000" cooldown="1000"/>
+        </Prioritize>
+        <Shoot radius="12" count="3" shootAngle="120" cooldown="2500"/>
+    </BehaviorEntry>
+    <BehaviorEntry id="Sphinx Artifact 3">
+        <Prioritize>
+            <Orbit speed="1" radius="2" target="Tomb Support" speedVariance="0.1" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Follow speed="0.85" range="1" duration="5000" cooldown="1000"/>
+        </Prioritize>
+        <Shoot radius="12" count="3" shootAngle="120" cooldown="2500"/>
+    </BehaviorEntry>
+    <BehaviorEntry id="Nile Artifact 1">
+        <Prioritize>
+            <Orbit speed="1" radius="2" target="Tomb Defender" speedVariance="0.1" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Follow speed="0.85" range="1" duration="5000" cooldown="1000"/>
+        </Prioritize>
+        <Shoot radius="12" count="3" shootAngle="120" cooldown="2500"/>
+    </BehaviorEntry>
+    <BehaviorEntry id="Nile Artifact 2">
+        <Prioritize>
+            <Orbit speed="1" radius="2" target="Tomb Attacker" speedVariance="0.1" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Follow speed="0.85" range="1" duration="5000" cooldown="1000"/>
+        </Prioritize>
+        <Shoot radius="12" count="3" shootAngle="120" cooldown="2500"/>
+    </BehaviorEntry>
+    <BehaviorEntry id="Nile Artifact 3">
+        <Prioritize>
+            <Orbit speed="1" radius="2" target="Tomb Support" speedVariance="0.1" radiusVariance="0.5"
+                   orbitClockwise="false"/>
+            <Follow speed="0.85" range="1" duration="5000" cooldown="1000"/>
+        </Prioritize>
+        <Shoot radius="12" count="3" shootAngle="120" cooldown="2500"/>
+    </BehaviorEntry>
+    <BehaviorEntry id="Tomb Defender Statue">
+        <State id="noName348">
+            <ConditionalEffect effect="Invulnerable"/>
+            <EntityNotExistsTransition targetState="checkActive" dist="1000" target="Inactive Sarcophagus"/>
+            <EntityNotExistsTransition targetState="checkInactive" dist="1000" target="Active Sarcophagus"/>
+        </State>
+        <State id="checkActive">
+            <ConditionalEffect effect="Invulnerable"/>
+            <EntityNotExistsTransition targetState="ItsGoTime" dist="1000" target="Active Sarcophagus"/>
+        </State>
+        <State id="checkInactive">
+            <ConditionalEffect effect="Invulnerable"/>
+            <EntityNotExistsTransition targetState="ItsGoTime" dist="1000" target="Inactive Sarcophagus"/>
+        </State>
+        <State id="ItsGoTime">
+            <Transform target="Tomb Defender"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Tomb Support Statue">
+        <State id="noName350">
+            <ConditionalEffect effect="Invulnerable"/>
+            <EntityNotExistsTransition targetState="checkActive" dist="1000" target="Inactive Sarcophagus"/>
+            <EntityNotExistsTransition targetState="checkInactive" dist="1000" target="Active Sarcophagus"/>
+        </State>
+        <State id="checkActive">
+            <ConditionalEffect effect="Invulnerable"/>
+            <EntityNotExistsTransition targetState="ItsGoTime" dist="1000" target="Active Sarcophagus"/>
+        </State>
+        <State id="checkInactive">
+            <ConditionalEffect effect="Invulnerable"/>
+            <EntityNotExistsTransition targetState="ItsGoTime" dist="1000" target="Inactive Sarcophagus"/>
+        </State>
+        <State id="ItsGoTime">
+            <Transform target="Tomb Support"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Tomb Attacker Statue">
+        <State id="noName352">
+            <ConditionalEffect effect="Invulnerable"/>
+            <EntityNotExistsTransition targetState="checkActive" dist="1000" target="Inactive Sarcophagus"/>
+            <EntityNotExistsTransition targetState="checkInactive" dist="1000" target="Active Sarcophagus"/>
+        </State>
+        <State id="checkActive">
+            <ConditionalEffect effect="Invulnerable"/>
+            <EntityNotExistsTransition targetState="ItsGoTime" dist="1000" target="Active Sarcophagus"/>
+        </State>
+        <State id="checkInactive">
+            <ConditionalEffect effect="Invulnerable"/>
+            <EntityNotExistsTransition targetState="ItsGoTime" dist="1000" target="Inactive Sarcophagus"/>
+        </State>
+        <State id="ItsGoTime">
+            <Transform target="Tomb Attacker"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Inactive Sarcophagus">
+        <State id="noName354">
+            <ConditionalEffect effect="Invulnerable"/>
+            <EntityNotExistsTransition targetState="checkPriest" dist="14" target="Beam Priestess"/>
+            <EntityNotExistsTransition targetState="checkPriestess" dist="1000" target="Beam Priest"/>
+        </State>
+        <State id="checkPriest">
+            <ConditionalEffect effect="Invulnerable"/>
+            <EntityNotExistsTransition targetState="activate" dist="1000" target="Beam Priest"/>
+        </State>
+        <State id="checkPriestess">
+            <ConditionalEffect effect="Invulnerable"/>
+            <EntityNotExistsTransition targetState="activate" dist="1000" target="Beam Priestess"/>
+        </State>
+        <State id="activate">
+            <Transform target="Active Sarcophagus"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Scarab">
+        <NoPlayerWithinTransition targetState="Idle" dist="7"/>
+        <PlayerWithinTransition targetState="Chase" dist="7"/>
+        <State id="Idle">
+            <Wander speed="0.1"/>
+        </State>
+        <State id="Chase">
+            <Follow speed="1.5" acquireRange="7" range="0" cooldown="0"/>
+            <Shoot radius="3" shootAngle="0" projectileIndex="1" cooldown="500"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Active Sarcophagus">
+        <State id="noName357">
+            <HpLessTransition targetState="stun" threshold="60"/>
+        </State>
+        <State id="stun">
+            <Shoot radius="50" count="8" shootAngle="10" coolDownOffset="500" cooldown="9999999"/>
+            <Shoot radius="50" count="8" shootAngle="10" coolDownOffset="1000" cooldown="9999999"/>
+            <Shoot radius="50" count="8" shootAngle="10" coolDownOffset="1500" cooldown="9999999"/>
+            <TimedTransition targetState="idle" time="1500"/>
+        </State>
+        <State id="idle">
+            <ChangeSize rate="100" target="100"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Tomb Boss Anchor">
+        <ConditionalEffect effect="Invincible" perm="true"/>
+        <DropPortalOnDeath target="Realm Portal" probability="100"/>
+        <State id="Idle">
+            <EntitiesNotExistsTransition targetState="Death" dist="300"
+                                         targets="Tomb Support,Tomb Attacker,Tomb Defender,Active Sarcophagus,Tomb Defender Statue,Tomb Support Statue,Tomb Attacker Statue"/>
+        </State>
+        <State id="Death">
+            <Suicide/>
+        </State>
+    </BehaviorEntry>
 </BehaviorEntries>

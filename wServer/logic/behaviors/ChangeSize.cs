@@ -1,42 +1,35 @@
-﻿using common;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using common;
 using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
-class ChangeSize : Behavior
-{
+internal class ChangeSize : Behavior {
     //State storage: cooldown timer
 
-    int rate;
-    int target;
+    private int rate;
+    private int target;
 
-    public ChangeSize(XElement e)
-    {
+    public ChangeSize(XElement e) {
         rate = e.ParseInt("@rate");
         target = e.ParseInt("@target");
     }
 
-    public ChangeSize(int rate, int target)
-    {
+    public ChangeSize(int rate, int target) {
         this.rate = rate;
         this.target = target;
     }
 
-    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-    {
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state) {
         state = 0;
     }
 
-    protected override void TickCore(Entity host, RealmTime time, ref object state)
-    {
-        int cool = (int)state;
+    protected override void TickCore(Entity host, RealmTime time, ref object state) {
+        var cool = (int) state;
 
-        if (cool <= 0)
-        {
+        if (cool <= 0) {
             var size = host.Size;
-            if (size != target)
-            {
+            if (size != target) {
                 size += rate;
                 if ((rate > 0 && size > target) ||
                     (rate < 0 && size < target))
@@ -44,10 +37,12 @@ class ChangeSize : Behavior
 
                 host.Size = size;
             }
+
             cool = 150;
         }
-        else
-            cool -= time.ElaspedMsDelta;
+        else {
+            cool -= time.ElapsedMsDelta;
+        }
 
         state = cool;
     }

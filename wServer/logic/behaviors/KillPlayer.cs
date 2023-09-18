@@ -1,78 +1,65 @@
-﻿using common;
-using DungeonGenerator;
-using System.Xml.Linq;
-using wServer.networking.packets.outgoing;
+﻿using System.Xml.Linq;
+using common;
 using wServer.realm;
 using wServer.realm.entities;
 
 namespace wServer.logic.behaviors;
 
-class KillPlayer : Behavior
-{
-    private Cooldown _coolDown;
-    private readonly string _killMessage;
+internal class KillPlayer : Behavior {
     private readonly bool _killAll;
+    private readonly string _killMessage;
+    private Cooldown _coolDown;
 
-    public KillPlayer(XElement e)
-    {
+    public KillPlayer(XElement e) {
         _killMessage = e.ParseString("@killMessage");
         _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 1000));
         _killAll = e.ParseBool("@killAll");
     }
 
-    public KillPlayer(string killMessage, Cooldown coolDown = new(), bool killAll = false)
-    {
+    public KillPlayer(string killMessage, Cooldown coolDown = new(), bool killAll = false) {
         _coolDown = coolDown.Normalize();
         _killMessage = killMessage;
         _killAll = killAll;
     }
 
-    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-    {
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state) {
         state = _coolDown.Next(Random);
     }
 
-    protected override void TickCore(Entity host, RealmTime time, ref object state)
-    {
+    protected override void TickCore(Entity host, RealmTime time, ref object state) {
         if (host.AttackTarget == null || host.AttackTarget.Owner == null)
             return;
-                
-        var cool = (int)state;
 
-        if (cool <= 0)
-        {
+        var cool = (int) state;
+
+        if (cool <= 0) {
             // death strike
             if (_killAll)
                 foreach (var plr in host.Owner.Players.Values)
-                {
                     Kill(host, plr);
-                }
             else
                 Kill(host, host.AttackTarget);
 
             // send kill message
             if (_killMessage != null)
-                foreach(var player in host.Owner.Players.Values)
+                foreach (var player in host.Owner.Players.Values)
                     if (player.DistSqr(host) < Player.RadiusSqr)
                         player.SendEnemy(host.ObjectDesc.DisplayId ?? host.ObjectDesc.ObjectId, _killMessage);
 
             cool = _coolDown.Next(Random);
         }
-        else
-            cool -= time.ElaspedMsDelta;
+        else {
+            cool -= time.ElapsedMsDelta;
+        }
 
         state = cool;
     }
 
-    private void Kill(Entity host, Player player)
-    {
-        host.Owner.BroadcastPacketNearby(new ShowEffect()
-        {
-            EffectType = EffectType.Trail,
-            TargetObjectId = host.Id,
-            Pos1 = new Position { X = player.X, Y = player.Y },
-            Color = new ARGB(0xffffffff)
-        }, host, null);
+    private void Kill(Entity host, Player player) {
+        foreach (var otherPlayer in host.Owner.Players.Values)
+            if (otherPlayer.DistSqr(host) < Player.RadiusSqr)
+                otherPlayer.Client.SendShowEffect(EffectType.Flashing, host.Id,
+                    new Position {X = player.X, Y = player.Y}, new Position(), new ARGB(0xffffffff));
 
         // kill player
         player.Death(host.ObjectDesc.DisplayId);

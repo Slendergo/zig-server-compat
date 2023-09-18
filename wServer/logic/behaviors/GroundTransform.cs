@@ -1,28 +1,18 @@
-﻿using common;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using common;
 using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
-class GroundTransform : Behavior
-{
-    // state object: TileState
-    class TileState
-    {
-        public ushort TileType;
-        public int X;
-        public int Y;
-        public bool Spawned;
-    }
-
-    private readonly string _tileId;
-    private readonly int _radius;
+internal class GroundTransform : Behavior {
     private readonly bool _persist;
+    private readonly int _radius;
     private readonly int? _relativeX;
     private readonly int? _relativeY;
 
-    public GroundTransform(XElement e)
-    {
+    private readonly string _tileId;
+
+    public GroundTransform(XElement e) {
         _tileId = e.ParseString("@tileId");
         _radius = e.ParseInt("@radius");
         _persist = e.ParseBool("@persist");
@@ -31,12 +21,11 @@ class GroundTransform : Behavior
     }
 
     public GroundTransform(
-        string tileId, 
-        int radius = 0, 
-        int? relativeX = null, 
-        int? relativeY = null, 
-        bool persist = false)
-    {
+        string tileId,
+        int radius = 0,
+        int? relativeX = null,
+        int? relativeY = null,
+        bool persist = false) {
         _tileId = tileId;
         _radius = radius;
         _persist = persist;
@@ -44,8 +33,7 @@ class GroundTransform : Behavior
         _relativeY = relativeY;
     }
 
-    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-    {
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state) {
         var map = host.Owner.Map;
         var hx = (int) host.X;
         var hy = (int) host.Y;
@@ -54,8 +42,7 @@ class GroundTransform : Behavior
 
         var tiles = new List<TileState>();
 
-        if (_relativeX != null && _relativeY != null)
-        {
+        if (_relativeX != null && _relativeY != null) {
             var x = hx + (int) _relativeX;
             var y = hy + (int) _relativeY;
 
@@ -67,8 +54,7 @@ class GroundTransform : Behavior
             if (tileType == tile.TileId)
                 return;
 
-            tiles.Add(new TileState()
-            {
+            tiles.Add(new TileState {
                 TileType = tile.TileId,
                 X = x,
                 Y = y,
@@ -81,9 +67,8 @@ class GroundTransform : Behavior
             return;
         }
 
-        for (int i = hx - _radius; i <= hx + _radius; i++)
-        for (int j = hy - _radius; j <= hy + _radius; j++)
-        {
+        for (var i = hx - _radius; i <= hx + _radius; i++)
+        for (var j = hy - _radius; j <= hy + _radius; j++) {
             if (!map.Contains(new IntPoint(i, j)))
                 continue;
 
@@ -92,8 +77,7 @@ class GroundTransform : Behavior
             if (tileType == tile.TileId)
                 continue;
 
-            tiles.Add(new TileState()
-            {
+            tiles.Add(new TileState {
                 TileType = tile.TileId,
                 X = i,
                 Y = j,
@@ -108,15 +92,11 @@ class GroundTransform : Behavior
         state = tiles;
     }
 
-    protected override void OnStateExit(Entity host, RealmTime time, ref object state)
-    {
-        var tiles = state as List<TileState>;
-
-        if (tiles == null || _persist)
+    protected override void OnStateExit(Entity host, RealmTime time, ref object state) {
+        if (state is not List<TileState> tiles || _persist)
             return;
 
-        foreach (var tile in tiles)
-        {
+        foreach (var tile in tiles) {
             var x = tile.X;
             var y = tile.Y;
             var tileType = tile.TileType;
@@ -131,4 +111,12 @@ class GroundTransform : Behavior
     }
 
     protected override void TickCore(Entity host, RealmTime time, ref object state) { }
+
+    // state object: TileState
+    private class TileState {
+        public bool Spawned;
+        public ushort TileType;
+        public int X;
+        public int Y;
+    }
 }

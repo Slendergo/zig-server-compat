@@ -20,84 +20,83 @@
 
 using DungeonGenerator.Dungeon;
 
-
 namespace DungeonGenerator.Templates.Abyss;
 
 public class AbyssTemplate : DungeonTemplate {
-	internal static readonly TileType RedSmallChecks = new(0x003c, "Red Small Checks");
-	internal static readonly TileType Lava = new(0x0070, "Lava");
-	internal static readonly TileType Space = new(0x00fe, "Space");
+    internal static readonly TileType RedSmallChecks = new(0x003c, "Red Small Checks");
+    internal static readonly TileType Lava = new(0x0070, "Lava");
+    internal static readonly TileType Space = new(0x00fe, "Space");
 
-	internal static readonly ObjectType RedWall = new(0x0150, "Red Wall");
-	internal static readonly ObjectType RedTorchWall = new(0x0151, "Red Torch Wall");
-	internal static readonly ObjectType PartialRedFloor = new(0x0153, "Partial Red Floor");
-	internal static readonly ObjectType RedPillar = new(0x017e, "Red Pillar");
-	internal static readonly ObjectType BrokenRedPillar = new(0x0183, "Broken Red Pillar");
-	internal static readonly ObjectType CowardicePortal = new(0x0703, "Portal of Cowardice");
+    internal static readonly ObjectType RedWall = new(0x0150, "Red Wall");
+    internal static readonly ObjectType RedTorchWall = new(0x0151, "Red Torch Wall");
+    internal static readonly ObjectType PartialRedFloor = new(0x0153, "Partial Red Floor");
+    internal static readonly ObjectType RedPillar = new(0x017e, "Red Pillar");
+    internal static readonly ObjectType BrokenRedPillar = new(0x0183, "Broken Red Pillar");
+    internal static readonly ObjectType CowardicePortal = new(0x0703, "Portal of Cowardice");
 
-	internal static readonly ObjectType AbyssImp = new(0x66d, "Imp of the Abyss");
+    internal static readonly ObjectType AbyssImp = new(0x66d, "Imp of the Abyss");
 
-	internal static readonly ObjectType[] AbyssDemon = {
-		new(0x66e, "Demon of the Abyss"),
-		new(0x66f, "Demon Warrior of the Abyss"),
-		new(0x670, "Demon Mage of the Abyss")
-	};
+    internal static readonly ObjectType[] AbyssDemon = {
+        new(0x66e, "Demon of the Abyss"),
+        new(0x66f, "Demon Warrior of the Abyss"),
+        new(0x670, "Demon Mage of the Abyss")
+    };
 
-	internal static readonly ObjectType[] AbyssBrute = {
-		new(0x671, "Brute of the Abyss"),
-		new(0x672, "Brute Warrior of the Abyss")
-	};
+    internal static readonly ObjectType[] AbyssBrute = {
+        new(0x671, "Brute of the Abyss"),
+        new(0x672, "Brute Warrior of the Abyss")
+    };
 
-	internal static readonly ObjectType AbyssBones = new(0x01fa, "Abyss Bones");
+    internal static readonly ObjectType AbyssBones = new(0x01fa, "Abyss Bones");
 
-	internal static readonly DungeonTile[,] MapTemplate;
+    internal static readonly DungeonTile[,] MapTemplate;
 
-	static AbyssTemplate() {
-		MapTemplate = ReadTemplate(typeof(AbyssTemplate));
-	}
+    private NormDist specialRmCount;
 
-	public override int MaxDepth { get { return 50; } }
+    private NormDist specialRmDepthDist;
 
-	NormDist targetDepth;
-	public override NormDist TargetDepth { get { return targetDepth; } }
+    private NormDist targetDepth;
 
-	NormDist specialRmCount;
-	public override NormDist SpecialRmCount { get { return specialRmCount; } }
+    static AbyssTemplate() {
+        MapTemplate = ReadTemplate(typeof(AbyssTemplate));
+    }
 
-	NormDist specialRmDepthDist;
-	public override NormDist SpecialRmDepthDist { get { return specialRmDepthDist; } }
+    public override int MaxDepth => 50;
+    public override NormDist TargetDepth => targetDepth;
+    public override NormDist SpecialRmCount => specialRmCount;
+    public override NormDist SpecialRmDepthDist => specialRmDepthDist;
 
-	public override Range RoomSeparation { get { return new Range(0, 1); } }
+    public override Range RoomSeparation => new(0, 1);
 
-	public override int CorridorWidth { get { return 3; } }
+    public override int CorridorWidth => 3;
 
-	public override void Initialize() {
-		targetDepth = new NormDist(3, 20, 15, 35, Rand.Next());
-		specialRmCount = new NormDist(1.5f, 0.5f, 0, 5, Rand.Next());
-		specialRmDepthDist = new NormDist(5, 20, 10, 35, Rand.Next());
-	}
+    public override void Initialize() {
+        targetDepth = new NormDist(3, 20, 15, 35, Rand.Next());
+        specialRmCount = new NormDist(1.5f, 0.5f, 0, 5, Rand.Next());
+        specialRmDepthDist = new NormDist(5, 20, 10, 35, Rand.Next());
+    }
 
-	public override Room CreateStart(int depth) {
-		return new StartRoom(16);
-	}
+    public override Room CreateStart(int depth) {
+        return new StartRoom(16);
+    }
 
-	public override Room CreateTarget(int depth, Room prev) {
-		return new BossRoom();
-	}
+    public override Room CreateTarget(int depth, Room prev) {
+        return new BossRoom();
+    }
 
-	public override Room CreateSpecial(int depth, Room prev) {
-		return new TreasureRoom();
-	}
+    public override Room CreateSpecial(int depth, Room prev) {
+        return new TreasureRoom();
+    }
 
-	public override Room CreateNormal(int depth, Room prev) {
-		return new NormalRoom(8, 8);
-	}
+    public override Room CreateNormal(int depth, Room prev) {
+        return new NormalRoom(8, 8);
+    }
 
-	public override MapCorridor CreateCorridor() {
-		return new Corridor();
-	}
+    public override MapCorridor CreateCorridor() {
+        return new Corridor();
+    }
 
-	public override MapRender CreateOverlay() {
-		return new Overlay();
-	}
+    public override MapRender CreateOverlay() {
+        return new Overlay();
+    }
 }

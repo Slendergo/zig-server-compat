@@ -1,66 +1,56 @@
 ﻿using common;
-using wServer.networking.packets.outgoing;
 using wServer.realm.worlds.logic;
 
 namespace wServer.realm.entities;
 
-partial class Player
-{
+partial class Player {
     internal Dictionary<Player, int> potentialTrader = new();
-    internal Player tradeTarget;
     internal bool[] trade;
     internal bool tradeAccepted;
+    internal Player tradeTarget;
 
-    public void RequestTrade(string name)
-    {
+    public void RequestTrade(string name) {
         if (Owner is Test)
             return;
 
-        Manager.Database.ReloadAccount(_client.Account);
-        var acc = _client.Account;
+        Manager.Database.ReloadAccount(Client.Account);
+        var acc = Client.Account;
 
-        if (!acc.NameChosen)
-        {
+        if (!acc.NameChosen) {
             SendErrorText("A unique name is required before trading with others!");
             return;
         }
 
-        if (tradeTarget != null)
-        {
+        if (tradeTarget != null) {
             SendErrorText("Already trading!");
             return;
         }
 
-        if (Database.GuestNames.Contains(name))
-        {
+        if (Database.GuestNames.Contains(name)) {
             SendErrorText(name + " needs to choose a unique name first!");
             return;
         }
 
         var target = Owner.GetUniqueNamedPlayer(name);
-        if (target == null)
-        {
+        if (target == null) {
             SendErrorText(name + " not found!");
             return;
         }
 
-        if (target == this)
-        {
+        if (target == this) {
             SendErrorText("You can't trade with yourself!");
             return;
         }
 
-        if (target._client.Account.IgnoreList.Contains(AccountId))
+        if (target.Client.Account.IgnoreList.Contains(AccountId))
             return; // account is ignored
 
-        if (target.tradeTarget != null)
-        {
+        if (target.tradeTarget != null) {
             SendErrorText(target.Name + " is already trading!");
             return;
         }
 
-        if (potentialTrader.ContainsKey(target))
-        {
+        if (potentialTrader.ContainsKey(target)) {
             tradeTarget = target;
             trade = new bool[12];
             tradeAccepted = false;
@@ -76,71 +66,43 @@ partial class Player
             //target.MonitorTrade();
 
             var my = new TradeItem[12];
-            for (int i = 0; i < 12; i++)
-                my[i] = new TradeItem()
-                {
-                    Item = this.Inventory[i] == null ? -1 : this.Inventory[i].ObjectType,
-                    SlotType = this.SlotTypes[i],
+            for (var i = 0; i < 12; i++)
+                my[i] = new TradeItem {
+                    Item = Inventory[i] == null ? -1 : Inventory[i].ObjectType,
+                    SlotType = SlotTypes[i],
                     Included = false,
-                    Tradeable = (this.Inventory[i] != null && i >= 4) && !this.Inventory[i].Soulbound
+                    Tradeable = Inventory[i] != null && i >= 4 && !Inventory[i].Soulbound
                 };
             var your = new TradeItem[12];
-            for (int i = 0; i < 12; i++)
-                your[i] = new TradeItem()
-                {
+            for (var i = 0; i < 12; i++)
+                your[i] = new TradeItem {
                     Item = target.Inventory[i] == null ? -1 : target.Inventory[i].ObjectType,
                     SlotType = target.SlotTypes[i],
                     Included = false,
-                    Tradeable = (target.Inventory[i] != null && i >= 4) && !target.Inventory[i].Soulbound
+                    Tradeable = target.Inventory[i] != null && i >= 4 && !target.Inventory[i].Soulbound
                 };
 
-            this._client.SendPacket(new TradeStart()
-            {
-                MyItems = my,
-                YourName = target.Name,
-                YourItems = your
-            });
-            target._client.SendPacket(new TradeStart()
-            {
-                MyItems = your,
-                YourName = this.Name,
-                YourItems = my
-            });
+            Client.SendTradeStart(my, target.Name, your);
+            target.Client.SendTradeStart(your, Name, my);
         }
-        else
-        {
+        else {
             target.potentialTrader[this] = 1000 * 20;
-            target._client.SendPacket(new TradeRequested()
-            {
-                Name = Name
-            });
+            target.Client.SendTradeRequested(Name);
             SendInfo("You have sent a trade request to " + target.Name + "!");
-            return;
         }
     }
 
-    public void CancelTrade()
-    {
-        _client.SendPacket(new TradeDone()
-        {
-            Code = 1,
-            Description = "Trade canceled!"
-        });
+    public void CancelTrade() {
+        Client.SendTradeDone(1, "Trade canceled!");
 
-        if (tradeTarget != null && tradeTarget._client != null)
-            tradeTarget._client.SendPacket(new TradeDone()
-            {
-                Code = 1,
-                Description = "Trade canceled!"
-            });
+        if (tradeTarget != null && tradeTarget.Client != null)
+            tradeTarget.Client.SendTradeDone(1, "Trade canceled!");
 
         ResetTrade();
     }
 
-    public void ResetTrade()
-    {
-        if (tradeTarget != null)
-        {
+    public void ResetTrade() {
+        if (tradeTarget != null) {
             tradeTarget.tradeTarget = null;
             tradeTarget.trade = null;
             tradeTarget.tradeAccepted = false;
@@ -151,20 +113,18 @@ partial class Player
         tradeAccepted = false;
     }
 
-    void CheckTradeTimeout(RealmTime time)
-    {
-        List<Tuple<Player, int>> newState = new List<Tuple<Player, int>>();
+    private void CheckTradeTimeout(RealmTime time) {
+        var newState = new List<Tuple<Player, int>>();
         foreach (var i in potentialTrader)
-            newState.Add(new Tuple<Player, int>(i.Key, i.Value - time.ElaspedMsDelta));
+            newState.Add(new Tuple<Player, int>(i.Key, i.Value - time.ElapsedMsDelta));
 
         foreach (var i in newState)
-        {
-            if (i.Item2 < 0)
-            {
+            if (i.Item2 < 0) {
                 i.Item1.SendInfo("Trade to " + Name + " has timed out!");
                 potentialTrader.Remove(i.Item1);
             }
-            else potentialTrader[i.Item1] = i.Item2;
-        }
+            else {
+                potentialTrader[i.Item1] = i.Item2;
+            }
     }
 }

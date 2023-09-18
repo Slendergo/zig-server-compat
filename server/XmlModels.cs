@@ -1,14 +1,13 @@
-﻿using common;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using common;
 
 namespace server;
 
-class ServerItem
-{
+internal class ServerItem {
     public string Name { get; set; }
     public string DNS { get; set; }
     public int Port { get; set; }
@@ -17,8 +16,7 @@ class ServerItem
     public double Usage { get; set; }
     public bool AdminOnly { get; set; }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         return
             new XElement("Server",
                 new XElement("Name", Name),
@@ -32,18 +30,15 @@ class ServerItem
     }
 }
 
-class NewsItem
-{
+internal class NewsItem {
     public string Icon { get; internal set; }
     public string Title { get; internal set; }
     public string TagLine { get; internal set; }
     public string Link { get; internal set; }
     public DateTime Date { get; internal set; }
 
-    public static NewsItem FromDb(DbNewsEntry entry)
-    {
-        return new NewsItem()
-        {
+    public static NewsItem FromDb(DbNewsEntry entry) {
+        return new NewsItem {
             Icon = entry.Icon,
             Title = entry.Title,
             TagLine = entry.Text,
@@ -52,8 +47,7 @@ class NewsItem
         };
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         return
             new XElement("Item",
                 new XElement("Icon", Icon),
@@ -65,17 +59,14 @@ class NewsItem
     }
 }
 
-class GuildMember
-{
+internal class GuildMember {
+    private int _guildFame;
+    private int _lastSeen;
     private string _name;
     private int _rank;
-    private int _guildFame;
-    private Int32 _lastSeen;
 
-    public static GuildMember FromDb(DbAccount acc)
-    {
-        return new GuildMember()
-        {
+    public static GuildMember FromDb(DbAccount acc) {
+        return new GuildMember {
             _name = acc.Name,
             _rank = acc.GuildRank,
             _guildFame = acc.GuildFame,
@@ -83,8 +74,7 @@ class GuildMember
         };
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         return new XElement("Member",
             new XElement("Name", _name),
             new XElement("Rank", _rank),
@@ -93,27 +83,25 @@ class GuildMember
     }
 }
 
-class Guild
-{
-    private int _id;
-    private string _name;
+internal class Guild {
     private int _currentFame;
-    private int _totalFame;
     private string _hallType;
+    private int _id;
     private List<GuildMember> _members;
+    private string _name;
+    private int _totalFame;
 
-    public static Guild FromDb(Database db, DbGuild guild)
-    {
+    public static Guild FromDb(Database db, DbGuild guild) {
         var members = (from member in guild.Members
-            select db.GetAccount(member) into acc
+            select db.GetAccount(member)
+            into acc
             where acc != null
             orderby acc.GuildRank descending,
                 acc.GuildFame descending,
-                acc.Name ascending
+                acc.Name
             select GuildMember.FromDb(acc)).ToList();
 
-        return new Guild()
-        {
+        return new Guild {
             _id = guild.Id,
             _name = guild.Name,
             _currentFame = guild.Fame,
@@ -123,8 +111,7 @@ class Guild
         };
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         var guild = new XElement("Guild");
         guild.Add(new XAttribute("id", _id));
         guild.Add(new XAttribute("name", _name));
@@ -138,24 +125,20 @@ class Guild
     }
 }
 
-class GuildIdentity
-{
+internal class GuildIdentity {
     private int _id;
     private string _name;
     private int _rank;
 
-    public static GuildIdentity FromDb(DbAccount acc, DbGuild guild)
-    {
-        return new GuildIdentity()
-        {
+    public static GuildIdentity FromDb(DbAccount acc, DbGuild guild) {
+        return new GuildIdentity {
             _id = guild.Id,
             _name = guild.Name,
             _rank = acc.GuildRank
         };
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         return
             new XElement("Guild",
                 new XAttribute("id", _id),
@@ -165,24 +148,20 @@ class GuildIdentity
     }
 }
 
-class ClassStatsEntry
-{
+internal class ClassStatsEntry {
     public ushort ObjectType { get; private set; }
     public int BestLevel { get; private set; }
     public int BestFame { get; private set; }
 
-    public static ClassStatsEntry FromDb(ushort objType, DbClassStatsEntry entry)
-    {
-        return new ClassStatsEntry()
-        {
+    public static ClassStatsEntry FromDb(ushort objType, DbClassStatsEntry entry) {
+        return new ClassStatsEntry {
             ObjectType = objType,
             BestLevel = entry.BestLevel,
             BestFame = entry.BestFame
         };
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         return
             new XElement("ClassStats",
                 new XAttribute("objectType", ObjectType.To4Hex()),
@@ -192,39 +171,32 @@ class ClassStatsEntry
     }
 }
 
-class Stats
-{
+internal class Stats {
+    private Dictionary<ushort, ClassStatsEntry> entries;
     public int BestCharFame { get; private set; }
     public int TotalFame { get; private set; }
     public int Fame { get; private set; }
 
-    Dictionary<ushort, ClassStatsEntry> entries;
-    public ClassStatsEntry this[ushort objType]
-    {
-        get { return entries[objType]; }
-    }
+    public ClassStatsEntry this[ushort objType] => entries[objType];
 
-    public static Stats FromDb(DbAccount acc, DbClassStats stats)
-    {
-        Stats ret = new Stats()
-        {
+    public static Stats FromDb(DbAccount acc, DbClassStats stats) {
+        var ret = new Stats {
             TotalFame = acc.TotalFame,
             Fame = acc.Fame,
             entries = new Dictionary<ushort, ClassStatsEntry>(),
             BestCharFame = 0
         };
-        foreach (var i in stats.AllKeys)
-        {
+        foreach (var i in stats.AllKeys) {
             var objType = ushort.Parse(i);
             var entry = ClassStatsEntry.FromDb(objType, stats[objType]);
             if (entry.BestFame > ret.BestCharFame) ret.BestCharFame = entry.BestFame;
             ret.entries[objType] = entry;
         }
+
         return ret;
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         return
             new XElement("Stats",
                 entries.Values.Select(x => x.ToXml()),
@@ -235,35 +207,27 @@ class Stats
     }
 }
 
-class Vault
-{
-    ushort[][] chests;
-    public ushort[] this[int index]
-    {
-        get { return chests[index]; }
-    }
+internal class Vault {
+    private ushort[][] chests;
 
-    public static Vault FromDb(DbAccount acc, DbVault vault)
-    {
-        return new Vault()
-        {
-            chests = Enumerable.Range(0, acc.VaultCount - 1).
-                Select(x => vault[x] ?? Enumerable.Repeat((ushort)0xffff, 8).ToArray()).ToArray()
+    public ushort[] this[int index] => chests[index];
 
+    public static Vault FromDb(DbAccount acc, DbVault vault) {
+        return new Vault {
+            chests = Enumerable.Range(0, acc.VaultCount - 1)
+                .Select(x => vault[x] ?? Enumerable.Repeat((ushort) 0xffff, 8).ToArray()).ToArray()
         };
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         return
             new XElement("Vault",
-                chests.Select(x => new XElement("Chest", x.Select(i => (short)i).Take(8).ToArray().ToCommaSepString()))
+                chests.Select(x => new XElement("Chest", x.Select(i => (short) i).Take(8).ToArray().ToCommaSepString()))
             );
     }
 }
 
-class Account
-{
+internal class Account {
     public int AccountId { get; private set; }
     public string Name { get; set; }
 
@@ -281,10 +245,8 @@ class Account
 
     public ushort[] Skins { get; private set; }
 
-    public static Account FromDb(DbAccount acc)
-    {
-        return new Account()
-        {
+    public static Account FromDb(DbAccount acc) {
+        return new Account {
             AccountId = acc.AccountId,
             Name = acc.Name,
 
@@ -294,31 +256,27 @@ class Account
 
             Credits = acc.Credits,
             NextCharSlotPrice = Program.Resources.Settings.NewAccounts.SlotCost,
-            NextCharSlotCurrency = (int)Program.Resources.Settings.NewAccounts.SlotCurrency,
+            NextCharSlotCurrency = (int) Program.Resources.Settings.NewAccounts.SlotCurrency,
 
             Vault = Vault.FromDb(acc, new DbVault(acc)),
             Stats = Stats.FromDb(acc, new DbClassStats(acc)),
             Guild = GuildIdentity.FromDb(acc, new DbGuild(acc)),
 
-            Skins = acc.Skins ?? new ushort[0],
+            Skins = acc.Skins ?? new ushort[0]
         };
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         return
             new XElement("Account",
                 new XElement("AccountId", AccountId),
                 new XElement("Name", Name),
-
                 NameChosen ? new XElement("NameChosen", "") : null,
                 Admin ? new XElement("Admin", "") : null,
                 FirstDeath ? new XElement("isFirstDeath", "") : null,
-
                 new XElement("Credits", Credits),
                 new XElement("NextCharSlotPrice", NextCharSlotPrice),
                 new XElement("NextCharSlotCurrency", NextCharSlotCurrency),
-
                 Vault.ToXml(),
                 Stats.ToXml(),
                 Guild.ToXml()
@@ -326,8 +284,7 @@ class Account
     }
 }
 
-class Character
-{
+internal class Character {
     public int CharacterId { get; private set; }
     public ushort ObjectType { get; private set; }
     public int Level { get; private set; }
@@ -353,10 +310,8 @@ class Character
     public bool Dead { get; private set; }
     public bool HasBackpack { get; private set; }
 
-    public static Character FromDb(DbChar character, bool dead)
-    {
-        return new Character()
-        {
+    public static Character FromDb(DbChar character, bool dead) {
+        return new Character {
             CharacterId = character.CharId,
             ObjectType = character.ObjectType,
             Level = character.Level,
@@ -384,8 +339,7 @@ class Character
         };
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         return
             new XElement("Char",
                 new XAttribute("id", CharacterId),
@@ -393,7 +347,7 @@ class Character
                 new XElement("Level", Level),
                 new XElement("Exp", Exp),
                 new XElement("CurrentFame", CurrentFame),
-                new XElement("Equipment", Equipment.Select(x => (short)x).ToArray().ToCommaSepString()),
+                new XElement("Equipment", Equipment.Select(x => (short) x).ToArray().ToCommaSepString()),
                 new XElement("MaxHitPoints", MaxHitPoints),
                 new XElement("HitPoints", HitPoints),
                 new XElement("MaxMagicPoints", MaxMagicPoints),
@@ -411,13 +365,12 @@ class Character
                 new XElement("HealthStackCount", HealthStackCount),
                 new XElement("MagicStackCount", MagicStackCount),
                 new XElement("Dead", Dead),
-                new XElement("HasBackpack", (HasBackpack) ? "1" : "0")
+                new XElement("HasBackpack", HasBackpack ? "1" : "0")
             );
     }
 }
 
-class ClassAvailability
-{
+internal class ClassAvailability {
     // Availability is based off DbClassStats class.
     // A player class is available if it has an entry
     // in the class stats table or meets unlock req.
@@ -428,10 +381,7 @@ class ClassAvailability
     private static Dictionary<ushort, string> _classes;
     private static Dictionary<string, string> _classAvailability;
 
-    public Dictionary<string, string> Classes { get; private set; }
-
-    static ClassAvailability()
-    {
+    static ClassAvailability() {
         _classes = Program.Resources.GameData.ObjectDescs.Values
             .Where(objDesc => objDesc.Player)
             .ToDictionary(objDesc => objDesc.ObjectType, objDesc => objDesc.ObjectId);
@@ -440,45 +390,41 @@ class ClassAvailability
             .ToDictionary(@class => @class.Value, @class => "available");
     }
 
-    public static ClassAvailability FromDb(Database db, DbAccount acc)
-    {
+    public Dictionary<string, string> Classes { get; private set; }
+
+    public static ClassAvailability FromDb(Database db, DbAccount acc) {
         var classes = _classAvailability.Keys
             .ToDictionary(id => id, id => _classAvailability[id]);
 
         var cs = db.ReadClassStats(acc);
-        foreach (string c in cs.AllKeys
-                     .Select(key => _classes[(ushort)(int)key]))
+        foreach (var c in cs.AllKeys
+                     .Select(key => _classes[(ushort) (int) key]))
             classes[c] = "unrestricted";
 
-        return new ClassAvailability()
-        {
+        return new ClassAvailability {
             Classes = classes
         };
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         var elem = new XElement("ClassAvailabilityList");
-        foreach (var @class in Classes.Keys)
-        {
+        foreach (var @class in Classes.Keys) {
             var ca = new XElement("ClassAvailability", Classes[@class]);
             ca.Add(new XAttribute("id", @class));
 
             elem.Add(ca);
         }
+
         return elem;
     }
 }
 
-class ItemCosts
-{
+internal class ItemCosts {
     private static readonly XElement ItemCostsXml;
 
-    static ItemCosts()
-    {
+    static ItemCosts() {
         var elem = new XElement("ItemCosts");
-        foreach (var skin in Program.Resources.GameData.Skins.Values)
-        {
+        foreach (var skin in Program.Resources.GameData.Skins.Values) {
             var ca = new XElement("ItemCost", skin.Cost);
             ca.Add(new XAttribute("type", skin.Type));
 
@@ -488,50 +434,43 @@ class ItemCosts
         ItemCostsXml = elem;
     }
 
-    public static XElement ToXml()
-    {
+    public static XElement ToXml() {
         return ItemCostsXml;
     }
 }
 
-class MaxClassLevelList
-{
+internal class MaxClassLevelList {
     private static readonly List<ushort> Classes;
 
     private DbClassStats _classStats;
 
-    static MaxClassLevelList()
-    {
+    static MaxClassLevelList() {
         Classes = Program.Resources.GameData.ObjectDescs.Values
             .Where(objDesc => objDesc.Player)
             .Select(objDesc => objDesc.ObjectType)
             .ToList();
     }
 
-    public static MaxClassLevelList FromDb(Database db, DbAccount acc)
-    {
-        return new MaxClassLevelList()
-        {
-            _classStats = db.ReadClassStats(acc),
+    public static MaxClassLevelList FromDb(Database db, DbAccount acc) {
+        return new MaxClassLevelList {
+            _classStats = db.ReadClassStats(acc)
         };
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         var elem = new XElement("MaxClassLevelList");
-        foreach (var type in Classes)
-        {
+        foreach (var type in Classes) {
             var ca = new XElement("MaxClassLevel");
             ca.Add(new XAttribute("maxLevel", _classStats[type].BestLevel));
             ca.Add(new XAttribute("classType", type));
             elem.Add(ca);
         }
+
         return elem;
     }
 }
 
-class CharList
-{
+internal class CharList {
     public Character[] Characters { get; private set; }
     public int NextCharId { get; private set; }
     public int MaxNumChars { get; private set; }
@@ -548,15 +487,12 @@ class CharList
     public double? Lat { get; set; }
     public double? Long { get; set; }
 
-    static IEnumerable<NewsItem> GetItems(Database db, DbAccount acc)
-    {
+    private static IEnumerable<NewsItem> GetItems(Database db, DbAccount acc) {
         var news = new DbNews(db.Conn, 10).Entries
             .Select(x => NewsItem.FromDb(x)).ToArray();
-        var chars = db.GetDeadCharacters(acc).Take(10).Select(x =>
-        {
+        var chars = db.GetDeadCharacters(acc).Take(10).Select(x => {
             var death = new DbDeath(acc, x);
-            return new NewsItem()
-            {
+            return new NewsItem {
                 Icon = "fame",
                 Title = "Your " + Program.Resources.GameData.ObjectTypeToId[death.ObjectType]
                                 + " died at level " + death.Level,
@@ -568,10 +504,8 @@ class CharList
         return news.Concat(chars).OrderByDescending(x => x.Date);
     }
 
-    public static CharList FromDb(Database db, DbAccount acc)
-    {
-        return new CharList()
-        {
+    public static CharList FromDb(Database db, DbAccount acc) {
+        return new CharList {
             Characters = db.GetAliveCharacters(acc)
                 .Select(x => Character.FromDb(db.LoadCharacter(acc, x), false))
                 .ToArray(),
@@ -584,8 +518,7 @@ class CharList
         };
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         return
             new XElement("Chars",
                 new XAttribute("nextCharId", NextCharId),
@@ -601,15 +534,14 @@ class CharList
                 ),
                 Lat == null ? null : new XElement("Lat", Lat),
                 Long == null ? null : new XElement("Long", Long),
-                (Account.Skins.Length > 0) ? new XElement("OwnedSkins", Account.Skins.ToCommaSepString()) : null,
+                Account.Skins.Length > 0 ? new XElement("OwnedSkins", Account.Skins.ToCommaSepString()) : null,
                 ItemCosts.ToXml(),
                 MaxLevelList.ToXml()
             );
     }
 }
 
-class Fame
-{
+internal class Fame {
     public string Name { get; private set; }
     public Character Character { get; private set; }
     public FameStats Stats { get; private set; }
@@ -620,13 +552,11 @@ class Fame
     public DateTime DeathTime { get; private set; }
     public string Killer { get; private set; }
 
-    public static Fame FromDb(DbChar character)
-    {
-        DbDeath death = new DbDeath(character.Account, character.CharId);
+    public static Fame FromDb(DbChar character) {
+        var death = new DbDeath(character.Account, character.CharId);
         if (death.IsNull) return null;
         var stats = FameStats.Read(character.FameStats);
-        return new Fame()
-        {
+        return new Fame {
             Name = character.Account.Name,
             Character = Character.FromDb(character, !death.IsNull),
             Stats = stats,
@@ -639,8 +569,7 @@ class Fame
         };
     }
 
-    XElement GetCharElem()
-    {
+    private XElement GetCharElem() {
         var ret = Character.ToXml();
         ret.Add(new XElement("Account",
             new XElement("Name", Name)
@@ -648,14 +577,12 @@ class Fame
         return ret;
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         return
             new XElement("Fame",
                 GetCharElem(),
                 new XElement("BaseFame", Character.CurrentFame),
                 new XElement("TotalFame", TotalFame),
-
                 new XElement("Shots", Stats.Shots),
                 new XElement("ShotsThatDamage", Stats.ShotsThatDamage),
                 new XElement("SpecialAbilityUses", Stats.SpecialAbilityUses),
@@ -694,8 +621,7 @@ class Fame
     }
 }
 
-class FameListEntry
-{
+internal class FameListEntry {
     public int AccountId { get; private set; }
     public int CharId { get; private set; }
     public string Name { get; private set; }
@@ -706,11 +632,9 @@ class FameListEntry
     public ushort[] Equipment { get; private set; }
     public int TotalFame { get; private set; }
 
-    public static FameListEntry FromDb(DbChar character)
-    {
+    public static FameListEntry FromDb(DbChar character) {
         var death = new DbDeath(character.Account, character.CharId);
-        return new FameListEntry()
-        {
+        return new FameListEntry {
             AccountId = character.Account.AccountId,
             CharId = character.CharId,
             Name = character.Account.Name,
@@ -723,8 +647,7 @@ class FameListEntry
         };
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         return
             new XElement("FameListElem",
                 new XAttribute("accountId", AccountId),
@@ -734,38 +657,31 @@ class FameListEntry
                 new XElement("Tex1", Tex1),
                 new XElement("Tex2", Tex2),
                 new XElement("Texture", Skin),
-                new XElement("Equipment", Equipment.Select(x => (short)x).ToArray().ToCommaSepString()),
+                new XElement("Equipment", Equipment.Select(x => (short) x).ToArray().ToCommaSepString()),
                 new XElement("TotalFame", TotalFame)
             );
     }
 }
-class FameList
-{
-    private string _timeSpan;
+
+internal class FameList {
+    private static readonly ConcurrentDictionary<string, FameList> StoredLists = new();
     private IEnumerable<FameListEntry> _entries;
     private int _lastUpdate;
+    private string _timeSpan;
 
-    private static readonly ConcurrentDictionary<string, FameList> StoredLists = new();
-
-    public static FameList FromDb(Database db, string timeSpan, DbChar character)
-    {
+    public static FameList FromDb(Database db, string timeSpan, DbChar character) {
         timeSpan = timeSpan.ToLower();
 
         // check if we already got updated list
         var lastUpdate = db.LastLegendsUpdateTime();
-        if (StoredLists.ContainsKey(timeSpan))
-        {
+        if (StoredLists.ContainsKey(timeSpan)) {
             var fl = StoredLists[timeSpan];
-            if (lastUpdate == fl._lastUpdate)
-            {
-                return fl;
-            }
+            if (lastUpdate == fl._lastUpdate) return fl;
         }
 
         // get & store list
         var entries = db.GetLegendsBoard(timeSpan);
-        var fameList = new FameList()
-        {
+        var fameList = new FameList {
             _timeSpan = timeSpan,
             _entries = entries.Select(FameListEntry.FromDb),
             _lastUpdate = lastUpdate
@@ -775,8 +691,7 @@ class FameList
         return fameList;
     }
 
-    public XElement ToXml()
-    {
+    public XElement ToXml() {
         return
             new XElement("FameList",
                 new XAttribute("timespan", _timeSpan),

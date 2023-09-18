@@ -2,16 +2,13 @@
 using NLog;
 using wServer.networking;
 using wServer.realm.entities;
-using wServer.realm.setpieces;
 
 namespace wServer.realm.worlds.logic;
 
-public class RealmOfTheMadGod : World
-{
-    private static string[] _realmNames = 
-    {
+public class RealmOfTheMadGod : World {
+    private static string[] _realmNames = {
         "Lich", "Goblin", "Ghost",
-        "Giant", "Gorgon","Blob",
+        "Giant", "Gorgon", "Blob",
         "Leviathan", "Unicorn", "Minotaur",
         "Cube", "Pirate", "Spider",
         "Snake", "Deathmage", "Gargoyle",
@@ -27,39 +24,35 @@ public class RealmOfTheMadGod : World
         "Dragon", "Harpy"
     };
 
-    static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
-    private Oryx _overseer;
+    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+    private readonly int _mapId;
 
     private readonly bool _oryxPresent;
-    private readonly int _mapId;
+
+    private Oryx _overseer;
     private Task _overseerTask;
 
     public RealmOfTheMadGod(RealmManager manager, WorldTemplateData template)
-        : base(manager, template)
-    {
+        : base(manager, template) {
         _oryxPresent = true;
         _mapId = 1;
     }
 
-    public override bool AllowedAccess(Client client)
-    {
+    public override bool AllowedAccess(Client client) {
         // since map gets reset, admins not allowed to join when closed. Possible to crash server otherwise.
         return !Closed && base.AllowedAccess(client);
     }
 
-    public override void Init()
-    {
+    public override void Init() {
         Log.Info("Initializing Game World {0}({1}) from map {2}...", Id, IdName, _mapId);
 
         DisplayName = _realmNames[Environment.TickCount % _realmNames.Length];
 
         base.Init();
-        
+
         //SetPieces.ApplySetPieces(this);
 
-        if (_oryxPresent)
-        {
+        if (_oryxPresent) {
             _overseer = new Oryx(this);
             _overseer.Init();
         }
@@ -67,8 +60,7 @@ public class RealmOfTheMadGod : World
         Log.Info("Game World initalized.");
     }
 
-    public override void Tick(RealmTime time)
-    {
+    public override void Tick(RealmTime time) {
         if (Closed)
             Manager.Monitor.ClosePortal(Id);
         else
@@ -80,15 +72,12 @@ public class RealmOfTheMadGod : World
             return;
 
         if (_overseerTask == null || _overseerTask.IsCompleted)
-        {
-            _overseerTask = Task.Factory.StartNew(() =>
-            {
+            _overseerTask = Task.Factory.StartNew(() => {
                 var secondsElapsed = time.TotalElapsedMs / 1000;
                 if (secondsElapsed > 10 && secondsElapsed % 1800 < 10 && !IsClosing())
                     CloseRealm();
 
-                if (Closed && Players.Count == 0 && _overseer != null)
-                {
+                if (Closed && Players.Count == 0 && _overseer != null) {
                     Init(); // will reset everything back to the way it was when made
                     Closed = false;
                 }
@@ -97,25 +86,21 @@ public class RealmOfTheMadGod : World
             }).ContinueWith(e =>
                     Log.Error(e.Exception.InnerException.ToString()),
                 TaskContinuationOptions.OnlyOnFaulted);
-        }
     }
 
-    public void EnemyKilled(Enemy enemy, Player killer)
-    {
+    public void EnemyKilled(Enemy enemy, Player killer) {
         if (_overseer != null && !enemy.Spawned)
             _overseer.OnEnemyKilled(enemy, killer);
     }
 
-    public override int EnterWorld(Entity entity, bool noIdChange = false)
-    {
+    public override int EnterWorld(Entity entity, bool noIdChange = false) {
         var ret = base.EnterWorld(entity, noIdChange);
         if (entity is Player player)
             _overseer?.OnPlayerEntered(player);
         return ret;
     }
 
-    public bool CloseRealm()
-    {
+    public bool CloseRealm() {
         if (_overseer == null)
             return false;
 
@@ -123,8 +108,7 @@ public class RealmOfTheMadGod : World
         return true;
     }
 
-    public bool IsClosing()
-    {
+    public bool IsClosing() {
         if (_overseer == null)
             return false;
 

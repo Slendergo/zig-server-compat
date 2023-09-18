@@ -1,222 +1,224 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-  <BehaviorEntry id="Ent Ancient">
-    <State id="Idle">
-      <StayCloseToSpawn speed="0.1" range="6" />
-      <Wander speed="0.1" />
-      <HpLessTransition targetState="EvaluationStart1" threshold="0.99999" />
-    </State>
-    <State id="EvaluationStart1">
-      <Taunt text="Uhh. So... sleepy..." />
-      <ConditionalEffect effect="Invulnerable" />
-      <Prioritize>
-        <StayCloseToSpawn speed="0.2" range="3" />
-        <Wander speed="0.2" />
-      </Prioritize>
-      <TimedTransition targetState="EvaluationStart2" time="2500" />
-    </State>
-    <State id="EvaluationStart2">
-      <Flash color="0xFF" flashPeriod="0.1" flashRepeats="60" />
-      <Shoot radius="10" count="2" shootAngle="180" cooldown="800" />
-      <Prioritize>
-        <StayCloseToSpawn speed="0.3" />
-        <Wander speed="0.3" />
-      </Prioritize>
-      <HpLessTransition targetState="EvaluationEnd" threshold="0.87" />
-      <TimedTransition targetState="EvaluationEnd" time="6000" />
-    </State>
-    <State id="EvaluationEnd">
-      <HpLessTransition targetState="HugeMob" threshold="0.875" />
-      <HpLessTransition targetState="Mob" threshold="0.952" />
-      <HpLessTransition targetState="SmallGroup" threshold="0.985" />
-      <HpLessTransition targetState="Solo" threshold="0.99999" />
-    </State>
-    <State id="HugeMob">
-      <Taunt text="You are many, yet the sum of your years is nothing." />
-      <Spawn children="Greater Nature Sprite" maxChildren="6" initialSpawn="0" cooldown="400" />
-      <TossObject child="Ent" range="3" angle="0" cooldown="100000" />
-      <TossObject child="Ent" range="3" angle="180" cooldown="100000" />
-      <TossObject child="Ent" angle="10" cooldown="100000" />
-      <TossObject child="Ent" angle="190" cooldown="100000" />
-      <TossObject child="Ent" angle="70" cooldown="100000" />
-      <TossObject child="Ent" range="7" angle="20" cooldown="100000" />
-      <TossObject child="Ent" range="7" angle="200" cooldown="100000" />
-      <TossObject child="Ent" range="7" angle="80" cooldown="100000" />
-      <TossObject child="Ent" range="10" angle="30" cooldown="100000" />
-      <TossObject child="Ent" range="10" angle="210" cooldown="100000" />
-      <TossObject child="Ent" range="10" angle="90" cooldown="100000" />
-      <TimedTransition targetState="Wait" time="5000" />
-    </State>
-    <State id="Mob">
-      <Taunt text="Little flies, little flies... we will swat you." />
-      <Spawn children="Greater Nature Sprite" maxChildren="3" initialSpawn="0" cooldown="1000" />
-      <TossObject child="Ent" range="3" angle="0" cooldown="100000" />
-      <TossObject child="Ent" range="4" angle="180" cooldown="100000" />
-      <TossObject child="Ent" angle="10" cooldown="100000" />
-      <TossObject child="Ent" range="6" angle="190" cooldown="100000" />
-      <TossObject child="Ent" range="7" angle="20" cooldown="100000" />
-      <TimedTransition targetState="Wait" time="5000" />
-    </State>
-    <State id="SmallGroup">
-      <Taunt text="It will be trivial to dispose of you." />
-      <Spawn children="Greater Nature Sprite" maxChildren="1" initialSpawn="1" cooldown="100000" />
-      <TossObject child="Ent" range="3" angle="0" cooldown="100000" />
-      <TossObject child="Ent" range="4.5" angle="180" cooldown="100000" />
-      <TimedTransition targetState="Wait" time="3000" />
-    </State>
-    <State id="Solo">
-      <Taunt text="Mmm? Did you say something, mortal?" />
-      <TimedTransition targetState="Wait" time="3000" />
-    </State>
-    <State id="Wait">
-      <Transform target="Actual Ent Ancient" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Actual Ent Ancient">
-    <Prioritize>
-      <StayCloseToSpawn speed="0.2" range="6" />
-      <Wander speed="0.2" />
-    </Prioritize>
-    <Spawn children="Ent Sapling" maxChildren="3" initialSpawn="0" cooldown="3000" givesNoXp="false" />
-    <State id="Start">
-      <ConditionalEffect effect="Invulnerable" />
-      <ChangeSize rate="11" target="160" />
-      <Shoot radius="10" shootAngle="0" cooldown="1000" />
-      <TimedTransition targetState="Growing1" time="1600" />
-      <HpLessTransition targetState="Growing1" threshold="0.9" />
-    </State>
-    <State id="Growing1">
-      <ConditionalEffect effect="Invulnerable" />
-      <ChangeSize rate="11" target="180" />
-      <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" cooldown="1000" />
-      <TimedTransition targetState="Growing2" time="1600" />
-      <HpLessTransition targetState="Growing2" threshold="0.8" />
-    </State>
-    <State id="Growing2">
-      <ConditionalEffect effect="Invulnerable" />
-      <ChangeSize rate="11" target="200" />
-      <Taunt text="Little mortals, your years are my minutes." probability="0.35" />
-      <Shoot radius="10" shootAngle="0" projectileIndex="2" cooldown="1000" />
-      <TimedTransition targetState="Growing3" time="1600" />
-      <HpLessTransition targetState="Growing3" threshold="0.7" />
-    </State>
-    <State id="Growing3">
-      <ConditionalEffect effect="Invulnerable" />
-      <ChangeSize rate="11" target="220" />
-      <Shoot radius="10" shootAngle="0" projectileIndex="3" cooldown="1000" />
-      <TimedTransition targetState="Growing4" time="1600" />
-      <HpLessTransition targetState="Growing4" threshold="0.6" />
-    </State>
-    <State id="Growing4">
-      <ConditionalEffect effect="Invulnerable" />
-      <ChangeSize rate="11" target="240" />
-      <Taunt text="No axe can fell me!" probability="0.35" />
-      <Shoot radius="10" count="3" shootAngle="120" projectileIndex="4" cooldown="1000" />
-      <TimedTransition targetState="Growing5" time="1600" />
-      <HpLessTransition targetState="Growing5" threshold="0.5" />
-    </State>
-    <State id="Growing5">
-      <ConditionalEffect effect="Invulnerable" />
-      <ChangeSize rate="11" target="260" />
-      <Shoot radius="10" shootAngle="0" projectileIndex="5" cooldown="1000" />
-      <TimedTransition targetState="Growing6" time="1600" />
-      <HpLessTransition targetState="Growing6" threshold="0.45" />
-    </State>
-    <State id="Growing6">
-      <ConditionalEffect effect="Invulnerable" />
-      <ChangeSize rate="11" target="280" />
-      <Taunt text="Yes, YES..." probability="0.35" />
-      <Shoot radius="10" shootAngle="0" projectileIndex="6" cooldown="1000" />
-      <TimedTransition targetState="Growing7" time="1600" />
-      <HpLessTransition targetState="Growing7" threshold="0.4" />
-    </State>
-    <State id="Growing7">
-      <ConditionalEffect effect="Invulnerable" />
-      <ChangeSize rate="11" target="300" />
-      <Shoot radius="10" count="3" shootAngle="120" projectileIndex="7" cooldown="1000" />
-      <TimedTransition targetState="Growing8" time="1600" />
-      <HpLessTransition targetState="Growing8" threshold="0.36" />
-    </State>
-    <State id="Growing8">
-      <ConditionalEffect effect="Invulnerable" />
-      <ChangeSize rate="11" target="320" />
-      <Taunt text="I am the FOREST!!" probability="0.35" />
-      <Shoot radius="10" shootAngle="0" projectileIndex="8" cooldown="1000" />
-      <TimedTransition targetState="Growing9" time="1600" />
-      <HpLessTransition targetState="Growing9" threshold="0.32" />
-    </State>
-    <State id="Growing9">
-      <ChangeSize rate="11" target="340" />
-      <Taunt text="YOU WILL DIE!!!" />
-      <Shoot radius="10" shootAngle="0" projectileIndex="9" cooldown="1000" />
-      <State id="convert_sprites">
-        <ConditionalEffect effect="Invulnerable" />
-        <Order range="50" children="Greater Nature Sprite" targetState="Transform" />
-        <TimedTransition targetState="shielded" time="2000" />
-      </State>
-      <State id="received_armor">
-        <ConditionalEffect effect="Invulnerable" />
-        <ConditionalEffect effect="Armored" perm="true" />
-        <TimedTransition targetState="shielded" time="1000" />
-      </State>
-      <State id="shielded">
-        <ConditionalEffect effect="Invulnerable" />
-        <TimedTransition targetState="unshielded" time="4000" />
-      </State>
-      <State id="unshielded">
-        <Shoot radius="10" count="3" shootAngle="120" projectileIndex="3" cooldown="700" />
-        <TimedTransition targetState="shielded" time="4000" />
-      </State>
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Ent">
-    <Prioritize>
-      <Protect speed="0.25" protectee="Ent Ancient" acquireRange="12" protectionRange="7" reprotectRange="7" />
-      <Follow speed="0.25" acquireRange="9" range="1" cooldown="0" />
-      <Shoot radius="10" count="5" shootAngle="72" fixedAngle="30" coolDownOffset="800" cooldown="1600" />
-    </Prioritize>
-    <Shoot radius="10" shootAngle="0" predictive="0.4" cooldown="600" />
-    <Decay time="90000" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Ent Sapling">
-    <Prioritize>
-      <Protect speed="0.55" protectee="Ent Ancient" protectionRange="4" reprotectRange="4" />
-      <Wander speed="0.55" />
-    </Prioritize>
-    <Shoot radius="10" shootAngle="0" cooldown="1000" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Greater Nature Sprite">
-    <ConditionalEffect effect="Invulnerable" />
-    <Shoot radius="10" count="4" shootAngle="10" cooldown="1000" />
-    <Prioritize>
-      <StayCloseToSpawn speed="1.5" range="11" />
-      <Orbit speed="1.5" radius="4" acquireRange="7" speedVariance="0.15" radiusVariance="0.15" orbitClockwise="false" />
-      <Follow speed="200" acquireRange="7" range="2" cooldown="0" />
-      <Follow speed="0.3" acquireRange="7" range="0.2" cooldown="0" />
-    </Prioritize>
-    <Decay time="90000" />
-    <State id="Idle" />
-    <State id="Transform">
-      <Transform target="Actual Greater Nature Sprite" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Actual Greater Nature Sprite">
-    <Flash color="0xFF484848" flashPeriod="0.6" flashRepeats="1000" />
-    <Spawn children="Ent" maxChildren="2" initialSpawn="0" cooldown="3000" givesNoXp="false" />
-    <HealGroup range="15" cooldown="200" group="Heros" />
-    <Decay time="60000" />
-    <State id="armor_ent_ancient">
-      <Order range="30" children="Actual Ent Ancient" targetState="received_armor" />
-      <TimedTransition targetState="last_fight" time="1000" />
-    </State>
-    <State id="last_fight">
-      <Shoot radius="10" count="4" shootAngle="10" cooldown="1000" />
-      <Prioritize>
-        <StayCloseToSpawn speed="1.5" range="11" />
-        <Orbit speed="1.5" radius="4" acquireRange="7" speedVariance="0.15" radiusVariance="0.15" orbitClockwise="false" />
-        <Follow speed="200" acquireRange="7" range="2" cooldown="0" />
-        <Follow speed="0.3" acquireRange="7" range="0.2" cooldown="0" />
-      </Prioritize>
-    </State>
-  </BehaviorEntry>
+    <BehaviorEntry id="Ent Ancient">
+        <State id="Idle">
+            <StayCloseToSpawn speed="0.1" range="6"/>
+            <Wander speed="0.1"/>
+            <HpLessTransition targetState="EvaluationStart1" threshold="0.99999"/>
+        </State>
+        <State id="EvaluationStart1">
+            <Taunt text="Uhh. So... sleepy..."/>
+            <ConditionalEffect effect="Invulnerable"/>
+            <Prioritize>
+                <StayCloseToSpawn speed="0.2" range="3"/>
+                <Wander speed="0.2"/>
+            </Prioritize>
+            <TimedTransition targetState="EvaluationStart2" time="2500"/>
+        </State>
+        <State id="EvaluationStart2">
+            <Flash color="0xFF" flashPeriod="0.1" flashRepeats="60"/>
+            <Shoot radius="10" count="2" shootAngle="180" cooldown="800"/>
+            <Prioritize>
+                <StayCloseToSpawn speed="0.3"/>
+                <Wander speed="0.3"/>
+            </Prioritize>
+            <HpLessTransition targetState="EvaluationEnd" threshold="0.87"/>
+            <TimedTransition targetState="EvaluationEnd" time="6000"/>
+        </State>
+        <State id="EvaluationEnd">
+            <HpLessTransition targetState="HugeMob" threshold="0.875"/>
+            <HpLessTransition targetState="Mob" threshold="0.952"/>
+            <HpLessTransition targetState="SmallGroup" threshold="0.985"/>
+            <HpLessTransition targetState="Solo" threshold="0.99999"/>
+        </State>
+        <State id="HugeMob">
+            <Taunt text="You are many, yet the sum of your years is nothing."/>
+            <Spawn children="Greater Nature Sprite" maxChildren="6" initialSpawn="0" cooldown="400"/>
+            <TossObject child="Ent" range="3" angle="0" cooldown="100000"/>
+            <TossObject child="Ent" range="3" angle="180" cooldown="100000"/>
+            <TossObject child="Ent" angle="10" cooldown="100000"/>
+            <TossObject child="Ent" angle="190" cooldown="100000"/>
+            <TossObject child="Ent" angle="70" cooldown="100000"/>
+            <TossObject child="Ent" range="7" angle="20" cooldown="100000"/>
+            <TossObject child="Ent" range="7" angle="200" cooldown="100000"/>
+            <TossObject child="Ent" range="7" angle="80" cooldown="100000"/>
+            <TossObject child="Ent" range="10" angle="30" cooldown="100000"/>
+            <TossObject child="Ent" range="10" angle="210" cooldown="100000"/>
+            <TossObject child="Ent" range="10" angle="90" cooldown="100000"/>
+            <TimedTransition targetState="Wait" time="5000"/>
+        </State>
+        <State id="Mob">
+            <Taunt text="Little flies, little flies... we will swat you."/>
+            <Spawn children="Greater Nature Sprite" maxChildren="3" initialSpawn="0" cooldown="1000"/>
+            <TossObject child="Ent" range="3" angle="0" cooldown="100000"/>
+            <TossObject child="Ent" range="4" angle="180" cooldown="100000"/>
+            <TossObject child="Ent" angle="10" cooldown="100000"/>
+            <TossObject child="Ent" range="6" angle="190" cooldown="100000"/>
+            <TossObject child="Ent" range="7" angle="20" cooldown="100000"/>
+            <TimedTransition targetState="Wait" time="5000"/>
+        </State>
+        <State id="SmallGroup">
+            <Taunt text="It will be trivial to dispose of you."/>
+            <Spawn children="Greater Nature Sprite" maxChildren="1" initialSpawn="1" cooldown="100000"/>
+            <TossObject child="Ent" range="3" angle="0" cooldown="100000"/>
+            <TossObject child="Ent" range="4.5" angle="180" cooldown="100000"/>
+            <TimedTransition targetState="Wait" time="3000"/>
+        </State>
+        <State id="Solo">
+            <Taunt text="Mmm? Did you say something, mortal?"/>
+            <TimedTransition targetState="Wait" time="3000"/>
+        </State>
+        <State id="Wait">
+            <Transform target="Actual Ent Ancient"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Actual Ent Ancient">
+        <Prioritize>
+            <StayCloseToSpawn speed="0.2" range="6"/>
+            <Wander speed="0.2"/>
+        </Prioritize>
+        <Spawn children="Ent Sapling" maxChildren="3" initialSpawn="0" cooldown="3000" givesNoXp="false"/>
+        <State id="Start">
+            <ConditionalEffect effect="Invulnerable"/>
+            <ChangeSize rate="11" target="160"/>
+            <Shoot radius="10" shootAngle="0" cooldown="1000"/>
+            <TimedTransition targetState="Growing1" time="1600"/>
+            <HpLessTransition targetState="Growing1" threshold="0.9"/>
+        </State>
+        <State id="Growing1">
+            <ConditionalEffect effect="Invulnerable"/>
+            <ChangeSize rate="11" target="180"/>
+            <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" cooldown="1000"/>
+            <TimedTransition targetState="Growing2" time="1600"/>
+            <HpLessTransition targetState="Growing2" threshold="0.8"/>
+        </State>
+        <State id="Growing2">
+            <ConditionalEffect effect="Invulnerable"/>
+            <ChangeSize rate="11" target="200"/>
+            <Taunt text="Little mortals, your years are my minutes." probability="0.35"/>
+            <Shoot radius="10" shootAngle="0" projectileIndex="2" cooldown="1000"/>
+            <TimedTransition targetState="Growing3" time="1600"/>
+            <HpLessTransition targetState="Growing3" threshold="0.7"/>
+        </State>
+        <State id="Growing3">
+            <ConditionalEffect effect="Invulnerable"/>
+            <ChangeSize rate="11" target="220"/>
+            <Shoot radius="10" shootAngle="0" projectileIndex="3" cooldown="1000"/>
+            <TimedTransition targetState="Growing4" time="1600"/>
+            <HpLessTransition targetState="Growing4" threshold="0.6"/>
+        </State>
+        <State id="Growing4">
+            <ConditionalEffect effect="Invulnerable"/>
+            <ChangeSize rate="11" target="240"/>
+            <Taunt text="No axe can fell me!" probability="0.35"/>
+            <Shoot radius="10" count="3" shootAngle="120" projectileIndex="4" cooldown="1000"/>
+            <TimedTransition targetState="Growing5" time="1600"/>
+            <HpLessTransition targetState="Growing5" threshold="0.5"/>
+        </State>
+        <State id="Growing5">
+            <ConditionalEffect effect="Invulnerable"/>
+            <ChangeSize rate="11" target="260"/>
+            <Shoot radius="10" shootAngle="0" projectileIndex="5" cooldown="1000"/>
+            <TimedTransition targetState="Growing6" time="1600"/>
+            <HpLessTransition targetState="Growing6" threshold="0.45"/>
+        </State>
+        <State id="Growing6">
+            <ConditionalEffect effect="Invulnerable"/>
+            <ChangeSize rate="11" target="280"/>
+            <Taunt text="Yes, YES..." probability="0.35"/>
+            <Shoot radius="10" shootAngle="0" projectileIndex="6" cooldown="1000"/>
+            <TimedTransition targetState="Growing7" time="1600"/>
+            <HpLessTransition targetState="Growing7" threshold="0.4"/>
+        </State>
+        <State id="Growing7">
+            <ConditionalEffect effect="Invulnerable"/>
+            <ChangeSize rate="11" target="300"/>
+            <Shoot radius="10" count="3" shootAngle="120" projectileIndex="7" cooldown="1000"/>
+            <TimedTransition targetState="Growing8" time="1600"/>
+            <HpLessTransition targetState="Growing8" threshold="0.36"/>
+        </State>
+        <State id="Growing8">
+            <ConditionalEffect effect="Invulnerable"/>
+            <ChangeSize rate="11" target="320"/>
+            <Taunt text="I am the FOREST!!" probability="0.35"/>
+            <Shoot radius="10" shootAngle="0" projectileIndex="8" cooldown="1000"/>
+            <TimedTransition targetState="Growing9" time="1600"/>
+            <HpLessTransition targetState="Growing9" threshold="0.32"/>
+        </State>
+        <State id="Growing9">
+            <ChangeSize rate="11" target="340"/>
+            <Taunt text="YOU WILL DIE!!!"/>
+            <Shoot radius="10" shootAngle="0" projectileIndex="9" cooldown="1000"/>
+            <State id="convert_sprites">
+                <ConditionalEffect effect="Invulnerable"/>
+                <Order range="50" children="Greater Nature Sprite" targetState="Transform"/>
+                <TimedTransition targetState="shielded" time="2000"/>
+            </State>
+            <State id="received_armor">
+                <ConditionalEffect effect="Invulnerable"/>
+                <ConditionalEffect effect="Armored" perm="true"/>
+                <TimedTransition targetState="shielded" time="1000"/>
+            </State>
+            <State id="shielded">
+                <ConditionalEffect effect="Invulnerable"/>
+                <TimedTransition targetState="unshielded" time="4000"/>
+            </State>
+            <State id="unshielded">
+                <Shoot radius="10" count="3" shootAngle="120" projectileIndex="3" cooldown="700"/>
+                <TimedTransition targetState="shielded" time="4000"/>
+            </State>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Ent">
+        <Prioritize>
+            <Protect speed="0.25" protectee="Ent Ancient" acquireRange="12" protectionRange="7" reprotectRange="7"/>
+            <Follow speed="0.25" acquireRange="9" range="1" cooldown="0"/>
+            <Shoot radius="10" count="5" shootAngle="72" fixedAngle="30" coolDownOffset="800" cooldown="1600"/>
+        </Prioritize>
+        <Shoot radius="10" shootAngle="0" predictive="0.4" cooldown="600"/>
+        <Decay time="90000"/>
+    </BehaviorEntry>
+    <BehaviorEntry id="Ent Sapling">
+        <Prioritize>
+            <Protect speed="0.55" protectee="Ent Ancient" protectionRange="4" reprotectRange="4"/>
+            <Wander speed="0.55"/>
+        </Prioritize>
+        <Shoot radius="10" shootAngle="0" cooldown="1000"/>
+    </BehaviorEntry>
+    <BehaviorEntry id="Greater Nature Sprite">
+        <ConditionalEffect effect="Invulnerable"/>
+        <Shoot radius="10" count="4" shootAngle="10" cooldown="1000"/>
+        <Prioritize>
+            <StayCloseToSpawn speed="1.5" range="11"/>
+            <Orbit speed="1.5" radius="4" acquireRange="7" speedVariance="0.15" radiusVariance="0.15"
+                   orbitClockwise="false"/>
+            <Follow speed="200" acquireRange="7" range="2" cooldown="0"/>
+            <Follow speed="0.3" acquireRange="7" range="0.2" cooldown="0"/>
+        </Prioritize>
+        <Decay time="90000"/>
+        <State id="Idle"/>
+        <State id="Transform">
+            <Transform target="Actual Greater Nature Sprite"/>
+        </State>
+    </BehaviorEntry>
+    <BehaviorEntry id="Actual Greater Nature Sprite">
+        <Flash color="0xFF484848" flashPeriod="0.6" flashRepeats="1000"/>
+        <Spawn children="Ent" maxChildren="2" initialSpawn="0" cooldown="3000" givesNoXp="false"/>
+        <HealGroup range="15" cooldown="200" group="Heros"/>
+        <Decay time="60000"/>
+        <State id="armor_ent_ancient">
+            <Order range="30" children="Actual Ent Ancient" targetState="received_armor"/>
+            <TimedTransition targetState="last_fight" time="1000"/>
+        </State>
+        <State id="last_fight">
+            <Shoot radius="10" count="4" shootAngle="10" cooldown="1000"/>
+            <Prioritize>
+                <StayCloseToSpawn speed="1.5" range="11"/>
+                <Orbit speed="1.5" radius="4" acquireRange="7" speedVariance="0.15" radiusVariance="0.15"
+                       orbitClockwise="false"/>
+                <Follow speed="200" acquireRange="7" range="2" cooldown="0"/>
+                <Follow speed="0.3" acquireRange="7" range="0.2" cooldown="0"/>
+            </Prioritize>
+        </State>
+    </BehaviorEntry>
 </BehaviorEntries>

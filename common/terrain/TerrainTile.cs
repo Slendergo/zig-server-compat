@@ -2,8 +2,7 @@
 
 namespace terrain;
 
-public struct TerrainTile : IEquatable<TerrainTile>
-{
+public struct TerrainTile : IEquatable<TerrainTile> {
     public int PolygonId;
     public byte Elevation;
     public float Moisture;
@@ -14,13 +13,12 @@ public struct TerrainTile : IEquatable<TerrainTile>
     public TerrainType Terrain;
     public TileRegion Region;
 
-    public bool Equals(TerrainTile other)
-    {
+    public bool Equals(TerrainTile other) {
         return
-            this.TileId == other.TileId &&
-            this.TileObj == other.TileObj &&
-            this.Name == other.Name &&
-            this.Terrain == other.Terrain &&
-            this.Region == other.Region;
+            TileId == other.TileId &&
+            TileObj == other.TileObj &&
+            Name == other.Name &&
+            Terrain == other.Terrain &&
+            Region == other.Region;
     }
 }

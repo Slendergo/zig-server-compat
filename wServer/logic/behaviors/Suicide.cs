@@ -4,20 +4,14 @@ using wServer.realm.entities;
 
 namespace wServer.logic.behaviors;
 
-class Suicide : Behavior
-{
+internal class Suicide : Behavior {
     //State storage: timer
 
-    public Suicide(XElement e)
-    {
-    }
+    public Suicide(XElement e) { }
 
-    public Suicide()
-    {
-    }
+    public Suicide() { }
 
-    protected override void TickCore(Entity host, RealmTime time, ref object state)
-    {
+    protected override void TickCore(Entity host, RealmTime time, ref object state) {
         if (!(host is Enemy))
             throw new NotSupportedException("Use Decay instead");
         (host as Enemy).Death(time);

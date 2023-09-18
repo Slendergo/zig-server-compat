@@ -1,30 +1,28 @@
 ﻿using common;
-using wServer.realm.entities;
+using common.resources;
 using wServer.realm;
+using wServer.realm.entities;
 using wServer.realm.worlds.logic;
 
 namespace wServer.logic;
 
-public class DamageCounter
-{
-    Enemy enemy;
-    public Enemy Host { get { return enemy; } }
+public class DamageCounter {
+    private WeakDictionary<Player, int> hitters = new();
+
+    public DamageCounter(Enemy enemy) {
+        Host = enemy;
+    }
+
+    public Enemy Host { get; }
+
     public Projectile LastProjectile { get; private set; }
     public Player LastHitter { get; private set; }
 
     public DamageCounter Corpse { get; set; }
     public DamageCounter Parent { get; set; }
 
-    WeakDictionary<Player, int> hitters = new();
-    public DamageCounter(Enemy enemy)
-    {
-        this.enemy = enemy;
-    }
-
-    public void HitBy(Player player, RealmTime time, Projectile projectile, int dmg)
-    {
-        int totalDmg;
-        if (!hitters.TryGetValue(player, out totalDmg))
+    public void HitBy(Player player, RealmTime time, Projectile projectile, int dmg) {
+        if (!hitters.TryGetValue(player, out var totalDmg))
             totalDmg = 0;
         totalDmg += dmg;
         hitters[player] = totalDmg;
@@ -32,31 +30,28 @@ public class DamageCounter
         LastProjectile = projectile;
         LastHitter = player;
 
-        player.FameCounter.Hit(projectile, enemy);
+        player.FameCounter.Hit(projectile, Host);
     }
 
-    public Tuple<Player, int>[] GetPlayerData()
-    {
+    public Tuple<Player, int>[] GetPlayerData() {
         if (Parent != null)
             return Parent.GetPlayerData();
-        List<Tuple<Player, int>> dat = new List<Tuple<Player, int>>();
-        foreach (var i in hitters)
-        {
+        var dat = new List<Tuple<Player, int>>();
+        foreach (var i in hitters) {
             if (i.Key.Owner == null) continue;
             dat.Add(new Tuple<Player, int>(i.Key, i.Value));
         }
+
         return dat.ToArray();
     }
 
-    public void Death(RealmTime time)
-    {
-        if (Corpse != null)
-        {
+    public void Death(RealmTime time) {
+        if (Corpse != null) {
             Corpse.Parent = this;
             return;
         }
 
-        var enemy = (Parent ?? this).enemy;
+        var enemy = (Parent ?? this).Host;
 
         if (enemy.Owner is RealmOfTheMadGod)
             (enemy.Owner as RealmOfTheMadGod).EnemyKilled(enemy, (Parent ?? this).LastHitter);
@@ -64,16 +59,15 @@ public class DamageCounter
         if (enemy.Spawned)
             return;
 
-        int lvlUps = 0;
+        var lvlUps = 0;
         foreach (var player in enemy.Owner.Players.Values
-                     .Where(p => enemy.Dist(p) < 25))
-        {
-            if (player.HasConditionEffect(common.resources.ConditionEffects.Paused))
+                     .Where(p => enemy.Dist(p) < 25)) {
+            if (player.HasConditionEffect(ConditionEffects.Paused))
                 continue;
             float xp = enemy.GivesNoXp ? 0 : 1;
             xp *= enemy.ObjectDesc.MaxHP / 10f *
                   enemy.ObjectDesc.ExpMultiplier;
-            float upperLimit = player.ExperienceGoal * 0.1f;
+            var upperLimit = player.ExperienceGoal * 0.1f;
             if (player.Quest == enemy)
                 upperLimit = player.ExperienceGoal * 0.5f;
 
@@ -86,7 +80,7 @@ public class DamageCounter
             var killer = (Parent ?? this).LastHitter == player;
             if (player.EnemyKilled(
                     enemy,
-                    (int)playerXp,
+                    (int) playerXp,
                     killer) && !killer)
                 lvlUps++;
         }
@@ -144,19 +138,14 @@ public class DamageCounter
             (enemy.Owner as Realm).EnemyKilled(enemy, (Parent ?? this).LastHitter);
     }*/
 
-    public void TransferData(DamageCounter dc)
-    {
+    public void TransferData(DamageCounter dc) {
         dc.LastProjectile = LastProjectile;
         dc.LastHitter = LastHitter;
 
-        foreach (var plr in hitters.Keys)
-        {
-            int totalDmg;
-            int totalExistingDmg;
-
-            if (!hitters.TryGetValue(plr, out totalDmg))
+        foreach (var plr in hitters.Keys) {
+            if (!hitters.TryGetValue(plr, out var totalDmg))
                 totalDmg = 0;
-            if (!dc.hitters.TryGetValue(plr, out totalExistingDmg))
+            if (!dc.hitters.TryGetValue(plr, out var totalExistingDmg))
                 totalExistingDmg = 0;
 
             dc.hitters[plr] = totalDmg + totalExistingDmg;

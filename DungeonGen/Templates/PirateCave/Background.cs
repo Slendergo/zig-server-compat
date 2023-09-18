@@ -23,11 +23,11 @@ using DungeonGenerator.Dungeon;
 namespace DungeonGenerator.Templates.PirateCave;
 
 internal class Background : MapRender {
-	public override void Rasterize() {
-		var tile = new DungeonTile {
-			TileType = PirateCaveTemplate.ShallowWater
-		};
+    public override void Rasterize() {
+        var tile = new DungeonTile {
+            TileType = PirateCaveTemplate.ShallowWater
+        };
 
-		Rasterizer.Clear(tile);
-	}
+        Rasterizer.Clear(tile);
+    }
 }

@@ -1,40 +1,26 @@
-﻿using common;
+﻿using System.Xml.Linq;
+using common;
 using Mono.Game;
-using System.Xml.Linq;
 using wServer.realm;
 
 namespace wServer.logic.transitions;
 
-class NotMovingTransition : Transition
-{
-    //State storage: NotMovingState
-
-    class NotMovingState
-    {
-        public Vector2 Position;
-        public int Delay;
-    }
-
+internal class NotMovingTransition : Transition {
     private readonly int _delay;
 
     public NotMovingTransition(XElement e)
-    : base(e.ParseString("@targetState", "root"))
-    {
+        : base(e.ParseString("@targetState", "root")) {
         _delay = e.ParseInt("@delay", 250);
     }
 
     public NotMovingTransition(string targetState, int delay = 250)
-        : base(targetState)
-    {
+        : base(targetState) {
         _delay = delay;
     }
 
-    protected override bool TickCore(Entity host, RealmTime time, ref object state)
-    {
-        if (state == null)
-        {
-            state = new NotMovingState()
-            {
+    protected override bool TickCore(Entity host, RealmTime time, ref object state) {
+        if (state == null) {
+            state = new NotMovingState {
                 Position = new Vector2(host.X, host.Y),
                 Delay = _delay
             };
@@ -43,22 +29,26 @@ class NotMovingTransition : Transition
 
         var s = (NotMovingState) state;
 
-        if (s.Delay <= 0)
-        {
+        if (s.Delay <= 0) {
             var hostPos = new Vector2(host.X, host.Y);
-            if (hostPos == s.Position)
-            {
+            if (hostPos == s.Position) {
                 state = null;
                 return true;
             }
-                    
+
 
             s.Position = hostPos;
             s.Delay = _delay;
             return false;
         }
 
-        s.Delay -= time.ElaspedMsDelta;
+        s.Delay -= time.ElapsedMsDelta;
         return false;
+    }
+    //State storage: NotMovingState
+
+    private class NotMovingState {
+        public int Delay;
+        public Vector2 Position;
     }
 }

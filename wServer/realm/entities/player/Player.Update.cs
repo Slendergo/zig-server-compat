@@ -1,23 +1,17 @@
 ﻿using System.Collections.Concurrent;
-using wServer.networking.packets.outgoing;
-using wServer.realm.terrain;
 
 namespace wServer.realm.entities;
 
-public class UpdatedSet : HashSet<Entity>
-{
-    private readonly Player _player;
+public class UpdatedSet : HashSet<Entity> {
     private readonly object _changeLock = new();
+    private readonly Player _player;
 
-    public UpdatedSet(Player player)
-    {
+    public UpdatedSet(Player player) {
         _player = player;
     }
 
-    public new bool Add(Entity e)
-    {
-        using (TimedLock.Lock(_changeLock))
-        {
+    public new bool Add(Entity e) {
+        using (TimedLock.Lock(_changeLock)) {
             var added = base.Add(e);
             if (added)
                 e.StatChanged += _player.HandleStatChanges;
@@ -26,19 +20,15 @@ public class UpdatedSet : HashSet<Entity>
         }
     }
 
-    public new bool Remove(Entity e)
-    {
-        using (TimedLock.Lock(_changeLock))
-        {
+    public new bool Remove(Entity e) {
+        using (TimedLock.Lock(_changeLock)) {
             e.StatChanged -= _player.HandleStatChanges;
             return base.Remove(e);
         }
     }
 
-    public new void RemoveWhere(Predicate<Entity> match)
-    {
-        using (TimedLock.Lock(_changeLock))
-        {
+    public new void RemoveWhere(Predicate<Entity> match) {
+        using (TimedLock.Lock(_changeLock)) {
             foreach (var e in this.Where(match.Invoke))
                 e.StatChanged -= _player.HandleStatChanges;
 
@@ -46,45 +36,41 @@ public class UpdatedSet : HashSet<Entity>
         }
     }
 
-    public void Dispose()
-    {
+    public void Dispose() {
         RemoveWhere(e => true);
     }
 }
 
-public partial class Player
-{
-    public HashSet<Entity> clientEntities => _clientEntities;
-
-    public readonly ConcurrentQueue<Entity> ClientKilledEntity = new();
-
+public partial class Player {
     public const int Radius = 15;
     public const int RadiusSqr = Radius * Radius;
     private const int StaticBoundingBox = Radius * 2;
-    private const int AppoxAreaOfSight = (int)(Math.PI * Radius * Radius + 1);
+    private const int AppoxAreaOfSight = (int) (Math.PI * Radius * Radius + 1);
+    private readonly UpdatedSet _clientEntities;
 
     private readonly HashSet<IntPoint> _clientStatic = new();
-    private readonly UpdatedSet _clientEntities;
-    private ObjectStats[] _updateStatuses;
-    private Update.TileData[] _tiles;
-    private ObjectDef[] _newObjects;
-    private int[] _removedObjects;
+
+    private readonly List<ObjectDef> _newStatics = new(AppoxAreaOfSight);
 
     private readonly object _statUpdateLock = new();
     private readonly Dictionary<Entity, Dictionary<StatsType, object>> _statUpdates = new();
 
-    public Sight Sight { get; private set; }
+    public readonly ConcurrentQueue<Entity> ClientKilledEntity = new();
+    private ObjectDef[] _newObjects;
+    private int[] _removedObjects;
+    private TileData[] _tiles;
+    private ObjectStats[] _updateStatuses;
 
     public int TickId;
+    public HashSet<Entity> clientEntities => _clientEntities;
 
-    public void HandleStatChanges(object entity, StatChangedEventArgs statChange)
-    {
-        var e = entity as Entity;
-        if (e == null || e != this && statChange.UpdateSelfOnly)
+    public Sight Sight { get; }
+
+    public void HandleStatChanges(object entity, StatChangedEventArgs statChange) {
+        if (entity is not Entity e || (e != this && statChange.UpdateSelfOnly))
             return;
 
-        using (TimedLock.Lock(_statUpdateLock))
-        {
+        using (TimedLock.Lock(_statUpdateLock)) {
             if (e == this && statChange.Stat == StatsType.None)
                 return;
 
@@ -98,39 +84,29 @@ public partial class Player
         }
     }
 
-    private void SendNewTick(RealmTime time)
-    {
+    private void SendNewTick(RealmTime time) {
         TickId++;
 
-        using (TimedLock.Lock(_statUpdateLock))
-        {
-            _updateStatuses = _statUpdates.Select(_ => new ObjectStats()
-            {
+        using (TimedLock.Lock(_statUpdateLock)) {
+            _updateStatuses = _statUpdates.Select(_ => new ObjectStats {
                 Id = _.Key.Id,
-                Position = new Position() { X = _.Key.RealX, Y = _.Key.RealY },
+                Position = new Position {X = _.Key.RealX, Y = _.Key.RealY},
                 Stats = _.Value.ToArray()
             }).ToArray();
             _statUpdates.Clear();
         }
 
-        _client.SendPacket(new NewTick
-        {
-            TickId = TickId,
-            TickTime = time.ElaspedMsDelta,
-            Statuses = _updateStatuses
-        });
+        Client.SendNewTick(TickId, time.ElapsedMsDelta, _updateStatuses);
         AwaitMove(TickId);
     }
 
-    private void SendUpdate(RealmTime time)
-    {
+    private void SendUpdate(RealmTime time) {
         // init sight circle
         var sCircle = Sight.GetSightCircle(Owner.VisibilityType);
 
         // get list of tiles for update
-        var tilesUpdate = new List<Update.TileData>(AppoxAreaOfSight);
-        foreach (var point in sCircle)
-        {
+        var tilesUpdate = new List<TileData>(AppoxAreaOfSight);
+        foreach (var point in sCircle) {
             var x = point.X;
             var y = point.Y;
             var tile = Owner.Map[x, y];
@@ -139,14 +115,14 @@ public partial class Player
                 tiles[x, y] >= tile.UpdateCount)
                 continue;
 
-            tilesUpdate.Add(new Update.TileData()
-            {
-                X = (short)x,
-                Y = (short)y,
+            tilesUpdate.Add(new TileData {
+                X = (short) x,
+                Y = (short) y,
                 Tile = tile.TileId
             });
             tiles[x, y] = tile.UpdateCount;
         }
+
         FameCounter.TileSent(tilesUpdate.Count);
 
         // get list of new static objects to add
@@ -166,59 +142,46 @@ public partial class Player
         _clientStatic.ExceptWith(staticsRemove);
 
         if (tilesUpdate.Count > 0 || entitiesRemove.Count > 0 || staticsRemove.Count > 0 ||
-            entitiesAdd.Length > 0 || staticsUpdate.Length > 0)
-        {
+            entitiesAdd.Length > 0 || staticsUpdate.Length > 0) {
             entitiesRemove.UnionWith(
                 staticsRemove.Select(s => Owner.Map[s.X, s.Y].ObjectId));
 
             _tiles = tilesUpdate.ToArray();
             _newObjects = entitiesAdd.Select(_ => _.ToDefinition()).Concat(staticsUpdate).ToArray();
             _removedObjects = entitiesRemove.ToArray();
-            _client.SendPacket(new Update
-            {
-                Tiles = _tiles,
-                NewObjs = _newObjects,
-                Drops = _removedObjects
-            });
+            Client.SendUpdate(_tiles, _removedObjects, _newObjects);
             AwaitUpdateAck(time.TotalElapsedMs);
         }
     }
 
-    private IEnumerable<int> GetRemovedEntities(HashSet<IntPoint> visibleTiles)
-    {
+    private IEnumerable<int> GetRemovedEntities(HashSet<IntPoint> visibleTiles) {
         foreach (var e in ClientKilledEntity)
             yield return e.Id;
 
-        foreach (var i in _clientEntities)
-        {
+        foreach (var i in _clientEntities) {
             if (i.Owner == null)
                 yield return i.Id;
 
-            var so = i as StaticObject;
-            if (so != null && so.Static)
-            {
-                if (Math.Abs(StaticBoundingBox - ((int)X - i.X)) > 0 &&
-                    Math.Abs(StaticBoundingBox - ((int)Y - i.Y)) > 0)
+            if (i is StaticObject so && so.Static)
+                if (Math.Abs(StaticBoundingBox - ((int) X - i.X)) > 0 &&
+                    Math.Abs(StaticBoundingBox - ((int) Y - i.Y)) > 0)
                     continue;
-            }
 
             if (i is Player ||
-                i == questEntity || /*(i is StaticObject && (i as StaticObject).Static) ||*/
-                visibleTiles.Contains(new IntPoint((int)i.X, (int)i.Y)))
+                i == Quest || /*(i is StaticObject && (i as StaticObject).Static) ||*/
+                visibleTiles.Contains(new IntPoint((int) i.X, (int) i.Y)))
                 continue;
 
             yield return i.Id;
         }
     }
 
-    private IEnumerable<Entity> GetNewEntities(HashSet<IntPoint> visibleTiles)
-    {
-        Entity entity;
-        while (ClientKilledEntity.TryDequeue(out entity))
+    private IEnumerable<Entity> GetNewEntities(HashSet<IntPoint> visibleTiles) {
+        while (ClientKilledEntity.TryDequeue(out var entity))
             _clientEntities.Remove(entity);
 
         foreach (var i in Owner.Players)
-            if ((i.Value == this || (i.Value.Client.Account != null)) && _clientEntities.Add(i.Value))
+            if ((i.Value == this || i.Value.Client.Account != null) && _clientEntities.Add(i.Value))
                 yield return i.Value;
 
         foreach (var i in Owner.PlayersCollision.HitTest(X, Y, Radius))
@@ -226,34 +189,30 @@ public partial class Player
                 yield return i;
 
         var p = new IntPoint(0, 0);
-        foreach (var i in Owner.EnemiesCollision.HitTest(X, Y, Radius))
-        {
-            if (i is Container)
-            {
-                int[] owners = (i as Container).BagOwners;
+        foreach (var i in Owner.EnemiesCollision.HitTest(X, Y, Radius)) {
+            if (i is Container) {
+                var owners = (i as Container).BagOwners;
                 if (owners.Length > 0 && Array.IndexOf(owners, AccountId) == -1)
                     continue;
             }
 
-            p.X = (int)i.X;
-            p.Y = (int)i.Y;
+            p.X = (int) i.X;
+            p.Y = (int) i.Y;
             if (visibleTiles.Contains(p) && _clientEntities.Add(i))
                 yield return i;
         }
 
-        if (questEntity?.Owner != null && _clientEntities.Add(questEntity))
-            yield return questEntity;
+        if (Quest?.Owner != null && _clientEntities.Add(Quest))
+            yield return Quest;
     }
 
-    private IEnumerable<IntPoint> GetRemovedStatics(HashSet<IntPoint> visibleTiles)
-    {
-        foreach (var i in _clientStatic)
-        {
+    private IEnumerable<IntPoint> GetRemovedStatics(HashSet<IntPoint> visibleTiles) {
+        foreach (var i in _clientStatic) {
             var tile = Owner.Map[i.X, i.Y];
 
-            if (/*visibleTiles.Contains(i)*/
-                StaticBoundingBox - ((int)X - i.X) > 0 &&
-                StaticBoundingBox - ((int)Y - i.Y) > 0 &&
+            if ( /*visibleTiles.Contains(i)*/
+                StaticBoundingBox - ((int) X - i.X) > 0 &&
+                StaticBoundingBox - ((int) Y - i.Y) > 0 &&
                 tile.ObjectType != 0 &&
                 tile.ObjectId != 0)
                 continue;
@@ -262,13 +221,10 @@ public partial class Player
         }
     }
 
-    private readonly List<ObjectDef> _newStatics = new(AppoxAreaOfSight);
-    private IEnumerable<ObjectDef> GetNewStatics(HashSet<IntPoint> visibleTiles)
-    {
+    private IEnumerable<ObjectDef> GetNewStatics(HashSet<IntPoint> visibleTiles) {
         _newStatics.Clear();
 
-        foreach (var i in visibleTiles)
-        {
+        foreach (var i in visibleTiles) {
             var x = i.X;
             var y = i.Y;
             var tile = Owner.Map[x, y];

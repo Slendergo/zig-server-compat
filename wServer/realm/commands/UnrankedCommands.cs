@@ -4,19 +4,14 @@ using common.resources;
 using wServer.realm.entities;
 using wServer.realm.worlds;
 using wServer.realm.worlds.logic;
-using wServer.networking.packets.incoming;
-using wServer.networking.packets.outgoing;
 
 namespace wServer.realm.commands;
 
-class GLandCommand : Command
-{
+internal class GLandCommand : Command {
     public GLandCommand() : base("gland", alias: "glands") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
-        if (!(player.Owner is RealmOfTheMadGod))
-        {
+    protected override bool Process(Player player, RealmTime time, string args) {
+        if (!(player.Owner is RealmOfTheMadGod)) {
             player.SendErrorText("This command requires you to be in realm first.");
             return false;
         }
@@ -26,53 +21,40 @@ class GLandCommand : Command
     }
 }
 
-class JoinGuildCommand : Command
-{
+internal class JoinGuildCommand : Command {
     public JoinGuildCommand() : base("join") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
-        player.Client.ProcessPacket(new JoinGuild()
-        {
-            GuildName = args
-        });
+    protected override bool Process(Player player, RealmTime time, string args) {
+        player.Client.ProcessJoinGuild(args);
         return true;
     }
 }
 
-class TutorialCommand : Command
-{
+internal class TutorialCommand : Command {
     public TutorialCommand() : base("tutorial") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
+    protected override bool Process(Player player, RealmTime time, string args) {
         var world = player.Manager.CreateNewWorld("Tutorial");
         player.Client.Reconnect(world.IdName, world.Id);
         return true;
     }
 }
 
-class ServerCommand : Command
-{
+internal class ServerCommand : Command {
     public ServerCommand() : base("world") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
+    protected override bool Process(Player player, RealmTime time, string args) {
         player.SendInfo($"[{player.Owner.Id}] {player.Owner.GetDisplayName()} ({player.Owner.Players.Count} players)");
         return true;
     }
 }
 
-class PauseCommand : Command
-{
+internal class PauseCommand : Command {
     public PauseCommand() : base("pause") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
-        if (player.HasConditionEffect(ConditionEffects.Paused))
-        {
-            player.ApplyConditionEffect(new ConditionEffect()
-            {
+    protected override bool Process(Player player, RealmTime time, string args) {
+        if (player.HasConditionEffect(ConditionEffects.Paused)) {
+            player.ApplyConditionEffect(new ConditionEffect {
                 Effect = ConditionEffectIndex.Paused,
                 DurationMS = 0
             });
@@ -80,14 +62,12 @@ class PauseCommand : Command
             return true;
         }
 
-        if (player.Owner.EnemiesCollision.HitTest(player.X, player.Y, 8).OfType<Enemy>().Any())
-        {
+        if (player.Owner.EnemiesCollision.HitTest(player.X, player.Y, 8).OfType<Enemy>().Any()) {
             player.SendErrorText("Not safe to pause.");
             return false;
         }
 
-        player.ApplyConditionEffect(new ConditionEffect()
-        {
+        player.ApplyConditionEffect(new ConditionEffect {
             Effect = ConditionEffectIndex.Paused,
             DurationMS = -1
         });
@@ -97,18 +77,17 @@ class PauseCommand : Command
 }
 
 /// <summary>
-/// This introduces a subtle bug, since the client UI is not notified when a /teleport is typed, it's cooldown does not reset.
-/// This leads to the unfortunate situation where the cooldown has been not been reached, but the UI doesn't know. The graphical TP will fail
-/// and cause it's timer to reset. NB: typing /teleport will workaround this timeout issue.
+///     This introduces a subtle bug, since the client UI is not notified when a /teleport is typed, it's cooldown does not
+///     reset.
+///     This leads to the unfortunate situation where the cooldown has been not been reached, but the UI doesn't know. The
+///     graphical TP will fail
+///     and cause it's timer to reset. NB: typing /teleport will workaround this timeout issue.
 /// </summary>
-class TeleportCommand : Command
-{
+internal class TeleportCommand : Command {
     public TeleportCommand() : base("tp", alias: "teleport") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
-        foreach (var i in player.Owner.Players.Values)
-        {
+    protected override bool Process(Player player, RealmTime time, string args) {
+        foreach (var i in player.Owner.Players.Values) {
             if (!i.Name.EqualsIgnoreCase(args))
                 continue;
 
@@ -121,69 +100,58 @@ class TeleportCommand : Command
     }
 }
 
-class TellCommand : Command
-{
+internal class TellCommand : Command {
     public TellCommand() : base("tell", alias: "t") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
-        if (!player.NameChosen)
-        {
+    protected override bool Process(Player player, RealmTime time, string args) {
+        if (!player.NameChosen) {
             player.SendErrorText("Choose a name!");
             return false;
         }
 
-        if (player.Muted)
-        {
+        if (player.Muted) {
             player.SendErrorText("Muted. You can not tell at this time.");
             return false;
         }
 
-        int index = args.IndexOf(' ');
-        if (index == -1)
-        {
+        var index = args.IndexOf(' ');
+        if (index == -1) {
             player.SendErrorText("Usage: /tell <player name> <text>");
             return false;
         }
 
-        string playername = args.Substring(0, index);
-        string msg = args.Substring(index + 1);
+        var playername = args.Substring(0, index);
+        var msg = args.Substring(index + 1);
 
-        if (player.Name.ToLower() == playername.ToLower())
-        {
+        if (player.Name.ToLower() == playername.ToLower()) {
             player.SendInfo("Quit telling yourself!");
             return false;
         }
 
-        if (!player.Manager.Chat.Tell(player, playername, msg))
-        {
+        if (!player.Manager.Chat.Tell(player, playername, msg)) {
             player.SendErrorText(string.Format("{0} not found.", playername));
             return false;
         }
+
         return true;
     }
 }
 
-class GCommand : Command
-{
+internal class GCommand : Command {
     public GCommand() : base("g", alias: "guild") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
-        if (!player.NameChosen)
-        {
+    protected override bool Process(Player player, RealmTime time, string args) {
+        if (!player.NameChosen) {
             player.SendErrorText("Choose a name!");
             return false;
         }
 
-        if (player.Muted)
-        {
+        if (player.Muted) {
             player.SendErrorText("Muted. You can not guild chat at this time.");
             return false;
         }
 
-        if (String.IsNullOrEmpty(player.Guild))
-        {
+        if (string.IsNullOrEmpty(player.Guild)) {
             player.SendErrorText("You need to be in a guild to guild chat.");
             return false;
         }
@@ -192,20 +160,17 @@ class GCommand : Command
     }
 }
 
-class HelpCommand : Command
-{
+internal class HelpCommand : Command {
     //actually the command is 'help', but /help is intercepted by client
     public HelpCommand() : base("commands") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
-        StringBuilder sb = new StringBuilder("Available commands: ");
+    protected override bool Process(Player player, RealmTime time, string args) {
+        var sb = new StringBuilder("Available commands: ");
         var cmds = player.Manager.Commands.Commands.Values.Distinct()
             .Where(x => x.HasPermission(player) && x.ListCommand)
             .ToArray();
         Array.Sort(cmds, (c1, c2) => c1.CommandName.CompareTo(c2.CommandName));
-        for (int i = 0; i < cmds.Length; i++)
-        {
+        for (var i = 0; i < cmds.Length; i++) {
             if (i != 0) sb.Append(", ");
             sb.Append(cmds[i].CommandName);
         }
@@ -215,23 +180,19 @@ class HelpCommand : Command
     }
 }
 
-class IgnoreCommand : Command
-{
+internal class IgnoreCommand : Command {
     public IgnoreCommand() : base("ignore") { }
 
-    protected override bool Process(Player player, RealmTime time, string playerName)
-    {
+    protected override bool Process(Player player, RealmTime time, string playerName) {
         if (player.Owner is Test)
             return false;
 
-        if (String.IsNullOrEmpty(playerName))
-        {
+        if (string.IsNullOrEmpty(playerName)) {
             player.SendErrorText("Usage: /ignore <player name>");
             return false;
         }
 
-        if (player.Name.ToLower() == playerName.ToLower())
-        {
+        if (player.Name.ToLower() == playerName.ToLower()) {
             player.SendInfo("Can't ignore yourself!");
             return false;
         }
@@ -240,8 +201,7 @@ class IgnoreCommand : Command
         var targetAccount = player.Manager.Database.GetAccount(target);
         var srcAccount = player.Client.Account;
 
-        if (target == 0 || targetAccount == null)
-        {
+        if (target == 0 || targetAccount == null) {
             player.SendErrorText("Player not found.");
             return false;
         }
@@ -254,23 +214,19 @@ class IgnoreCommand : Command
     }
 }
 
-class UnignoreCommand : Command
-{
+internal class UnignoreCommand : Command {
     public UnignoreCommand() : base("unignore") { }
 
-    protected override bool Process(Player player, RealmTime time, string playerName)
-    {
+    protected override bool Process(Player player, RealmTime time, string playerName) {
         if (player.Owner is Test)
             return false;
 
-        if (String.IsNullOrEmpty(playerName))
-        {
+        if (string.IsNullOrEmpty(playerName)) {
             player.SendErrorText("Usage: /unignore <player name>");
             return false;
         }
 
-        if (player.Name.ToLower() == playerName.ToLower())
-        {
+        if (player.Name.ToLower() == playerName.ToLower()) {
             player.SendInfo("You are no longer ignoring yourself. Good job.");
             return false;
         }
@@ -279,8 +235,7 @@ class UnignoreCommand : Command
         var targetAccount = player.Manager.Database.GetAccount(target);
         var srcAccount = player.Client.Account;
 
-        if (target == 0 || targetAccount == null)
-        {
+        if (target == 0 || targetAccount == null) {
             player.SendErrorText("Player not found.");
             return false;
         }
@@ -293,23 +248,19 @@ class UnignoreCommand : Command
     }
 }
 
-class LockCommand : Command
-{
+internal class LockCommand : Command {
     public LockCommand() : base("lock") { }
 
-    protected override bool Process(Player player, RealmTime time, string playerName)
-    {
+    protected override bool Process(Player player, RealmTime time, string playerName) {
         if (player.Owner is Test)
             return false;
 
-        if (String.IsNullOrEmpty(playerName))
-        {
+        if (string.IsNullOrEmpty(playerName)) {
             player.SendErrorText("Usage: /lock <player name>");
             return false;
         }
 
-        if (player.Name.ToLower() == playerName.ToLower())
-        {
+        if (player.Name.ToLower() == playerName.ToLower()) {
             player.SendInfo("Can't lock yourself!");
             return false;
         }
@@ -318,8 +269,7 @@ class LockCommand : Command
         var targetAccount = player.Manager.Database.GetAccount(target);
         var srcAccount = player.Client.Account;
 
-        if (target == 0 || targetAccount == null)
-        {
+        if (target == 0 || targetAccount == null) {
             player.SendErrorText("Player not found.");
             return false;
         }
@@ -332,23 +282,19 @@ class LockCommand : Command
     }
 }
 
-class UnlockCommand : Command
-{
+internal class UnlockCommand : Command {
     public UnlockCommand() : base("unlock") { }
 
-    protected override bool Process(Player player, RealmTime time, string playerName)
-    {
+    protected override bool Process(Player player, RealmTime time, string playerName) {
         if (player.Owner is Test)
             return false;
 
-        if (String.IsNullOrEmpty(playerName))
-        {
+        if (string.IsNullOrEmpty(playerName)) {
             player.SendErrorText("Usage: /unlock <player name>");
             return false;
         }
 
-        if (player.Name.ToLower() == playerName.ToLower())
-        {
+        if (player.Name.ToLower() == playerName.ToLower()) {
             player.SendInfo("You are no longer locking yourself. Nice!");
             return false;
         }
@@ -357,8 +303,7 @@ class UnlockCommand : Command
         var targetAccount = player.Manager.Database.GetAccount(target);
         var srcAccount = player.Client.Account;
 
-        if (target == 0 || targetAccount == null)
-        {
+        if (target == 0 || targetAccount == null) {
             player.SendErrorText("Player not found.");
             return false;
         }
@@ -372,15 +317,13 @@ class UnlockCommand : Command
     }
 }
 
-class UptimeCommand : Command
-{
+internal class UptimeCommand : Command {
     public UptimeCommand() : base("uptime") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
-        TimeSpan t = TimeSpan.FromMilliseconds(time.TotalElapsedMs);
+    protected override bool Process(Player player, RealmTime time, string args) {
+        var t = TimeSpan.FromMilliseconds(time.TotalElapsedMs);
 
-        string answer = string.Format("{0:D2}h:{1:D2}m:{2:D2}s",
+        var answer = string.Format("{0:D2}h:{1:D2}m:{2:D2}s",
             t.Hours,
             t.Minutes,
             t.Seconds);
@@ -412,25 +355,20 @@ class UptimeCommand : Command
       }
   }
   */
-class PositionCommand : Command
-{
+internal class PositionCommand : Command {
     public PositionCommand() : base("pos", alias: "position") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
-        player.SendInfo("Current Position: " + (int)player.X + ", " + (int)player.Y);
+    protected override bool Process(Player player, RealmTime time, string args) {
+        player.SendInfo("Current Position: " + (int) player.X + ", " + (int) player.Y);
         return true;
     }
 }
 
-class TradeCommand : Command
-{
+internal class TradeCommand : Command {
     public TradeCommand() : base("trade") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
-        if (String.IsNullOrWhiteSpace(args))
-        {
+    protected override bool Process(Player player, RealmTime time, string args) {
+        if (string.IsNullOrWhiteSpace(args)) {
             player.SendErrorText("Usage: /trade <player name>");
             return false;
         }
@@ -440,84 +378,71 @@ class TradeCommand : Command
     }
 }
 
-class TimeCommand : Command
-{
+internal class TimeCommand : Command {
     public TimeCommand() : base("time") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
+    protected override bool Process(Player player, RealmTime time, string args) {
         player.SendInfo("Time for you to get a watch!");
         return true;
     }
 }
 
-class RealmCommand : Command
-{
+internal class RealmCommand : Command {
     public RealmCommand() : base("realm") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
+    protected override bool Process(Player player, RealmTime time, string args) {
         var world = player.Manager.GetRandomRealm();
         player.Client.Reconnect(world.IdName, world.Id);
         return true;
     }
 }
 
-class NexusCommand : Command
-{
+internal class NexusCommand : Command {
     public NexusCommand() : base("nexus") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
+    protected override bool Process(Player player, RealmTime time, string args) {
         player.Client.Reconnect("Nexus", World.Nexus);
         return true;
     }
 }
 
-class VaultCommand : Command
-{
+internal class VaultCommand : Command {
     public VaultCommand() : base("vault") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
+    protected override bool Process(Player player, RealmTime time, string args) {
         var world = player.Manager.CreateNewWorld("Vault", player.Client);
         player.Client.Reconnect(world.IdName, world.Id);
         return true;
     }
 }
 
-class GhallCommand : Command
-{
+internal class GhallCommand : Command {
     public GhallCommand() : base("ghall") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
-        if (player.GuildRank == -1)
-        {
+    protected override bool Process(Player player, RealmTime time, string args) {
+        if (player.GuildRank == -1) {
             player.SendErrorText("You need to be in a guild.");
             return false;
         }
 
         World world = null;
-        foreach (var w in player.Manager.Worlds.Values)
-        {
+        foreach (var w in player.Manager.Worlds.Values) {
             if (w is not GuildHall || (w as GuildHall).GuildId != player.Client.Account.GuildId)
                 continue;
             world = w;
         }
+
         world ??= player.Manager.CreateNewWorld("Guild Hall", player.Client);
-        
+
         player.Client.Reconnect(world.IdName, world.Id);
         return true;
     }
 }
 
-class LefttoMaxCommand : Command
-{
+internal class LefttoMaxCommand : Command {
     public LefttoMaxCommand() : base("lefttomax") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
+    protected override bool Process(Player player, RealmTime time, string args) {
         var pd = player.Manager.Resources.GameData.Classes[player.ObjectType];
 
         player.SendInfo($"HP: {pd.Stats[0].MaxValue - player.Stats.Base[0]}");
@@ -533,20 +458,17 @@ class LefttoMaxCommand : Command
     }
 }
 
-class WhoCommand : Command
-{
+internal class WhoCommand : Command {
     public WhoCommand() : base("who") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
+    protected override bool Process(Player player, RealmTime time, string args) {
         var owner = player.Owner;
         var players = owner.Players.Values
             .Where(p => p.Client != null)
             .ToArray();
 
         var sb = new StringBuilder($"Players in current area ({owner.Players.Count}): ");
-        for (var i = 0; i < players.Length; i++)
-        {
+        for (var i = 0; i < players.Length; i++) {
             if (i != 0)
                 sb.Append(", ");
             sb.Append(players[i].Name);
@@ -557,12 +479,10 @@ class WhoCommand : Command
     }
 }
 
-class OnlineCommand : Command
-{
+internal class OnlineCommand : Command {
     public OnlineCommand() : base("online") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
+    protected override bool Process(Player player, RealmTime time, string args) {
         var servers = player.Manager.InterServer.GetServerList();
         var players =
             (from server in servers
@@ -571,8 +491,7 @@ class OnlineCommand : Command
             .ToArray();
 
         var sb = new StringBuilder($"Players online ({players.Length}): ");
-        for (var i = 0; i < players.Length; i++)
-        {
+        for (var i = 0; i < players.Length; i++) {
             if (i != 0)
                 sb.Append(", ");
 
@@ -584,14 +503,11 @@ class OnlineCommand : Command
     }
 }
 
-class WhereCommand : Command
-{
+internal class WhereCommand : Command {
     public WhereCommand() : base("where") { }
 
-    protected override bool Process(Player player, RealmTime time, string name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-        {
+    protected override bool Process(Player player, RealmTime time, string name) {
+        if (string.IsNullOrWhiteSpace(name)) {
             player.SendInfo("Usage: /where <player name>");
             return true;
         }
@@ -599,8 +515,7 @@ class WhereCommand : Command
         var servers = player.Manager.InterServer.GetServerList();
 
         foreach (var server in servers)
-        foreach (PlayerInfo plr in server.playerList)
-        {
+        foreach (PlayerInfo plr in server.playerList) {
             if (!plr.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
                 continue;
 
@@ -609,15 +524,13 @@ class WhereCommand : Command
         }
 
         var pId = player.Manager.Database.ResolveId(name);
-        if (pId == 0)
-        {
+        if (pId == 0) {
             player.SendInfo($"No player with the name {name}.");
             return true;
         }
 
         var acc = player.Manager.Database.GetAccount(pId, "lastSeen");
-        if (acc.LastSeen == 0)
-        {
+        if (acc.LastSeen == 0) {
             player.SendInfo($"{name} not online. Has not been seen since the dawn of time.");
             return true;
         }
@@ -628,26 +541,22 @@ class WhereCommand : Command
     }
 }
 
-class GuildKickCommand : Command
-{
+internal class GuildKickCommand : Command {
     public GuildKickCommand() : base("gkick") { }
 
-    protected override bool Process(Player player, RealmTime time, string name)
-    {
+    protected override bool Process(Player player, RealmTime time, string name) {
         if (player.Owner is Test)
             return false;
 
         var manager = player.Client.Manager;
 
         // if resigning
-        if (player.Name.Equals(name))
-        {
+        if (player.Name.Equals(name)) {
             // chat needs to be done before removal so we can use
             // srcPlayer as a source for guild info
             manager.Chat.Guild(player, player.Name + " has left the guild.", true);
 
-            if (!manager.Database.RemoveFromGuild(player.Client.Account))
-            {
+            if (!manager.Database.RemoveFromGuild(player.Client.Account)) {
                 player.SendErrorText("Guild not found.");
                 return false;
             }
@@ -660,8 +569,7 @@ class GuildKickCommand : Command
 
         // get target account id
         var targetAccId = manager.Database.ResolveId(name);
-        if (targetAccId == 0)
-        {
+        if (targetAccId == 0) {
             player.SendErrorText("Player not found");
             return false;
         }
@@ -674,16 +582,13 @@ class GuildKickCommand : Command
             .FirstOrDefault();
 
         // try to remove connected member
-        if (targetClient != null)
-        {
+        if (targetClient != null) {
             if (player.Client.Account.GuildRank >= 20 &&
                 player.Client.Account.GuildId == targetClient.Account.GuildId &&
-                player.Client.Account.GuildRank > targetClient.Account.GuildRank)
-            {
+                player.Client.Account.GuildRank > targetClient.Account.GuildRank) {
                 var targetPlayer = targetClient.Player;
 
-                if (!manager.Database.RemoveFromGuild(targetClient.Account))
-                {
+                if (!manager.Database.RemoveFromGuild(targetClient.Account)) {
                     player.SendErrorText("Guild not found.");
                     return false;
                 }
@@ -706,10 +611,8 @@ class GuildKickCommand : Command
 
         if (player.Client.Account.GuildRank >= 20 &&
             player.Client.Account.GuildId == targetAccount.GuildId &&
-            player.Client.Account.GuildRank > targetAccount.GuildRank)
-        {
-            if (!manager.Database.RemoveFromGuild(targetAccount))
-            {
+            player.Client.Account.GuildRank > targetAccount.GuildRank) {
+            if (!manager.Database.RemoveFromGuild(targetAccount)) {
                 player.SendErrorText("Guild not found.");
                 return false;
             }
@@ -724,24 +627,20 @@ class GuildKickCommand : Command
     }
 }
 
-class GuildInviteCommand : Command
-{
+internal class GuildInviteCommand : Command {
     public GuildInviteCommand() : base("invite", alias: "ginvite") { }
 
-    protected override bool Process(Player player, RealmTime time, string playerName)
-    {
+    protected override bool Process(Player player, RealmTime time, string playerName) {
         if (player.Owner is Test)
             return false;
 
-        if (player.Client.Account.GuildRank < 20)
-        {
+        if (player.Client.Account.GuildRank < 20) {
             player.SendErrorText("Insufficient privileges.");
             return false;
         }
 
         var targetAccId = player.Client.Manager.Database.ResolveId(playerName);
-        if (targetAccId == 0)
-        {
+        if (targetAccId == 0) {
             player.SendErrorText("Player not found");
             return false;
         }
@@ -752,35 +651,27 @@ class GuildInviteCommand : Command
                 select client)
             .FirstOrDefault();
 
-        if (targetClient != null)
-        {
+        if (targetClient != null) {
             if (targetClient.Player == null ||
                 targetClient.Account == null ||
-                !targetClient.Account.Name.Equals(playerName))
-            {
+                !targetClient.Account.Name.Equals(playerName)) {
                 player.SendErrorText("Could not find the player to invite.");
                 return false;
             }
 
-            if (!targetClient.Account.NameChosen)
-            {
+            if (!targetClient.Account.NameChosen) {
                 player.SendErrorText("Player needs to choose a name first.");
                 return false;
             }
 
-            if (targetClient.Account.GuildId > 0)
-            {
+            if (targetClient.Account.GuildId > 0) {
                 player.SendErrorText("Player is already in a guild.");
                 return false;
             }
 
             targetClient.Player.GuildInvite = player.Client.Account.GuildId;
 
-            targetClient.SendPacket(new InvitedToGuild()
-            {
-                Name = player.Name,
-                GuildName = player.Guild
-            });
+            targetClient.SendInvitedToGuild(player.Guild, player.Name);
             return true;
         }
 
@@ -789,14 +680,11 @@ class GuildInviteCommand : Command
     }
 }
 
-class GuildWhoCommand : Command
-{
+internal class GuildWhoCommand : Command {
     public GuildWhoCommand() : base("gwho", alias: "mates") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
-        if (player.Client.Account.GuildId == 0)
-        {
+    protected override bool Process(Player player, RealmTime time, string args) {
+        if (player.Client.Account.GuildId == 0) {
             player.SendErrorText("You are not in a guild!");
             return false;
         }
@@ -805,39 +693,36 @@ class GuildWhoCommand : Command
         var pGuild = player.Client.Account.GuildId;
         var servers = player.Manager.InterServer.GetServerList();
         var result =
-            (from server in servers
-                from plr in server.playerList
-                where plr.GuildId == pGuild
-                group plr by server);
+            from server in servers
+            from plr in server.playerList
+            where plr.GuildId == pGuild
+            group plr by server;
 
 
         player.SendInfo("Guild members online:");
 
-        foreach (var group in result)
-        {
-
-            var server = (pServer == group.Key.name) ? $"[{group.Key.name}]" : group.Key.name;
+        foreach (var group in result) {
+            var server = pServer == group.Key.name ? $"[{group.Key.name}]" : group.Key.name;
             var players = group.ToArray();
             var sb = new StringBuilder($"{server}: ");
-            for (var i = 0; i < players.Length; i++)
-            {
+            for (var i = 0; i < players.Length; i++) {
                 if (i != 0)
                     sb.Append(", ");
 
                 sb.Append(players[i].Name);
             }
+
             player.SendInfo(sb.ToString());
         }
+
         return true;
     }
 }
 
-class ServersCommand : Command
-{
+internal class ServersCommand : Command {
     public ServersCommand() : base("servers", alias: "svrs") { }
 
-    protected override bool Process(Player player, RealmTime time, string args)
-    {
+    protected override bool Process(Player player, RealmTime time, string args) {
         var playerSvr = player.Manager.Config.serverInfo.name;
         var servers = player.Manager.InterServer
             .GetServerList()
@@ -845,23 +730,13 @@ class ServersCommand : Command
             .ToArray();
 
         var sb = new StringBuilder($"Servers online ({servers.Length}):\n");
-        foreach (var server in servers)
-        {
+        foreach (var server in servers) {
             var currentSvr = server.name.Equals(playerSvr);
-            if (currentSvr)
-            {
-                sb.Append("[");
-            }
+            if (currentSvr) sb.Append("[");
             sb.Append(server.name);
-            if (currentSvr)
-            {
-                sb.Append("]");
-            }
+            if (currentSvr) sb.Append("]");
             sb.Append($" ({server.players}/{server.maxPlayers})");
-            if (server.adminOnly)
-            {
-                sb.Append(" Admin only");
-            }
+            if (server.adminOnly) sb.Append(" Admin only");
             sb.Append("\n");
         }
 

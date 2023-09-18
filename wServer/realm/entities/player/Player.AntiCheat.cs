@@ -3,8 +3,7 @@ using NLog;
 
 namespace wServer.realm.entities;
 
-public enum PlayerShootStatus
-{
+public enum PlayerShootStatus {
     OK,
     ITEM_MISMATCH,
     COOLDOWN_STILL_ACTIVE,
@@ -13,34 +12,31 @@ public enum PlayerShootStatus
     CLIENT_TOO_FAST
 }
 
-public class TimeCop
-{
+public class TimeCop {
+    private readonly int _capacity;
     private readonly int[] _clientDeltaLog;
     private readonly int[] _serverDeltaLog;
-    private readonly int _capacity;
-    private int _index;
     private int _clientElapsed;
-    private int _serverElapsed;
+    private int _count;
+    private int _index;
     private int _lastClientTime;
     private int _lastServerTime;
-    private int _count;
+    private int _serverElapsed;
 
-    public TimeCop(int capacity = 20)
-    {
+    public TimeCop(int capacity = 20) {
         _capacity = capacity;
         _clientDeltaLog = new int[_capacity];
         _serverDeltaLog = new int[_capacity];
     }
 
-    public void Push(int clientTime, int serverTime)
-    {
+    public void Push(int clientTime, int serverTime) {
         var dtClient = 0;
         var dtServer = 0;
-        if (_count != 0)
-        {
+        if (_count != 0) {
             dtClient = clientTime - _lastClientTime;
             dtServer = serverTime - _lastServerTime;
         }
+
         _count++;
         _index = (_index + 1) % _capacity;
         _clientElapsed += dtClient - _clientDeltaLog[_index];
@@ -51,13 +47,11 @@ public class TimeCop
         _lastServerTime = serverTime;
     }
 
-    public int LastClientTime()
-    {
+    public int LastClientTime() {
         return _lastClientTime;
     }
 
-    public int LastServerTime()
-    {
+    public int LastServerTime() {
         return _lastServerTime;
     }
 
@@ -66,39 +60,34 @@ public class TimeCop
         less than 1 means client time is slower than server time
         greater than 1 means client time is faster than server
     */
-    public float TimeDiff()
-    {
+    public float TimeDiff() {
         if (_count < _capacity)
             return 1;
 
-        return (float)_clientElapsed / _serverElapsed;
+        return (float) _clientElapsed / _serverElapsed;
     }
 }
 
-partial class Player
-{
-    private static readonly Logger CheatLog = LogManager.GetCurrentClassLogger();
+partial class Player {
     private const float MaxTimeDiff = 1.08f;
     private const float MinTimeDiff = 0.92f;
-    private int Shots;
+    private static readonly Logger CheatLog = LogManager.GetCurrentClassLogger();
 
     private long LastAttackTime = -1;
+    private int Shots;
 
-    public PlayerShootStatus ValidatePlayerShoot(Item item, long time)
-    {
+    public PlayerShootStatus ValidatePlayerShoot(Item item, long time) {
         if (item != Inventory[0])
             return PlayerShootStatus.ITEM_MISMATCH;
 
         //start
 
-        if (time == LastAttackTime)
-        {
+        if (time == LastAttackTime) {
             if (++Shots > item.NumProjectiles)
                 return PlayerShootStatus.NUM_PROJECTILE_MISMATCH;
         }
-        else
-        {
-            var attackPeriod = (int)(1.0 / Stats.GetAttackFrequency() * 1.0 / item.RateOfFire);
+        else {
+            var attackPeriod = (int) (1.0 / Stats.GetAttackFrequency() * 1.0 / item.RateOfFire);
             if (time < LastAttackTime + attackPeriod)
                 return PlayerShootStatus.COOLDOWN_STILL_ACTIVE;
             LastAttackTime = time;
@@ -110,9 +99,8 @@ partial class Player
         return PlayerShootStatus.OK;
     }
 
-    public bool IsNoClipping()
-    {
-        if (Owner == null || !TileOccupied(RealX, RealY) && !TileFullOccupied(RealX, RealY))
+    public bool IsNoClipping() {
+        if (Owner == null || (!TileOccupied(RealX, RealY) && !TileFullOccupied(RealX, RealY)))
             return false;
 
         CheatLog.Info($"{Name} is walking on an occupied tile.");

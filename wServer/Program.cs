@@ -1,41 +1,36 @@
-﻿using common;
+﻿using System.Globalization;
+using common;
 using common.resources;
 using NLog;
-using System.Globalization;
+using NLog.Config;
 using NLog.Targets;
-using wServer.networking.server;
 using wServer.realm;
-using wServer.realm.worlds.parser;
 
 namespace wServer;
 
-class Program
-{
-    static readonly Logger Log = LogManager.GetCurrentClassLogger();
-    static readonly ManualResetEvent Shutdown = new(false);
+internal class Program {
+    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+    private static readonly ManualResetEvent Shutdown = new(false);
 
     internal static ServerConfig Config;
     internal static Resources Resources;
     internal static Database Database;
 
-    static void Main(string[] args)
-    {
+    private static void Main(string[] args) {
         AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         Thread.CurrentThread.Name = "Entry";
 
         Config = ServerConfig.ReadFile("wServer.json");
 
-        var logConfig = new NLog.Config.LoggingConfiguration();
-        var consoleTarget = new ColoredConsoleTarget("consoleTarget")
-        {
+        var logConfig = new LoggingConfiguration();
+        var consoleTarget = new ColoredConsoleTarget("consoleTarget") {
             Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}"
         };
         logConfig.AddTarget(consoleTarget);
         logConfig.AddRule(LogLevel.Info, LogLevel.Fatal, consoleTarget);
-            
-        var fileTarget = new FileTarget("fileTarget")
-        {
+
+        var fileTarget = new FileTarget("fileTarget") {
             FileName = "${var:logDirectory}/log.txt",
             Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}"
         };
@@ -47,9 +42,8 @@ class Program
         using (Database = new Database(Config.dbInfo.host,
                    Config.dbInfo.port,
                    Config.dbInfo.index,
-                   Config.dbInfo.auth, 
-                   Resources))
-        {
+                   Config.dbInfo.auth,
+                   Resources)) {
             //var data = MapParser.ConvertWmapRealmToMapData(File.ReadAllBytes("realm.wmap"));
             //File.WriteAllBytes($"{Environment.CurrentDirectory}/realm.pmap", data);
 
@@ -63,16 +57,11 @@ class Program
 
             var server = new Server(manager,
                 Config.serverInfo.port,
-                Config.serverSettings.maxConnections,
-                StringUtils.StringToByteArray(Config.serverSettings.key));
-            server.Start();
+                Config.serverSettings.maxConnections);
 
             // convert here
 
-            Console.CancelKeyPress += delegate
-            {
-                Shutdown.Set();
-            };
+            Console.CancelKeyPress += delegate { Shutdown.Set(); };
 
             Shutdown.WaitOne();
             Log.Info("Terminating...");
@@ -82,16 +71,14 @@ class Program
         }
     }
 
-    public static void Stop(Task task = null)
-    {
+    public static void Stop(Task task = null) {
         if (task != null)
             Log.Fatal(task.Exception);
 
         Shutdown.Set();
     }
 
-    private static void LogUnhandledException(object sender, UnhandledExceptionEventArgs args)
-    {
-        Log.Fatal((Exception)args.ExceptionObject);
+    private static void LogUnhandledException(object sender, UnhandledExceptionEventArgs args) {
+        Log.Fatal((Exception) args.ExceptionObject);
     }
 }

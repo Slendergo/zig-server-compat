@@ -3,39 +3,34 @@ using NLog;
 
 namespace wServer.realm;
 
-public class ISControl
-{
+public class ISControl {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
     private readonly RealmManager _manager;
     private bool _rebooting;
 
-    public ISControl(RealmManager manager)
-    {
+    public ISControl(RealmManager manager) {
         _manager = manager;
 
         // listen to control communications
         _manager.InterServer.AddHandler<ControlMsg>(Channel.Control, HandleControl);
     }
 
-    private void HandleControl(object sender, InterServerEventArgs<ControlMsg> e)
-    {
+    private void HandleControl(object sender, InterServerEventArgs<ControlMsg> e) {
         var c = e.Content;
         var serverInfo = _manager.InterServer.GetServerInfo(e.InstanceId);
-        switch (c.Type)
-        {
+        switch (c.Type) {
             case ControlType.Reboot:
-                if (c.TargetInst.Equals(_manager.InstanceId))
-                {
+                if (c.TargetInst.Equals(_manager.InstanceId)) {
                     Log.Info($"Server received control message to reboot from {c.Issuer} on {serverInfo?.name}.");
                     Reboot();
                 }
+
                 break;
         }
     }
 
-    private void Reboot()
-    {
+    private void Reboot() {
         if (_rebooting)
             return;
 

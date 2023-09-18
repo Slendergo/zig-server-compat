@@ -1,30 +1,25 @@
-﻿using common;
+﻿using System.Xml.Linq;
+using common;
 using common.resources;
-using System.Xml.Linq;
 using wServer.realm;
 
 namespace wServer.logic.behaviors;
 
-class RemoveConditionalEffect : Behavior
-{
+internal class RemoveConditionalEffect : Behavior {
     //State storage: none
 
-    readonly ConditionEffectIndex _effect;
+    private readonly ConditionEffectIndex _effect;
 
-    public RemoveConditionalEffect(XElement e)
-    {
+    public RemoveConditionalEffect(XElement e) {
         _effect = e.ParseConditionEffect("@effect");
     }
 
-    public RemoveConditionalEffect(ConditionEffectIndex effect)
-    {
+    public RemoveConditionalEffect(ConditionEffectIndex effect) {
         _effect = effect;
     }
 
-    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-    {
-        host.ApplyConditionEffect(new ConditionEffect()
-        {
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state) {
+        host.ApplyConditionEffect(new ConditionEffect {
             Effect = _effect,
             DurationMS = 0
         });

@@ -1,42 +1,40 @@
-﻿using common;
+﻿using System.Xml.Linq;
+using common;
 using common.resources;
-using System.Xml.Linq;
 using wServer.realm;
 using wServer.realm.entities;
 
 namespace wServer.logic.behaviors;
 
-class Reproduce : Behavior
-{
+internal class Reproduce : Behavior {
+    private readonly ushort? _children;
+
+    private readonly int _densityMax;
     //State storage: cooldown timer
 
     private readonly double _densityRadius;
-    private readonly int _densityMax;
-    private readonly ushort? _children;
-    private Cooldown _coolDown;
     private readonly TileRegion _region;
     private readonly double _regionRange;
+    private Cooldown _coolDown;
     private List<IntPoint> _reproduceRegions;
 
-    public Reproduce(XElement e)
-    {
+    public Reproduce(XElement e) {
         var childrenString = e.ParseString("@children");
         _children = childrenString == null ? null : GetObjType(childrenString);
         _densityRadius = e.ParseFloat("@densityRadius", 10);
         _densityMax = e.ParseInt("@densityMax", 5);
         _coolDown = new Cooldown().Normalize(e.ParseInt("@cooldown", 60000));
-        _region = (TileRegion)Enum.Parse(typeof(TileRegion), e.ParseString("@region", "None"));
+        _region = (TileRegion) Enum.Parse(typeof(TileRegion), e.ParseString("@region", "None"));
         _regionRange = e.ParseInt("@regionRange", 10);
     }
 
-    public Reproduce(string children = null, 
-        double densityRadius = 10, 
-        int densityMax = 5, 
-        Cooldown coolDown = new(), 
-        TileRegion region = TileRegion.None, 
-        double regionRange = 10)
-    {
-        _children = children == null ? null : (ushort?)GetObjType(children);
+    public Reproduce(string children = null,
+        double densityRadius = 10,
+        int densityMax = 5,
+        Cooldown coolDown = new(),
+        TileRegion region = TileRegion.None,
+        double regionRange = 10) {
+        _children = children == null ? null : GetObjType(children);
         _densityRadius = densityRadius;
         _densityMax = densityMax;
         _coolDown = coolDown.Normalize(60000);
@@ -44,8 +42,7 @@ class Reproduce : Behavior
         _regionRange = regionRange;
     }
 
-    protected override void OnStateEntry(Entity host, RealmTime time, ref object state)
-    {
+    protected override void OnStateEntry(Entity host, RealmTime time, ref object state) {
         base.OnStateEntry(host, time, ref state);
 
         if (_region == TileRegion.None)
@@ -59,8 +56,7 @@ class Reproduce : Behavior
         _reproduceRegions = new List<IntPoint>();
 
         for (var y = 0; y < h; y++)
-        for (var x = 0; x < w; x++)
-        {
+        for (var x = 0; x < w; x++) {
             if (map[x, y].Region != _region)
                 continue;
 
@@ -68,24 +64,19 @@ class Reproduce : Behavior
         }
     }
 
-    protected override void TickCore(Entity host, RealmTime time, ref object state)
-    {
-        var cool = (state == null) ? _coolDown.Next(Random) :
-            (int)state;
+    protected override void TickCore(Entity host, RealmTime time, ref object state) {
+        var cool = state == null ? _coolDown.Next(Random) : (int) state;
 
-        if (cool <= 0)
-        {
+        if (cool <= 0) {
             var count = host.CountEntity(_densityRadius, _children ?? host.ObjectType);
 
-            if (count < _densityMax)
-            {
+            if (count < _densityMax) {
                 double targetX = host.X;
                 double targetY = host.Y;
 
-                if (_reproduceRegions != null && _reproduceRegions.Count > 0)
-                {
-                    var sx = (int)host.X;
-                    var sy = (int)host.Y;
+                if (_reproduceRegions != null && _reproduceRegions.Count > 0) {
+                    var sx = (int) host.X;
+                    var sy = (int) host.Y;
                     var regions = _reproduceRegions
                         .Where(p => Math.Abs(sx - p.X) <= _regionRange &&
                                     Math.Abs(sy - p.Y) <= _regionRange).ToList();
@@ -108,33 +99,28 @@ class Reproduce : Behavior
                          host.Owner.Map[(int)host.X, (int)host.Y].Terrain &&
                     i < 10);*/
 
-                if (!host.Owner.IsPassable(targetX, targetY, true))
-                {
+                if (!host.Owner.IsPassable(targetX, targetY, true)) {
                     state = _coolDown.Next(Random);
                     return;
                 }
 
                 var entity = Entity.Resolve(host.Manager, _children ?? host.ObjectType);
                 entity.GivesNoXp = true;
-                entity.Move((float)targetX, (float)targetY);
+                entity.Move((float) targetX, (float) targetY);
 
-                var enemyHost = host as Enemy;
-                var enemyEntity = entity as Enemy;
-                if (enemyHost != null && enemyEntity != null)
-                {
+                if (host is Enemy enemyHost && entity is Enemy enemyEntity) {
                     enemyEntity.Terrain = enemyHost.Terrain;
-                    if (enemyHost.Spawned)
-                    {
-                        enemyEntity.Spawned = true;
-                    }
+                    if (enemyHost.Spawned) enemyEntity.Spawned = true;
                 }
 
                 host.Owner.EnterWorld(entity);
             }
+
             cool = _coolDown.Next(Random);
         }
-        else
-            cool -= time.ElaspedMsDelta;
+        else {
+            cool -= time.ElapsedMsDelta;
+        }
 
         state = cool;
     }

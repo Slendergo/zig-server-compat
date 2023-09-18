@@ -1,15 +1,9 @@
-﻿using common.resources;
-using wServer.networking;
-using wServer.realm.worlds.logic;
+﻿namespace wServer.realm.worlds;
 
-namespace wServer.realm.worlds;
-
-public static class DynamicWorld
-{
+public static class DynamicWorld {
     private static readonly List<Type> Worlds;
 
-    static DynamicWorld()
-    {
+    static DynamicWorld() {
         Worlds = new List<Type>();
 
         var type = typeof(World);

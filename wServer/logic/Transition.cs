@@ -2,22 +2,22 @@
 
 namespace wServer.logic;
 
-public abstract class Transition : IStateChildren
-{
-    public State[] TargetState { get; private set; }
+public abstract class Transition : IStateChildren {
+    [ThreadStatic] private static Random _rand;
 
     protected readonly string[] TargetStates;
     protected int SelectedState;
 
-    public Transition(params string[] targetStates)
-    {
+    public Transition(params string[] targetStates) {
         TargetStates = targetStates;
     }
 
-    public bool Tick(Entity host, RealmTime time)
-    {
-        object state;
-        host.StateStorage.TryGetValue(this, out state);
+    public State[] TargetState { get; private set; }
+
+    protected static Random Random => _rand ?? (_rand = new Random());
+
+    public bool Tick(Entity host, RealmTime time) {
+        host.StateStorage.TryGetValue(this, out var state);
 
         var ret = TickCore(host, time, ref state);
         if (ret)
@@ -32,18 +32,10 @@ public abstract class Transition : IStateChildren
 
     protected abstract bool TickCore(Entity host, RealmTime time, ref object state);
 
-    internal void Resolve(IDictionary<string, State> states)
-    {
+    internal void Resolve(IDictionary<string, State> states) {
         var numStates = TargetStates.Length;
         TargetState = new State[numStates];
         for (var i = 0; i < numStates; i++)
             TargetState[i] = states[TargetStates[i]];
-    }
-
-    [ThreadStatic]
-    private static Random _rand;
-    protected static Random Random
-    {
-        get { return _rand ?? (_rand = new Random()); }
     }
 }

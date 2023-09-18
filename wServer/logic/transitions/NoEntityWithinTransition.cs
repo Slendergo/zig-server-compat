@@ -1,29 +1,25 @@
-﻿using common;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using common;
 using wServer.realm;
 
 namespace wServer.logic.transitions;
 
-class NoEntityWithinTransition : Transition
-{
+internal class NoEntityWithinTransition : Transition {
     //State storage: none
 
     private readonly int _dist;
 
     public NoEntityWithinTransition(XElement e)
-    : base(e.ParseString("@targetState", "root"))
-    {
+        : base(e.ParseString("@targetState", "root")) {
         _dist = e.ParseInt("@dist");
     }
 
     public NoEntityWithinTransition(int dist, string targetState)
-        : base(targetState)
-    {
+        : base(targetState) {
         _dist = dist;
     }
 
-    protected override bool TickCore(Entity host, RealmTime time, ref object state)
-    {
+    protected override bool TickCore(Entity host, RealmTime time, ref object state) {
         return !host.AnyEnemyNearby(_dist) && !host.AnyPlayerNearby(_dist);
     }
 }

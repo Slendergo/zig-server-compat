@@ -1,43 +1,35 @@
 ﻿using common;
 using NLog;
 using wServer.networking;
-using wServer.networking.packets.incoming;
-using wServer.networking.packets.outgoing;
 using wServer.realm.entities;
 using wServer.realm.worlds;
 using wServer.realm.worlds.logic;
 
 namespace wServer.realm;
 
-public class ConnectManager
-{
+public class ConnectManager {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
     private readonly RealmManager _manager;
     private readonly int _maxPlayerCount;
     private readonly int _maxPlayerCountWithPriority;
 
-    public ConnectManager(RealmManager manager, int maxPlayerCount, int maxPlayerCountWithPriority)
-    {
+    public ConnectManager(RealmManager manager, int maxPlayerCount, int maxPlayerCountWithPriority) {
         _manager = manager;
         _maxPlayerCount = maxPlayerCount;
         _maxPlayerCountWithPriority = maxPlayerCountWithPriority;
     }
-    
-    public int GetPlayerCount()
-    {
+
+    public int GetPlayerCount() {
         return _manager.Clients.Count;
     }
-    
-    public static void Reconnect(Client client, int gameId) 
-    {
+
+    public static void Reconnect(Client client, int gameId) {
         var player = client.Player;
         var currentWorld = client.Player.Owner;
 
         var world = client.Manager.GetWorld(gameId);
-        if (world == null || world.Deleted) {
-            world = client.Manager.GetWorld(World.Nexus);
-        }
+        if (world == null || world.Deleted) world = client.Manager.GetWorld(World.Nexus);
 
         if (!world.AllowedAccess(client)) {
             if (gameId == World.Nexus) {
@@ -50,7 +42,9 @@ public class ConnectManager
 
         // send out map info
         var mapSize = Math.Max(world.Map.Width, world.Map.Height);
-        client.SendMapInfo(mapSize, mapSize, world.IdName, world.DisplayName, client.Seed, world.Difficulty, world.Background, world.AllowTeleport, world.ShowDisplays, world.BgLightColor, world.BgLightIntensity, world.DayLightIntensity, world.NightLightIntensity, world.Manager.Logic.RealmTime.TotalElapsedMicroSeconds);
+        client.SendMapInfo(mapSize, mapSize, world.IdName, world.DisplayName, client.Seed, world.Difficulty,
+            world.Background, world.AllowTeleport, world.ShowDisplays, world.BgLightColor, world.BgLightIntensity,
+            world.DayLightIntensity, world.NightLightIntensity, world.Manager.Logic.RealmTime.TotalElapsedMicroSeconds);
 
         // send out account lock/ignore list
         client.SendAccountList(0, client.Account.LockList);
@@ -75,21 +69,21 @@ public class ConnectManager
     }
 
 
-    public static void Connect(Client client, Hello packet)
-    {
+    public static void Connect(Client client, int gameId, short charId, bool createChar, ushort charType,
+        ushort skinType) {
         var acc = client.Account;
-        if (!client.Manager.Database.AcquireLock(acc))
-        {
+        if (!client.Manager.Database.AcquireLock(acc)) {
             // disconnect current connected client (if any)
 
-            var otherClients = client.Manager.Clients.Keys.Where(c => c == client || c.Account != null && (c.Account.AccountId == acc.AccountId));
+            var otherClients = client.Manager.Clients.Keys.Where(c =>
+                c == client || (c.Account != null && c.Account.AccountId == acc.AccountId));
             foreach (var otherClient in otherClients)
                 otherClient.Disconnect();
 
             // try again...
-            if (!client.Manager.Database.AcquireLock(acc))
-            {
-                client.Disconnect($"Account in Use ({client.Manager.Database.GetLockTime(acc)?.ToString("%s")} seconds until timeout)");
+            if (!client.Manager.Database.AcquireLock(acc)) {
+                client.Disconnect(
+                    $"Account in Use ({client.Manager.Database.GetLockTime(acc)?.ToString("%s")} seconds until timeout)");
                 return;
             }
         }
@@ -98,47 +92,42 @@ public class ConnectManager
         client.Account = acc;
 
         // connect client to realm manager
-        if (!client.Manager.TryConnect(client))
-        {
+        if (!client.Manager.TryConnect(client)) {
             client.Disconnect("Failed to connect");
             return;
         }
 
-        var world = client.Manager.GetWorld(packet.GameId);
-        if (world == null || world.Deleted)
-        {
+        var world = client.Manager.GetWorld(gameId);
+        if (world == null || world.Deleted) {
             client.SendErrorText("World does not exist");
 
             world = client.Manager.GetWorld(World.Nexus);
         }
 
-        if(world == null)
-        {
+        if (world == null) {
             client.SendErrorText("Failed to parse instance");
 
             world = client.Manager.GetWorld(World.Nexus);
         }
 
-        if (!world.AllowedAccess(client))
-        {
+        if (!world.AllowedAccess(client)) {
             if (!world.Persists && world.TotalConnects <= 0)
                 client.Manager.RemoveWorld(world);
 
             client.SendErrorText("Access denied");
 
-            if (world is not Nexus)
+            if (world is not Nexus) {
                 world = client.Manager.GetWorld(World.Nexus);
-            else
-            {
+            }
+            else {
                 client.Disconnect();
                 return;
             }
         }
 
-        var seed = (uint)((long)Environment.TickCount * client.Account.AccountId.GetHashCode()) % uint.MaxValue;
+        var seed = (uint) ((long) Environment.TickCount * client.Account.AccountId.GetHashCode()) % uint.MaxValue;
         client.Random = new wRandom(seed);
         client.Seed = seed;
-        client.TargetWorld = world.Id;
 
         var now = (int) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
@@ -150,7 +139,9 @@ public class ConnectManager
 
         // send out map info
         var mapSize = Math.Max(world.Map.Width, world.Map.Height);
-        client.SendMapInfo(mapSize, mapSize, world.IdName, world.DisplayName, client.Seed, world.Difficulty, world.Background, world.AllowTeleport, world.ShowDisplays, world.BgLightColor, world.BgLightIntensity, world.DayLightIntensity, world.NightLightIntensity, world.Manager.Logic.RealmTime.TotalElapsedMicroSeconds);
+        client.SendMapInfo(mapSize, mapSize, world.IdName, world.DisplayName, client.Seed, world.Difficulty,
+            world.Background, world.AllowTeleport, world.ShowDisplays, world.BgLightColor, world.BgLightIntensity,
+            world.DayLightIntensity, world.NightLightIntensity, world.Manager.Logic.RealmTime.TotalElapsedMicroSeconds);
 
         // send out account lock/ignore list
         client.SendAccountList(0, client.Account.LockList);
@@ -160,11 +151,10 @@ public class ConnectManager
 
         DbChar character = null;
 
-        if (packet.CreateCharacter)
-        {
-            var status = client.Manager.Database.CreateCharacter(acc, packet.CharacterType, packet.SkinType, out character);
-            switch (status)
-            {
+        if (createChar) {
+            var status =
+                client.Manager.Database.CreateCharacter(acc, charType, skinType, out character);
+            switch (status) {
                 case CreateStatus.ReachCharLimit:
                     client.Disconnect("Too many characters");
                     return;
@@ -176,19 +166,18 @@ public class ConnectManager
                     return;
             }
         }
-        else
-            character = client.Manager.Database.LoadCharacter(acc, packet.CharId);
+        else {
+            character = client.Manager.Database.LoadCharacter(acc, charId);
+        }
 
         // didnt load then disconnect
-        if(character == null)
-        {
+        if (character == null) {
             client.Disconnect("Failed to load character");
             return;
         }
 
         // dead? then disconnect
-        if (character.Dead)
-        {
+        if (character.Dead) {
             client.Disconnect("Character is dead");
             return;
         }
@@ -206,7 +195,5 @@ public class ConnectManager
 
         client.Manager.Clients[client].WorldInstance = client.Player.Owner.Id;
         client.Manager.Clients[client].WorldName = client.Player.Owner.IdName;
-
-        client.State = ProtocolState.Handshaked;
     }
 }

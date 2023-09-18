@@ -2,39 +2,26 @@
 
 namespace wServer.realm.entities;
 
-public abstract class Character : Entity
-{
+public abstract class Character : Entity {
     public static Random Random = new();
 
     private readonly SV<int> _hp;
     private readonly SV<int> _maximumHP;
 
-    public int HP
-    {
-        get { return _hp.GetValue(); }
-        set { _hp.SetValue(value); }
-    }
-    public int MaximumHP
-    {
-        get { return _maximumHP.GetValue(); }
-        set { _maximumHP.SetValue(value); }
-    }
-
     protected Character(RealmManager manager, ushort objType)
-        : base(manager, objType)
-    {
+        : base(manager, objType) {
         _hp = new SV<int>(this, StatsType.HP, 0);
         _maximumHP = new SV<int>(this, StatsType.MaximumHP, 0);
 
-        if (ObjectDesc != null)
-        {
-            if (ObjectDesc.SizeStep != 0)
-            {
-                var step = Random.Next(0, (ObjectDesc.MaxSize - ObjectDesc.MinSize) / ObjectDesc.SizeStep + 1) * ObjectDesc.SizeStep;
+        if (ObjectDesc != null) {
+            if (ObjectDesc.SizeStep != 0) {
+                var step = Random.Next(0, (ObjectDesc.MaxSize - ObjectDesc.MinSize) / ObjectDesc.SizeStep + 1) *
+                           ObjectDesc.SizeStep;
                 SetDefaultSize(ObjectDesc.MinSize + step);
             }
-            else
+            else {
                 SetDefaultSize(ObjectDesc.MinSize);
+            }
 
             SetConditions();
 
@@ -43,16 +30,24 @@ public abstract class Character : Entity
         }
     }
 
-    private void SetConditions()
-    {
+    public int HP {
+        get => _hp.GetValue();
+        set => _hp.SetValue(value);
+    }
+
+    public int MaximumHP {
+        get => _maximumHP.GetValue();
+        set => _maximumHP.SetValue(value);
+    }
+
+    private void SetConditions() {
         if (ObjectDesc.StasisImmune)
             ApplyConditionEffect(ConditionEffectIndex.StasisImmune);
         if (ObjectDesc.StunImmune)
             ApplyConditionEffect(ConditionEffectIndex.StunImmune);
     }
 
-    protected override void ExportStats(IDictionary<StatsType, object> stats)
-    {
+    protected override void ExportStats(IDictionary<StatsType, object> stats) {
         stats[StatsType.HP] = HP;
         if (!(this is Player))
             stats[StatsType.MaximumHP] = MaximumHP;
