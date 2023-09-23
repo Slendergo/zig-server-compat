@@ -1,40 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-    <BehaviorEntry id="Red Demon">
-        <Shoot radius="10" count="5" shootAngle="5" predictive="1" cooldown="1200"/>
-        <Shoot radius="11" shootAngle="0" projectileIndex="1" cooldown="1400"/>
-        <Prioritize>
-            <StayCloseToSpawn speed="0.8"/>
-            <Follow speed="1" range="7" cooldown="0"/>
-            <Wander speed="0.4"/>
-        </Prioritize>
-        <Spawn children="Imp" initialSpawn="2" cooldown="10000" givesNoXp="false"/>
-        <Spawn children="Demon" maxChildren="3" initialSpawn="1" cooldown="14000" givesNoXp="false"/>
-        <Spawn children="Demon Warrior" maxChildren="3" initialSpawn="1" cooldown="18000" givesNoXp="false"/>
-        <Taunt text="I will deliver your soul to Oryx, {PLAYER}!|Oryx will not end our pain. We can only share it... with you!|Our anguish is endless, unlike your lives!|There can be no forgiveness!|What do you know of suffering? I can teach you much, {PLAYER}|Would you attempt to destroy us? I know your name, {PLAYER}!|You cannot hurt us. You cannot help us. You will feed us.|Your life is an affront to Oryx. You will die."
-               probability="0.7" cooldown="10000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Imp">
-        <Prioritize>
-            <StayCloseToSpawn speed="1.4" range="15"/>
-            <Wander speed="0.8"/>
-        </Prioritize>
-        <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="200"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Demon">
-        <Prioritize>
-            <StayCloseToSpawn speed="1.4" range="15"/>
-            <Follow speed="1.4" range="7" cooldown="0"/>
-            <Wander speed="0.4"/>
-        </Prioritize>
-        <Shoot radius="10" count="2" shootAngle="7" predictive="0.5" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Demon Warrior">
-        <Prioritize>
-            <StayCloseToSpawn speed="1.4" range="15"/>
-            <Follow speed="1" range="2.8" cooldown="0"/>
-            <Wander speed="0.4"/>
-        </Prioritize>
-        <Shoot radius="10" count="3" shootAngle="7" predictive="0.5" cooldown="1000"/>
-    </BehaviorEntry>
+  <BehaviorEntry id="Red Demon">
+    <Shoot radius="10" count="5" shootAngle="5" predictive="1" cooldown="1200" />
+    <Shoot radius="11" shootAngle="0" projectileIndex="1" cooldown="1400" />
+    <Prioritize>
+      <StayCloseToSpawn speed="0.8" />
+      <Follow speed="1" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Spawn children="Imp" initialSpawn="2" cooldown="10000" givesNoXp="false" />
+    <Spawn children="Demon" maxChildren="3" initialSpawn="1" cooldown="14000" givesNoXp="false" />
+    <Spawn children="Demon Warrior" maxChildren="3" initialSpawn="1" cooldown="18000" givesNoXp="false" />
+    <Taunt text="I will deliver your soul to Oryx, {PLAYER}!|Oryx will not end our pain. We can only share it... with you!|Our anguish is endless, unlike your lives!|There can be no forgiveness!|What do you know of suffering? I can teach you much, {PLAYER}|Would you attempt to destroy us? I know your name, {PLAYER}!|You cannot hurt us. You cannot help us. You will feed us.|Your life is an affront to Oryx. You will die." probability="0.7" cooldown="10000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Imp">
+    <Prioritize>
+      <StayCloseToSpawn speed="1.4" range="15" />
+      <Wander speed="0.8" />
+    </Prioritize>
+    <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="200" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Demon">
+    <Prioritize>
+      <StayCloseToSpawn speed="1.4" range="15" />
+      <Follow speed="1.4" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="10" count="2" shootAngle="7" predictive="0.5" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Demon Warrior">
+    <Prioritize>
+      <StayCloseToSpawn speed="1.4" range="15" />
+      <Follow speed="1" range="2.8" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="10" count="3" shootAngle="7" predictive="0.5" cooldown="1000" />
+  </BehaviorEntry>
 </BehaviorEntries>

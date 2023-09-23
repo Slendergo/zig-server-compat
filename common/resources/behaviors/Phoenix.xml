@@ -1,70 +1,69 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-    <BehaviorEntry id="Phoenix Lord">
-        <Shoot radius="10" count="4" shootAngle="7" predictive="0.5" cooldown="600"/>
-        <Prioritize>
-            <StayCloseToSpawn speed="0.3" range="2"/>
-            <Wander speed="0.4"/>
-        </Prioritize>
-        <SpawnGroup group="Pyre" maxChildren="16" initialSpawn="8" cooldown="5000"/>
-        <Taunt text="Alas, {PLAYER}, you will taste death but once!|I have met many like you, {PLAYER}, in my thrice thousand years!|Purge yourself, {PLAYER}, in the heat of my flames!|The ashes of past heroes cover my plains!|Some die and are ashes, but I am ever reborn!"
-               probability="0.7" cooldown="10000"/>
-        <TransformOnDeath target="Phoenix Egg"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Birdman Chief">
-        <Prioritize>
-            <Protect speed="0.5" protectee="Phoenix Lord" acquireRange="15" protectionRange="10" reprotectRange="3"/>
-            <Follow speed="1" range="9" cooldown="0"/>
-            <Wander speed="0.5"/>
-        </Prioritize>
-        <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Birdman">
-        <Prioritize>
-            <Protect speed="0.5" protectee="Phoenix Lord" acquireRange="15" protectionRange="11" reprotectRange="3"/>
-            <Follow speed="1" range="7" cooldown="0"/>
-            <Wander speed="0.5"/>
-        </Prioritize>
-        <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Phoenix Egg">
-        <TransformOnDeath target="Phoenix Reborn"/>
-        <State id="shielded">
-            <ConditionalEffect effect="Invulnerable"/>
-            <TimedTransition targetState="unshielded" time="2000"/>
-        </State>
-        <State id="unshielded">
-            <Flash color="0xFF0000" flashPeriod="1" flashRepeats="5000"/>
-            <State id="grow">
-                <ChangeSize rate="20" target="150"/>
-                <TimedTransition targetState="shrink" time="800"/>
-            </State>
-            <State id="shrink">
-                <ChangeSize rate="-20" target="130"/>
-                <TimedTransition targetState="grow" time="800"/>
-            </State>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Phoenix Reborn">
-        <Prioritize>
-            <StayCloseToSpawn speed="0.9"/>
-            <Wander speed="0.9"/>
-        </Prioritize>
-        <SpawnGroup group="Pyre" maxChildren="4" initialSpawn="2" cooldown="1000"/>
-        <State id="born_anew">
-            <Shoot radius="10" count="12" shootAngle="30" fixedAngle="10" coolDownOffset="500" cooldown="100000"/>
-            <Shoot radius="10" count="12" shootAngle="30" fixedAngle="25" coolDownOffset="1000" cooldown="100000"/>
-            <TimedTransition targetState="xxx" time="1800"/>
-        </State>
-        <State id="xxx">
-            <Shoot radius="10" count="4" shootAngle="7" projectileIndex="1" predictive="0.5" cooldown="600"/>
-            <TimedTransition targetState="yyy" time="2800"/>
-        </State>
-        <State id="yyy">
-            <Shoot radius="10" count="12" shootAngle="30" fixedAngle="10" coolDownOffset="500" cooldown="100000"/>
-            <Shoot radius="10" count="12" shootAngle="30" fixedAngle="25" coolDownOffset="1000" cooldown="100000"/>
-            <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="0.5" cooldown="350"/>
-            <TimedTransition targetState="xxx" time="4500"/>
-        </State>
-    </BehaviorEntry>
+  <BehaviorEntry id="Phoenix Lord">
+    <Shoot radius="10" count="4" shootAngle="7" predictive="0.5" cooldown="600" />
+    <Prioritize>
+      <StayCloseToSpawn speed="0.3" range="2" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <SpawnGroup group="Pyre" maxChildren="16" initialSpawn="8" cooldown="5000" />
+    <Taunt text="Alas, {PLAYER}, you will taste death but once!|I have met many like you, {PLAYER}, in my thrice thousand years!|Purge yourself, {PLAYER}, in the heat of my flames!|The ashes of past heroes cover my plains!|Some die and are ashes, but I am ever reborn!" probability="0.7" cooldown="10000" />
+    <TransformOnDeath target="Phoenix Egg" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Birdman Chief">
+    <Prioritize>
+      <Protect speed="0.5" protectee="Phoenix Lord" acquireRange="15" protectionRange="10" reprotectRange="3" />
+      <Follow speed="1" range="9" cooldown="0" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Birdman">
+    <Prioritize>
+      <Protect speed="0.5" protectee="Phoenix Lord" acquireRange="15" protectionRange="11" reprotectRange="3" />
+      <Follow speed="1" range="7" cooldown="0" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Phoenix Egg">
+    <TransformOnDeath target="Phoenix Reborn" />
+    <State id="shielded">
+      <ConditionalEffect effect="Invulnerable" />
+      <TimedTransition targetState="unshielded" time="2000" />
+    </State>
+    <State id="unshielded">
+      <Flash color="0xFF0000" flashPeriod="1" flashRepeats="5000" />
+      <State id="grow">
+        <ChangeSize rate="20" target="150" />
+        <TimedTransition targetState="shrink" time="800" />
+      </State>
+      <State id="shrink">
+        <ChangeSize rate="-20" target="130" />
+        <TimedTransition targetState="grow" time="800" />
+      </State>
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Phoenix Reborn">
+    <Prioritize>
+      <StayCloseToSpawn speed="0.9" />
+      <Wander speed="0.9" />
+    </Prioritize>
+    <SpawnGroup group="Pyre" maxChildren="4" initialSpawn="2" cooldown="1000" />
+    <State id="born_anew">
+      <Shoot radius="10" count="12" shootAngle="30" fixedAngle="10" coolDownOffset="500" cooldown="100000" />
+      <Shoot radius="10" count="12" shootAngle="30" fixedAngle="25" coolDownOffset="1000" cooldown="100000" />
+      <TimedTransition targetState="xxx" time="1800" />
+    </State>
+    <State id="xxx">
+      <Shoot radius="10" count="4" shootAngle="7" projectileIndex="1" predictive="0.5" cooldown="600" />
+      <TimedTransition targetState="yyy" time="2800" />
+    </State>
+    <State id="yyy">
+      <Shoot radius="10" count="12" shootAngle="30" fixedAngle="10" coolDownOffset="500" cooldown="100000" />
+      <Shoot radius="10" count="12" shootAngle="30" fixedAngle="25" coolDownOffset="1000" cooldown="100000" />
+      <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="0.5" cooldown="350" />
+      <TimedTransition targetState="xxx" time="4500" />
+    </State>
+  </BehaviorEntry>
 </BehaviorEntries>

@@ -1,99 +1,97 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-    <BehaviorEntry id="Grand Sphinx">
-        <DropPortalOnDeath target="Tomb of the Ancients Portal" probability="0.33"/>
-        <State id="Spawned">
-            <ConditionalEffect effect="Invulnerable"/>
-            <Reproduce children="Horrid Reaper" densityRadius="30" densityMax="4" cooldown="100"/>
-            <TimedTransition targetState="Attack1" time="500"/>
-        </State>
-        <State id="Attack1">
-            <Prioritize>
-                <Wander speed="0.5"/>
-            </Prioritize>
-            <Shoot radius="12" shootAngle="0" cooldown="800"/>
-            <Shoot radius="12" count="3" shootAngle="10" cooldown="1000"/>
-            <Shoot radius="12" shootAngle="130" cooldown="1000"/>
-            <Shoot radius="12" shootAngle="230" cooldown="1000"/>
-            <TimedTransition targetState="TransAttack2" time="6000"/>
-        </State>
-        <State id="TransAttack2">
-            <ConditionalEffect effect="Invulnerable"/>
-            <Wander speed="0.5"/>
-            <Flash color="0xFF0C" flashPeriod="0.25" flashRepeats="8"/>
-            <Taunt text="You hide behind rocks like cowards but you cannot hide from this!" probability="0.99"/>
-            <TimedTransition targetState="Attack2" time="2000"/>
-        </State>
-        <State id="Attack2">
-            <Prioritize>
-                <Wander speed="0.5"/>
-            </Prioritize>
-            <Shoot radius="0" count="8" shootAngle="10" projectileIndex="1" fixedAngle="0" rotateAngle="70"
-                   cooldown="2000"/>
-            <Shoot radius="0" count="8" shootAngle="10" projectileIndex="1" fixedAngle="180" rotateAngle="70"
-                   cooldown="2000"/>
-            <TimedTransition targetState="TransAttack3" time="6200"/>
-        </State>
-        <State id="TransAttack3">
-            <ConditionalEffect effect="Invulnerable"/>
-            <Wander speed="0.5"/>
-            <Flash color="0xFF0C" flashPeriod="0.25" flashRepeats="8"/>
-            <TimedTransition targetState="Attack3" time="2000"/>
-        </State>
-        <State id="Attack3">
-            <Prioritize>
-                <Wander speed="0.5"/>
-            </Prioritize>
-            <Shoot radius="20" count="9" shootAngle="0" projectileIndex="2" fixedAngle="40" cooldown="2300"/>
-            <TimedTransition targetState="TransAttack1" time="6000"/>
-            <State id="Shoot1">
-                <Shoot radius="20" count="2" shootAngle="4" projectileIndex="2" cooldown="700"/>
-                <TimedRandomTransition targetState="Shoot1,Shoot2" time="1000"/>
-            </State>
-            <State id="Shoot2">
-                <Shoot radius="20" count="8" shootAngle="5" projectileIndex="2" cooldown="1100"/>
-                <TimedRandomTransition targetState="Shoot1,Shoot2" time="1000"/>
-            </State>
-        </State>
-        <State id="TransAttack1">
-            <ConditionalEffect effect="Invulnerable"/>
-            <Wander speed="0.5"/>
-            <Flash color="0xFF0C" flashPeriod="0.25" flashRepeats="8"/>
-            <TimedTransition targetState="Attack1" time="2000"/>
-            <HpLessTransition targetState="Order" threshold="0.15"/>
-        </State>
-        <State id="Order">
-            <Wander speed="0.5"/>
-            <ConditionalEffect effect="Invulnerable"/>
-            <Order range="30" children="Horrid Reaper" targetState="Die"/>
-            <TimedTransition targetState="Attack1" time="1900"/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Horrid Reaper">
-        <ConditionalEffect effect="Invulnerable"/>
-        <State id="Move">
-            <Prioritize>
-                <StayCloseToSpawn speed="3" range="10"/>
-                <Wander speed="3"/>
-            </Prioritize>
-            <EntityNotExistsTransition targetState="Die" dist="50" target="Grand Sphinx"/>
-            <TimedRandomTransition targetState="Attack" time="2000" randomizedTime="True"/>
-        </State>
-        <State id="Attack">
-            <Shoot radius="0" count="6" shootAngle="0" fixedAngle="60" cooldown="700"/>
-            <PlayerWithinTransition targetState="Follow" dist="2"/>
-            <TimedRandomTransition targetState="Move" time="5000" randomizedTime="True"/>
-        </State>
-        <State id="Follow">
-            <Prioritize>
-                <Follow speed="0.7" range="3" cooldown="0"/>
-            </Prioritize>
-            <Shoot radius="7" shootAngle="0" cooldown="700"/>
-            <TimedRandomTransition targetState="Move" time="5000" randomizedTime="True"/>
-        </State>
-        <State id="Die">
-            <Taunt text="OOaoaoAaAoaAAOOAoaaoooaa!!!" probability="0.99"/>
-            <Decay time="1000"/>
-        </State>
-    </BehaviorEntry>
+  <BehaviorEntry id="Grand Sphinx">
+    <DropPortalOnDeath target="Tomb of the Ancients Portal" probability="0.33" />
+    <State id="Spawned">
+      <ConditionalEffect effect="Invulnerable" />
+      <Reproduce children="Horrid Reaper" densityRadius="30" densityMax="4" cooldown="100" />
+      <TimedTransition targetState="Attack1" time="500" />
+    </State>
+    <State id="Attack1">
+      <Prioritize>
+        <Wander speed="0.5" />
+      </Prioritize>
+      <Shoot radius="12" shootAngle="0" cooldown="800" />
+      <Shoot radius="12" count="3" shootAngle="10" cooldown="1000" />
+      <Shoot radius="12" shootAngle="130" cooldown="1000" />
+      <Shoot radius="12" shootAngle="230" cooldown="1000" />
+      <TimedTransition targetState="TransAttack2" time="6000" />
+    </State>
+    <State id="TransAttack2">
+      <ConditionalEffect effect="Invulnerable" />
+      <Wander speed="0.5" />
+      <Flash color="0xFF0C" flashPeriod="0.25" flashRepeats="8" />
+      <Taunt text="You hide behind rocks like cowards but you cannot hide from this!" probability="0.99" />
+      <TimedTransition targetState="Attack2" time="2000" />
+    </State>
+    <State id="Attack2">
+      <Prioritize>
+        <Wander speed="0.5" />
+      </Prioritize>
+      <Shoot radius="0" count="8" shootAngle="10" projectileIndex="1" fixedAngle="0" rotateAngle="70" cooldown="2000" />
+      <Shoot radius="0" count="8" shootAngle="10" projectileIndex="1" fixedAngle="180" rotateAngle="70" cooldown="2000" />
+      <TimedTransition targetState="TransAttack3" time="6200" />
+    </State>
+    <State id="TransAttack3">
+      <ConditionalEffect effect="Invulnerable" />
+      <Wander speed="0.5" />
+      <Flash color="0xFF0C" flashPeriod="0.25" flashRepeats="8" />
+      <TimedTransition targetState="Attack3" time="2000" />
+    </State>
+    <State id="Attack3">
+      <Prioritize>
+        <Wander speed="0.5" />
+      </Prioritize>
+      <Shoot radius="20" count="9" shootAngle="0" projectileIndex="2" fixedAngle="40" cooldown="2300" />
+      <TimedTransition targetState="TransAttack1" time="6000" />
+      <State id="Shoot1">
+        <Shoot radius="20" count="2" shootAngle="4" projectileIndex="2" cooldown="700" />
+        <TimedRandomTransition targetState="Shoot1,Shoot2" time="1000" />
+      </State>
+      <State id="Shoot2">
+        <Shoot radius="20" count="8" shootAngle="5" projectileIndex="2" cooldown="1100" />
+        <TimedRandomTransition targetState="Shoot1,Shoot2" time="1000" />
+      </State>
+    </State>
+    <State id="TransAttack1">
+      <ConditionalEffect effect="Invulnerable" />
+      <Wander speed="0.5" />
+      <Flash color="0xFF0C" flashPeriod="0.25" flashRepeats="8" />
+      <TimedTransition targetState="Attack1" time="2000" />
+      <HpLessTransition targetState="Order" threshold="0.15" />
+    </State>
+    <State id="Order">
+      <Wander speed="0.5" />
+      <ConditionalEffect effect="Invulnerable" />
+      <Order range="30" children="Horrid Reaper" targetState="Die" />
+      <TimedTransition targetState="Attack1" time="1900" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Horrid Reaper">
+    <ConditionalEffect effect="Invulnerable" />
+    <State id="Move">
+      <Prioritize>
+        <StayCloseToSpawn speed="3" range="10" />
+        <Wander speed="3" />
+      </Prioritize>
+      <EntityNotExistsTransition targetState="Die" dist="50" target="Grand Sphinx" />
+      <TimedRandomTransition targetState="Attack" time="2000" randomizedTime="True" />
+    </State>
+    <State id="Attack">
+      <Shoot radius="0" count="6" shootAngle="0" fixedAngle="60" cooldown="700" />
+      <PlayerWithinTransition targetState="Follow" dist="2" />
+      <TimedRandomTransition targetState="Move" time="5000" randomizedTime="True" />
+    </State>
+    <State id="Follow">
+      <Prioritize>
+        <Follow speed="0.7" range="3" cooldown="0" />
+      </Prioritize>
+      <Shoot radius="7" shootAngle="0" cooldown="700" />
+      <TimedRandomTransition targetState="Move" time="5000" randomizedTime="True" />
+    </State>
+    <State id="Die">
+      <Taunt text="OOaoaoAaAoaAAOOAoaaoooaa!!!" probability="0.99" />
+      <Decay time="1000" />
+    </State>
+  </BehaviorEntry>
 </BehaviorEntries>

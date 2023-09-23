@@ -1,394 +1,393 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-    <BehaviorEntry id="Stheno the Snake Queen">
-        <State id="Idle">
-            <PlayerWithinTransition targetState="Silver Blasts" dist="20"/>
-        </State>
-        <State id="Silver Blasts">
-            <State id="Silver Blasts 1">
-                <ConditionalEffect effect="Invulnerable" perm="true"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blasts 2" time="1000"/>
-            </State>
-            <State id="Silver Blasts 2">
-                <ConditionalEffect effect="Invulnerable"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blasts 3" time="1000"/>
-            </State>
-            <State id="Silver Blasts 3">
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blasts 4" time="1000"/>
-            </State>
-            <State id="Silver Blasts 4">
-                <ConditionalEffect effect="Invulnerable" perm="true"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blasts 5" time="1000"/>
-            </State>
-            <State id="Silver Blasts 5">
-                <ConditionalEffect effect="Invulnerable"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blasts 6" time="1000"/>
-            </State>
-            <State id="Silver Blasts 6">
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blasts 7" time="1000"/>
-            </State>
-            <State id="Silver Blasts 7">
-                <ConditionalEffect effect="Invulnerable" perm="true"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blasts 8" time="1000"/>
-            </State>
-            <State id="Silver Blasts 8">
-                <ConditionalEffect effect="Invulnerable" perm="true"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000"/>
-                <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000"/>
-                <TimedTransition targetState="Spawn Stheno Swarm" time="1000"/>
-            </State>
-        </State>
-        <State id="Spawn Stheno Swarm">
-            <Prioritize>
-                <StayCloseToSpawn speed="0.4" range="2"/>
-                <Wander speed="0.4"/>
-            </Prioritize>
-            <Reproduce children="Stheno Swarm" densityRadius="2.5" densityMax="8" cooldown="750"/>
-            <State id="Silver Blast 1">
-                <ConditionalEffect effect="Invulnerable"/>
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 2" time="1000"/>
-            </State>
-            <State id="Silver Blast 2">
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 3" time="1000"/>
-            </State>
-            <State id="Silver Blast 3">
-                <ConditionalEffect effect="Invulnerable" perm="true"/>
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 4" time="1000"/>
-            </State>
-            <State id="Silver Blast 4">
-                <ConditionalEffect effect="Invulnerable"/>
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 5" time="1000"/>
-            </State>
-            <State id="Silver Blast 5">
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 6" time="1000"/>
-            </State>
-            <State id="Silver Blast 6">
-                <ConditionalEffect effect="Invulnerable" perm="true"/>
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 7" time="1000"/>
-            </State>
-            <State id="Silver Blast 7">
-                <ConditionalEffect effect="Invulnerable"/>
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 8" time="1000"/>
-            </State>
-            <State id="Silver Blast 8">
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 9" time="1000"/>
-            </State>
-            <State id="Silver Blast 9">
-                <ConditionalEffect effect="Invulnerable" perm="true"/>
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 10" time="1000"/>
-            </State>
-            <State id="Silver Blast 10">
-                <ConditionalEffect effect="Invulnerable"/>
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 11" time="1000"/>
-            </State>
-            <State id="Silver Blast 11">
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 12" time="1000"/>
-            </State>
-            <State id="Silver Blast 12">
-                <ConditionalEffect effect="Invulnerable" perm="true"/>
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 13" time="1000"/>
-            </State>
-            <State id="Silver Blast 13">
-                <ConditionalEffect effect="Invulnerable"/>
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 14" time="1000"/>
-            </State>
-            <State id="Silver Blast 14">
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 15" time="1000"/>
-            </State>
-            <State id="Silver Blast 15">
-                <ConditionalEffect effect="Invulnerable" perm="true"/>
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blast 16" time="1000"/>
-            </State>
-            <State id="Silver Blast 16">
-                <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000"/>
-                <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000"/>
-                <TimedTransition targetState="Leave me" time="1000"/>
-            </State>
-            <State id="Leave me">
-                <ConditionalEffect effect="Invulnerable"/>
-                <Order range="100" children="Stheno Swarm" targetState="Despawn"/>
-                <TimedTransition targetState="Blind Ring Attack + ThrowAttack" time="1000"/>
-            </State>
-        </State>
-        <State id="Blind Ring Attack + ThrowAttack">
-            <ReturnToSpawn speed="0.3"/>
-            <State id="Blind Ring Attack + ThrowAttack 1">
-                <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000"/>
-                <Grenade radius="2.5" damage="100" range="10" cooldown="1000"/>
-                <TimedTransition targetState="Blind Ring Attack + ThrowAttack 2" time="500"/>
-            </State>
-            <State id="Blind Ring Attack + ThrowAttack 2">
-                <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000"/>
-                <Grenade radius="2.5" damage="100" range="10" cooldown="1000"/>
-                <TimedTransition targetState="Blind Ring Attack + ThrowAttack 3" time="500"/>
-            </State>
-            <State id="Blind Ring Attack + ThrowAttack 3">
-                <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000"/>
-                <Grenade radius="2.5" damage="100" range="10" cooldown="1000"/>
-                <TimedTransition targetState="Blind Ring Attack + ThrowAttack 4" time="500"/>
-            </State>
-            <State id="Blind Ring Attack + ThrowAttack 4">
-                <ConditionalEffect effect="Invulnerable" perm="true"/>
-                <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000"/>
-                <Grenade radius="2.5" damage="100" range="10" cooldown="1000"/>
-                <TimedTransition targetState="Blind Ring Attack + ThrowAttack 5" time="500"/>
-            </State>
-            <State id="Blind Ring Attack + ThrowAttack 5">
-                <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000"/>
-                <Grenade radius="2.5" damage="100" range="10" cooldown="1000"/>
-                <TimedTransition targetState="Blind Ring Attack + ThrowAttack 6" time="500"/>
-            </State>
-            <State id="Blind Ring Attack + ThrowAttack 6">
-                <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000"/>
-                <Grenade radius="2.5" damage="100" range="10" cooldown="1000"/>
-                <TimedTransition targetState="Blind Ring Attack + ThrowAttack 7" time="500"/>
-            </State>
-            <State id="Blind Ring Attack + ThrowAttack 7">
-                <ConditionalEffect effect="Invulnerable"/>
-                <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000"/>
-                <Grenade radius="2.5" damage="100" range="10" cooldown="1000"/>
-                <TimedTransition targetState="Blind Ring Attack + ThrowAttack 8" time="500"/>
-            </State>
-            <State id="Blind Ring Attack + ThrowAttack 8">
-                <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000"/>
-                <Grenade radius="2.5" damage="100" range="10" cooldown="1000"/>
-                <TimedTransition targetState="Blind Ring Attack + ThrowAttack 9" time="500"/>
-            </State>
-            <State id="Blind Ring Attack + ThrowAttack 9">
-                <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000"/>
-                <Grenade radius="2.5" damage="100" range="10" cooldown="1000"/>
-                <TimedTransition targetState="Blind Ring Attack + ThrowAttack 10" time="500"/>
-            </State>
-            <State id="Blind Ring Attack + ThrowAttack 10">
-                <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000"/>
-                <Grenade radius="2.5" damage="100" range="10" cooldown="1000"/>
-                <TimedTransition targetState="Blind Ring Attack + ThrowAttack 11" time="500"/>
-            </State>
-            <State id="Blind Ring Attack + ThrowAttack 11">
-                <ConditionalEffect effect="Invulnerable" perm="true"/>
-                <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000"/>
-                <Grenade radius="2.5" damage="100" range="10" cooldown="1000"/>
-                <TimedTransition targetState="Blind Ring Attack + ThrowAttack 12" time="500"/>
-            </State>
-            <State id="Blind Ring Attack + ThrowAttack 12">
-                <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000"/>
-                <Grenade radius="2.5" damage="100" range="10" cooldown="1000"/>
-                <TimedTransition targetState="Silver Blasts" time="500"/>
-            </State>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Stheno Swarm">
-        <State id="Protect">
-            <Prioritize>
-                <Protect speed="0.3" protectee="Stheno the Snake Queen"/>
-                <Wander speed="0.3"/>
-            </Prioritize>
-            <Shoot radius="10" shootAngle="0" cooldown="750"/>
-        </State>
-        <State id="Despawn">
-            <Suicide/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Stheno Pet">
-        <State id="Protect">
-            <Shoot radius="25" shootAngle="0" cooldown="1000"/>
-            <State id="Protect">
-                <Orbit speed="7.5" radius="10" acquireRange="50" target="Stheno the Snake Queen" speedVariance="0.75"
-                       radiusVariance="0.75" orbitClockwise="false"/>
-                <EntityNotExistsTransition targetState="Wander" dist="100" target="Stheno the Snake Queen"/>
-            </State>
-            <State id="Wander">
-                <Prioritize>
-                    <Wander speed="1"/>
-                </Prioritize>
-            </State>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Pit Snake">
+  <BehaviorEntry id="Stheno the Snake Queen">
+    <State id="Idle">
+      <PlayerWithinTransition targetState="Silver Blasts" dist="20" />
+    </State>
+    <State id="Silver Blasts">
+      <State id="Silver Blasts 1">
+        <ConditionalEffect effect="Invulnerable" perm="true" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000" />
+        <TimedTransition targetState="Silver Blasts 2" time="1000" />
+      </State>
+      <State id="Silver Blasts 2">
+        <ConditionalEffect effect="Invulnerable" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000" />
+        <TimedTransition targetState="Silver Blasts 3" time="1000" />
+      </State>
+      <State id="Silver Blasts 3">
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000" />
+        <TimedTransition targetState="Silver Blasts 4" time="1000" />
+      </State>
+      <State id="Silver Blasts 4">
+        <ConditionalEffect effect="Invulnerable" perm="true" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000" />
+        <TimedTransition targetState="Silver Blasts 5" time="1000" />
+      </State>
+      <State id="Silver Blasts 5">
+        <ConditionalEffect effect="Invulnerable" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000" />
+        <TimedTransition targetState="Silver Blasts 6" time="1000" />
+      </State>
+      <State id="Silver Blasts 6">
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000" />
+        <TimedTransition targetState="Silver Blasts 7" time="1000" />
+      </State>
+      <State id="Silver Blasts 7">
+        <ConditionalEffect effect="Invulnerable" perm="true" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000" />
+        <TimedTransition targetState="Silver Blasts 8" time="1000" />
+      </State>
+      <State id="Silver Blasts 8">
+        <ConditionalEffect effect="Invulnerable" perm="true" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="45" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="135" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="225" cooldown="1000" />
+        <Shoot radius="10" count="2" shootAngle="10" angleOffset="315" cooldown="1000" />
+        <TimedTransition targetState="Spawn Stheno Swarm" time="1000" />
+      </State>
+    </State>
+    <State id="Spawn Stheno Swarm">
+      <Prioritize>
+        <StayCloseToSpawn speed="0.4" range="2" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <Reproduce children="Stheno Swarm" densityRadius="2.5" densityMax="8" cooldown="750" />
+      <State id="Silver Blast 1">
+        <ConditionalEffect effect="Invulnerable" />
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 2" time="1000" />
+      </State>
+      <State id="Silver Blast 2">
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 3" time="1000" />
+      </State>
+      <State id="Silver Blast 3">
+        <ConditionalEffect effect="Invulnerable" perm="true" />
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 4" time="1000" />
+      </State>
+      <State id="Silver Blast 4">
+        <ConditionalEffect effect="Invulnerable" />
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 5" time="1000" />
+      </State>
+      <State id="Silver Blast 5">
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 6" time="1000" />
+      </State>
+      <State id="Silver Blast 6">
+        <ConditionalEffect effect="Invulnerable" perm="true" />
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 7" time="1000" />
+      </State>
+      <State id="Silver Blast 7">
+        <ConditionalEffect effect="Invulnerable" />
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 8" time="1000" />
+      </State>
+      <State id="Silver Blast 8">
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 9" time="1000" />
+      </State>
+      <State id="Silver Blast 9">
+        <ConditionalEffect effect="Invulnerable" perm="true" />
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 10" time="1000" />
+      </State>
+      <State id="Silver Blast 10">
+        <ConditionalEffect effect="Invulnerable" />
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 11" time="1000" />
+      </State>
+      <State id="Silver Blast 11">
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 12" time="1000" />
+      </State>
+      <State id="Silver Blast 12">
+        <ConditionalEffect effect="Invulnerable" perm="true" />
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 13" time="1000" />
+      </State>
+      <State id="Silver Blast 13">
+        <ConditionalEffect effect="Invulnerable" />
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 14" time="1000" />
+      </State>
+      <State id="Silver Blast 14">
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 15" time="1000" />
+      </State>
+      <State id="Silver Blast 15">
+        <ConditionalEffect effect="Invulnerable" perm="true" />
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Silver Blast 16" time="1000" />
+      </State>
+      <State id="Silver Blast 16">
+        <Shoot radius="10" shootAngle="0" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="270" cooldown="1000" />
+        <Shoot radius="10" shootAngle="0" angleOffset="90" cooldown="1000" />
+        <TimedTransition targetState="Leave me" time="1000" />
+      </State>
+      <State id="Leave me">
+        <ConditionalEffect effect="Invulnerable" />
+        <Order range="100" children="Stheno Swarm" targetState="Despawn" />
+        <TimedTransition targetState="Blind Ring Attack + ThrowAttack" time="1000" />
+      </State>
+    </State>
+    <State id="Blind Ring Attack + ThrowAttack">
+      <ReturnToSpawn speed="0.3" />
+      <State id="Blind Ring Attack + ThrowAttack 1">
+        <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000" />
+        <Grenade radius="2.5" damage="100" range="10" cooldown="1000" />
+        <TimedTransition targetState="Blind Ring Attack + ThrowAttack 2" time="500" />
+      </State>
+      <State id="Blind Ring Attack + ThrowAttack 2">
+        <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000" />
+        <Grenade radius="2.5" damage="100" range="10" cooldown="1000" />
+        <TimedTransition targetState="Blind Ring Attack + ThrowAttack 3" time="500" />
+      </State>
+      <State id="Blind Ring Attack + ThrowAttack 3">
+        <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000" />
+        <Grenade radius="2.5" damage="100" range="10" cooldown="1000" />
+        <TimedTransition targetState="Blind Ring Attack + ThrowAttack 4" time="500" />
+      </State>
+      <State id="Blind Ring Attack + ThrowAttack 4">
+        <ConditionalEffect effect="Invulnerable" perm="true" />
+        <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000" />
+        <Grenade radius="2.5" damage="100" range="10" cooldown="1000" />
+        <TimedTransition targetState="Blind Ring Attack + ThrowAttack 5" time="500" />
+      </State>
+      <State id="Blind Ring Attack + ThrowAttack 5">
+        <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000" />
+        <Grenade radius="2.5" damage="100" range="10" cooldown="1000" />
+        <TimedTransition targetState="Blind Ring Attack + ThrowAttack 6" time="500" />
+      </State>
+      <State id="Blind Ring Attack + ThrowAttack 6">
+        <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000" />
+        <Grenade radius="2.5" damage="100" range="10" cooldown="1000" />
+        <TimedTransition targetState="Blind Ring Attack + ThrowAttack 7" time="500" />
+      </State>
+      <State id="Blind Ring Attack + ThrowAttack 7">
+        <ConditionalEffect effect="Invulnerable" />
+        <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000" />
+        <Grenade radius="2.5" damage="100" range="10" cooldown="1000" />
+        <TimedTransition targetState="Blind Ring Attack + ThrowAttack 8" time="500" />
+      </State>
+      <State id="Blind Ring Attack + ThrowAttack 8">
+        <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000" />
+        <Grenade radius="2.5" damage="100" range="10" cooldown="1000" />
+        <TimedTransition targetState="Blind Ring Attack + ThrowAttack 9" time="500" />
+      </State>
+      <State id="Blind Ring Attack + ThrowAttack 9">
+        <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000" />
+        <Grenade radius="2.5" damage="100" range="10" cooldown="1000" />
+        <TimedTransition targetState="Blind Ring Attack + ThrowAttack 10" time="500" />
+      </State>
+      <State id="Blind Ring Attack + ThrowAttack 10">
+        <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000" />
+        <Grenade radius="2.5" damage="100" range="10" cooldown="1000" />
+        <TimedTransition targetState="Blind Ring Attack + ThrowAttack 11" time="500" />
+      </State>
+      <State id="Blind Ring Attack + ThrowAttack 11">
+        <ConditionalEffect effect="Invulnerable" perm="true" />
+        <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000" />
+        <Grenade radius="2.5" damage="100" range="10" cooldown="1000" />
+        <TimedTransition targetState="Blind Ring Attack + ThrowAttack 12" time="500" />
+      </State>
+      <State id="Blind Ring Attack + ThrowAttack 12">
+        <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000" />
+        <Grenade radius="2.5" damage="100" range="10" cooldown="1000" />
+        <TimedTransition targetState="Silver Blasts" time="500" />
+      </State>
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Stheno Swarm">
+    <State id="Protect">
+      <Prioritize>
+        <Protect speed="0.3" protectee="Stheno the Snake Queen" />
+        <Wander speed="0.3" />
+      </Prioritize>
+      <Shoot radius="10" shootAngle="0" cooldown="750" />
+    </State>
+    <State id="Despawn">
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Stheno Pet">
+    <State id="Protect">
+      <Shoot radius="25" shootAngle="0" cooldown="1000" />
+      <State id="Protect">
+        <Orbit speed="7.5" radius="10" acquireRange="50" target="Stheno the Snake Queen" speedVariance="0.75" radiusVariance="0.75" orbitClockwise="false" />
+        <EntityNotExistsTransition targetState="Wander" dist="100" target="Stheno the Snake Queen" />
+      </State>
+      <State id="Wander">
         <Prioritize>
-            <StayCloseToSpawn speed="1"/>
-            <Wander speed="1"/>
+          <Wander speed="1" />
         </Prioritize>
-        <Shoot radius="20" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Pit Viper">
-        <Prioritize>
-            <StayCloseToSpawn speed="1"/>
-            <Wander speed="1"/>
-        </Prioritize>
-        <Shoot radius="20" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Yellow Python">
-        <Prioritize>
-            <Follow speed="1" range="1" cooldown="0"/>
-            <StayCloseToSpawn speed="1"/>
-            <Wander speed="1"/>
-        </Prioritize>
-        <Shoot radius="20" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Brown Python">
-        <Prioritize>
-            <StayCloseToSpawn speed="1"/>
-            <Wander speed="1"/>
-        </Prioritize>
-        <Shoot radius="20" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Fire Python">
-        <Prioritize>
-            <Follow speed="1" range="1" cooldown="2000"/>
-            <Wander speed="1"/>
-        </Prioritize>
-        <Shoot radius="15" count="3" shootAngle="5" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Greater Pit Snake">
-        <Prioritize>
-            <Follow speed="1" range="5" cooldown="0"/>
-            <Wander speed="1"/>
-        </Prioritize>
-        <Shoot radius="15" count="3" shootAngle="5" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Greater Pit Viper">
-        <Prioritize>
-            <Follow speed="1" range="5" cooldown="0"/>
-            <Wander speed="1"/>
-        </Prioritize>
-        <Shoot radius="15" shootAngle="0" cooldown="300"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Snakepit Guard">
-        <ChangeSize rate="100" target="100"/>
-        <Shoot radius="25" count="3" shootAngle="25" cooldown="1000"/>
-        <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000"/>
-        <State id="Phase 1">
-            <Prioritize>
-                <StayCloseToSpawn speed="0.2" range="4"/>
-                <Wander speed="0.2"/>
-            </Prioritize>
-            <HpLessTransition targetState="Phase 2" threshold="0.6"/>
-        </State>
-        <State id="Phase 2">
-            <Prioritize>
-                <Follow speed="0.2" range="3" cooldown="0"/>
-                <Wander speed="0.2"/>
-            </Prioritize>
-            <Shoot radius="15" count="3" shootAngle="0" projectileIndex="2" cooldown="2000"/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Snakepit Dart Thrower">
-        <ConditionalEffect effect="Invincible" perm="true"/>
-        <State id="Idle"/>
-        <State id="Protect the Guard">
-            <EntityNotExistsTransition targetState="Idle" dist="40" target="Snakepit Guard"/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Snakepit Button">
-        <ConditionalEffect effect="Invincible" perm="true"/>
-        <State id="Idle">
-            <PlayerWithinTransition targetState="Order" dist="0.5"/>
-        </State>
-        <State id="Order">
-            <Order range="15" children="Snakepit Guard Spawner" targetState="Spawn the Guard"/>
-            <SetAltTexture minValue="1" cooldown="0"/>
-            <TimedTransition targetState="I am out" time="0"/>
-        </State>
-        <State id="I am out"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Snakepit Guard Spawner">
-        <ConditionalEffect effect="Invincible" perm="true"/>
-        <State id="Idle"/>
-        <State id="Spawn the Guard">
-            <Order range="15" children="Snakepit Dart Thrower" targetState="Protect the Guard"/>
-            <Spawn children="Snakepit Guard" maxChildren="1" initialSpawn="1" cooldown="0"/>
-            <TimedTransition targetState="Idle" time="0"/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Snake Grate">
-        <State id="Idle">
-            <EntityNotExistsTransition targetState="Spawn Pit Snake" dist="5" target="Pit Snake"/>
-            <EntityNotExistsTransition targetState="Spawn Pit Viper" dist="5" target="Pit Viper"/>
-        </State>
-        <State id="Spawn Pit Snake">
-            <Spawn children="Pit Snake" maxChildren="1" initialSpawn="1" cooldown="0"/>
-            <TimedTransition targetState="Idle" time="2000"/>
-        </State>
-        <State id="Spawn Pit Viper">
-            <Spawn children="Pit Viper" maxChildren="1" initialSpawn="1" cooldown="0"/>
-            <TimedTransition targetState="Idle" time="2000"/>
-        </State>
-    </BehaviorEntry>
+      </State>
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Pit Snake">
+    <Prioritize>
+      <StayCloseToSpawn speed="1" />
+      <Wander speed="1" />
+    </Prioritize>
+    <Shoot radius="20" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Pit Viper">
+    <Prioritize>
+      <StayCloseToSpawn speed="1" />
+      <Wander speed="1" />
+    </Prioritize>
+    <Shoot radius="20" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Yellow Python">
+    <Prioritize>
+      <Follow speed="1" range="1" cooldown="0" />
+      <StayCloseToSpawn speed="1" />
+      <Wander speed="1" />
+    </Prioritize>
+    <Shoot radius="20" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Brown Python">
+    <Prioritize>
+      <StayCloseToSpawn speed="1" />
+      <Wander speed="1" />
+    </Prioritize>
+    <Shoot radius="20" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Fire Python">
+    <Prioritize>
+      <Follow speed="1" range="1" cooldown="2000" />
+      <Wander speed="1" />
+    </Prioritize>
+    <Shoot radius="15" count="3" shootAngle="5" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Greater Pit Snake">
+    <Prioritize>
+      <Follow speed="1" range="5" cooldown="0" />
+      <Wander speed="1" />
+    </Prioritize>
+    <Shoot radius="15" count="3" shootAngle="5" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Greater Pit Viper">
+    <Prioritize>
+      <Follow speed="1" range="5" cooldown="0" />
+      <Wander speed="1" />
+    </Prioritize>
+    <Shoot radius="15" shootAngle="0" cooldown="300" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Snakepit Guard">
+    <ChangeSize rate="100" target="100" />
+    <Shoot radius="25" count="3" shootAngle="25" cooldown="1000" />
+    <Shoot radius="10" count="6" shootAngle="0" projectileIndex="1" cooldown="1000" />
+    <State id="Phase 1">
+      <Prioritize>
+        <StayCloseToSpawn speed="0.2" range="4" />
+        <Wander speed="0.2" />
+      </Prioritize>
+      <HpLessTransition targetState="Phase 2" threshold="0.6" />
+    </State>
+    <State id="Phase 2">
+      <Prioritize>
+        <Follow speed="0.2" range="3" cooldown="0" />
+        <Wander speed="0.2" />
+      </Prioritize>
+      <Shoot radius="15" count="3" shootAngle="0" projectileIndex="2" cooldown="2000" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Snakepit Dart Thrower">
+    <ConditionalEffect effect="Invincible" perm="true" />
+    <State id="Idle" />
+    <State id="Protect the Guard">
+      <EntityNotExistsTransition targetState="Idle" dist="40" target="Snakepit Guard" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Snakepit Button">
+    <ConditionalEffect effect="Invincible" perm="true" />
+    <State id="Idle">
+      <PlayerWithinTransition targetState="Order" dist="0.5" />
+    </State>
+    <State id="Order">
+      <Order range="15" children="Snakepit Guard Spawner" targetState="Spawn the Guard" />
+      <SetAltTexture minValue="1" cooldown="0" />
+      <TimedTransition targetState="I am out" time="0" />
+    </State>
+    <State id="I am out" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Snakepit Guard Spawner">
+    <ConditionalEffect effect="Invincible" perm="true" />
+    <State id="Idle" />
+    <State id="Spawn the Guard">
+      <Order range="15" children="Snakepit Dart Thrower" targetState="Protect the Guard" />
+      <Spawn children="Snakepit Guard" maxChildren="1" initialSpawn="1" cooldown="0" />
+      <TimedTransition targetState="Idle" time="0" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Snake Grate">
+    <State id="Idle">
+      <EntityNotExistsTransition targetState="Spawn Pit Snake" dist="5" target="Pit Snake" />
+      <EntityNotExistsTransition targetState="Spawn Pit Viper" dist="5" target="Pit Viper" />
+    </State>
+    <State id="Spawn Pit Snake">
+      <Spawn children="Pit Snake" maxChildren="1" initialSpawn="1" cooldown="0" />
+      <TimedTransition targetState="Idle" time="2000" />
+    </State>
+    <State id="Spawn Pit Viper">
+      <Spawn children="Pit Viper" maxChildren="1" initialSpawn="1" cooldown="0" />
+      <TimedTransition targetState="Idle" time="2000" />
+    </State>
+  </BehaviorEntry>
 </BehaviorEntries>

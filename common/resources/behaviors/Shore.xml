@@ -1,137 +1,137 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-    <BehaviorEntry id="Pirate">
+  <BehaviorEntry id="Pirate">
+    <Prioritize>
+      <Follow speed="0.85" range="1" duration="5000" cooldown="1000" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="3" shootAngle="0" cooldown="2500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Piratess">
+    <Prioritize>
+      <Follow speed="1.1" range="1" duration="3000" cooldown="1500" />
+      <Wander speed="0.6" />
+    </Prioritize>
+    <Shoot radius="3" shootAngle="0" cooldown="2500" />
+    <Reproduce children="Pirate" cooldown="60000" />
+    <Reproduce children="Piratess" cooldown="60000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Snake">
+    <Wander speed="0.8" />
+    <Shoot radius="10" shootAngle="0" cooldown="2000" />
+    <Reproduce cooldown="60000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Poison Scorpion">
+    <Prioritize>
+      <Protect speed="0.4" protectee="Scorpion Queen" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="8" shootAngle="0" cooldown="2000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Scorpion Queen">
+    <ChangeSize rate="100" target="200" />
+    <Wander speed="0.2" />
+    <Spawn children="Poison Scorpion" initialSpawn="2" cooldown="0" givesNoXp="false" />
+    <Reproduce children="Poison Scorpion" densityMax="10" cooldown="10000" />
+    <Reproduce densityRadius="40" densityMax="2" cooldown="60000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Bandit Enemy">
+    <State id="fast_follow">
+      <Shoot radius="3" shootAngle="0" cooldown="1000" />
+      <Prioritize>
+        <Protect speed="0.6" protectee="Bandit Leader" acquireRange="9" protectionRange="7" reprotectRange="3" />
+        <Follow speed="1" range="1" cooldown="0" />
+        <Wander speed="0.6" />
+      </Prioritize>
+      <TimedTransition targetState="scatter1" time="3000" />
+    </State>
+    <State id="scatter1">
+      <Prioritize>
+        <Protect speed="0.6" protectee="Bandit Leader" acquireRange="9" protectionRange="7" reprotectRange="3" />
+        <Wander speed="1" />
+        <Wander speed="0.6" />
+      </Prioritize>
+      <TimedTransition targetState="slow_follow" time="2000" />
+    </State>
+    <State id="slow_follow">
+      <Shoot radius="4.5" shootAngle="0" cooldown="1000" />
+      <Prioritize>
+        <Protect speed="0.6" protectee="Bandit Leader" acquireRange="9" protectionRange="7" reprotectRange="3" />
+        <Follow speed="0.5" acquireRange="9" range="3.5" duration="4000" cooldown="1000" />
+        <Wander speed="0.5" />
+      </Prioritize>
+      <TimedTransition targetState="scatter2" time="3000" />
+    </State>
+    <State id="scatter2">
+      <Prioritize>
+        <Protect speed="0.6" protectee="Bandit Leader" acquireRange="9" protectionRange="7" reprotectRange="3" />
+        <Wander speed="1" />
+        <Wander speed="0.6" />
+      </Prioritize>
+      <TimedTransition targetState="fast_follow" time="2000" />
+    </State>
+    <State id="escape">
+      <StayBack speed="0.5" />
+      <TimedTransition targetState="fast_follow" time="15000" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Bandit Leader">
+    <Spawn children="Bandit Enemy" maxChildren="4" initialSpawn="2" cooldown="8000" givesNoXp="false" />
+    <State id="bold">
+      <HpLessTransition targetState="meek" threshold="0.45" />
+      <State id="warn_about_grenades">
+        <Taunt text="Catch!" probability="0.15" />
+        <TimedTransition targetState="wimpy_grenade1" time="400" />
+      </State>
+      <State id="wimpy_grenade1">
+        <Grenade radius="1.4" damage="12" cooldown="10000" />
         <Prioritize>
-            <Follow speed="0.85" range="1" duration="5000" cooldown="1000"/>
-            <Wander speed="0.4"/>
+          <StayAbove speed="0.3" altitude="7" />
+          <Wander speed="0.3" />
         </Prioritize>
-        <Shoot radius="3" shootAngle="0" cooldown="2500"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Piratess">
+        <TimedTransition targetState="wimpy_grenade2" time="2000" />
+      </State>
+      <State id="wimpy_grenade2">
+        <Grenade radius="1.4" damage="12" cooldown="10000" />
         <Prioritize>
-            <Follow speed="1.1" range="1" duration="3000" cooldown="1500"/>
-            <Wander speed="0.6"/>
+          <StayAbove speed="0.5" altitude="7" />
+          <Wander speed="0.5" />
         </Prioritize>
-        <Shoot radius="3" shootAngle="0" cooldown="2500"/>
-        <Reproduce children="Pirate" cooldown="60000"/>
-        <Reproduce children="Piratess" cooldown="60000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Snake">
-        <Wander speed="0.8"/>
-        <Shoot radius="10" shootAngle="0" cooldown="2000"/>
-        <Reproduce cooldown="60000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Poison Scorpion">
+        <TimedTransition targetState="slow_follow" time="3000" />
+      </State>
+      <State id="slow_follow">
+        <Shoot radius="13" shootAngle="0" cooldown="1000" />
         <Prioritize>
-            <Protect speed="0.4" protectee="Scorpion Queen"/>
-            <Wander speed="0.4"/>
+          <StayAbove speed="0.4" altitude="7" />
+          <Follow speed="0.4" acquireRange="9" range="3.5" duration="4000" cooldown="1000" />
+          <Wander speed="0.4" />
         </Prioritize>
-        <Shoot radius="8" shootAngle="0" cooldown="2000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Scorpion Queen">
-        <ChangeSize rate="100" target="200"/>
-        <Wander speed="0.2"/>
-        <Spawn children="Poison Scorpion" initialSpawn="2" cooldown="0" givesNoXp="false"/>
-        <Reproduce children="Poison Scorpion" densityMax="10" cooldown="10000"/>
-        <Reproduce densityRadius="40" densityMax="2" cooldown="60000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Bandit Enemy">
-        <State id="fast_follow">
-            <Shoot radius="3" shootAngle="0" cooldown="1000"/>
-            <Prioritize>
-                <Protect speed="0.6" protectee="Bandit Leader" acquireRange="9" protectionRange="7" reprotectRange="3"/>
-                <Follow speed="1" range="1" cooldown="0"/>
-                <Wander speed="0.6"/>
-            </Prioritize>
-            <TimedTransition targetState="scatter1" time="3000"/>
-        </State>
-        <State id="scatter1">
-            <Prioritize>
-                <Protect speed="0.6" protectee="Bandit Leader" acquireRange="9" protectionRange="7" reprotectRange="3"/>
-                <Wander speed="1"/>
-                <Wander speed="0.6"/>
-            </Prioritize>
-            <TimedTransition targetState="slow_follow" time="2000"/>
-        </State>
-        <State id="slow_follow">
-            <Shoot radius="4.5" shootAngle="0" cooldown="1000"/>
-            <Prioritize>
-                <Protect speed="0.6" protectee="Bandit Leader" acquireRange="9" protectionRange="7" reprotectRange="3"/>
-                <Follow speed="0.5" acquireRange="9" range="3.5" duration="4000" cooldown="1000"/>
-                <Wander speed="0.5"/>
-            </Prioritize>
-            <TimedTransition targetState="scatter2" time="3000"/>
-        </State>
-        <State id="scatter2">
-            <Prioritize>
-                <Protect speed="0.6" protectee="Bandit Leader" acquireRange="9" protectionRange="7" reprotectRange="3"/>
-                <Wander speed="1"/>
-                <Wander speed="0.6"/>
-            </Prioritize>
-            <TimedTransition targetState="fast_follow" time="2000"/>
-        </State>
-        <State id="escape">
-            <StayBack speed="0.5"/>
-            <TimedTransition targetState="fast_follow" time="15000"/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Bandit Leader">
-        <Spawn children="Bandit Enemy" maxChildren="4" initialSpawn="2" cooldown="8000" givesNoXp="false"/>
-        <State id="bold">
-            <HpLessTransition targetState="meek" threshold="0.45"/>
-            <State id="warn_about_grenades">
-                <Taunt text="Catch!" probability="0.15"/>
-                <TimedTransition targetState="wimpy_grenade1" time="400"/>
-            </State>
-            <State id="wimpy_grenade1">
-                <Grenade radius="1.4" damage="12" cooldown="10000"/>
-                <Prioritize>
-                    <StayAbove speed="0.3" altitude="7"/>
-                    <Wander speed="0.3"/>
-                </Prioritize>
-                <TimedTransition targetState="wimpy_grenade2" time="2000"/>
-            </State>
-            <State id="wimpy_grenade2">
-                <Grenade radius="1.4" damage="12" cooldown="10000"/>
-                <Prioritize>
-                    <StayAbove speed="0.5" altitude="7"/>
-                    <Wander speed="0.5"/>
-                </Prioritize>
-                <TimedTransition targetState="slow_follow" time="3000"/>
-            </State>
-            <State id="slow_follow">
-                <Shoot radius="13" shootAngle="0" cooldown="1000"/>
-                <Prioritize>
-                    <StayAbove speed="0.4" altitude="7"/>
-                    <Follow speed="0.4" acquireRange="9" range="3.5" duration="4000" cooldown="1000"/>
-                    <Wander speed="0.4"/>
-                </Prioritize>
-                <TimedTransition targetState="warn_about_grenades" time="4000"/>
-            </State>
-        </State>
-        <State id="meek">
-            <Taunt text="Forget this... run for it!" probability="0.5"/>
-            <StayBack speed="0.5" distance="6"/>
-            <Order range="10" children="Bandit Enemy" targetState="escape"/>
-            <TimedTransition targetState="bold" time="12000"/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Red Gelatinous Cube">
-        <Shoot radius="8" count="2" shootAngle="10" predictive="0.2" cooldown="1000"/>
-        <Wander speed="0.4"/>
-        <Reproduce cooldown="60000"/>
-        <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Purple Gelatinous Cube">
-        <Shoot radius="8" shootAngle="0" predictive="0.2" cooldown="600"/>
-        <Wander speed="0.4"/>
-        <Reproduce cooldown="60000"/>
-        <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Green Gelatinous Cube">
-        <Shoot radius="8" count="5" shootAngle="72" predictive="0.2" cooldown="1800"/>
-        <Wander speed="0.4"/>
-        <Reproduce cooldown="60000"/>
-        <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01"/>
-    </BehaviorEntry>
+        <TimedTransition targetState="warn_about_grenades" time="4000" />
+      </State>
+    </State>
+    <State id="meek">
+      <Taunt text="Forget this... run for it!" probability="0.5" />
+      <StayBack speed="0.5" distance="6" />
+      <Order range="10" children="Bandit Enemy" targetState="escape" />
+      <TimedTransition targetState="bold" time="12000" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Red Gelatinous Cube">
+    <Shoot radius="8" count="2" shootAngle="10" predictive="0.2" cooldown="1000" />
+    <Wander speed="0.4" />
+    <Reproduce cooldown="60000" />
+    <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Purple Gelatinous Cube">
+    <Shoot radius="8" shootAngle="0" predictive="0.2" cooldown="600" />
+    <Wander speed="0.4" />
+    <Reproduce cooldown="60000" />
+    <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Green Gelatinous Cube">
+    <Shoot radius="8" count="5" shootAngle="72" predictive="0.2" cooldown="1800" />
+    <Wander speed="0.4" />
+    <Reproduce cooldown="60000" />
+    <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01" />
+  </BehaviorEntry>
 </BehaviorEntries>

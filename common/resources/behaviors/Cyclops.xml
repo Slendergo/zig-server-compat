@@ -1,95 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-    <BehaviorEntry id="Cyclops God">
-        <DropPortalOnDeath target="Spider Den Portal" probability="0.1"/>
-        <Taunt text="I will floss with your tendons!|I smell the blood of an Englishman!|I will suck the marrow from your bones!|You will be my food, {PLAYER}!|Blargh!!|Leave my castle!|More wine!"
-               probability="0.7" cooldown="10000"/>
-        <StayCloseToSpawn speed="1.2"/>
-        <Spawn children="Cyclops" initialSpawn="2" cooldown="10000" givesNoXp="false"/>
-        <Spawn children="Cyclops Warrior" initialSpawn="2" cooldown="10000" givesNoXp="false"/>
-        <Spawn children="Cyclops Noble" initialSpawn="2" cooldown="10000" givesNoXp="false"/>
-        <Spawn children="Cyclops Prince" initialSpawn="2" cooldown="10000" givesNoXp="false"/>
-        <Spawn children="Cyclops King" initialSpawn="2" cooldown="10000" givesNoXp="false"/>
-        <State id="idle">
-            <PlayerWithinTransition targetState="blade_attack" dist="11"/>
-            <HpLessTransition targetState="blade_attack" threshold="0.8"/>
-        </State>
-        <State id="blade_attack">
-            <Prioritize>
-                <Follow speed="0.4" range="7" cooldown="0"/>
-                <Wander speed="0.4"/>
-            </Prioritize>
-            <Shoot radius="10" shootAngle="15" projectileIndex="4" predictive="0.5" cooldown="100000"/>
-            <Shoot radius="10" count="2" shootAngle="10" projectileIndex="4" predictive="0.5" coolDownOffset="700"
-                   cooldown="100000"/>
-            <Shoot radius="10" count="3" shootAngle="8.5" projectileIndex="4" predictive="0.5" coolDownOffset="1400"
-                   cooldown="100000"/>
-            <Shoot radius="10" count="4" shootAngle="7" projectileIndex="4" predictive="0.5" coolDownOffset="2100"
-                   cooldown="100000"/>
-            <TimedTransition targetState="if_cloaked1" time="4000"/>
-        </State>
-        <State id="if_cloaked1">
-            <Shoot radius="10" count="15" shootAngle="24" projectileIndex="4" fixedAngle="8" coolDownOffset="400"
-                   cooldown="1500"/>
-            <TimedTransition targetState="wave_attack" time="10000"/>
-            <PlayerWithinTransition targetState="wave_attack" dist="10.5"/>
-        </State>
-        <State id="wave_attack">
-            <Prioritize>
-                <Follow speed="0.6" range="5" cooldown="0"/>
-                <Wander speed="0.6"/>
-            </Prioritize>
-            <Shoot radius="9" shootAngle="0" coolDownOffset="700" cooldown="700"/>
-            <Shoot radius="9" shootAngle="0" projectileIndex="1" coolDownOffset="700" cooldown="700"/>
-            <Shoot radius="9" shootAngle="0" projectileIndex="2" coolDownOffset="700" cooldown="700"/>
-            <Shoot radius="9" shootAngle="0" projectileIndex="3" coolDownOffset="700" cooldown="700"/>
-            <TimedTransition targetState="if_cloaked2" time="3800"/>
-        </State>
-        <State id="if_cloaked2">
-            <Shoot radius="10" count="15" shootAngle="24" projectileIndex="4" fixedAngle="8" coolDownOffset="400"
-                   cooldown="1500"/>
-            <TimedTransition targetState="idle" time="10000"/>
-            <PlayerWithinTransition targetState="idle" dist="10.5"/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Cyclops">
-        <Prioritize>
-            <StayCloseToSpawn speed="1.2"/>
-            <Follow speed="1.2" range="1" cooldown="0"/>
-            <Wander speed="0.4"/>
-        </Prioritize>
-        <Shoot radius="3" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Cyclops Warrior">
-        <Prioritize>
-            <StayCloseToSpawn speed="1.2"/>
-            <Follow speed="1.2" range="1" cooldown="0"/>
-            <Wander speed="0.4"/>
-        </Prioritize>
-        <Shoot radius="3" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Cyclops Noble">
-        <Prioritize>
-            <StayCloseToSpawn speed="1.2"/>
-            <Follow speed="1.2" range="1" cooldown="0"/>
-            <Wander speed="0.4"/>
-        </Prioritize>
-        <Shoot radius="3" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Cyclops Prince">
-        <Prioritize>
-            <StayCloseToSpawn speed="1.2"/>
-            <Follow speed="1.2" range="1" cooldown="0"/>
-            <Wander speed="0.4"/>
-        </Prioritize>
-        <Shoot radius="3" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Cyclops King">
-        <Prioritize>
-            <StayCloseToSpawn speed="1.2"/>
-            <Follow speed="1.2" range="1" cooldown="0"/>
-            <Wander speed="0.4"/>
-        </Prioritize>
-        <Shoot radius="3" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
+  <BehaviorEntry id="Cyclops God">
+    <DropPortalOnDeath target="Spider Den Portal" probability="0.1" />
+    <Taunt text="I will floss with your tendons!|I smell the blood of an Englishman!|I will suck the marrow from your bones!|You will be my food, {PLAYER}!|Blargh!!|Leave my castle!|More wine!" probability="0.7" cooldown="10000" />
+    <StayCloseToSpawn speed="1.2" />
+    <Spawn children="Cyclops" initialSpawn="2" cooldown="10000" givesNoXp="false" />
+    <Spawn children="Cyclops Warrior" initialSpawn="2" cooldown="10000" givesNoXp="false" />
+    <Spawn children="Cyclops Noble" initialSpawn="2" cooldown="10000" givesNoXp="false" />
+    <Spawn children="Cyclops Prince" initialSpawn="2" cooldown="10000" givesNoXp="false" />
+    <Spawn children="Cyclops King" initialSpawn="2" cooldown="10000" givesNoXp="false" />
+    <State id="idle">
+      <PlayerWithinTransition targetState="blade_attack" dist="11" />
+      <HpLessTransition targetState="blade_attack" threshold="0.8" />
+    </State>
+    <State id="blade_attack">
+      <Prioritize>
+        <Follow speed="0.4" range="7" cooldown="0" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <Shoot radius="10" shootAngle="15" projectileIndex="4" predictive="0.5" cooldown="100000" />
+      <Shoot radius="10" count="2" shootAngle="10" projectileIndex="4" predictive="0.5" coolDownOffset="700" cooldown="100000" />
+      <Shoot radius="10" count="3" shootAngle="8.5" projectileIndex="4" predictive="0.5" coolDownOffset="1400" cooldown="100000" />
+      <Shoot radius="10" count="4" shootAngle="7" projectileIndex="4" predictive="0.5" coolDownOffset="2100" cooldown="100000" />
+      <TimedTransition targetState="if_cloaked1" time="4000" />
+    </State>
+    <State id="if_cloaked1">
+      <Shoot radius="10" count="15" shootAngle="24" projectileIndex="4" fixedAngle="8" coolDownOffset="400" cooldown="1500" />
+      <TimedTransition targetState="wave_attack" time="10000" />
+      <PlayerWithinTransition targetState="wave_attack" dist="10.5" />
+    </State>
+    <State id="wave_attack">
+      <Prioritize>
+        <Follow speed="0.6" range="5" cooldown="0" />
+        <Wander speed="0.6" />
+      </Prioritize>
+      <Shoot radius="9" shootAngle="0" coolDownOffset="700" cooldown="700" />
+      <Shoot radius="9" shootAngle="0" projectileIndex="1" coolDownOffset="700" cooldown="700" />
+      <Shoot radius="9" shootAngle="0" projectileIndex="2" coolDownOffset="700" cooldown="700" />
+      <Shoot radius="9" shootAngle="0" projectileIndex="3" coolDownOffset="700" cooldown="700" />
+      <TimedTransition targetState="if_cloaked2" time="3800" />
+    </State>
+    <State id="if_cloaked2">
+      <Shoot radius="10" count="15" shootAngle="24" projectileIndex="4" fixedAngle="8" coolDownOffset="400" cooldown="1500" />
+      <TimedTransition targetState="idle" time="10000" />
+      <PlayerWithinTransition targetState="idle" dist="10.5" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Cyclops">
+    <Prioritize>
+      <StayCloseToSpawn speed="1.2" />
+      <Follow speed="1.2" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Cyclops Warrior">
+    <Prioritize>
+      <StayCloseToSpawn speed="1.2" />
+      <Follow speed="1.2" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Cyclops Noble">
+    <Prioritize>
+      <StayCloseToSpawn speed="1.2" />
+      <Follow speed="1.2" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Cyclops Prince">
+    <Prioritize>
+      <StayCloseToSpawn speed="1.2" />
+      <Follow speed="1.2" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Cyclops King">
+    <Prioritize>
+      <StayCloseToSpawn speed="1.2" />
+      <Follow speed="1.2" range="1" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="3" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
 </BehaviorEntries>

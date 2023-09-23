@@ -1,121 +1,116 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-    <BehaviorEntry id="Hermit God">
-        <TransferDamageOnDeath target="Hermit God Drop"/>
-        <OrderOnDeath range="20" target="Hermit God Tentacle Spawner" targetState="Hermit God Tentacle Spawner"/>
-        <OrderOnDeath range="20" target="Hermit God Drop" targetState="Hermit God Drop"/>
-        <State id="Spawn Tentacle">
-            <ConditionalEffect effect="Invincible"/>
-            <SetAltTexture minValue="2" cooldown="0"/>
-            <Order range="20" children="Hermit God Tentacle Spawner" targetState="Tentacle"/>
-            <EntityExistsTransition targetState="Sleep" dist="20" target="Hermit God Tentacle"/>
-        </State>
-        <State id="Sleep">
-            <ConditionalEffect effect="Invincible"/>
-            <Order range="20" children="Hermit God Tentacle Spawner" targetState="Minions"/>
-            <TimedTransition targetState="Waiting" time="1000"/>
-        </State>
-        <State id="Waiting">
-            <SetAltTexture minValue="3" cooldown="0"/>
-            <ConditionalEffect effect="Invincible"/>
-            <EntityNotExistsTransition targetState="Wake" dist="20" target="Hermit God Tentacle"/>
-        </State>
-        <State id="Wake">
-            <SetAltTexture minValue="2" cooldown="0"/>
-            <ConditionalEffect effect="Invincible"/>
-            <TossObject child="Hermit Minion" range="10" angle="0" cooldown="1000"/>
-            <TossObject child="Hermit Minion" range="10" angle="45" cooldown="1000"/>
-            <TossObject child="Hermit Minion" range="10" angle="90" cooldown="1000"/>
-            <TossObject child="Hermit Minion" range="10" angle="135" cooldown="1000"/>
-            <TossObject child="Hermit Minion" range="10" angle="180" cooldown="1000"/>
-            <TossObject child="Hermit Minion" range="10" angle="225" cooldown="1000"/>
-            <TossObject child="Hermit Minion" range="10" angle="270" cooldown="1000"/>
-            <TossObject child="Hermit Minion" range="10" angle="315" cooldown="1000"/>
-            <TimedTransition targetState="Spawn Whirlpool" time="100"/>
-        </State>
-        <State id="Spawn Whirlpool">
-            <ConditionalEffect effect="Invincible"/>
-            <Order range="20" children="Hermit God Tentacle Spawner" targetState="Whirlpool"/>
-            <EntityExistsTransition targetState="Attack1" dist="20" target="Whirlpool"/>
-        </State>
-        <State id="Attack1">
-            <SetAltTexture minValue="0" cooldown="0"/>
-            <Prioritize>
-                <Wander speed="0.3"/>
-                <StayCloseToSpawn speed="0.5"/>
-            </Prioritize>
-            <Shoot radius="20" count="3" shootAngle="5" cooldown="300"/>
-            <TimedTransition targetState="Attack2" time="6000"/>
-        </State>
-        <State id="Attack2">
-            <Prioritize>
-                <Wander speed="0.3"/>
-                <StayCloseToSpawn speed="0.5"/>
-            </Prioritize>
-            <Order range="20" children="Whirlpool" targetState="Die"/>
-            <Shoot radius="20" shootAngle="0" projectileIndex="1" fixedAngle="0" rotateAngle="45" defaultAngle="0"
-                   cooldown="1000"/>
-            <Shoot radius="20" shootAngle="0" projectileIndex="1" fixedAngle="180" rotateAngle="45" defaultAngle="0"
-                   cooldown="1000"/>
-            <TimedTransition targetState="Spawn Tentacle" time="6000"/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Hermit Minion">
-        <Prioritize>
-            <Follow speed="0.6" acquireRange="4" range="1" cooldown="0"/>
-            <Orbit speed="0.6" radius="10" acquireRange="15" target="Hermit God" speedVariance="0.2"
-                   radiusVariance="1.5" orbitClockwise="false"/>
-            <Wander speed="0.6"/>
-        </Prioritize>
-        <Shoot radius="6" count="3" shootAngle="10" cooldown="1000"/>
-        <Shoot radius="6" count="2" shootAngle="20" projectileIndex="1" predictive="0.8" cooldown="2600"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Whirlpool">
-        <State id="Attack">
-            <Prioritize>
-                <Orbit speed="0.3" radius="6" target="Hermit God" speedVariance="0.03" radiusVariance="0.03"
-                       orbitClockwise="false"/>
-            </Prioritize>
-            <Shoot radius="0" shootAngle="0" fixedAngle="0" rotateAngle="30" cooldown="400"/>
-            <EntityNotExistsTransition targetState="Die" dist="100" target="Hermit God"/>
-        </State>
-        <State id="Die">
-            <Shoot radius="0" count="8" shootAngle="0" fixedAngle="45" cooldown="1000"/>
-            <Suicide/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Hermit God Tentacle">
-        <Prioritize>
-            <Follow speed="0.6" acquireRange="4" range="1" cooldown="0"/>
-            <Orbit speed="0.6" radius="6" acquireRange="15" target="Hermit God" speedVariance="0.2" radiusVariance="0.5"
-                   orbitClockwise="false"/>
-        </Prioritize>
-        <Shoot radius="3" count="8" shootAngle="45" cooldown="500"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Hermit God Tentacle Spawner">
-        <ConditionalEffect effect="Invincible" perm="true"/>
-        <State id="Waiting Order"/>
-        <State id="Tentacle">
-            <Reproduce children="Hermit God Tentacle" densityRadius="3" densityMax="1" cooldown="2000"/>
-            <EntityExistsTransition targetState="Waiting Order" dist="1" target="Hermit God Tentacle"/>
-        </State>
-        <State id="Whirlpool">
-            <Reproduce children="Whirlpool" densityRadius="3" densityMax="1" cooldown="2000"/>
-            <EntityExistsTransition targetState="Waiting Order" dist="1" target="Whirlpool"/>
-        </State>
-        <State id="Minions">
-            <Reproduce children="Hermit Minion" densityRadius="40" densityMax="20" cooldown="1000"/>
-            <TimedTransition targetState="Waiting Order" time="2000"/>
-        </State>
-        <State id="Die">
-            <Suicide/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Hermit God Drop">
-        <ConditionalEffect effect="Invincible" perm="true"/>
-        <State id="Waiting"/>
-        <State id="Die">
-            <Suicide/>
-        </State>
-    </BehaviorEntry>
+  <BehaviorEntry id="Hermit God">
+    <TransferDamageOnDeath target="Hermit God Drop" />
+    <OrderOnDeath range="20" target="Hermit God Tentacle Spawner" targetState="Hermit God Tentacle Spawner" />
+    <OrderOnDeath range="20" target="Hermit God Drop" targetState="Hermit God Drop" />
+    <State id="Spawn Tentacle">
+      <ConditionalEffect effect="Invincible" />
+      <SetAltTexture minValue="2" cooldown="0" />
+      <Order range="20" children="Hermit God Tentacle Spawner" targetState="Tentacle" />
+      <EntityExistsTransition targetState="Sleep" dist="20" target="Hermit God Tentacle" />
+    </State>
+    <State id="Sleep">
+      <ConditionalEffect effect="Invincible" />
+      <Order range="20" children="Hermit God Tentacle Spawner" targetState="Minions" />
+      <TimedTransition targetState="Waiting" time="1000" />
+    </State>
+    <State id="Waiting">
+      <SetAltTexture minValue="3" cooldown="0" />
+      <ConditionalEffect effect="Invincible" />
+      <EntityNotExistsTransition targetState="Wake" dist="20" target="Hermit God Tentacle" />
+    </State>
+    <State id="Wake">
+      <SetAltTexture minValue="2" cooldown="0" />
+      <ConditionalEffect effect="Invincible" />
+      <TossObject child="Hermit Minion" range="10" angle="0" cooldown="1000" />
+      <TossObject child="Hermit Minion" range="10" angle="45" cooldown="1000" />
+      <TossObject child="Hermit Minion" range="10" angle="90" cooldown="1000" />
+      <TossObject child="Hermit Minion" range="10" angle="135" cooldown="1000" />
+      <TossObject child="Hermit Minion" range="10" angle="180" cooldown="1000" />
+      <TossObject child="Hermit Minion" range="10" angle="225" cooldown="1000" />
+      <TossObject child="Hermit Minion" range="10" angle="270" cooldown="1000" />
+      <TossObject child="Hermit Minion" range="10" angle="315" cooldown="1000" />
+      <TimedTransition targetState="Spawn Whirlpool" time="100" />
+    </State>
+    <State id="Spawn Whirlpool">
+      <ConditionalEffect effect="Invincible" />
+      <Order range="20" children="Hermit God Tentacle Spawner" targetState="Whirlpool" />
+      <EntityExistsTransition targetState="Attack1" dist="20" target="Whirlpool" />
+    </State>
+    <State id="Attack1">
+      <SetAltTexture minValue="0" cooldown="0" />
+      <Prioritize>
+        <Wander speed="0.3" />
+        <StayCloseToSpawn speed="0.5" />
+      </Prioritize>
+      <Shoot radius="20" count="3" shootAngle="5" cooldown="300" />
+      <TimedTransition targetState="Attack2" time="6000" />
+    </State>
+    <State id="Attack2">
+      <Prioritize>
+        <Wander speed="0.3" />
+        <StayCloseToSpawn speed="0.5" />
+      </Prioritize>
+      <Order range="20" children="Whirlpool" targetState="Die" />
+      <Shoot radius="20" shootAngle="0" projectileIndex="1" fixedAngle="0" rotateAngle="45" defaultAngle="0" cooldown="1000" />
+      <Shoot radius="20" shootAngle="0" projectileIndex="1" fixedAngle="180" rotateAngle="45" defaultAngle="0" cooldown="1000" />
+      <TimedTransition targetState="Spawn Tentacle" time="6000" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Hermit Minion">
+    <Prioritize>
+      <Follow speed="0.6" acquireRange="4" range="1" cooldown="0" />
+      <Orbit speed="0.6" radius="10" acquireRange="15" target="Hermit God" speedVariance="0.2" radiusVariance="1.5" orbitClockwise="false" />
+      <Wander speed="0.6" />
+    </Prioritize>
+    <Shoot radius="6" count="3" shootAngle="10" cooldown="1000" />
+    <Shoot radius="6" count="2" shootAngle="20" projectileIndex="1" predictive="0.8" cooldown="2600" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Whirlpool">
+    <State id="Attack">
+      <Prioritize>
+        <Orbit speed="0.3" radius="6" target="Hermit God" speedVariance="0.03" radiusVariance="0.03" orbitClockwise="false" />
+      </Prioritize>
+      <Shoot radius="0" shootAngle="0" fixedAngle="0" rotateAngle="30" cooldown="400" />
+      <EntityNotExistsTransition targetState="Die" dist="100" target="Hermit God" />
+    </State>
+    <State id="Die">
+      <Shoot radius="0" count="8" shootAngle="0" fixedAngle="45" cooldown="1000" />
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Hermit God Tentacle">
+    <Prioritize>
+      <Follow speed="0.6" acquireRange="4" range="1" cooldown="0" />
+      <Orbit speed="0.6" radius="6" acquireRange="15" target="Hermit God" speedVariance="0.2" radiusVariance="0.5" orbitClockwise="false" />
+    </Prioritize>
+    <Shoot radius="3" count="8" shootAngle="45" cooldown="500" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Hermit God Tentacle Spawner">
+    <ConditionalEffect effect="Invincible" perm="true" />
+    <State id="Waiting Order" />
+    <State id="Tentacle">
+      <Reproduce children="Hermit God Tentacle" densityRadius="3" densityMax="1" cooldown="2000" />
+      <EntityExistsTransition targetState="Waiting Order" dist="1" target="Hermit God Tentacle" />
+    </State>
+    <State id="Whirlpool">
+      <Reproduce children="Whirlpool" densityRadius="3" densityMax="1" cooldown="2000" />
+      <EntityExistsTransition targetState="Waiting Order" dist="1" target="Whirlpool" />
+    </State>
+    <State id="Minions">
+      <Reproduce children="Hermit Minion" densityRadius="40" densityMax="20" cooldown="1000" />
+      <TimedTransition targetState="Waiting Order" time="2000" />
+    </State>
+    <State id="Die">
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Hermit God Drop">
+    <ConditionalEffect effect="Invincible" perm="true" />
+    <State id="Waiting" />
+    <State id="Die">
+      <Suicide />
+    </State>
+  </BehaviorEntry>
 </BehaviorEntries>

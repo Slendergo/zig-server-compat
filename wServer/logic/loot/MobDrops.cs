@@ -8,7 +8,7 @@ namespace wServer.logic.loot;
 
 public abstract class MobDrops {
     protected static XmlData XmlData;
-    protected readonly IList<LootDef> LootDefs = new List<LootDef>();
+    public readonly IList<LootDef> LootDefs = new List<LootDef>();
 
     public static void Init(RealmManager manager) {
         if (XmlData != null)
@@ -35,25 +35,13 @@ public abstract class MobDrops {
 
 public class ItemLoot : MobDrops {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-    private readonly string _item;
-    private readonly double _probability;
 
     public ItemLoot(XElement e) {
-        _item = e.ParseString("@item");
-        _probability = e.ParseFloat("@probability");
-    }
-
-    public ItemLoot(string item, double probability = 1, int numRequired = 0, double threshold = 0) {
-        try {
-            LootDefs.Add(new LootDef(
-                XmlData.Items[XmlData.IdToObjectType[_item]],
-                _probability,
-                numRequired,
-                threshold));
-        }
-        catch (Exception e) {
-            Log.Warn($"Problem adding {_item} to mob loot table.");
-        }
+        var item = e.ParseString("@item");
+        var prob = e.ParseFloat("@probability");
+        var numReq = e.ParseInt("@numRequired");
+        var threshold = e.ParseFloat("@threshold");
+        LootDefs.Add(new LootDef(XmlData.Items[XmlData.IdToObjectType[item]], prob, numReq, threshold));
     }
 }
 
@@ -64,44 +52,62 @@ public class TierLoot : MobDrops {
     private static readonly int[] RingT = {9};
     private static readonly int[] PotionT = {10};
 
-    public TierLoot(byte tier, ItemType type, double probability = 1, int numRequired = 0, double threshold = 0) {
-        int[] types;
-        switch (type) {
-            case ItemType.Weapon:
-                types = WeaponT;
-                break;
-            case ItemType.Ability:
-                types = AbilityT;
-                break;
-            case ItemType.Armor:
-                types = ArmorT;
-                break;
-            case ItemType.Ring:
-                types = RingT;
-                break;
-            case ItemType.Potion:
-                types = PotionT;
-                break;
-            default:
-                throw new NotSupportedException(type.ToString());
-        }
-
+    public TierLoot(XElement e) {
+        var tier = e.ParseInt("@tier");
+        var type = (ItemType) e.ParseInt("@type");
+        var prob = e.ParseFloat("@probability");
+        var numReq = e.ParseInt("@numRequired");
+        var threshold = e.ParseFloat("@threshold");
+        var types = type switch
+        {
+            ItemType.Weapon => WeaponT,
+            ItemType.Ability => AbilityT,
+            ItemType.Armor => ArmorT,
+            ItemType.Ring => RingT,
+            ItemType.Potion => PotionT,
+            _ => throw new NotSupportedException(type.ToString())
+        };
         var items = XmlData.Items
             .Where(item => Array.IndexOf(types, item.Value.SlotType) != -1)
             .Where(item => item.Value.Tier == tier)
             .Select(item => item.Value)
             .ToArray();
-
         foreach (var item in items)
-            LootDefs.Add(new LootDef(
-                item,
-                probability / items.Length,
-                numRequired,
-                threshold));
+            LootDefs.Add(new LootDef(item, prob / items.Length, numReq, threshold));
+    }
+    
+    public TierLoot(byte tier, ItemType type, double probability = 1, int numRequired = 0, double threshold = 0) {
+        var types = type switch
+        {
+            ItemType.Weapon => WeaponT,
+            ItemType.Ability => AbilityT,
+            ItemType.Armor => ArmorT,
+            ItemType.Ring => RingT,
+            ItemType.Potion => PotionT,
+            _ => throw new NotSupportedException(type.ToString())
+        };
+        var items = XmlData.Items
+            .Where(item => Array.IndexOf(types, item.Value.SlotType) != -1)
+            .Where(item => item.Value.Tier == tier)
+            .Select(item => item.Value)
+            .ToArray();
+        foreach (var item in items)
+            LootDefs.Add(new LootDef(item, probability / items.Length, numRequired, threshold));
     }
 }
 
 public class Threshold : MobDrops {
+    public Threshold(XElement e) {
+        var threshold = e.ParseFloat("@threshold");
+        var children = e.Elements().Select(i => i.Name.LocalName switch {
+            "ItemLoot" => new ItemLoot(i),
+            "TierLoot" => (MobDrops) new TierLoot(i),
+            _ => throw new NotSupportedException(i.Name.LocalName)
+        });
+        foreach (var i in children)
+            i.Populate(LootDefs, new LootDef(null, -1, -1, threshold));
+    }
+    
     public Threshold(double threshold, params MobDrops[] children) {
         foreach (var i in children)
             i.Populate(LootDefs, new LootDef(null, -1, -1, threshold));

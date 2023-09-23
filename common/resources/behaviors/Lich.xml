@@ -1,250 +1,249 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-    <BehaviorEntry id="Lich">
-        <State id="Idle">
-            <StayCloseToSpawn speed="0.5"/>
-            <Wander speed="0.5"/>
-            <HpLessTransition targetState="EvaluationStart1" threshold="0.99999"/>
-        </State>
-        <State id="EvaluationStart1">
-            <Taunt text="New recruits for my undead army? How delightful!"/>
-            <ConditionalEffect effect="Invulnerable"/>
-            <Prioritize>
-                <StayCloseToSpawn speed="0.35"/>
-                <Wander speed="0.35"/>
-            </Prioritize>
-            <TimedTransition targetState="EvaluationStart2" time="2500"/>
-        </State>
-        <State id="EvaluationStart2">
-            <Flash color="0xFF" flashPeriod="0.1" flashRepeats="60"/>
-            <Prioritize>
-                <StayCloseToSpawn speed="0.35"/>
-                <Wander speed="0.35"/>
-            </Prioritize>
-            <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" coolDownOffset="200" cooldown="100000"/>
-            <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" coolDownOffset="400" cooldown="100000"/>
-            <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" coolDownOffset="2200" cooldown="100000"/>
-            <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" coolDownOffset="2400" cooldown="100000"/>
-            <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" coolDownOffset="4200" cooldown="100000"/>
-            <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" coolDownOffset="4400" cooldown="100000"/>
-            <HpLessTransition targetState="EvaluationEnd" threshold="0.87"/>
-            <TimedTransition targetState="EvaluationEnd" time="6000"/>
-        </State>
-        <State id="EvaluationEnd">
-            <Taunt text="Time to meet your future brothers and sisters..."/>
-            <HpLessTransition targetState="HugeMob" threshold="0.875"/>
-            <HpLessTransition targetState="Mob" threshold="0.952"/>
-            <HpLessTransition targetState="SmallGroup" threshold="0.985"/>
-            <HpLessTransition targetState="Solo" threshold="0.99999"/>
-        </State>
-        <State id="HugeMob">
-            <Taunt text="...there's an ARMY of them! HahaHahaaaa!!!"/>
-            <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="300"/>
-            <Spawn children="Haunted Spirit" initialSpawn="0" cooldown="3000"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="0" cooldown="100000"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="120" cooldown="100000"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="240" cooldown="100000"/>
-            <TossObject child="Phylactery Bearer" range="3" angle="60" cooldown="100000"/>
-            <TossObject child="Phylactery Bearer" range="3" angle="180" cooldown="100000"/>
-            <Prioritize>
-                <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2"/>
-                <Wander speed="0.9"/>
-            </Prioritize>
-            <TimedTransition targetState="HugeMob2" time="25000"/>
-        </State>
-        <State id="HugeMob2">
-            <Taunt text="My minions have stolen your life force and fed it to me!"/>
-            <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="300"/>
-            <Spawn children="Haunted Spirit" initialSpawn="0" cooldown="3000"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="0" cooldown="100000"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="120" cooldown="100000"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="240" cooldown="100000"/>
-            <Prioritize>
-                <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2"/>
-                <Wander speed="0.9"/>
-            </Prioritize>
-            <TimedTransition targetState="Wait" time="5000"/>
-        </State>
-        <State id="Mob">
-            <Taunt text="...there's a lot of them! Hahaha!!"/>
-            <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="300"/>
-            <Spawn children="Haunted Spirit" maxChildren="2" initialSpawn="0" cooldown="2000"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="0" cooldown="100000"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="120" cooldown="100000"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="240" cooldown="100000"/>
-            <Prioritize>
-                <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2"/>
-                <Wander speed="0.9"/>
-            </Prioritize>
-            <TimedTransition targetState="Mob2" time="22000"/>
-        </State>
-        <State id="Mob2">
-            <Taunt text="My minions have stolen your life force and fed it to me!"/>
-            <Spawn children="Haunted Spirit" maxChildren="2" initialSpawn="0" cooldown="2000"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="0" cooldown="100000"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="120" cooldown="100000"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="240" cooldown="100000"/>
-            <Prioritize>
-                <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2"/>
-                <Wander speed="0.9"/>
-            </Prioritize>
-            <TimedTransition targetState="Wait" time="5000"/>
-        </State>
-        <State id="SmallGroup">
-            <Taunt text="...and there's more where they came from!"/>
-            <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="300"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="0" cooldown="100000"/>
-            <TossObject child="Phylactery Bearer" range="5.5" angle="240" cooldown="100000"/>
-            <Prioritize>
-                <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2"/>
-                <Wander speed="0.9"/>
-            </Prioritize>
-            <TimedTransition targetState="SmallGroup2" time="15000"/>
-        </State>
-        <State id="SmallGroup2">
-            <Taunt text="My minions have stolen your life force and fed it to me!"/>
-            <Spawn children="Haunted Spirit" maxChildren="1" initialSpawn="1" cooldown="9000"/>
-            <Prioritize>
-                <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2"/>
-                <Wander speed="0.9"/>
-            </Prioritize>
-            <TimedTransition targetState="Wait" time="5000"/>
-        </State>
-        <State id="Solo">
-            <Taunt text="...it's a small family, but you'll enjoy being part of it!"/>
-            <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="10"/>
-            <Wander speed="0.5"/>
-            <TimedTransition targetState="Wait" time="3000"/>
-        </State>
-        <State id="Wait">
-            <Taunt text="Kneel before me! I am the master of life and death!"/>
-            <Transform target="Actual Lich"/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Actual Lich">
+  <BehaviorEntry id="Lich">
+    <State id="Idle">
+      <StayCloseToSpawn speed="0.5" />
+      <Wander speed="0.5" />
+      <HpLessTransition targetState="EvaluationStart1" threshold="0.99999" />
+    </State>
+    <State id="EvaluationStart1">
+      <Taunt text="New recruits for my undead army? How delightful!" />
+      <ConditionalEffect effect="Invulnerable" />
+      <Prioritize>
+        <StayCloseToSpawn speed="0.35" />
+        <Wander speed="0.35" />
+      </Prioritize>
+      <TimedTransition targetState="EvaluationStart2" time="2500" />
+    </State>
+    <State id="EvaluationStart2">
+      <Flash color="0xFF" flashPeriod="0.1" flashRepeats="60" />
+      <Prioritize>
+        <StayCloseToSpawn speed="0.35" />
+        <Wander speed="0.35" />
+      </Prioritize>
+      <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" coolDownOffset="200" cooldown="100000" />
+      <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" coolDownOffset="400" cooldown="100000" />
+      <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" coolDownOffset="2200" cooldown="100000" />
+      <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" coolDownOffset="2400" cooldown="100000" />
+      <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" coolDownOffset="4200" cooldown="100000" />
+      <Shoot radius="10" count="3" shootAngle="120" projectileIndex="1" coolDownOffset="4400" cooldown="100000" />
+      <HpLessTransition targetState="EvaluationEnd" threshold="0.87" />
+      <TimedTransition targetState="EvaluationEnd" time="6000" />
+    </State>
+    <State id="EvaluationEnd">
+      <Taunt text="Time to meet your future brothers and sisters..." />
+      <HpLessTransition targetState="HugeMob" threshold="0.875" />
+      <HpLessTransition targetState="Mob" threshold="0.952" />
+      <HpLessTransition targetState="SmallGroup" threshold="0.985" />
+      <HpLessTransition targetState="Solo" threshold="0.99999" />
+    </State>
+    <State id="HugeMob">
+      <Taunt text="...there's an ARMY of them! HahaHahaaaa!!!" />
+      <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="300" />
+      <Spawn children="Haunted Spirit" initialSpawn="0" cooldown="3000" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="0" cooldown="100000" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="120" cooldown="100000" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="240" cooldown="100000" />
+      <TossObject child="Phylactery Bearer" range="3" angle="60" cooldown="100000" />
+      <TossObject child="Phylactery Bearer" range="3" angle="180" cooldown="100000" />
+      <Prioritize>
+        <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2" />
+        <Wander speed="0.9" />
+      </Prioritize>
+      <TimedTransition targetState="HugeMob2" time="25000" />
+    </State>
+    <State id="HugeMob2">
+      <Taunt text="My minions have stolen your life force and fed it to me!" />
+      <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="300" />
+      <Spawn children="Haunted Spirit" initialSpawn="0" cooldown="3000" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="0" cooldown="100000" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="120" cooldown="100000" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="240" cooldown="100000" />
+      <Prioritize>
+        <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2" />
+        <Wander speed="0.9" />
+      </Prioritize>
+      <TimedTransition targetState="Wait" time="5000" />
+    </State>
+    <State id="Mob">
+      <Taunt text="...there's a lot of them! Hahaha!!" />
+      <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="300" />
+      <Spawn children="Haunted Spirit" maxChildren="2" initialSpawn="0" cooldown="2000" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="0" cooldown="100000" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="120" cooldown="100000" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="240" cooldown="100000" />
+      <Prioritize>
+        <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2" />
+        <Wander speed="0.9" />
+      </Prioritize>
+      <TimedTransition targetState="Mob2" time="22000" />
+    </State>
+    <State id="Mob2">
+      <Taunt text="My minions have stolen your life force and fed it to me!" />
+      <Spawn children="Haunted Spirit" maxChildren="2" initialSpawn="0" cooldown="2000" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="0" cooldown="100000" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="120" cooldown="100000" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="240" cooldown="100000" />
+      <Prioritize>
+        <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2" />
+        <Wander speed="0.9" />
+      </Prioritize>
+      <TimedTransition targetState="Wait" time="5000" />
+    </State>
+    <State id="SmallGroup">
+      <Taunt text="...and there's more where they came from!" />
+      <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="300" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="0" cooldown="100000" />
+      <TossObject child="Phylactery Bearer" range="5.5" angle="240" cooldown="100000" />
+      <Prioritize>
+        <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2" />
+        <Wander speed="0.9" />
+      </Prioritize>
+      <TimedTransition targetState="SmallGroup2" time="15000" />
+    </State>
+    <State id="SmallGroup2">
+      <Taunt text="My minions have stolen your life force and fed it to me!" />
+      <Spawn children="Haunted Spirit" maxChildren="1" initialSpawn="1" cooldown="9000" />
+      <Prioritize>
+        <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2" />
+        <Wander speed="0.9" />
+      </Prioritize>
+      <TimedTransition targetState="Wait" time="5000" />
+    </State>
+    <State id="Solo">
+      <Taunt text="...it's a small family, but you'll enjoy being part of it!" />
+      <Flash color="0xFF00" flashPeriod="0.2" flashRepeats="10" />
+      <Wander speed="0.5" />
+      <TimedTransition targetState="Wait" time="3000" />
+    </State>
+    <State id="Wait">
+      <Taunt text="Kneel before me! I am the master of life and death!" />
+      <Transform target="Actual Lich" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Actual Lich">
+    <Prioritize>
+      <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <Spawn children="Mummy" maxChildren="4" initialSpawn="2" cooldown="4000" givesNoXp="false" />
+    <Spawn children="Mummy King" maxChildren="2" initialSpawn="1" cooldown="4000" givesNoXp="false" />
+    <Spawn children="Mummy Pharaoh" maxChildren="1" initialSpawn="0" cooldown="4000" givesNoXp="false" />
+    <State id="typeA">
+      <Shoot radius="10" count="2" shootAngle="7" cooldown="800" />
+      <TimedTransition targetState="typeB" time="8000" />
+    </State>
+    <State id="typeB">
+      <Taunt text="All that I touch turns to dust!|You will drown in a sea of undead!" probability="0.7" />
+      <Shoot radius="10" count="4" shootAngle="7" projectileIndex="1" cooldown="1000" />
+      <Shoot radius="10" count="2" shootAngle="7" cooldown="800" />
+      <TimedTransition targetState="typeA" time="6000" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Phylactery Bearer">
+    <HealGroup range="15" cooldown="200" group="Heros" />
+    <Decay time="130000" />
+    <State id="Attack1">
+      <Shoot radius="10" count="3" shootAngle="120" coolDownOffset="400" cooldown="900" />
+      <HpLessTransition targetState="Attack2" threshold="0.65" />
+      <State id="AttackX">
         <Prioritize>
-            <Protect speed="0.9" protectee="Phylactery Bearer" acquireRange="15" reprotectRange="2"/>
-            <Wander speed="0.5"/>
+          <StayCloseToSpawn speed="0.55" />
+          <Orbit speed="0.55" radius="4" acquireRange="5" speedVariance="0.055" radiusVariance="0.055" orbitClockwise="false" />
         </Prioritize>
-        <Spawn children="Mummy" maxChildren="4" initialSpawn="2" cooldown="4000" givesNoXp="false"/>
-        <Spawn children="Mummy King" maxChildren="2" initialSpawn="1" cooldown="4000" givesNoXp="false"/>
-        <Spawn children="Mummy Pharaoh" maxChildren="1" initialSpawn="0" cooldown="4000" givesNoXp="false"/>
-        <State id="typeA">
-            <Shoot radius="10" count="2" shootAngle="7" cooldown="800"/>
-            <TimedTransition targetState="typeB" time="8000"/>
-        </State>
-        <State id="typeB">
-            <Taunt text="All that I touch turns to dust!|You will drown in a sea of undead!" probability="0.7"/>
-            <Shoot radius="10" count="4" shootAngle="7" projectileIndex="1" cooldown="1000"/>
-            <Shoot radius="10" count="2" shootAngle="7" cooldown="800"/>
-            <TimedTransition targetState="typeA" time="6000"/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Phylactery Bearer">
-        <HealGroup range="15" cooldown="200" group="Heros"/>
-        <Decay time="130000"/>
-        <State id="Attack1">
-            <Shoot radius="10" count="3" shootAngle="120" coolDownOffset="400" cooldown="900"/>
-            <HpLessTransition targetState="Attack2" threshold="0.65"/>
-            <State id="AttackX">
-                <Prioritize>
-                    <StayCloseToSpawn speed="0.55"/>
-                    <Orbit speed="0.55" radius="4" acquireRange="5" speedVariance="0.055" radiusVariance="0.055"
-                           orbitClockwise="false"/>
-                </Prioritize>
-                <TimedTransition targetState="AttackY" time="1500"/>
-            </State>
-            <State id="AttackY">
-                <Taunt text="We feed the master!" probability="0.05"/>
-                <Prioritize>
-                    <StayCloseToSpawn speed="0.55"/>
-                    <StayBack speed="0.55" distance="2"/>
-                    <Wander speed="0.55"/>
-                </Prioritize>
-                <TimedTransition targetState="AttackX" time="1500"/>
-            </State>
-        </State>
-        <State id="Attack2">
-            <Shoot radius="10" count="3" shootAngle="15" predictive="0.1" coolDownOffset="200" cooldown="600"/>
-            <HpLessTransition targetState="Attack3" threshold="0.3"/>
-            <State id="AttackX">
-                <Prioritize>
-                    <StayCloseToSpawn speed="0.65"/>
-                    <Orbit speed="0.65" radius="4" speedVariance="0.065" radiusVariance="0.065" orbitClockwise="false"/>
-                </Prioritize>
-                <TimedTransition targetState="AttackY" time="1500"/>
-            </State>
-            <State id="AttackY">
-                <Taunt text="We feed the master!" probability="0.05"/>
-                <Prioritize>
-                    <StayCloseToSpawn speed="0.65"/>
-                    <Buzz cooldown="1"/>
-                    <Wander speed="0.65"/>
-                </Prioritize>
-                <TimedTransition targetState="AttackX" time="1500"/>
-            </State>
-        </State>
-        <State id="Attack3">
-            <Shoot radius="10" shootAngle="0" projectileIndex="1" cooldown="800"/>
-            <State id="AttackX">
-                <ConditionalEffect effect="Invulnerable"/>
-                <Prioritize>
-                    <StayCloseToSpawn speed="1.3"/>
-                    <Wander speed="1.3"/>
-                </Prioritize>
-                <TimedTransition targetState="AttackY" time="2500"/>
-            </State>
-            <State id="AttackY">
-                <Taunt text="We feed the master!" probability="0.02"/>
-                <Prioritize>
-                    <StayCloseToSpawn speed="1"/>
-                    <Wander speed="1"/>
-                </Prioritize>
-                <TimedTransition targetState="AttackX" time="2500"/>
-            </State>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Haunted Spirit">
-        <Decay time="90000"/>
-        <State id="NewLocation">
-            <Taunt text="XxxXxxxXxXxXxxx..." probability="0.1"/>
-            <ConditionalEffect effect="Invulnerable"/>
-            <Shoot radius="10" shootAngle="0" predictive="0.2" cooldown="700"/>
-            <Prioritize>
-                <StayCloseToSpawn speed="1" range="11"/>
-                <Wander speed="1"/>
-            </Prioritize>
-            <TimedTransition targetState="Attack" time="7000"/>
-        </State>
-        <State id="Attack">
-            <Taunt text="Hungry..." probability="0.1"/>
-            <Shoot radius="10" shootAngle="0" predictive="0.3" cooldown="700"/>
-            <Shoot radius="10" count="2" shootAngle="70" coolDownOffset="200" cooldown="700"/>
-            <TimedTransition targetState="NewLocation" time="3000"/>
-        </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Mummy">
+        <TimedTransition targetState="AttackY" time="1500" />
+      </State>
+      <State id="AttackY">
+        <Taunt text="We feed the master!" probability="0.05" />
         <Prioritize>
-            <Protect speed="1" protectee="Lich" protectionRange="10"/>
-            <Follow speed="1.2" range="7" cooldown="0"/>
-            <Wander speed="0.4"/>
+          <StayCloseToSpawn speed="0.55" />
+          <StayBack speed="0.55" distance="2" />
+          <Wander speed="0.55" />
         </Prioritize>
-        <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Mummy King">
+        <TimedTransition targetState="AttackX" time="1500" />
+      </State>
+    </State>
+    <State id="Attack2">
+      <Shoot radius="10" count="3" shootAngle="15" predictive="0.1" coolDownOffset="200" cooldown="600" />
+      <HpLessTransition targetState="Attack3" threshold="0.3" />
+      <State id="AttackX">
         <Prioritize>
-            <Protect speed="1" protectee="Lich" protectionRange="10"/>
-            <Follow speed="1.2" range="7" cooldown="0"/>
-            <Wander speed="0.4"/>
+          <StayCloseToSpawn speed="0.65" />
+          <Orbit speed="0.65" radius="4" speedVariance="0.065" radiusVariance="0.065" orbitClockwise="false" />
         </Prioritize>
-        <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Mummy Pharaoh">
+        <TimedTransition targetState="AttackY" time="1500" />
+      </State>
+      <State id="AttackY">
+        <Taunt text="We feed the master!" probability="0.05" />
         <Prioritize>
-            <Protect speed="1" protectee="Lich" protectionRange="10"/>
-            <Follow speed="1.2" range="7" cooldown="0"/>
-            <Wander speed="0.4"/>
+          <StayCloseToSpawn speed="0.65" />
+          <Buzz cooldown="1" />
+          <Wander speed="0.65" />
         </Prioritize>
-        <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
+        <TimedTransition targetState="AttackX" time="1500" />
+      </State>
+    </State>
+    <State id="Attack3">
+      <Shoot radius="10" shootAngle="0" projectileIndex="1" cooldown="800" />
+      <State id="AttackX">
+        <ConditionalEffect effect="Invulnerable" />
+        <Prioritize>
+          <StayCloseToSpawn speed="1.3" />
+          <Wander speed="1.3" />
+        </Prioritize>
+        <TimedTransition targetState="AttackY" time="2500" />
+      </State>
+      <State id="AttackY">
+        <Taunt text="We feed the master!" probability="0.02" />
+        <Prioritize>
+          <StayCloseToSpawn speed="1" />
+          <Wander speed="1" />
+        </Prioritize>
+        <TimedTransition targetState="AttackX" time="2500" />
+      </State>
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Haunted Spirit">
+    <Decay time="90000" />
+    <State id="NewLocation">
+      <Taunt text="XxxXxxxXxXxXxxx..." probability="0.1" />
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="10" shootAngle="0" predictive="0.2" cooldown="700" />
+      <Prioritize>
+        <StayCloseToSpawn speed="1" range="11" />
+        <Wander speed="1" />
+      </Prioritize>
+      <TimedTransition targetState="Attack" time="7000" />
+    </State>
+    <State id="Attack">
+      <Taunt text="Hungry..." probability="0.1" />
+      <Shoot radius="10" shootAngle="0" predictive="0.3" cooldown="700" />
+      <Shoot radius="10" count="2" shootAngle="70" coolDownOffset="200" cooldown="700" />
+      <TimedTransition targetState="NewLocation" time="3000" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Mummy">
+    <Prioritize>
+      <Protect speed="1" protectee="Lich" protectionRange="10" />
+      <Follow speed="1.2" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Mummy King">
+    <Prioritize>
+      <Protect speed="1" protectee="Lich" protectionRange="10" />
+      <Follow speed="1.2" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Mummy Pharaoh">
+    <Prioritize>
+      <Protect speed="1" protectee="Lich" protectionRange="10" />
+      <Follow speed="1.2" range="7" cooldown="0" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
 </BehaviorEntries>

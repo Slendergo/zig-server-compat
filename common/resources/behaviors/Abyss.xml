@@ -1,164 +1,160 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-    <BehaviorEntry id="Malphas Protector">
-        <Shoot radius="5" count="3" shootAngle="5" predictive="0.45" cooldown="1200"/>
-        <Orbit speed="3.2" radius="9" acquireRange="20" target="Archdemon Malphas" speedVariance="0" radiusVariance="0"
-               orbitClockwise="true"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Malphas Missile">
-        <State id="Start">
-            <TimedTransition targetState="Attacking" time="50"/>
+  <BehaviorEntry id="Malphas Protector">
+    <Shoot radius="5" count="3" shootAngle="5" predictive="0.45" cooldown="1200" />
+    <Orbit speed="3.2" radius="9" acquireRange="20" target="Archdemon Malphas" speedVariance="0" radiusVariance="0" orbitClockwise="true" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Malphas Missile">
+    <State id="Start">
+      <TimedTransition targetState="Attacking" time="50" />
+    </State>
+    <State id="Attacking">
+      <Follow speed="1.1" range="0.2" cooldown="0" />
+      <PlayerWithinTransition targetState="FlashBeforeExplode" dist="1.3" />
+      <TimedTransition targetState="FlashBeforeExplode" time="5000" />
+    </State>
+    <State id="FlashBeforeExplode">
+      <Flash color="0xFFFFFF" flashPeriod="0.1" flashRepeats="6" />
+      <TimedTransition targetState="Explode" time="600" />
+    </State>
+    <State id="Explode">
+      <Shoot radius="0" count="8" shootAngle="45" fixedAngle="0" cooldown="1000" />
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Archdemon Malphas">
+    <DropPortalOnDeath target="Realm Portal" />
+    <State id="start_the_fun">
+      <ConditionalEffect effect="Invulnerable" />
+      <PlayerWithinTransition targetState="he_is_never_alone" dist="11" seeInvis="true" />
+    </State>
+    <State id="he_is_never_alone">
+      <Reproduce children="Malphas Protector" densityRadius="24" densityMax="3" cooldown="1000" />
+      <State id="Missile_Fire">
+        <Prioritize>
+          <StayCloseToSpawn speed="0.3" />
+          <Follow speed="0.3" acquireRange="8" range="2" cooldown="0" />
+        </Prioritize>
+        <Shoot radius="8" shootAngle="0" angleOffset="1" predictive="0.15" cooldown="900" />
+        <Reproduce children="Malphas Missile" densityRadius="24" densityMax="4" cooldown="1800" />
+        <TimedTransition targetState="Pause1" time="9000" />
+        <State id="invulnerable1">
+          <ConditionalEffect effect="Invulnerable" />
+          <TimedTransition targetState="vulnerable" time="2000" />
         </State>
-        <State id="Attacking">
-            <Follow speed="1.1" range="0.2" cooldown="0"/>
-            <PlayerWithinTransition targetState="FlashBeforeExplode" dist="1.3"/>
-            <TimedTransition targetState="FlashBeforeExplode" time="5000"/>
+        <State id="vulnerable">
+          <TimedTransition targetState="invulnerable2" time="4000" />
         </State>
-        <State id="FlashBeforeExplode">
-            <Flash color="0xFFFFFF" flashPeriod="0.1" flashRepeats="6"/>
-            <TimedTransition targetState="Explode" time="600"/>
+        <State id="invulnerable2">
+          <ConditionalEffect effect="Invulnerable" />
         </State>
-        <State id="Explode">
-            <Shoot radius="0" count="8" shootAngle="45" fixedAngle="0" cooldown="1000"/>
-            <Suicide/>
+      </State>
+      <State id="Pause1">
+        <ConditionalEffect effect="Invulnerable" />
+        <Prioritize>
+          <StayCloseToSpawn speed="0.4" />
+          <Wander speed="0.4" />
+        </Prioritize>
+        <TimedTransition targetState="Small_target" time="2500" />
+      </State>
+      <State id="Small_target">
+        <Prioritize>
+          <StayCloseToSpawn speed="0.8" />
+          <Wander speed="0.8" />
+        </Prioritize>
+        <ChangeSize rate="-11" target="30" />
+        <Shoot radius="0" count="6" shootAngle="60" projectileIndex="1" fixedAngle="0" cooldown="1200" />
+        <Shoot radius="8" shootAngle="0" angleOffset="0.6" predictive="0.15" cooldown="900" />
+        <TimedTransition targetState="Size_matters" time="12000" />
+      </State>
+      <State id="Size_matters">
+        <Prioritize>
+          <StayCloseToSpawn speed="0.2" />
+          <Wander speed="0.2" />
+        </Prioritize>
+        <TimedTransition targetState="Pause2" time="13000" />
+        <State id="Growbig">
+          <ChangeSize rate="11" target="140" />
+          <ConditionalEffect effect="Invulnerable" />
+          <TimedTransition targetState="Shot_rotation1" time="1800" />
         </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Archdemon Malphas">
-        <DropPortalOnDeath target="Realm Portal"/>
-        <State id="start_the_fun">
-            <ConditionalEffect effect="Invulnerable"/>
-            <PlayerWithinTransition targetState="he_is_never_alone" dist="11" seeInvis="true"/>
+        <State id="Shot_rotation1">
+          <ConditionalEffect effect="Invulnerable" />
+          <Shoot radius="8" shootAngle="0" projectileIndex="2" predictive="0.2" cooldown="900" />
+          <Shoot radius="0" count="3" shootAngle="120" projectileIndex="3" angleOffset="0.7" defaultAngle="0" cooldown="700" />
+          <TimedTransition targetState="Shot_rotation2" time="1400" />
         </State>
-        <State id="he_is_never_alone">
-            <Reproduce children="Malphas Protector" densityRadius="24" densityMax="3" cooldown="1000"/>
-            <State id="Missile_Fire">
-                <Prioritize>
-                    <StayCloseToSpawn speed="0.3"/>
-                    <Follow speed="0.3" acquireRange="8" range="2" cooldown="0"/>
-                </Prioritize>
-                <Shoot radius="8" shootAngle="0" angleOffset="1" predictive="0.15" cooldown="900"/>
-                <Reproduce children="Malphas Missile" densityRadius="24" densityMax="4" cooldown="1800"/>
-                <TimedTransition targetState="Pause1" time="9000"/>
-                <State id="invulnerable1">
-                    <ConditionalEffect effect="Invulnerable"/>
-                    <TimedTransition targetState="vulnerable" time="2000"/>
-                </State>
-                <State id="vulnerable">
-                    <TimedTransition targetState="invulnerable2" time="4000"/>
-                </State>
-                <State id="invulnerable2">
-                    <ConditionalEffect effect="Invulnerable"/>
-                </State>
-            </State>
-            <State id="Pause1">
-                <ConditionalEffect effect="Invulnerable"/>
-                <Prioritize>
-                    <StayCloseToSpawn speed="0.4"/>
-                    <Wander speed="0.4"/>
-                </Prioritize>
-                <TimedTransition targetState="Small_target" time="2500"/>
-            </State>
-            <State id="Small_target">
-                <Prioritize>
-                    <StayCloseToSpawn speed="0.8"/>
-                    <Wander speed="0.8"/>
-                </Prioritize>
-                <ChangeSize rate="-11" target="30"/>
-                <Shoot radius="0" count="6" shootAngle="60" projectileIndex="1" fixedAngle="0" cooldown="1200"/>
-                <Shoot radius="8" shootAngle="0" angleOffset="0.6" predictive="0.15" cooldown="900"/>
-                <TimedTransition targetState="Size_matters" time="12000"/>
-            </State>
-            <State id="Size_matters">
-                <Prioritize>
-                    <StayCloseToSpawn speed="0.2"/>
-                    <Wander speed="0.2"/>
-                </Prioritize>
-                <TimedTransition targetState="Pause2" time="13000"/>
-                <State id="Growbig">
-                    <ChangeSize rate="11" target="140"/>
-                    <ConditionalEffect effect="Invulnerable"/>
-                    <TimedTransition targetState="Shot_rotation1" time="1800"/>
-                </State>
-                <State id="Shot_rotation1">
-                    <ConditionalEffect effect="Invulnerable"/>
-                    <Shoot radius="8" shootAngle="0" projectileIndex="2" predictive="0.2" cooldown="900"/>
-                    <Shoot radius="0" count="3" shootAngle="120" projectileIndex="3" angleOffset="0.7" defaultAngle="0"
-                           cooldown="700"/>
-                    <TimedTransition targetState="Shot_rotation2" time="1400"/>
-                </State>
-                <State id="Shot_rotation2">
-                    <Shoot radius="8" shootAngle="0" projectileIndex="2" predictive="0.2" cooldown="900"/>
-                    <Shoot radius="8" shootAngle="0" projectileIndex="2" predictive="0.25" cooldown="2000"/>
-                    <Shoot radius="0" count="3" shootAngle="120" projectileIndex="3" angleOffset="0.7" defaultAngle="40"
-                           cooldown="700"/>
-                    <TimedTransition targetState="Shot_rotation3" time="1400"/>
-                </State>
-                <State id="Shot_rotation3">
-                    <ConditionalEffect effect="Invulnerable"/>
-                    <Shoot radius="8" shootAngle="0" projectileIndex="2" predictive="0.2" cooldown="900"/>
-                    <Shoot radius="0" count="3" shootAngle="120" projectileIndex="3" angleOffset="0.7" defaultAngle="80"
-                           cooldown="700"/>
-                    <TimedTransition targetState="Shot_rotation1" time="1400"/>
-                </State>
-            </State>
-            <State id="Pause2">
-                <ChangeSize rate="-11" target="100"/>
-                <ConditionalEffect effect="Invulnerable"/>
-                <Prioritize>
-                    <StayCloseToSpawn speed="0.4"/>
-                    <Wander speed="0.4"/>
-                </Prioritize>
-                <TimedTransition targetState="Bring_on_the_flamers" time="2500"/>
-            </State>
-            <State id="Bring_on_the_flamers">
-                <ChangeSize rate="14" target="100"/>
-                <ConditionalEffect effect="Invulnerable"/>
-                <Prioritize>
-                    <StayCloseToSpawn speed="0.4"/>
-                    <Follow speed="0.4" acquireRange="9" range="2" cooldown="0"/>
-                </Prioritize>
-                <Shoot radius="8" shootAngle="0" predictive="0.25" cooldown="2100"/>
-                <Reproduce children="Malphas Flamer" densityRadius="24" cooldown="500"/>
-                <TossObject child="Malphas Flamer" range="6" angle="0" cooldown="9000"/>
-                <TossObject child="Malphas Flamer" range="6" angle="90" cooldown="9000"/>
-                <TossObject child="Malphas Flamer" range="6" angle="180" cooldown="9000"/>
-                <TossObject child="Malphas Flamer" range="6" angle="270" cooldown="9000"/>
-                <TimedTransition targetState="Temporary_exhaustion" time="8000"/>
-            </State>
-            <State id="Temporary_exhaustion">
-                <Flash color="0x484848" flashPeriod="0.6" flashRepeats="5"/>
-                <StayBack speed="0.4" distance="4"/>
-                <TimedTransition targetState="Missile_Fire" time="3200"/>
-            </State>
+        <State id="Shot_rotation2">
+          <Shoot radius="8" shootAngle="0" projectileIndex="2" predictive="0.2" cooldown="900" />
+          <Shoot radius="8" shootAngle="0" projectileIndex="2" predictive="0.25" cooldown="2000" />
+          <Shoot radius="0" count="3" shootAngle="120" projectileIndex="3" angleOffset="0.7" defaultAngle="40" cooldown="700" />
+          <TimedTransition targetState="Shot_rotation3" time="1400" />
         </State>
-    </BehaviorEntry>
-    <BehaviorEntry id="Malphas Flamer">
-        <State id="Attacking">
-            <HpLessTransition targetState="FlashBeforeExplode" threshold="0.2"/>
-            <State id="Charge">
-                <Prioritize>
-                    <Follow speed="0.7" range="0.1" cooldown="0"/>
-                </Prioritize>
-                <PlayerWithinTransition targetState="Bullet1" dist="2" seeInvis="true"/>
-            </State>
-            <State id="Bullet1">
-                <ChangeSize rate="20" target="130"/>
-                <Flash color="0xFFAA00" flashPeriod="0.2" flashRepeats="20"/>
-                <Shoot radius="8" shootAngle="0" cooldown="200"/>
-                <TimedTransition targetState="Wait1" time="4000"/>
-            </State>
-            <State id="Wait1">
-                <ChangeSize rate="-20" target="70"/>
-                <Charge speed="3" range="20" cooldown="600"/>
-            </State>
+        <State id="Shot_rotation3">
+          <ConditionalEffect effect="Invulnerable" />
+          <Shoot radius="8" shootAngle="0" projectileIndex="2" predictive="0.2" cooldown="900" />
+          <Shoot radius="0" count="3" shootAngle="120" projectileIndex="3" angleOffset="0.7" defaultAngle="80" cooldown="700" />
+          <TimedTransition targetState="Shot_rotation1" time="1400" />
         </State>
-        <State id="FlashBeforeExplode">
-            <Flash color="0xFF0000" flashPeriod="0.75" flashRepeats="1"/>
-            <TimedTransition targetState="Explode" time="300"/>
-        </State>
-        <State id="Explode">
-            <Shoot radius="0" count="8" shootAngle="45" defaultAngle="0" cooldown="1000"/>
-            <Decay time="100"/>
-        </State>
-    </BehaviorEntry>
+      </State>
+      <State id="Pause2">
+        <ChangeSize rate="-11" target="100" />
+        <ConditionalEffect effect="Invulnerable" />
+        <Prioritize>
+          <StayCloseToSpawn speed="0.4" />
+          <Wander speed="0.4" />
+        </Prioritize>
+        <TimedTransition targetState="Bring_on_the_flamers" time="2500" />
+      </State>
+      <State id="Bring_on_the_flamers">
+        <ChangeSize rate="14" target="100" />
+        <ConditionalEffect effect="Invulnerable" />
+        <Prioritize>
+          <StayCloseToSpawn speed="0.4" />
+          <Follow speed="0.4" acquireRange="9" range="2" cooldown="0" />
+        </Prioritize>
+        <Shoot radius="8" shootAngle="0" predictive="0.25" cooldown="2100" />
+        <Reproduce children="Malphas Flamer" densityRadius="24" cooldown="500" />
+        <TossObject child="Malphas Flamer" range="6" angle="0" cooldown="9000" />
+        <TossObject child="Malphas Flamer" range="6" angle="90" cooldown="9000" />
+        <TossObject child="Malphas Flamer" range="6" angle="180" cooldown="9000" />
+        <TossObject child="Malphas Flamer" range="6" angle="270" cooldown="9000" />
+        <TimedTransition targetState="Temporary_exhaustion" time="8000" />
+      </State>
+      <State id="Temporary_exhaustion">
+        <Flash color="0x484848" flashPeriod="0.6" flashRepeats="5" />
+        <StayBack speed="0.4" distance="4" />
+        <TimedTransition targetState="Missile_Fire" time="3200" />
+      </State>
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Malphas Flamer">
+    <State id="Attacking">
+      <HpLessTransition targetState="FlashBeforeExplode" threshold="0.2" />
+      <State id="Charge">
+        <Prioritize>
+          <Follow speed="0.7" range="0.1" cooldown="0" />
+        </Prioritize>
+        <PlayerWithinTransition targetState="Bullet1" dist="2" seeInvis="true" />
+      </State>
+      <State id="Bullet1">
+        <ChangeSize rate="20" target="130" />
+        <Flash color="0xFFAA00" flashPeriod="0.2" flashRepeats="20" />
+        <Shoot radius="8" shootAngle="0" cooldown="200" />
+        <TimedTransition targetState="Wait1" time="4000" />
+      </State>
+      <State id="Wait1">
+        <ChangeSize rate="-20" target="70" />
+        <Charge speed="3" range="20" cooldown="600" />
+      </State>
+    </State>
+    <State id="FlashBeforeExplode">
+      <Flash color="0xFF0000" flashPeriod="0.75" flashRepeats="1" />
+      <TimedTransition targetState="Explode" time="300" />
+    </State>
+    <State id="Explode">
+      <Shoot radius="0" count="8" shootAngle="45" defaultAngle="0" cooldown="1000" />
+      <Decay time="100" />
+    </State>
+  </BehaviorEntry>
 </BehaviorEntries>

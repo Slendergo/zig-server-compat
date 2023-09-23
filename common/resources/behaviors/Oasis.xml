@@ -1,45 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-    <BehaviorEntry id="Oasis Giant">
-        <Shoot radius="10" count="4" shootAngle="7" predictive="1" cooldown="1000"/>
-        <Prioritize>
-            <StayCloseToSpawn speed="0.3" range="2"/>
-            <Wander speed="0.4"/>
-        </Prioritize>
-        <SpawnGroup group="Oasis" maxChildren="20" initialSpawn="10" cooldown="5000"/>
-        <Taunt text="Come closer, {PLAYER}! Yes, closer!|I rule this place, {PLAYER}!|Surrender to my aquatic army, {PLAYER}!|You must be thirsty, {PLAYER}. Enter my waters!|Minions! We shall have {PLAYER} for dinner!"
-               probability="0.7" cooldown="10000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Oasis Ruler">
-        <Prioritize>
-            <Protect speed="0.5" protectee="Oasis Giant" acquireRange="15" protectionRange="10" reprotectRange="3"/>
-            <Follow speed="1" range="9" cooldown="0"/>
-            <Wander speed="0.5"/>
-        </Prioritize>
-        <Shoot radius="10" shootAngle="0" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Oasis Soldier">
-        <Prioritize>
-            <Protect speed="0.5" protectee="Oasis Giant" acquireRange="15" protectionRange="11" reprotectRange="3"/>
-            <Follow speed="1" range="7" cooldown="0"/>
-            <Wander speed="0.5"/>
-        </Prioritize>
-        <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="1000"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Oasis Creature">
-        <Prioritize>
-            <Protect speed="0.5" protectee="Oasis Giant" acquireRange="15" protectionRange="12" reprotectRange="3"/>
-            <Follow speed="1" range="5" cooldown="0"/>
-            <Wander speed="0.5"/>
-        </Prioritize>
-        <Shoot radius="10" shootAngle="0" cooldown="400"/>
-    </BehaviorEntry>
-    <BehaviorEntry id="Oasis Monster">
-        <Prioritize>
-            <Protect speed="0.5" protectee="Oasis Giant" acquireRange="15" protectionRange="13" reprotectRange="3"/>
-            <Follow speed="1" range="3" cooldown="0"/>
-            <Wander speed="0.5"/>
-        </Prioritize>
-        <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="1000"/>
-    </BehaviorEntry>
+  <BehaviorEntry id="Oasis Giant">
+    <Shoot radius="10" count="4" shootAngle="7" predictive="1" cooldown="1000" />
+    <Prioritize>
+      <StayCloseToSpawn speed="0.3" range="2" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <SpawnGroup group="Oasis" maxChildren="20" initialSpawn="10" cooldown="5000" />
+    <Taunt text="Come closer, {PLAYER}! Yes, closer!|I rule this place, {PLAYER}!|Surrender to my aquatic army, {PLAYER}!|You must be thirsty, {PLAYER}. Enter my waters!|Minions! We shall have {PLAYER} for dinner!" probability="0.7" cooldown="10000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Oasis Ruler">
+    <Prioritize>
+      <Protect speed="0.5" protectee="Oasis Giant" acquireRange="15" protectionRange="10" reprotectRange="3" />
+      <Follow speed="1" range="9" cooldown="0" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Oasis Soldier">
+    <Prioritize>
+      <Protect speed="0.5" protectee="Oasis Giant" acquireRange="15" protectionRange="11" reprotectRange="3" />
+      <Follow speed="1" range="7" cooldown="0" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Oasis Creature">
+    <Prioritize>
+      <Protect speed="0.5" protectee="Oasis Giant" acquireRange="15" protectionRange="12" reprotectRange="3" />
+      <Follow speed="1" range="5" cooldown="0" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <Shoot radius="10" shootAngle="0" cooldown="400" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Oasis Monster">
+    <Prioritize>
+      <Protect speed="0.5" protectee="Oasis Giant" acquireRange="15" protectionRange="13" reprotectRange="3" />
+      <Follow speed="1" range="3" cooldown="0" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="1000" />
+  </BehaviorEntry>
 </BehaviorEntries>
