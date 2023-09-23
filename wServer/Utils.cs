@@ -494,7 +494,7 @@ internal static class EntityUtils {
     }
 
     public static float GetSpeed(this Entity entity, float spd) {
-        return entity.HasConditionEffect(ConditionEffects.Slowed) ? (5.55f * spd + 0.74f) / 2 : 5.55f * spd + 0.74f;
+        return (entity.HasConditionEffect(ConditionEffects.Slowed) ? spd * 0.5f : spd) * Program.Config.serverSettings.tps;// (5.55f * spd + 0.74f) / 2 : 5.55f * spd + 0.74f;
     }
 
     public static void AOE(this Entity entity, float radius, ushort? objType, Action<Entity> callback) //Null for player
