@@ -656,12 +656,13 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         if (armorPiercing || HasConditionEffect(ConditionEffects.ArmorBroken))
             def = 0;
         else if (HasConditionEffect(ConditionEffects.Armored))
-            def *= 1.5f;
+            def *= 2.0f;
 
-        var min = origDamage * 2 / 20;
+        var min = origDamage * 0.25;
         var d = (int) Math.Max(min, origDamage - def);
         if (HasConditionEffect(ConditionEffects.Invulnerable) || HasConditionEffect(ConditionEffects.Invincible))
             d = 0;
+        
         return d;
     }
 
