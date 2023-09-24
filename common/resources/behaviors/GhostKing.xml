@@ -221,12 +221,31 @@
     <State id="Decay">
       <Decay time="0" />
     </State>
+    <TierLoot tier="8" type="Weapon" probability="0.3" />
+    <ItemLoot item="Magic Potion" probability="0.25" />
+    <ItemLoot item="Tincture of Life" probability="0.06" />
+    <ItemLoot item="Green Drake Egg" probability="0.08" />
+    <ItemLoot item="Quiver of Thunder" probability="0.002" />
+    <ItemLoot item="Purple Drake Egg" probability="0.03" />
+    <ItemLoot item="White Drake Egg" probability="0.001" />
+    <ItemLoot item="Tincture of Dexterity" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Actual Ghost King">
     <Taunt text="I am still so very alone" probability="0.9" />
     <ChangeSize rate="-20" target="95" />
     <Flash color="0xFF000000" flashPeriod="0.4" flashRepeats="100" />
     <BackAndForth speed="0.5" distance="3" />
+    <TierLoot tier="2" type="Weapon" probability="0.25" />
+    <TierLoot tier="2" type="Weapon" probability="0.7" />
+    <TierLoot tier="3" type="Weapon" probability="0.08" />
+    <TierLoot tier="3" type="Weapon" probability="0.16" />
+    <TierLoot tier="4" type="Weapon" probability="0.02" />
+    <TierLoot tier="7" type="Weapon" probability="0.3" />
+    <TierLoot tier="7" type="Weapon" probability="0.3" />
+    <TierLoot tier="8" type="Weapon" probability="0.1" />
+    <TierLoot tier="8" type="Weapon" probability="0.1" />
+    <ItemLoot item="Health Potion" probability="0.7" />
+    <ItemLoot item="Magic Potion" probability="0.7" />
   </BehaviorEntry>
   <BehaviorEntry id="Small Ghost">
     <TransformOnDeath target="Medium Ghost" />
@@ -249,6 +268,9 @@
     <State id="Decay">
       <Decay time="0" />
     </State>
+    <ItemLoot item="Magic Potion" probability="0.02" />
+    <ItemLoot item="Ring of Magic" probability="0.02" />
+    <ItemLoot item="Ring of Attack" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Medium Ghost">
     <TransformOnDeath target="Large Ghost" />
@@ -276,6 +298,10 @@
     <State id="Decay">
       <Decay time="0" />
     </State>
+    <ItemLoot item="Magic Potion" probability="0.02" />
+    <ItemLoot item="Ring of Speed" probability="0.02" />
+    <ItemLoot item="Ring of Attack" probability="0.02" />
+    <ItemLoot item="Iron Quiver" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Large Ghost">
     <Decay time="160000" />
@@ -310,5 +336,9 @@
     <State id="Decay">
       <Decay time="0" />
     </State>
+    <ItemLoot item="Magic Potion" probability="0.02" />
+    <ItemLoot item="Tincture of Defense" probability="0.02" />
+    <ItemLoot item="Blue Drake Egg" probability="0.02" />
+    <ItemLoot item="Yellow Drake Egg" probability="0.02" />
   </BehaviorEntry>
 </BehaviorEntries>

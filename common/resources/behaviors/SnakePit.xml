@@ -252,6 +252,19 @@
         <TimedTransition targetState="Silver Blasts" time="500" />
       </State>
     </State>
+    <Threshold threshold="0.1">
+      <TierLoot tier="8" type="Weapon" probability="0.3" />
+      <TierLoot tier="9" type="Weapon" probability="0.2" />
+      <TierLoot tier="9" type="Weapon" probability="0.2" />
+      <TierLoot tier="10" type="Weapon" probability="0.1" />
+      <TierLoot tier="10" type="Weapon" probability="0.1" />
+      <ItemLoot item="Potion of Speed" probability="1" />
+      <ItemLoot item="Wand of the Bulwark" probability="0.005" />
+      <ItemLoot item="Snake Skin Armor" probability="0.1" />
+      <ItemLoot item="Snake Skin Shield" probability="0.1" />
+      <ItemLoot item="Snake Eye Ring" probability="0.1" />
+      <ItemLoot item="Wine Cellar Incantation" probability="0.05" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Stheno Swarm">
     <State id="Protect">
@@ -300,6 +313,47 @@
       <Wander speed="1" />
     </Prioritize>
     <Shoot radius="20" shootAngle="0" cooldown="1000" />
+    <TierLoot tier="3" type="Weapon" probability="0.15" />
+    <TierLoot tier="4" type="Weapon" probability="0.07" />
+    <TierLoot tier="4" type="Weapon" probability="0.15" />
+    <TierLoot tier="5" type="Weapon" probability="0.03" />
+    <TierLoot tier="5" type="Weapon" probability="0.07" />
+    <TierLoot tier="8" type="Weapon" probability="0.3" />
+    <TierLoot tier="8" type="Weapon" probability="0.15" />
+    <TierLoot tier="8" type="Weapon" probability="0.2" />
+    <TierLoot tier="9" type="Weapon" probability="0.15" />
+    <TierLoot tier="9" type="Weapon" probability="0.2" />
+    <TierLoot tier="9" type="Weapon" probability="0.1" />
+    <TierLoot tier="9" type="Weapon" probability="0.2" />
+    <TierLoot tier="10" type="Weapon" probability="0.07" />
+    <TierLoot tier="10" type="Weapon" probability="0.1" />
+    <TierLoot tier="10" type="Weapon" probability="0.1" />
+    <TierLoot tier="10" type="Weapon" probability="0.1" />
+    <TierLoot tier="11" type="Weapon" probability="0.07" />
+    <TierLoot tier="11" type="Weapon" probability="0.05" />
+    <TierLoot tier="12" type="Weapon" probability="0.04" />
+    <ItemLoot item="Wand of the Bulwark" probability="0.005" />
+    <ItemLoot item="Snake Oil" probability="0.1" />
+    <ItemLoot item="Wine Cellar Incantation" probability="0.05" />
+    <ItemLoot item="Snake Eye Ring" probability="0.1" />
+    <ItemLoot item="Snake Skin Shield" probability="0.1" />
+    <ItemLoot item="Snake Skin Armor" probability="0.1" />
+    <ItemLoot item="Potion of Speed" probability="1" />
+    <ItemLoot item="Large Cloud Cloth" probability="0.01" />
+    <ItemLoot item="Small Skull Cloth" probability="0.01" />
+    <ItemLoot item="Large Skull Cloth" probability="0.01" />
+    <ItemLoot item="Small Plaid Cloth" probability="0.01" />
+    <ItemLoot item="Large Plaid Cloth" probability="0.01" />
+    <ItemLoot item="Small Cloud Cloth" probability="0.01" />
+    <ItemLoot item="Ring of Speed" probability="0.1" />
+    <ItemLoot item="Potion of Dexterity" probability="0.1" />
+    <ItemLoot item="Potion of Speed" probability="0.1" />
+    <ItemLoot item="Potion of Wisdom" probability="0.1" />
+    <ItemLoot item="Potion of Vitality" probability="0.1" />
+    <ItemLoot item="Potion of Attack" probability="0.1" />
+    <ItemLoot item="Potion of Defense" probability="0.1" />
+    <ItemLoot item="Orb of Conflict" probability="0.001" />
+    <ItemLoot item="Ring of Vitality" probability="0.1" />
   </BehaviorEntry>
   <BehaviorEntry id="Brown Python">
     <Prioritize>
@@ -307,6 +361,9 @@
       <Wander speed="1" />
     </Prioritize>
     <Shoot radius="20" shootAngle="0" cooldown="1000" />
+    <ItemLoot item="Snake Oil" probability="0.1" />
+    <ItemLoot item="Leather Armor" probability="0.1" />
+    <ItemLoot item="Ring of Wisdom" probability="0.1" />
   </BehaviorEntry>
   <BehaviorEntry id="Fire Python">
     <Prioritize>
@@ -314,6 +371,9 @@
       <Wander speed="1" />
     </Prioritize>
     <Shoot radius="15" count="3" shootAngle="5" cooldown="1000" />
+    <ItemLoot item="Snake Oil" probability="0.1" />
+    <ItemLoot item="Fire Bow" probability="0.1" />
+    <ItemLoot item="Fire Nova Spell" probability="0.1" />
   </BehaviorEntry>
   <BehaviorEntry id="Greater Pit Snake">
     <Prioritize>
@@ -321,6 +381,10 @@
       <Wander speed="1" />
     </Prioritize>
     <Shoot radius="15" count="3" shootAngle="5" cooldown="1000" />
+    <ItemLoot item="Snake Oil" probability="0.1" />
+    <ItemLoot item="Glass Sword" probability="0.1" />
+    <ItemLoot item="Avenger Staff" probability="0.1" />
+    <ItemLoot item="Wand of Dark Magic" probability="0.1" />
   </BehaviorEntry>
   <BehaviorEntry id="Greater Pit Viper">
     <Prioritize>
@@ -328,6 +392,10 @@
       <Wander speed="1" />
     </Prioritize>
     <Shoot radius="15" shootAngle="0" cooldown="300" />
+    <Threshold threshold="0.1">
+      <ItemLoot item="Ring of Greater Attack" probability="0.1" />
+      <ItemLoot item="Ring of Greater Health" probability="0.1" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Snakepit Guard">
     <ChangeSize rate="100" target="100" />
@@ -347,6 +415,18 @@
       </Prioritize>
       <Shoot radius="15" count="3" shootAngle="0" projectileIndex="2" cooldown="2000" />
     </State>
+    <Threshold threshold="0.1">
+      <TierLoot tier="8" type="Weapon" probability="0.3" />
+      <TierLoot tier="9" type="Weapon" probability="0.2" />
+      <TierLoot tier="9" type="Weapon" probability="0.2" />
+      <TierLoot tier="10" type="Weapon" probability="0.1" />
+      <TierLoot tier="10" type="Weapon" probability="0.1" />
+      <ItemLoot item="Wand of the Bulwark" probability="0.005" />
+      <ItemLoot item="Snake Skin Armor" probability="0.1" />
+      <ItemLoot item="Snake Skin Shield" probability="0.1" />
+      <ItemLoot item="Snake Eye Ring" probability="0.1" />
+      <ItemLoot item="Wine Cellar Incantation" probability="0.05" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Snakepit Dart Thrower">
     <ConditionalEffect effect="Invincible" perm="true" />

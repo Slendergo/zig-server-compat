@@ -13,6 +13,16 @@
       <SetAltTexture minValue="0" cooldown="0" />
       <TimedTransition targetState="Texture1" time="500" />
     </State>
+    <Threshold threshold="0.01">
+      <ItemLoot item="Coral Juice" probability="0.3" />
+      <ItemLoot item="Sea Slurp Egg" probability="0.25" />
+      <ItemLoot item="Potion of Mana" probability="0.04" />
+      <ItemLoot item="Coral Bow" probability="0.01" />
+      <ItemLoot item="Coral Venom Trap" probability="0.03" />
+      <ItemLoot item="Wine Cellar Incantation" probability="0.02" />
+      <ItemLoot item="Coral Silk Armor" probability="0.04" />
+      <ItemLoot item="Coral Ring" probability="0.04" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Coral Bomb Big">
     <State id="Spawning">
@@ -211,6 +221,15 @@
       <TimedTransition targetState="Thunder Swirl Attack2" time="500" randomizedTime="true" />
       <TimedTransition targetState="Spawning Bomb" time="500" randomizedTime="true" />
     </State>
+    <Threshold threshold="0.1">
+      <ItemLoot item="Coral Juice" probability="0.3" />
+      <ItemLoot item="Sea Slurp Egg" probability="0.25" />
+      <ItemLoot item="Coral Bow" probability="0.01" />
+      <ItemLoot item="Coral Venom Trap" probability="0.03" />
+      <ItemLoot item="Wine Cellar Incantation" probability="0.02" />
+      <ItemLoot item="Coral Silk Armor" probability="0.04" />
+      <ItemLoot item="Coral Ring" probability="0.04" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Thessal the Mermaid Goddess Wounded">
     <ConditionalEffect effect="Invincible" />

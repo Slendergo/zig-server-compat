@@ -7,6 +7,8 @@
       <StayAbove speed="1.4" altitude="55" />
       <Wander speed="1.4" />
     </Prioritize>
+    <TierLoot tier="5" type="Weapon" probability="0.02" />
+    <ItemLoot item="Magic Potion" probability="0.05" />
   </BehaviorEntry>
   <BehaviorEntry id="Ice Sprite">
     <Reproduce densityMax="2" cooldown="60000" />
@@ -15,6 +17,8 @@
       <StayAbove speed="1.4" altitude="60" />
       <Wander speed="1.4" />
     </Prioritize>
+    <TierLoot tier="2" type="Weapon" probability="0.04" />
+    <ItemLoot item="Magic Potion" probability="0.05" />
   </BehaviorEntry>
   <BehaviorEntry id="Magic Sprite">
     <Reproduce densityMax="2" cooldown="60000" />
@@ -23,6 +27,8 @@
       <StayAbove speed="1.4" altitude="60" />
       <Wander speed="1.4" />
     </Prioritize>
+    <TierLoot tier="6" type="Weapon" probability="0.01" />
+    <ItemLoot item="Magic Potion" probability="0.05" />
   </BehaviorEntry>
   <BehaviorEntry id="Orc King">
     <DropPortalOnDeath target="Spider Den Portal" probability="0.1" />
@@ -33,6 +39,13 @@
       <Follow speed="0.6" range="1" duration="3000" cooldown="3000" />
       <Wander speed="0.6" />
     </Prioritize>
+    <TierLoot tier="2" type="Weapon" probability="0.07" />
+    <TierLoot tier="2" type="Weapon" probability="0.17" />
+    <TierLoot tier="4" type="Weapon" probability="0.18" />
+    <TierLoot tier="5" type="Weapon" probability="0.05" />
+    <TierLoot tier="5" type="Weapon" probability="0.21" />
+    <TierLoot tier="6" type="Weapon" probability="0.035" />
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Orc Queen">
     <Spawn children="Orc Mage" maxChildren="2" initialSpawn="1" cooldown="8000" givesNoXp="false" />
@@ -43,6 +56,7 @@
       <Wander speed="0.8" />
     </Prioritize>
     <HealGroup range="10" cooldown="300" group="OrcKings" />
+    <ItemLoot item="Health Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Orc Mage">
     <State id="circle_player">
@@ -62,6 +76,7 @@
       </Prioritize>
       <TimedTransition targetState="circle_player" time="3500" />
     </State>
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Orc Warrior">
     <Shoot radius="3" shootAngle="0" predictive="1" cooldown="500" />
@@ -69,6 +84,7 @@
       <StayAbove speed="1.4" altitude="60" />
       <Orbit speed="1.35" radius="2.5" acquireRange="12" target="Orc Queen" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
     </Prioritize>
+    <ItemLoot item="Health Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Pink Blob">
     <StayAbove speed="0.4" altitude="50" />
@@ -78,6 +94,8 @@
       <Wander speed="0.4" />
     </Prioritize>
     <Reproduce cooldown="60000" />
+    <ItemLoot item="Health Potion" probability="0.03" />
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Gray Blob">
     <State id="searching">
@@ -93,6 +111,9 @@
       <Shoot radius="0" count="10" shootAngle="36" fixedAngle="0" cooldown="1000" />
       <Decay time="0" />
     </State>
+    <ItemLoot item="Health Potion" probability="0.03" />
+    <ItemLoot item="Magic Potion" probability="0.03" />
+    <ItemLoot item="Magic Mushroom" probability="0.005" />
   </BehaviorEntry>
   <BehaviorEntry id="Big Green Slime">
     <StayAbove speed="0.4" altitude="50" />
@@ -109,6 +130,8 @@
     <Shoot radius="6" shootAngle="0" cooldown="1000" />
     <Wander speed="0.4" />
     <Protect speed="0.4" protectee="Big Green Slime" />
+    <ItemLoot item="Health Potion" probability="0.03" />
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Wasp Queen">
     <Spawn children="Worker Wasp" initialSpawn="2" cooldown="3400" givesNoXp="false" />
@@ -125,6 +148,16 @@
         <Wander speed="0.55" />
       </Prioritize>
     </State>
+    <TierLoot tier="2" type="Weapon" probability="0.07" />
+    <TierLoot tier="2" type="Weapon" probability="0.28" />
+    <TierLoot tier="3" type="Weapon" probability="0.001" />
+    <TierLoot tier="3" type="Weapon" probability="0.01" />
+    <TierLoot tier="5" type="Weapon" probability="0.14" />
+    <TierLoot tier="5" type="Weapon" probability="0.19" />
+    <TierLoot tier="6" type="Weapon" probability="0.05" />
+    <TierLoot tier="6" type="Weapon" probability="0.02" />
+    <ItemLoot item="Health Potion" probability="0.15" />
+    <ItemLoot item="Magic Potion" probability="0.07" />
   </BehaviorEntry>
   <BehaviorEntry id="Worker Wasp">
     <Shoot radius="8" shootAngle="0" cooldown="4000" />
@@ -176,6 +209,14 @@
       </Prioritize>
       <TimedTransition targetState="idle" time="1000" />
     </State>
+    <TierLoot tier="2" type="Weapon" probability="0.07" />
+    <TierLoot tier="2" type="Weapon" probability="0.27" />
+    <TierLoot tier="4" type="Weapon" probability="0.14" />
+    <TierLoot tier="5" type="Weapon" probability="0.05" />
+    <TierLoot tier="5" type="Weapon" probability="0.2" />
+    <TierLoot tier="6" type="Weapon" probability="0.02" />
+    <ItemLoot item="Health Potion" probability="0.15" />
+    <ItemLoot item="Magic Potion" probability="0.1" />
   </BehaviorEntry>
   <BehaviorEntry id="Sludget">
     <Decay time="9000" />
@@ -234,6 +275,15 @@
       <Shoot radius="8" count="5" shootAngle="72" fixedAngle="56" coolDownOffset="1400" cooldown="100000" />
       <TimedTransition targetState="circle" time="1600" />
     </State>
+    <TierLoot tier="1" type="Weapon" probability="0.1" />
+    <TierLoot tier="1" type="Weapon" probability="0.21" />
+    <TierLoot tier="3" type="Weapon" probability="0.22" />
+    <TierLoot tier="3" type="Weapon" probability="0.22" />
+    <TierLoot tier="4" type="Weapon" probability="0.05" />
+    <TierLoot tier="4" type="Weapon" probability="0.12" />
+    <TierLoot tier="5" type="Weapon" probability="0.02" />
+    <ItemLoot item="Health Potion" probability="0.24" />
+    <ItemLoot item="Magic Potion" probability="0.07" />
   </BehaviorEntry>
   <BehaviorEntry id="Black Bat">
     <Prioritize>
@@ -242,11 +292,16 @@
     </Prioritize>
     <Shoot radius="1" shootAngle="0" cooldown="1000" />
     <Reproduce densityRadius="20" cooldown="20000" />
+    <TierLoot tier="2" type="Weapon" probability="0.01" />
+    <ItemLoot item="Magic Potion" probability="0.01" />
+    <ItemLoot item="Health Potion" probability="0.01" />
   </BehaviorEntry>
   <BehaviorEntry id="Red Spider">
     <Wander speed="0.8" />
     <Shoot radius="9" shootAngle="0" cooldown="1000" />
     <Reproduce densityRadius="15" densityMax="3" cooldown="45000" />
+    <ItemLoot item="Health Potion" probability="0.03" />
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Dwarf Axebearer">
     <Shoot radius="3.4" shootAngle="0" cooldown="1000" />
@@ -271,6 +326,7 @@
       <TimedTransition targetState="Circling" time="2500" />
       <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
     </State>
+    <ItemLoot item="Health Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Dwarf Mage">
     <State id="Default">
@@ -321,6 +377,7 @@
         <TimedTransition targetState="fire1_eng" time="1500" />
       </State>
     </State>
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Dwarf Veteran">
     <Shoot radius="4" shootAngle="0" cooldown="1000" />
@@ -348,6 +405,7 @@
       <TimedTransition targetState="Circling" time="2500" />
       <EntityNotExistsTransition targetState="Default" dist="8" target="Dwarf King" />
     </State>
+    <ItemLoot item="Health Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Dwarf King">
     <SpawnGroup group="Dwarves" maxChildren="10" initialSpawn="5" cooldown="8000" />
@@ -367,6 +425,14 @@
       </Prioritize>
       <TimedTransition targetState="Circling" time="2600" />
     </State>
+    <TierLoot tier="1" type="Weapon" probability="0.11" />
+    <TierLoot tier="1" type="Weapon" probability="0.38" />
+    <TierLoot tier="3" type="Weapon" probability="0.2" />
+    <TierLoot tier="3" type="Weapon" probability="0.2" />
+    <TierLoot tier="4" type="Weapon" probability="0.12" />
+    <TierLoot tier="4" type="Weapon" probability="0.15" />
+    <TierLoot tier="5" type="Weapon" probability="0.02" />
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Werelion">
     <DropPortalOnDeath target="Spider Den Portal" probability="0.1" />
@@ -398,6 +464,14 @@
         <PlayerWithinTransition targetState="normal_attack" dist="10" />
       </State>
     </State>
+    <TierLoot tier="2" type="Weapon" probability="0.07" />
+    <TierLoot tier="2" type="Weapon" probability="0.2" />
+    <TierLoot tier="4" type="Weapon" probability="0.18" />
+    <TierLoot tier="5" type="Weapon" probability="0.05" />
+    <TierLoot tier="5" type="Weapon" probability="0.24" />
+    <TierLoot tier="6" type="Weapon" probability="0.03" />
+    <ItemLoot item="Health Potion" probability="0.04" />
+    <ItemLoot item="Magic Potion" probability="0.05" />
   </BehaviorEntry>
   <BehaviorEntry id="Weretiger">
     <Shoot radius="8" shootAngle="0" predictive="0.3" cooldown="1000" />
@@ -407,6 +481,7 @@
       <Follow speed="0.8" range="6.3" cooldown="0" />
       <Wander speed="0.6" />
     </Prioritize>
+    <ItemLoot item="Health Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Wereleopard">
     <Shoot radius="4.5" shootAngle="0" predictive="0.4" cooldown="900" />
@@ -415,6 +490,7 @@
       <Follow speed="1.1" range="3" cooldown="0" />
       <Wander speed="1" />
     </Prioritize>
+    <ItemLoot item="Health Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Werepanther">
     <State id="idle">
@@ -446,6 +522,7 @@
       <Shoot radius="4" shootAngle="0" predictive="0.5" coolDownOffset="300" cooldown="800" />
       <TimedTransition targetState="idle" time="4000" />
     </State>
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Horned Drake">
     <Spawn children="Drake Baby" maxChildren="1" initialSpawn="1" cooldown="50000" givesNoXp="false" />
@@ -480,6 +557,16 @@
         <TimedTransition targetState="one_shot" time="1800" />
       </State>
     </State>
+    <TierLoot tier="2" type="Weapon" probability="0.07" />
+    <TierLoot tier="2" type="Weapon" probability="0.28" />
+    <TierLoot tier="3" type="Weapon" probability="0.001" />
+    <TierLoot tier="3" type="Weapon" probability="0.001" />
+    <TierLoot tier="5" type="Weapon" probability="0.14" />
+    <TierLoot tier="5" type="Weapon" probability="0.19" />
+    <TierLoot tier="6" type="Weapon" probability="0.05" />
+    <TierLoot tier="6" type="Weapon" probability="0.02" />
+    <ItemLoot item="Health Potion" probability="0.09" />
+    <ItemLoot item="Magic Potion" probability="0.12" />
   </BehaviorEntry>
   <BehaviorEntry id="Drake Baby">
     <State id="unharmed">
@@ -526,6 +613,7 @@
       <Shoot radius="10" shootAngle="0" projectileIndex="1" coolDownOffset="700" cooldown="700" />
       <TimedTransition targetState="fire1" time="2200" />
     </State>
+    <ItemLoot item="Magic Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Sand Phantom">
     <Prioritize>
@@ -604,6 +692,14 @@
       </Prioritize>
       <TimedTransition targetState="idle" time="1000" />
     </State>
+    <TierLoot tier="2" type="Weapon" probability="0.07" />
+    <TierLoot tier="2" type="Weapon" probability="0.27" />
+    <TierLoot tier="4" type="Weapon" probability="0.14" />
+    <TierLoot tier="5" type="Weapon" probability="0.05" />
+    <TierLoot tier="5" type="Weapon" probability="0.19" />
+    <TierLoot tier="6" type="Weapon" probability="0.02" />
+    <ItemLoot item="Health Potion" probability="0.12" />
+    <ItemLoot item="Magic Potion" probability="0.1" />
   </BehaviorEntry>
   <BehaviorEntry id="Tawny Warg">
     <Shoot radius="3.4" shootAngle="0" cooldown="1000" />
@@ -612,6 +708,7 @@
       <Follow speed="0.7" acquireRange="9" range="2" cooldown="0" />
       <Wander speed="0.8" />
     </Prioritize>
+    <ItemLoot item="Health Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Demon Warg">
     <Shoot radius="4.5" shootAngle="0" cooldown="1000" />
@@ -619,6 +716,7 @@
       <Protect speed="1.2" protectee="Desert Werewolf" acquireRange="14" protectionRange="8" reprotectRange="5" />
       <Wander speed="0.8" />
     </Prioritize>
+    <ItemLoot item="Health Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Desert Werewolf">
     <SpawnGroup group="Wargs" maxChildren="8" initialSpawn="4" cooldown="8000" />
@@ -640,5 +738,13 @@
         <Wander speed="0.65" />
       </Prioritize>
     </State>
+    <TierLoot tier="1" type="Weapon" probability="0.11" />
+    <TierLoot tier="1" type="Weapon" probability="0.38" />
+    <TierLoot tier="3" type="Weapon" probability="0.2" />
+    <TierLoot tier="3" type="Weapon" probability="0.2" />
+    <TierLoot tier="4" type="Weapon" probability="0.12" />
+    <TierLoot tier="4" type="Weapon" probability="0.15" />
+    <TierLoot tier="5" type="Weapon" probability="0.02" />
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
 </BehaviorEntries>

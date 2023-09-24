@@ -80,6 +80,7 @@ public class Loot : List<MobDrops> {
                     Rand.NextDouble() < i.Probabilty) {
                     loot.Add(i.Item);
                     reqDrops[i]--;
+                    Console.WriteLine($"Player {player.Item1.Name} received {i.Item.ObjectId}.");
                 }
 
             privateLoot[player.Item1] = loot;
@@ -99,17 +100,18 @@ public class Loot : List<MobDrops> {
 
             // add private required loot
             var ePlayers = eligiblePlayers.Where(p => i.Threshold <= p.Item2).ToList();
-            if (ePlayers.Count() <= 0) continue;
+            if (!ePlayers.Any()) continue;
 
-            while (reqDrops[i] > 0 && ePlayers.Count() > 0) {
-                // make sure a player doesn't recieve more than one required loot
-                var reciever = ePlayers.RandomElement(Rand);
-                ePlayers.Remove(reciever);
+            while (reqDrops[i] > 0 && ePlayers.Any()) {
+                // make sure a player doesn't receive more than one required loot
+                var receiver = ePlayers.RandomElement(Rand);
+                ePlayers.Remove(receiver);
 
-                // don't assign item if player already recieved one with random chance
-                if (privateLoot[reciever.Item1].Contains(i.Item)) continue;
+                // don't assign item if player already received one with random chance
+                if (privateLoot[receiver.Item1].Contains(i.Item)) 
+                    continue;
 
-                privateLoot[reciever.Item1].Add(i.Item);
+                privateLoot[receiver.Item1].Add(i.Item);
                 reqDrops[i]--;
             }
         }

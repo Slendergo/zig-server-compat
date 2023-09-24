@@ -4,30 +4,62 @@
     <StayAbove speed="0.4" altitude="95" />
     <Shoot radius="10" count="2" shootAngle="7" cooldown="300" />
     <Wander speed="1.4" />
+    <Threshold threshold="0.01">
+      <TierLoot tier="5" type="Weapon" probability="0.02" />
+      <ItemLoot item="Magic Potion" probability="0.05" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Native Ice Sprite">
     <StayAbove speed="0.4" altitude="105" />
     <Shoot radius="10" count="3" shootAngle="7" cooldown="1000" />
     <Wander speed="1.4" />
+    <Threshold threshold="0.01">
+      <TierLoot tier="2" type="Weapon" probability="0.04" />
+      <ItemLoot item="Magic Potion" probability="0.05" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Native Magic Sprite">
     <StayAbove speed="0.4" altitude="115" />
     <Shoot radius="10" count="4" shootAngle="7" cooldown="1000" />
     <Wander speed="1.4" />
+    <Threshold threshold="0.01">
+      <TierLoot tier="6" type="Weapon" probability="0.01" />
+      <ItemLoot item="Magic Potion" probability="0.05" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Native Nature Sprite">
     <Shoot radius="10" count="5" shootAngle="7" cooldown="1000" />
     <Wander speed="1.6" />
+    <Threshold threshold="0.01">
+      <ItemLoot item="Magic Potion" probability="0.015" />
+      <ItemLoot item="Sprite Wand" probability="0.015" />
+      <ItemLoot item="Ring of Greater Magic" probability="0.01" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Native Darkness Sprite">
     <Shoot radius="10" count="5" shootAngle="7" cooldown="1000" />
     <Wander speed="1.6" />
+    <Threshold threshold="0.01">
+      <ItemLoot item="Health Potion" probability="0.015" />
+      <ItemLoot item="Ring of Dexterity" probability="0.01" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Native Sprite God">
     <StayAbove speed="0.4" altitude="200" />
     <Shoot radius="12" count="4" shootAngle="10" cooldown="1000" />
     <Shoot radius="12" shootAngle="0" projectileIndex="1" predictive="1" cooldown="1000" />
     <Wander speed="0.4" />
+    <Threshold threshold="0.01">
+      <TierLoot tier="4" type="Weapon" probability="0.01" />
+      <TierLoot tier="4" type="Weapon" probability="0.01" />
+      <TierLoot tier="6" type="Weapon" probability="0.02" />
+      <TierLoot tier="7" type="Weapon" probability="0.01" />
+      <TierLoot tier="7" type="Weapon" probability="0.02" />
+      <TierLoot tier="8" type="Weapon" probability="0.005" />
+      <TierLoot tier="8" type="Weapon" probability="0.01" />
+      <TierLoot tier="9" type="Weapon" probability="0.005" />
+      <ItemLoot item="Potion of Attack" probability="0.02" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Limon the Sprite God">
     <DropPortalOnDeath target="Glowing Realm Portal" />
@@ -102,6 +134,19 @@
       <TimedTransition targetState="begin_teleport1" time="11000" />
       <HpLessTransition targetState="begin_teleport1" threshold="0.2" />
     </State>
+    <Threshold threshold="0.01">
+      <TierLoot tier="3" type="Weapon" probability="0.11" />
+      <TierLoot tier="3" type="Weapon" probability="0.11" />
+      <TierLoot tier="4" type="Weapon" probability="0.124" />
+      <TierLoot tier="5" type="Weapon" probability="0.11" />
+      <TierLoot tier="7" type="Weapon" probability="0.15" />
+      <ItemLoot item="Potion of Dexterity" probability="0.3" numRequired="1" />
+      <ItemLoot item="Potion of Defense" probability="0.1" />
+      <ItemLoot item="Sprite Wand" probability="0.01" />
+      <ItemLoot item="Wine Cellar Incantation" probability="0.02" />
+      <ItemLoot item="Staff of Extreme Prejudice" probability="0.01" />
+      <ItemLoot item="Cloak of the Planewalker" probability="0.01" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Limon Element 1">
     <ConditionalEffect effect="Invulnerable" />

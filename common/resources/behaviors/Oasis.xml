@@ -16,6 +16,16 @@
       <Wander speed="0.5" />
     </Prioritize>
     <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <TierLoot tier="3" type="Weapon" probability="0.1" />
+    <TierLoot tier="3" type="Weapon" probability="0.1" />
+    <TierLoot tier="4" type="Weapon" probability="0.15" />
+    <TierLoot tier="5" type="Weapon" probability="0.2" />
+    <TierLoot tier="6" type="Weapon" probability="0.2" />
+    <TierLoot tier="6" type="Weapon" probability="0.1" />
+    <TierLoot tier="7" type="Weapon" probability="0.1" />
+    <TierLoot tier="7" type="Weapon" probability="0.05" />
+    <TierLoot tier="8" type="Weapon" probability="0.05" />
+    <ItemLoot item="Magic Potion" probability="0.05" />
   </BehaviorEntry>
   <BehaviorEntry id="Oasis Soldier">
     <Prioritize>
@@ -24,6 +34,7 @@
       <Wander speed="0.5" />
     </Prioritize>
     <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="1000" />
+    <ItemLoot item="Health Potion" probability="0.05" />
   </BehaviorEntry>
   <BehaviorEntry id="Oasis Creature">
     <Prioritize>
@@ -32,6 +43,7 @@
       <Wander speed="0.5" />
     </Prioritize>
     <Shoot radius="10" shootAngle="0" cooldown="400" />
+    <ItemLoot item="Health Potion" probability="0.05" />
   </BehaviorEntry>
   <BehaviorEntry id="Oasis Monster">
     <Prioritize>
@@ -40,5 +52,6 @@
       <Wander speed="0.5" />
     </Prioritize>
     <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="1000" />
+    <ItemLoot item="Magic Potion" probability="0.05" />
   </BehaviorEntry>
 </BehaviorEntries>

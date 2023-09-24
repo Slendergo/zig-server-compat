@@ -24,6 +24,9 @@
       <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="1000" />
       <Shoot radius="10" shootAngle="0" projectileIndex="1" defaultAngle="0" predictive="1" cooldown="2000" />
     </State>
+    <Threshold threshold="0.32">
+      <ItemLoot item="Healing Ichor" probability="1" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Arachna Web Spoke 1">
     <State id=":D">
@@ -103,6 +106,28 @@
       <Charge speed="0.9" range="20" cooldown="2000" />
       <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="500" />
     </State>
+    <TierLoot tier="8" type="Weapon" probability="0.3" />
+    <TierLoot tier="9" type="Weapon" probability="0.2" />
+    <TierLoot tier="9" type="Weapon" probability="0.2" />
+    <TierLoot tier="10" type="Weapon" probability="0.1" />
+    <TierLoot tier="10" type="Weapon" probability="0.1" />
+    <ItemLoot item="Poison Fang Dagger" probability="0.2" />
+    <ItemLoot item="Spider's Eye Ring" probability="0.2" />
+    <ItemLoot item="Golden Dagger" probability="0.2" />
+    <ItemLoot item="Helm of the Juggernaut" probability="0.004" />
+    <ItemLoot item="Potion of Wisdom" probability="0.1" numRequired="1" />
+    <ItemLoot item="Potion of Vitality" probability="0.1" numRequired="1" />
+    <ItemLoot item="Snake Oil" probability="0.1" />
+    <ItemLoot item="Wine Cellar Incantation" probability="0.05" />
+    <ItemLoot item="Snake Eye Ring" probability="0.1" />
+    <ItemLoot item="Snake Skin Shield" probability="0.1" />
+    <ItemLoot item="Snake Skin Armor" probability="0.1" />
+    <ItemLoot item="Wand of the Bulwark" probability="0.005" />
+    <ItemLoot item="Potion of Speed" probability="1" />
+    <ItemLoot item="Ring of Greater Health" probability="0.1" />
+    <ItemLoot item="Ring of Greater Attack" probability="0.1" />
+    <ItemLoot item="Healing Ichor" probability="1" />
+    <ItemLoot item="Healing Ichor" probability="0.2" />
   </BehaviorEntry>
   <BehaviorEntry id="Black Spotted Den Spider">
     <State id="idle">
@@ -110,6 +135,7 @@
       <Charge speed="0.9" range="40" cooldown="2000" />
       <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="500" />
     </State>
+    <ItemLoot item="Healing Ichor" probability="0.2" />
   </BehaviorEntry>
   <BehaviorEntry id="Brown Den Spider">
     <State id="idle">
@@ -117,6 +143,7 @@
       <Follow speed="0.8" acquireRange="0.3" range="0" cooldown="0" />
       <Shoot radius="10" count="3" shootAngle="20" cooldown="500" />
     </State>
+    <ItemLoot item="Healing Ichor" probability="0.2" />
   </BehaviorEntry>
   <BehaviorEntry id="Green Den Spider Hatchling">
     <State id="idle">
@@ -140,6 +167,7 @@
       <Follow speed="1" acquireRange="0.8" range="0" cooldown="0" />
       <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="500" />
     </State>
+    <ItemLoot item="Healing Ichor" probability="0.2" />
   </BehaviorEntry>
   <BehaviorEntry id="Arachna Summoner">
     <ConditionalEffect effect="Invincible" perm="true" />

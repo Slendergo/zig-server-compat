@@ -4,6 +4,35 @@
     <Shoot radius="30" count="9" shootAngle="10" predictive="1" cooldown="750" />
     <Reproduce children="Red Flaming Skull" densityRadius="40" densityMax="20" cooldown="500" />
     <Reproduce children="Blue Flaming Skull" densityRadius="40" densityMax="20" cooldown="500" />
+    <Threshold threshold="0.05">
+      <TierLoot tier="3" type="Weapon" probability="0.15" />
+      <TierLoot tier="4" type="Weapon" probability="0.07" />
+      <TierLoot tier="4" type="Weapon" probability="0.15" />
+      <TierLoot tier="5" type="Weapon" probability="0.03" />
+      <TierLoot tier="5" type="Weapon" probability="0.07" />
+      <TierLoot tier="8" type="Weapon" probability="0.2" />
+      <TierLoot tier="8" type="Weapon" probability="0.15" />
+      <TierLoot tier="9" type="Weapon" probability="0.15" />
+      <TierLoot tier="9" type="Weapon" probability="0.1" />
+      <TierLoot tier="10" type="Weapon" probability="0.1" />
+      <TierLoot tier="10" type="Weapon" probability="0.07" />
+      <TierLoot tier="11" type="Weapon" probability="0.07" />
+      <TierLoot tier="11" type="Weapon" probability="0.05" />
+      <TierLoot tier="12" type="Weapon" probability="0.04" />
+      <ItemLoot item="Large Skull Cloth" probability="0.01" />
+      <ItemLoot item="Small Plaid Cloth" probability="0.01" />
+      <ItemLoot item="Large Plaid Cloth" probability="0.01" />
+      <ItemLoot item="Small Cloud Cloth" probability="0.01" />
+      <ItemLoot item="Large Cloud Cloth" probability="0.01" />
+      <ItemLoot item="Potion of Vitality" probability="0.1" />
+      <ItemLoot item="Potion of Speed" probability="0.1" />
+      <ItemLoot item="Potion of Wisdom" probability="0.1" />
+      <ItemLoot item="Potion of Attack" probability="0.1" />
+      <ItemLoot item="Potion of Defense" probability="0.1" />
+      <ItemLoot item="Small Skull Cloth" probability="0.01" />
+      <ItemLoot item="Potion of Dexterity" probability="0.1" />
+      <ItemLoot item="Orb of Conflict" probability="0.001" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Red Flaming Skull">
     <Shoot radius="12" count="2" shootAngle="10" cooldown="750" />

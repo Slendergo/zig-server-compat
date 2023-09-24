@@ -29,6 +29,8 @@
       </Prioritize>
       <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
     </State>
+    <ItemLoot item="Long Sword" probability="0.02" />
+    <ItemLoot item="Dirk" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Skeleton Swordsman">
     <Shoot radius="3" shootAngle="0" cooldown="1000" />
@@ -59,6 +61,9 @@
       </Prioritize>
       <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
     </State>
+    <ItemLoot item="Long Sword" probability="0.03" />
+    <ItemLoot item="Steel Shield" probability="0.02" />
+    <ItemLoot item="Bronze Helm" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Skeleton Veteran">
     <Shoot radius="3" shootAngle="0" cooldown="1000" />
@@ -89,6 +94,10 @@
       </Prioritize>
       <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
     </State>
+    <ItemLoot item="Long Sword" probability="0.03" />
+    <ItemLoot item="Golden Shield" probability="0.02" />
+    <ItemLoot item="Cloak of Darkness" probability="0.01" />
+    <ItemLoot item="Spider Venom" probability="0.01" />
   </BehaviorEntry>
   <BehaviorEntry id="Skeleton Mage">
     <Shoot radius="10" shootAngle="0" cooldown="1000" />
@@ -119,6 +128,10 @@
       </Prioritize>
       <EntityNotExistsTransition targetState="Default" dist="10" target="Deathmage" />
     </State>
+    <ItemLoot item="Missile Wand" probability="0.02" />
+    <ItemLoot item="Comet Staff" probability="0.02" />
+    <ItemLoot item="Comet Staff" probability="0.02" />
+    <ItemLoot item="Fire Nova Spell" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Deathmage">
     <Spawn children="Skeleton" maxChildren="4" initialSpawn="2" cooldown="8000" givesNoXp="false" />

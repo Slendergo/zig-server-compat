@@ -66,6 +66,11 @@
       <Order range="30" children="Horrid Reaper" targetState="Die" />
       <TimedTransition targetState="Attack1" time="1900" />
     </State>
+    <Threshold threshold="0.01">
+      <ItemLoot item="Potion of Vitality" probability="0.1" numRequired="1" />
+      <ItemLoot item="Potion of Wisdom" probability="0.1" numRequired="1" />
+      <ItemLoot item="Helm of the Juggernaut" probability="0.004" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Horrid Reaper">
     <ConditionalEffect effect="Invulnerable" />

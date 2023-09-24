@@ -101,6 +101,24 @@
         <TimedTransition targetState="first_satellites" time="3000" />
       </State>
     </State>
+    <TierLoot tier="2" type="Weapon" probability="0.02" />
+    <TierLoot tier="3" type="Weapon" probability="0.12" />
+    <TierLoot tier="4" type="Weapon" probability="0.07" />
+    <TierLoot tier="4" type="Weapon" probability="0.1" />
+    <TierLoot tier="5" type="Weapon" probability="0.04" />
+    <TierLoot tier="5" type="Weapon" probability="0.04" />
+    <TierLoot tier="8" type="Weapon" probability="0.12" />
+    <TierLoot tier="8" type="Weapon" probability="0.12" />
+    <TierLoot tier="9" type="Weapon" probability="0.1" />
+    <TierLoot tier="9" type="Weapon" probability="0.1" />
+    <TierLoot tier="10" type="Weapon" probability="0.06" />
+    <TierLoot tier="10" type="Weapon" probability="0.06" />
+    <TierLoot tier="11" type="Weapon" probability="0.04" />
+    <TierLoot tier="11" type="Weapon" probability="0.04" />
+    <ItemLoot item="Wine Cellar Incantation" probability="0.001" />
+    <ItemLoot item="Ghost Pirate Rum" probability="0.2" />
+    <ItemLoot item="Potion of Wisdom" probability="0.1" />
+    <ItemLoot item="Health Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Paper Golem">
     <Reproduce densityMax="1" cooldown="60000" />
@@ -118,6 +136,8 @@
       </Prioritize>
       <TimedTransition targetState="idle" time="12000" />
     </State>
+    <TierLoot tier="5" type="Weapon" probability="0.02" />
+    <ItemLoot item="Health Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Fire Golem">
     <Reproduce densityMax="1" cooldown="60000" />
@@ -142,6 +162,8 @@
         <TimedTransition targetState="slowshot" time="1200" />
       </State>
     </State>
+    <TierLoot tier="6" type="Weapon" probability="0.015" />
+    <ItemLoot item="Health Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Darkness Golem">
     <Reproduce densityMax="1" cooldown="60000" />
@@ -194,5 +216,7 @@
         <TimedTransition targetState="first_satellites" time="3800" />
       </State>
     </State>
+    <TierLoot tier="2" type="Weapon" probability="0.02" />
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
 </BehaviorEntries>

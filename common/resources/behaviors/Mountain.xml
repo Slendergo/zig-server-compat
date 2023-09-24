@@ -42,6 +42,9 @@
     </Prioritize>
     <Shoot radius="10" count="3" shootAngle="20" predictive="1" cooldown="500" />
     <Reproduce densityMax="3" cooldown="60000" />
+    <Threshold threshold="0.07">
+      <ItemLoot item="Potion of Attack" probability="0.07" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Sprite God">
     <Prioritize>
@@ -52,6 +55,9 @@
     <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="1" cooldown="1000" />
     <Reproduce densityMax="3" cooldown="60000" />
     <ReproduceChildren children="Sprite Child" initialSpawn="2" cooldown="5000" />
+    <Threshold threshold="0.07">
+      <ItemLoot item="Potion of Attack" probability="0.07" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Sprite Child">
     <Prioritize>
@@ -71,6 +77,9 @@
     <Shoot radius="12" count="5" shootAngle="10" cooldown="1000" />
     <Grenade radius="4" damage="150" range="8" cooldown="3000" />
     <Reproduce densityMax="3" cooldown="60000" />
+    <Threshold threshold="0.07">
+      <ItemLoot item="Potion of Speed" probability="0.07" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Ent God">
     <Prioritize>
@@ -80,6 +89,9 @@
     </Prioritize>
     <Shoot radius="12" count="5" shootAngle="10" predictive="1" cooldown="1250" />
     <Reproduce densityMax="3" cooldown="60000" />
+    <Threshold threshold="0.07">
+      <ItemLoot item="Potion of Defense" probability="0.07" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Beholder">
     <Prioritize>
@@ -90,6 +102,9 @@
     <Shoot radius="12" count="5" shootAngle="72" predictive="0.5" cooldown="750" />
     <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="1" cooldown="1000" />
     <Reproduce densityMax="3" cooldown="60000" />
+    <Threshold threshold="0.07">
+      <ItemLoot item="Potion of Defense" probability="0.07" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Flying Brain">
     <Prioritize>
@@ -100,6 +115,9 @@
     <Shoot radius="12" count="5" shootAngle="72" cooldown="500" />
     <Reproduce densityMax="3" cooldown="60000" />
     <DropPortalOnDeath target="Mad Lab Portal" probability="0.17" />
+    <Threshold threshold="0.07">
+      <ItemLoot item="Potion of Attack" probability="0.07" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Slime God">
     <Prioritize>
@@ -110,6 +128,9 @@
     <Shoot radius="12" count="5" shootAngle="10" predictive="1" cooldown="1000" />
     <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="1" cooldown="650" />
     <Reproduce densityMax="2" cooldown="60000" />
+    <Threshold threshold="0.07">
+      <ItemLoot item="Potion of Defense" probability="0.07" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Ghost God">
     <Prioritize>
@@ -120,6 +141,9 @@
     <Shoot radius="12" count="7" shootAngle="25" predictive="0.5" cooldown="900" />
     <Reproduce densityMax="3" cooldown="60000" />
     <DropPortalOnDeath target="Undead Lair Portal" probability="0.17" />
+    <Threshold threshold="0.07">
+      <ItemLoot item="Potion of Speed" probability="0.07" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Rock Bot">
     <Spawn children="Paper Bot" maxChildren="1" initialSpawn="1" cooldown="10000" givesNoXp="false" />
@@ -134,6 +158,9 @@
       <Taunt text="We are impervious to non-mystic attacks!" probability="0.5" />
       <TimedTransition targetState="Waiting" time="10000" />
     </State>
+    <Threshold threshold="0.04">
+      <ItemLoot item="Potion of Attack" probability="0.03" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Paper Bot">
     <DropPortalOnDeath target="Puppet Theatre Portal" probability="0.15" />
@@ -154,6 +181,9 @@
       <Shoot radius="0" count="10" shootAngle="36" fixedAngle="0" cooldown="1000" />
       <Decay time="0" />
     </State>
+    <Threshold threshold="0.04">
+      <ItemLoot item="Potion of Attack" probability="0.03" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Steel Bot">
     <Prioritize>
@@ -174,6 +204,9 @@
       <Shoot radius="0" count="10" shootAngle="36" fixedAngle="0" cooldown="1000" />
       <Decay time="0" />
     </State>
+    <Threshold threshold="0.04">
+      <ItemLoot item="Potion of Attack" probability="0.03" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Djinn">
     <State id="Idle">
@@ -229,6 +262,9 @@
       <Shoot radius="0" count="10" shootAngle="36" fixedAngle="0" cooldown="1000" />
       <Suicide />
     </State>
+    <Threshold threshold="0.07">
+      <ItemLoot item="Potion of Speed" probability="0.07" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Leviathan">
     <State id="Wander">
@@ -262,5 +298,11 @@
         <TimedTransition targetState="Wander" time="1500" />
       </State>
     </State>
+    <Threshold threshold="0.01">
+      <TierLoot tier="6" type="Weapon" probability="0.01" />
+      <ItemLoot item="Potion of Defense" probability="0.07" />
+      <ItemLoot item="Health Potion" probability="0.04" />
+      <ItemLoot item="Magic Potion" probability="0.01" />
+    </Threshold>
   </BehaviorEntry>
 </BehaviorEntries>

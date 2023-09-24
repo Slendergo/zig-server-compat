@@ -168,6 +168,17 @@
         <TimedTransition targetState="shielded" time="4000" />
       </State>
     </State>
+    <Threshold threshold="0.001">
+      <TierLoot tier="1" type="Weapon" probability="0.95" />
+      <TierLoot tier="2" type="Weapon" probability="0.15" />
+      <TierLoot tier="2" type="Weapon" probability="0.25" />
+      <TierLoot tier="3" type="Weapon" probability="0.04" />
+      <TierLoot tier="3" type="Weapon" probability="0.05" />
+      <TierLoot tier="6" type="Weapon" probability="0.3" />
+      <TierLoot tier="6" type="Weapon" probability="0.3" />
+      <TierLoot tier="7" type="Weapon" probability="0.1" />
+      <TierLoot tier="7" type="Weapon" probability="0.1" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Ent">
     <Prioritize>
@@ -177,6 +188,18 @@
     </Prioritize>
     <Shoot radius="10" shootAngle="0" predictive="0.4" cooldown="600" />
     <Decay time="90000" />
+    <TierLoot tier="1" type="Weapon" probability="0.95" />
+    <TierLoot tier="2" type="Weapon" probability="0.15" />
+    <TierLoot tier="2" type="Weapon" probability="0.25" />
+    <TierLoot tier="3" type="Weapon" probability="0.04" />
+    <TierLoot tier="3" type="Weapon" probability="0.05" />
+    <TierLoot tier="6" type="Weapon" probability="0.3" />
+    <TierLoot tier="6" type="Weapon" probability="0.3" />
+    <TierLoot tier="7" type="Weapon" probability="0.1" />
+    <TierLoot tier="7" type="Weapon" probability="0.1" />
+    <ItemLoot item="Health Potion" probability="0.7" />
+    <ItemLoot item="Magic Potion" probability="0.7" />
+    <ItemLoot item="Tincture of Dexterity" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Ent Sapling">
     <Prioritize>
@@ -218,5 +241,11 @@
         <Follow speed="0.3" acquireRange="7" range="0.2" cooldown="0" />
       </Prioritize>
     </State>
+    <Threshold threshold="0.01">
+      <TierLoot tier="8" type="Weapon" probability="0.3" />
+      <ItemLoot item="Tincture of Life" probability="0.06" />
+      <ItemLoot item="Green Drake Egg" probability="0.08" />
+      <ItemLoot item="Quiver of Thunder" probability="0.002" />
+    </Threshold>
   </BehaviorEntry>
 </BehaviorEntries>

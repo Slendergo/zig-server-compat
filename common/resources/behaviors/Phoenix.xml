@@ -17,6 +17,144 @@
       <Wander speed="0.5" />
     </Prioritize>
     <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <TierLoot tier="3" type="Weapon" probability="0.015" />
+    <TierLoot tier="3" type="Weapon" probability="0.015" />
+    <TierLoot tier="3" type="Weapon" probability="0.05" />
+    <TierLoot tier="3" type="Weapon" probability="0.1" />
+    <TierLoot tier="3" type="Weapon" probability="0.015" />
+    <TierLoot tier="3" type="Weapon" probability="0.015" />
+    <TierLoot tier="3" type="Weapon" probability="0.15" />
+    <TierLoot tier="3" type="Weapon" probability="0.015" />
+    <TierLoot tier="3" type="Weapon" probability="0.015" />
+    <TierLoot tier="4" type="Weapon" probability="0.005" />
+    <TierLoot tier="4" type="Weapon" probability="0.005" />
+    <TierLoot tier="4" type="Weapon" probability="0.02" />
+    <TierLoot tier="4" type="Weapon" probability="0.07" />
+    <TierLoot tier="4" type="Weapon" probability="0.02" />
+    <TierLoot tier="4" type="Weapon" probability="0.02" />
+    <TierLoot tier="4" type="Weapon" probability="0.005" />
+    <TierLoot tier="4" type="Weapon" probability="0.02" />
+    <TierLoot tier="4" type="Weapon" probability="0.02" />
+    <TierLoot tier="4" type="Weapon" probability="0.005" />
+    <TierLoot tier="4" type="Weapon" probability="0.02" />
+    <TierLoot tier="4" type="Weapon" probability="0.02" />
+    <TierLoot tier="4" type="Weapon" probability="0.005" />
+    <TierLoot tier="4" type="Weapon" probability="0.15" />
+    <TierLoot tier="4" type="Weapon" probability="0.02" />
+    <TierLoot tier="4" type="Weapon" probability="0.005" />
+    <TierLoot tier="5" type="Weapon" probability="0.03" />
+    <TierLoot tier="5" type="Weapon" probability="0.16" />
+    <TierLoot tier="5" type="Weapon" probability="0.07" />
+    <TierLoot tier="5" type="Weapon" probability="0.16" />
+    <TierLoot tier="6" type="Weapon" probability="0.08" />
+    <TierLoot tier="6" type="Weapon" probability="0.04" />
+    <TierLoot tier="6" type="Weapon" probability="0.08" />
+    <TierLoot tier="6" type="Weapon" probability="0.01" />
+    <TierLoot tier="6" type="Weapon" probability="0.01" />
+    <TierLoot tier="6" type="Weapon" probability="0.04" />
+    <TierLoot tier="6" type="Weapon" probability="0.01" />
+    <TierLoot tier="6" type="Weapon" probability="0.04" />
+    <TierLoot tier="6" type="Weapon" probability="0.04" />
+    <TierLoot tier="6" type="Weapon" probability="0.04" />
+    <TierLoot tier="6" type="Weapon" probability="0.04" />
+    <TierLoot tier="6" type="Weapon" probability="0.04" />
+    <TierLoot tier="6" type="Weapon" probability="0.04" />
+    <TierLoot tier="6" type="Weapon" probability="0.04" />
+    <TierLoot tier="7" type="Weapon" probability="0.02" />
+    <TierLoot tier="7" type="Weapon" probability="0.04" />
+    <TierLoot tier="7" type="Weapon" probability="0.04" />
+    <TierLoot tier="7" type="Weapon" probability="0.02" />
+    <TierLoot tier="7" type="Weapon" probability="0.04" />
+    <TierLoot tier="7" type="Weapon" probability="0.04" />
+    <TierLoot tier="7" type="Weapon" probability="0.02" />
+    <TierLoot tier="7" type="Weapon" probability="0.02" />
+    <TierLoot tier="7" type="Weapon" probability="0.04" />
+    <TierLoot tier="7" type="Weapon" probability="0.04" />
+    <TierLoot tier="7" type="Weapon" probability="0.02" />
+    <TierLoot tier="7" type="Weapon" probability="0.04" />
+    <TierLoot tier="7" type="Weapon" probability="0.02" />
+    <TierLoot tier="7" type="Weapon" probability="0.04" />
+    <TierLoot tier="7" type="Weapon" probability="0.02" />
+    <TierLoot tier="7" type="Weapon" probability="0.02" />
+    <TierLoot tier="7" type="Weapon" probability="0.04" />
+    <TierLoot tier="7" type="Weapon" probability="0.04" />
+    <TierLoot tier="7" type="Weapon" probability="0.04" />
+    <TierLoot tier="7" type="Weapon" probability="0.02" />
+    <TierLoot tier="8" type="Weapon" probability="0.02" />
+    <TierLoot tier="8" type="Weapon" probability="0.02" />
+    <TierLoot tier="8" type="Weapon" probability="0.02" />
+    <TierLoot tier="8" type="Weapon" probability="0.2" />
+    <TierLoot tier="8" type="Weapon" probability="0.01" />
+    <TierLoot tier="8" type="Weapon" probability="0.01" />
+    <TierLoot tier="8" type="Weapon" probability="0.02" />
+    <TierLoot tier="8" type="Weapon" probability="0.02" />
+    <TierLoot tier="8" type="Weapon" probability="0.01" />
+    <TierLoot tier="8" type="Weapon" probability="0.02" />
+    <TierLoot tier="8" type="Weapon" probability="0.01" />
+    <TierLoot tier="8" type="Weapon" probability="0.01" />
+    <TierLoot tier="8" type="Weapon" probability="0.02" />
+    <TierLoot tier="8" type="Weapon" probability="0.01" />
+    <TierLoot tier="8" type="Weapon" probability="0.15" />
+    <TierLoot tier="8" type="Weapon" probability="0.02" />
+    <TierLoot tier="8" type="Weapon" probability="0.02" />
+    <TierLoot tier="9" type="Weapon" probability="0.01" />
+    <TierLoot tier="9" type="Weapon" probability="0.15" />
+    <TierLoot tier="9" type="Weapon" probability="0.01" />
+    <TierLoot tier="9" type="Weapon" probability="0.1" />
+    <TierLoot tier="9" type="Weapon" probability="0.01" />
+    <TierLoot tier="9" type="Weapon" probability="0.01" />
+    <TierLoot tier="9" type="Weapon" probability="0.01" />
+    <TierLoot tier="9" type="Weapon" probability="0.01" />
+    <TierLoot tier="10" type="Weapon" probability="0.07" />
+    <TierLoot tier="10" type="Weapon" probability="0.1" />
+    <TierLoot tier="11" type="Weapon" probability="0.05" />
+    <TierLoot tier="11" type="Weapon" probability="0.07" />
+    <TierLoot tier="12" type="Weapon" probability="0.04" />
+    <ItemLoot item="Sea Slurp Egg" probability="0.25" />
+    <ItemLoot item="Coral Bow" probability="0.01" />
+    <ItemLoot item="Coral Venom Trap" probability="0.03" />
+    <ItemLoot item="Wine Cellar Incantation" probability="0.02" />
+    <ItemLoot item="Coral Silk Armor" probability="0.04" />
+    <ItemLoot item="Coral Ring" probability="0.04" />
+    <ItemLoot item="Coral Juice" probability="0.3" />
+    <ItemLoot item="Potion of Defense" probability="0.1" />
+    <ItemLoot item="Potion of Wisdom" probability="0.1" />
+    <ItemLoot item="Potion of Speed" probability="0.1" />
+    <ItemLoot item="Potion of Vitality" probability="0.1" />
+    <ItemLoot item="Potion of Dexterity" probability="0.1" />
+    <ItemLoot item="Potion of Attack" probability="0.1" />
+    <ItemLoot item="Potion of Mana" probability="1" />
+    <ItemLoot item="Potion of Speed" probability="0.07" />
+    <ItemLoot item="Coral Silk Armor" probability="0.04" />
+    <ItemLoot item="Potion of Attack" probability="0.07" />
+    <ItemLoot item="Potion of Attack" probability="0.07" />
+    <ItemLoot item="Potion of Speed" probability="0.07" />
+    <ItemLoot item="Potion of Defense" probability="0.07" />
+    <ItemLoot item="Potion of Defense" probability="0.07" />
+    <ItemLoot item="Potion of Attack" probability="0.07" />
+    <ItemLoot item="Potion of Defense" probability="0.07" />
+    <ItemLoot item="Seal of Blasphemous Prayer" probability="0.004" />
+    <ItemLoot item="Purple Drake Egg" probability="0.01" />
+    <ItemLoot item="Potion of Attack" probability="0.03" />
+    <ItemLoot item="Health Potion" probability="0.04" />
+    <ItemLoot item="Magic Potion" probability="0.01" />
+    <ItemLoot item="Tincture of Life" probability="0.01" />
+    <ItemLoot item="Potion of Attack" probability="0.03" />
+    <ItemLoot item="Health Potion" probability="0.04" />
+    <ItemLoot item="Magic Potion" probability="0.01" />
+    <ItemLoot item="Potion of Attack" probability="0.03" />
+    <ItemLoot item="Potion of Speed" probability="0.07" />
+    <ItemLoot item="Potion of Defense" probability="0.07" />
+    <ItemLoot item="Health Potion" probability="0.04" />
+    <ItemLoot item="Magic Potion" probability="0.01" />
+    <ItemLoot item="Coral Juice" probability="0.3" />
+    <ItemLoot item="Sea Slurp Egg" probability="0.25" />
+    <ItemLoot item="Potion of Mana" probability="0.04" />
+    <ItemLoot item="Coral Bow" probability="0.01" />
+    <ItemLoot item="Coral Venom Trap" probability="0.03" />
+    <ItemLoot item="Wine Cellar Incantation" probability="0.02" />
+    <ItemLoot item="Coral Ring" probability="0.04" />
+    <ItemLoot item="Magic Potion" probability="0.05" />
   </BehaviorEntry>
   <BehaviorEntry id="Birdman">
     <Prioritize>
@@ -25,6 +163,7 @@
       <Wander speed="0.5" />
     </Prioritize>
     <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="1000" />
+    <ItemLoot item="Health Potion" probability="0.05" />
   </BehaviorEntry>
   <BehaviorEntry id="Phoenix Egg">
     <TransformOnDeath target="Phoenix Reborn" />
@@ -65,5 +204,13 @@
       <Shoot radius="10" shootAngle="0" projectileIndex="1" predictive="0.5" cooldown="350" />
       <TimedTransition targetState="xxx" time="4500" />
     </State>
+    <Threshold threshold="0.1">
+      <ItemLoot item="Large Stony Cloth" probability="0.03" />
+      <ItemLoot item="Small Stony Cloth" probability="0.03" />
+      <ItemLoot item="Large Tan Diamond Cloth" probability="0.03" />
+      <ItemLoot item="Small Tan Diamond Cloth" probability="0.03" />
+      <ItemLoot item="Large Smiley Cloth" probability="0.03" />
+      <ItemLoot item="Small Smiley Cloth" probability="0.03" />
+    </Threshold>
   </BehaviorEntry>
 </BehaviorEntries>

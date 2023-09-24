@@ -93,6 +93,29 @@
       <Shoot radius="0" count="8" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="1000" />
       <Suicide />
     </State>
+    <Threshold threshold="0.01">
+      <TierLoot tier="3" type="Weapon" probability="0.15" />
+      <TierLoot tier="4" type="Weapon" probability="0.15" />
+      <TierLoot tier="4" type="Weapon" probability="0.07" />
+      <TierLoot tier="5" type="Weapon" probability="0.07" />
+      <TierLoot tier="5" type="Weapon" probability="0.03" />
+      <TierLoot tier="8" type="Weapon" probability="0.15" />
+      <TierLoot tier="8" type="Weapon" probability="0.2" />
+      <TierLoot tier="9" type="Weapon" probability="0.1" />
+      <TierLoot tier="9" type="Weapon" probability="0.15" />
+      <TierLoot tier="10" type="Weapon" probability="0.07" />
+      <TierLoot tier="10" type="Weapon" probability="0.1" />
+      <TierLoot tier="11" type="Weapon" probability="0.05" />
+      <TierLoot tier="11" type="Weapon" probability="0.07" />
+      <TierLoot tier="12" type="Weapon" probability="0.04" />
+      <ItemLoot item="Potion of Defense" probability="0.1" />
+      <ItemLoot item="Potion of Attack" probability="0.1" />
+      <ItemLoot item="Potion of Vitality" probability="0.1" />
+      <ItemLoot item="Potion of Wisdom" probability="0.1" />
+      <ItemLoot item="Potion of Speed" probability="0.1" />
+      <ItemLoot item="Potion of Dexterity" probability="0.1" />
+      <ItemLoot item="Shield of Ogmur" probability="0.004" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Protection Crystal">
     <Prioritize>
@@ -119,6 +142,29 @@
       <Shoot radius="10" count="8" shootAngle="0" projectileIndex="1" fixedAngle="45" cooldown="3000" />
       <Shoot radius="10" count="5" shootAngle="10" cooldown="1500" />
     </State>
+    <TierLoot tier="3" type="Weapon" probability="0.15" />
+    <TierLoot tier="4" type="Weapon" probability="0.07" />
+    <TierLoot tier="4" type="Weapon" probability="0.15" />
+    <TierLoot tier="5" type="Weapon" probability="0.03" />
+    <TierLoot tier="5" type="Weapon" probability="0.07" />
+    <TierLoot tier="8" type="Weapon" probability="0.2" />
+    <TierLoot tier="8" type="Weapon" probability="0.15" />
+    <TierLoot tier="9" type="Weapon" probability="0.15" />
+    <TierLoot tier="9" type="Weapon" probability="0.1" />
+    <TierLoot tier="10" type="Weapon" probability="0.1" />
+    <TierLoot tier="10" type="Weapon" probability="0.07" />
+    <TierLoot tier="11" type="Weapon" probability="0.07" />
+    <TierLoot tier="11" type="Weapon" probability="0.05" />
+    <TierLoot tier="12" type="Weapon" probability="0.04" />
+    <ItemLoot item="Health Potion" probability="0.1" />
+    <ItemLoot item="Potion of Defense" probability="0.1" />
+    <ItemLoot item="Potion of Attack" probability="0.1" />
+    <ItemLoot item="Potion of Vitality" probability="0.1" />
+    <ItemLoot item="Potion of Wisdom" probability="0.1" />
+    <ItemLoot item="Potion of Speed" probability="0.1" />
+    <ItemLoot item="Potion of Dexterity" probability="0.1" />
+    <ItemLoot item="Shield of Ogmur" probability="0.004" />
+    <ItemLoot item="Magic Potion" probability="0.1" />
   </BehaviorEntry>
   <BehaviorEntry id="Knight of the Lost Lands">
     <Prioritize>
@@ -127,5 +173,7 @@
       <Wander speed="0.3" />
     </Prioritize>
     <Shoot radius="13" shootAngle="0" cooldown="700" />
+    <ItemLoot item="Health Potion" probability="0.1" />
+    <ItemLoot item="Magic Potion" probability="0.1" />
   </BehaviorEntry>
 </BehaviorEntries>

@@ -37,11 +37,16 @@ public class ItemLoot : MobDrops {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
     public ItemLoot(XElement e) {
-        var item = e.ParseString("@item");
+        var itemId = e.ParseString("@item");
         var prob = e.ParseFloat("@probability");
         var numReq = e.ParseInt("@numRequired");
         var threshold = e.ParseFloat("@threshold");
-        LootDefs.Add(new LootDef(XmlData.Items[XmlData.IdToObjectType[item]], prob, numReq, threshold));
+        if (XmlData.IdToObjectType.TryGetValue(itemId, out var objType) && XmlData.Items.TryGetValue(objType, out Item item)) {
+            LootDefs.Add(new LootDef(item, prob, numReq, threshold));
+        }
+        else {
+            Log.Error($"Error when adding \"{itemId}\" to loot definitions. Item not found.");
+        }
     }
 }
 

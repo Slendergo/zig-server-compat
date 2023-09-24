@@ -104,6 +104,12 @@
       </State>
       <State id="unset blue shield 5" />
     </State>
+    <Threshold threshold="0.01">
+      <ItemLoot item="Potion of Life" probability="1" />
+      <ItemLoot item="Ring of the Pyramid" probability="0.04" />
+      <ItemLoot item="Tome of Holy Protection" probability="0.01" />
+      <ItemLoot item="Wine Cellar Incantation" probability="0.05" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Tomb Support">
     <State id="idle">
@@ -211,6 +217,11 @@
       </State>
       <State id="unset blue shield 5" />
     </State>
+    <Threshold threshold="0.01">
+      <ItemLoot item="Potion of Life" probability="1" />
+      <ItemLoot item="Ring of the Sphinx" probability="0.04" />
+      <ItemLoot item="Wine Cellar Incantation" probability="0.05" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Tomb Attacker">
     <State id="idle">
@@ -392,6 +403,11 @@
         <TimedTransition targetState="Grenade 13" time="1500" />
       </State>
     </State>
+    <Threshold threshold="0.01">
+      <ItemLoot item="Potion of Life" probability="1" />
+      <ItemLoot item="Ring of the Nile" probability="0.04" />
+      <ItemLoot item="Wine Cellar Incantation" probability="0.05" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Pyramid Artifact 1">
     <Prioritize>
@@ -552,6 +568,11 @@
     <State id="idle">
       <ChangeSize rate="100" target="100" />
     </State>
+    <Threshold threshold="0.32">
+      <ItemLoot item="Tincture of Mana" probability="0.15" />
+      <ItemLoot item="Tincture of Dexterity" probability="0.15" />
+      <ItemLoot item="Tincture of Life" probability="0.15" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Tomb Boss Anchor">
     <ConditionalEffect effect="Invincible" perm="true" />

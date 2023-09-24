@@ -23,6 +23,12 @@
       <Shoot radius="1" count="15" shootAngle="24" projectileIndex="2" fixedAngle="16" cooldown="1200" />
       <TimedTransition targetState="idle" time="400" />
     </State>
+    <TierLoot tier="1" type="Weapon" probability="0.11" />
+    <TierLoot tier="1" type="Weapon" probability="0.39" />
+    <TierLoot tier="2" type="Weapon" probability="0.3" />
+    <TierLoot tier="2" type="Weapon" probability="0.3" />
+    <ItemLoot item="Health Potion" probability="0.02" />
+    <ItemLoot item="Magic Potion" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Hobbit Archer">
     <Shoot radius="10" shootAngle="0" cooldown="1000" />
@@ -47,6 +53,7 @@
       </Prioritize>
       <TimedTransition targetState="run1" time="400" />
     </State>
+    <ItemLoot item="Health Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Hobbit Rogue">
     <Shoot radius="3" shootAngle="0" cooldown="1000" />
@@ -55,6 +62,7 @@
       <Follow speed="0.85" range="1" cooldown="0" />
       <Wander speed="0.4" />
     </Prioritize>
+    <ItemLoot item="Health Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Undead Hobbit Mage">
     <Shoot radius="10" shootAngle="0" projectileIndex="3" cooldown="1000" />
@@ -80,6 +88,11 @@
       <Shoot radius="1" count="15" shootAngle="24" projectileIndex="2" fixedAngle="16" cooldown="1200" />
       <TimedTransition targetState="idle" time="400" />
     </State>
+    <TierLoot tier="1" type="Weapon" probability="0.12" />
+    <TierLoot tier="1" type="Weapon" probability="0.39" />
+    <TierLoot tier="3" type="Weapon" probability="0.3" />
+    <TierLoot tier="3" type="Weapon" probability="0.3" />
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Undead Hobbit Archer">
     <Shoot radius="10" shootAngle="0" cooldown="1000" />
@@ -104,6 +117,7 @@
       </Prioritize>
       <TimedTransition targetState="run1" time="400" />
     </State>
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Undead Hobbit Rogue">
     <Shoot radius="3" shootAngle="0" cooldown="1000" />
@@ -112,6 +126,7 @@
       <Follow speed="0.85" range="1" cooldown="0" />
       <Wander speed="0.4" />
     </Prioritize>
+    <ItemLoot item="Health Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Sumo Master">
     <State id="sleeping1">
@@ -153,6 +168,8 @@
         <TimedTransition targetState="shoot" time="400" />
       </State>
     </State>
+    <ItemLoot item="Health Potion" probability="0.05" />
+    <ItemLoot item="Magic Potion" probability="0.05" />
   </BehaviorEntry>
   <BehaviorEntry id="Lil Sumo">
     <Shoot radius="8" shootAngle="0" cooldown="1000" />
@@ -160,6 +177,8 @@
       <Orbit speed="0.4" radius="2" target="Sumo Master" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
       <Wander speed="0.4" />
     </Prioritize>
+    <ItemLoot item="Health Potion" probability="0.02" />
+    <ItemLoot item="Magic Potion" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Elf Wizard">
     <Spawn children="Elf Archer" maxChildren="2" initialSpawn="1" cooldown="15000" givesNoXp="false" />
@@ -194,6 +213,12 @@
       </Prioritize>
       <TimedTransition targetState="idle" time="2000" />
     </State>
+    <TierLoot tier="1" type="Weapon" probability="0.11" />
+    <TierLoot tier="1" type="Weapon" probability="0.39" />
+    <TierLoot tier="2" type="Weapon" probability="0.36" />
+    <TierLoot tier="2" type="Weapon" probability="0.36" />
+    <ItemLoot item="Health Potion" probability="0.02" />
+    <ItemLoot item="Magic Potion" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Elf Archer">
     <Shoot radius="10" shootAngle="0" predictive="1" cooldown="1000" />
@@ -202,6 +227,7 @@
       <Protect speed="1.2" protectee="Elf Wizard" acquireRange="30" protectionRange="10" />
       <Wander speed="0.4" />
     </Prioritize>
+    <ItemLoot item="Health Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Elf Swordsman">
     <Shoot radius="10" shootAngle="0" predictive="1" cooldown="1000" />
@@ -211,6 +237,7 @@
       <Orbit speed="0.6" radius="3" speedVariance="0.1" radiusVariance="0.5" orbitClockwise="false" />
       <Wander speed="0.4" />
     </Prioritize>
+    <ItemLoot item="Health Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Elf Mage">
     <Shoot radius="8" shootAngle="0" cooldown="300" />
@@ -219,6 +246,7 @@
       <Protect speed="1.2" protectee="Elf Wizard" acquireRange="30" protectionRange="10" />
       <Wander speed="0.4" />
     </Prioritize>
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Goblin Rogue">
     <Shoot radius="3" shootAngle="0" cooldown="1000" />
@@ -235,6 +263,7 @@
       <Follow speed="0.8" acquireRange="10.5" range="1.5" cooldown="0" />
       <EntityNotExistsTransition targetState="protect" dist="15" target="Goblin Mage" />
     </State>
+    <ItemLoot item="Health Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Goblin Warrior">
     <Shoot radius="3" shootAngle="0" cooldown="1000" />
@@ -252,6 +281,7 @@
       <Follow speed="0.8" acquireRange="10.5" range="1.5" cooldown="0" />
       <EntityNotExistsTransition targetState="protect" dist="15" target="Goblin Mage" />
     </State>
+    <ItemLoot item="Health Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Goblin Mage">
     <Spawn children="Goblin Rogue" maxChildren="7" initialSpawn="3" cooldown="12000" givesNoXp="false" />
@@ -277,6 +307,12 @@
         <StayBack speed="0.5" distance="6" />
       </Prioritize>
     </State>
+    <TierLoot tier="1" type="Weapon" probability="0.09" />
+    <TierLoot tier="1" type="Weapon" probability="0.38" />
+    <TierLoot tier="3" type="Weapon" probability="0.3" />
+    <TierLoot tier="3" type="Weapon" probability="0.3" />
+    <ItemLoot item="Health Potion" probability="0.02" />
+    <ItemLoot item="Magic Potion" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Easily Enraged Bunny">
     <Prioritize>
@@ -304,6 +340,8 @@
       <Flash color="0xFF9900" flashPeriod="1.5" flashRepeats="1" />
       <TimedTransition targetState="red" time="1600" />
     </State>
+    <ItemLoot item="Health Potion" probability="0.01" />
+    <ItemLoot item="Magic Potion" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Forest Nymph">
     <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01" />
@@ -322,6 +360,8 @@
       <Wander speed="0.4" />
       <TimedTransition targetState="circle" time="3600" />
     </State>
+    <ItemLoot item="Health Potion" probability="0.03" />
+    <ItemLoot item="Magic Potion" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Sandsman King">
     <Shoot radius="10" shootAngle="0" cooldown="10000" />
@@ -332,6 +372,11 @@
     </Prioritize>
     <Spawn children="Sandsman Archer" maxChildren="2" initialSpawn="1" cooldown="10000" givesNoXp="false" />
     <Spawn children="Sandsman Sorcerer" maxChildren="3" initialSpawn="1" cooldown="8000" givesNoXp="false" />
+    <TierLoot tier="1" type="Weapon" probability="0.11" />
+    <TierLoot tier="1" type="Weapon" probability="0.39" />
+    <TierLoot tier="3" type="Weapon" probability="0.3" />
+    <TierLoot tier="3" type="Weapon" probability="0.3" />
+    <ItemLoot item="Health Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Sandsman Sorcerer">
     <Shoot radius="10" shootAngle="0" cooldown="5000" />
@@ -340,6 +385,7 @@
       <Protect speed="1.2" protectee="Sandsman King" acquireRange="15" protectionRange="6" reprotectRange="5" />
       <Wander speed="0.4" />
     </Prioritize>
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Sandsman Archer">
     <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="1000" />
@@ -347,6 +393,7 @@
       <Orbit speed="0.8" radius="3.25" acquireRange="15" target="Sandsman King" speedVariance="0.08" radiusVariance="0.5" orbitClockwise="false" />
       <Wander speed="0.4" />
     </Prioritize>
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Giant Crab">
     <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01" />
@@ -392,6 +439,12 @@
         <TimedTransition targetState="move" time="200" />
       </State>
     </State>
+    <TierLoot tier="1" type="Weapon" probability="0.05" />
+    <TierLoot tier="1" type="Weapon" probability="0.28" />
+    <TierLoot tier="2" type="Weapon" probability="0.14" />
+    <TierLoot tier="2" type="Weapon" probability="0.19" />
+    <ItemLoot item="Health Potion" probability="0.02" />
+    <ItemLoot item="Magic Potion" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Sand Devil">
     <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01" />

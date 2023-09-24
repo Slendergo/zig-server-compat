@@ -71,11 +71,13 @@ public class XmlBehaviorEntry {
 
             var name = i.Attribute("behavior") != null ? i.GetAttribute<string>("behavior") : i.Name.ToString();
             IStateChildren behavior;
-            if (children.Count > 0)
-                behavior = (IStateChildren) Activator.CreateInstance(behavTypes.Single(x => x.Name == name), i,
+            if (children.Count > 0) {
+                behavior = (IStateChildren)Activator.CreateInstance(behavTypes.Single(x => x.Name == name), i,
                     children.ToArray());
-            else
+            }
+            else {
                 behavior = (IStateChildren) Activator.CreateInstance(behavTypes.Single(x => x.Name == name), i);
+            }
             behaviors.Add(behavior);
             children.Clear();
         }

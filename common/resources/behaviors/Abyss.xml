@@ -3,6 +3,10 @@
   <BehaviorEntry id="Malphas Protector">
     <Shoot radius="5" count="3" shootAngle="5" predictive="0.45" cooldown="1200" />
     <Orbit speed="3.2" radius="9" acquireRange="20" target="Archdemon Malphas" speedVariance="0" radiusVariance="0" orbitClockwise="true" />
+    <Threshold threshold="0.01">
+      <ItemLoot item="Magic Potion" probability="0.06" />
+      <ItemLoot item="Health Potion" probability="0.04" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Malphas Missile">
     <State id="Start">
@@ -127,6 +131,22 @@
         <TimedTransition targetState="Missile_Fire" time="3200" />
       </State>
     </State>
+    <Threshold threshold="0.01">
+      <TierLoot tier="3" type="Weapon" probability="0.1" />
+      <TierLoot tier="3" type="Weapon" probability="0.1" />
+      <TierLoot tier="4" type="Weapon" probability="0.06" />
+      <TierLoot tier="4" type="Weapon" probability="0.06" />
+      <TierLoot tier="7" type="Weapon" probability="0.2" />
+      <TierLoot tier="7" type="Weapon" probability="0.2" />
+      <TierLoot tier="9" type="Weapon" probability="0.11" />
+      <TierLoot tier="9" type="Weapon" probability="0.11" />
+      <TierLoot tier="10" type="Weapon" probability="0.05" />
+      <TierLoot tier="10" type="Weapon" probability="0.05" />
+      <ItemLoot item="Wine Cellar Incantation" probability="0.01" />
+      <ItemLoot item="Potion of Vitality" probability="0.3" numRequired="1" />
+      <ItemLoot item="Potion of Defense" probability="0.3" />
+      <ItemLoot item="Demon Blade" probability="0.01" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Malphas Flamer">
     <State id="Attacking">
@@ -156,5 +176,9 @@
       <Shoot radius="0" count="8" shootAngle="45" defaultAngle="0" cooldown="1000" />
       <Decay time="100" />
     </State>
+    <Threshold threshold="0.01">
+      <ItemLoot item="Health Potion" probability="0.1" />
+      <ItemLoot item="Magic Potion" probability="0.1" />
+    </Threshold>
   </BehaviorEntry>
 </BehaviorEntries>

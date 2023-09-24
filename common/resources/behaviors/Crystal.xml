@@ -198,6 +198,10 @@
       <Flash color="0xFF00FF00" flashPeriod="0.2" flashRepeats="15" />
       <TimedTransition targetState="Daisy_attack" time="3000" />
     </State>
+    <Threshold threshold="0.03">
+      <ItemLoot item="Crystal Wand" probability="0.05" />
+      <ItemLoot item="Crystal Sword" probability="0.06" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Crystal Prisoner Clone">
     <Prioritize>

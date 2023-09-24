@@ -12,6 +12,10 @@
     <Spawn children="Demon" maxChildren="3" initialSpawn="1" cooldown="14000" givesNoXp="false" />
     <Spawn children="Demon Warrior" maxChildren="3" initialSpawn="1" cooldown="18000" givesNoXp="false" />
     <Taunt text="I will deliver your soul to Oryx, {PLAYER}!|Oryx will not end our pain. We can only share it... with you!|Our anguish is endless, unlike your lives!|There can be no forgiveness!|What do you know of suffering? I can teach you much, {PLAYER}|Would you attempt to destroy us? I know your name, {PLAYER}!|You cannot hurt us. You cannot help us. You will feed us.|Your life is an affront to Oryx. You will die." probability="0.7" cooldown="10000" />
+    <Threshold threshold="0.01">
+      <ItemLoot item="Golden Sword" probability="0.04" />
+      <ItemLoot item="Steel Helm" probability="0.04" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Imp">
     <Prioritize>
@@ -19,6 +23,17 @@
       <Wander speed="0.8" />
     </Prioritize>
     <Shoot radius="10" shootAngle="0" predictive="0.5" cooldown="200" />
+    <ItemLoot item="Large Stony Cloth" probability="0.03" />
+    <ItemLoot item="Small Stony Cloth" probability="0.03" />
+    <ItemLoot item="Large Tan Diamond Cloth" probability="0.03" />
+    <ItemLoot item="Small Tan Diamond Cloth" probability="0.03" />
+    <ItemLoot item="Large Smiley Cloth" probability="0.03" />
+    <ItemLoot item="Small Smiley Cloth" probability="0.03" />
+    <ItemLoot item="Golden Sword" probability="0.04" />
+    <ItemLoot item="Steel Helm" probability="0.04" />
+    <ItemLoot item="Missile Wand" probability="0.02" />
+    <ItemLoot item="Serpentine Staff" probability="0.02" />
+    <ItemLoot item="Fire Bow" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Demon">
     <Prioritize>
@@ -27,6 +42,7 @@
       <Wander speed="0.4" />
     </Prioritize>
     <Shoot radius="10" count="2" shootAngle="7" predictive="0.5" cooldown="1000" />
+    <ItemLoot item="Fire Bow" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Demon Warrior">
     <Prioritize>
@@ -35,5 +51,7 @@
       <Wander speed="0.4" />
     </Prioritize>
     <Shoot radius="10" count="3" shootAngle="7" predictive="0.5" cooldown="1000" />
+    <ItemLoot item="Obsidian Dagger" probability="0.03" />
+    <ItemLoot item="Steel Shield" probability="0.02" />
   </BehaviorEntry>
 </BehaviorEntries>

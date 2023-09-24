@@ -35,5 +35,28 @@
     <State id="Die">
       <Suicide />
     </State>
+    <Threshold threshold="0.01">
+      <TierLoot tier="3" type="Weapon" probability="0.15" />
+      <TierLoot tier="4" type="Weapon" probability="0.15" />
+      <TierLoot tier="4" type="Weapon" probability="0.07" />
+      <TierLoot tier="5" type="Weapon" probability="0.07" />
+      <TierLoot tier="5" type="Weapon" probability="0.03" />
+      <TierLoot tier="8" type="Weapon" probability="0.15" />
+      <TierLoot tier="8" type="Weapon" probability="0.2" />
+      <TierLoot tier="9" type="Weapon" probability="0.1" />
+      <TierLoot tier="9" type="Weapon" probability="0.15" />
+      <TierLoot tier="10" type="Weapon" probability="0.07" />
+      <TierLoot tier="10" type="Weapon" probability="0.1" />
+      <TierLoot tier="11" type="Weapon" probability="0.05" />
+      <TierLoot tier="11" type="Weapon" probability="0.07" />
+      <TierLoot tier="12" type="Weapon" probability="0.04" />
+      <ItemLoot item="Potion of Defense" probability="0.1" />
+      <ItemLoot item="Potion of Attack" probability="0.1" />
+      <ItemLoot item="Potion of Vitality" probability="0.1" />
+      <ItemLoot item="Potion of Wisdom" probability="0.1" />
+      <ItemLoot item="Potion of Speed" probability="0.1" />
+      <ItemLoot item="Potion of Dexterity" probability="0.1" />
+      <ItemLoot item="Seal of Blasphemous Prayer" probability="0.004" />
+    </Threshold>
   </BehaviorEntry>
 </BehaviorEntries>

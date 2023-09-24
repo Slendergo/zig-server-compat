@@ -60,5 +60,11 @@
       <SetAltTexture minValue="3" cooldown="0" />
       <TimedTransition targetState="1" time="500" />
     </State>
+    <Threshold threshold="0.1">
+      <ItemLoot item="Blue Paradise" probability="0.2" />
+      <ItemLoot item="Pink Passion Breeze" probability="0.2" />
+      <ItemLoot item="Bahama Sunrise" probability="0.2" />
+      <ItemLoot item="Lime Jungle Bay" probability="0.2" />
+    </Threshold>
   </BehaviorEntry>
 </BehaviorEntries>

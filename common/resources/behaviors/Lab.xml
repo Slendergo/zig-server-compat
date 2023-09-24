@@ -174,6 +174,22 @@
       <SetAltTexture minValue="1" cooldown="0" />
       <TimedTransition targetState="idle" time="15000" />
     </State>
+    <Threshold threshold="0.1">
+      <TierLoot tier="4" type="Weapon" probability="0.15" />
+      <TierLoot tier="5" type="Weapon" probability="0.1" />
+      <TierLoot tier="8" type="Weapon" probability="0.2" />
+      <TierLoot tier="8" type="Weapon" probability="0.2" />
+      <TierLoot tier="9" type="Weapon" probability="0.15" />
+      <TierLoot tier="9" type="Weapon" probability="0.15" />
+      <TierLoot tier="10" type="Weapon" probability="0.1" />
+      <TierLoot tier="10" type="Weapon" probability="0.1" />
+      <TierLoot tier="11" type="Weapon" probability="0.05" />
+      <TierLoot tier="11" type="Weapon" probability="0.05" />
+      <ItemLoot item="Scepter of Fulmination" probability="0.005" />
+      <ItemLoot item="Robe of the Mad Scientist" probability="0.005" />
+      <ItemLoot item="Experimental Ring" probability="0.01" />
+      <ItemLoot item="Wine Cellar Incantation" probability="0.005" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Dr Terrible Mini Bot">
     <Wander speed="0.5" />

@@ -6,6 +6,8 @@
       <Wander speed="0.4" />
     </Prioritize>
     <Shoot radius="3" shootAngle="0" cooldown="2500" />
+    <TierLoot tier="1" type="Weapon" probability="0.2" />
+    <ItemLoot item="Health Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Piratess">
     <Prioritize>
@@ -15,11 +17,15 @@
     <Shoot radius="3" shootAngle="0" cooldown="2500" />
     <Reproduce children="Pirate" cooldown="60000" />
     <Reproduce children="Piratess" cooldown="60000" />
+    <TierLoot tier="1" type="Weapon" probability="0.2" />
+    <ItemLoot item="Health Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Snake">
     <Wander speed="0.8" />
     <Shoot radius="10" shootAngle="0" cooldown="2000" />
     <Reproduce cooldown="60000" />
+    <ItemLoot item="Health Potion" probability="0.03" />
+    <ItemLoot item="Magic Potion" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Poison Scorpion">
     <Prioritize>
@@ -34,6 +40,8 @@
     <Spawn children="Poison Scorpion" initialSpawn="2" cooldown="0" givesNoXp="false" />
     <Reproduce children="Poison Scorpion" densityMax="10" cooldown="10000" />
     <Reproduce densityRadius="40" densityMax="2" cooldown="60000" />
+    <ItemLoot item="Health Potion" probability="0.03" />
+    <ItemLoot item="Magic Potion" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Bandit Enemy">
     <State id="fast_follow">
@@ -115,23 +123,35 @@
       <Order range="10" children="Bandit Enemy" targetState="escape" />
       <TimedTransition targetState="bold" time="12000" />
     </State>
+    <TierLoot tier="1" type="Weapon" probability="0.2" />
+    <TierLoot tier="1" type="Weapon" probability="0.2" />
+    <TierLoot tier="2" type="Weapon" probability="0.12" />
+    <TierLoot tier="2" type="Weapon" probability="0.12" />
+    <ItemLoot item="Health Potion" probability="0.12" />
+    <ItemLoot item="Magic Potion" probability="0.14" />
   </BehaviorEntry>
   <BehaviorEntry id="Red Gelatinous Cube">
     <Shoot radius="8" count="2" shootAngle="10" predictive="0.2" cooldown="1000" />
     <Wander speed="0.4" />
     <Reproduce cooldown="60000" />
     <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01" />
+    <ItemLoot item="Health Potion" probability="0.04" />
+    <ItemLoot item="Magic Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Purple Gelatinous Cube">
     <Shoot radius="8" shootAngle="0" predictive="0.2" cooldown="600" />
     <Wander speed="0.4" />
     <Reproduce cooldown="60000" />
     <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01" />
+    <ItemLoot item="Health Potion" probability="0.04" />
+    <ItemLoot item="Magic Potion" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Green Gelatinous Cube">
     <Shoot radius="8" count="5" shootAngle="72" predictive="0.2" cooldown="1800" />
     <Wander speed="0.4" />
     <Reproduce cooldown="60000" />
     <DropPortalOnDeath target="Pirate Cave Portal" probability="0.01" />
+    <ItemLoot item="Health Potion" probability="0.04" />
+    <ItemLoot item="Magic Potion" probability="0.04" />
   </BehaviorEntry>
 </BehaviorEntries>

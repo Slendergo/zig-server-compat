@@ -172,6 +172,25 @@
         <TimedTransition targetState="Attack1" time="3000" />
       </State>
     </State>
+    <Threshold threshold="0.01">
+      <TierLoot tier="4" type="Weapon" probability="0.5" />
+      <TierLoot tier="4" type="Weapon" probability="0.5" />
+      <TierLoot tier="5" type="Weapon" probability="0.05" />
+      <TierLoot tier="5" type="Weapon" probability="0.05" />
+      <TierLoot tier="8" type="Weapon" probability="0.5" />
+      <TierLoot tier="8" type="Weapon" probability="0.5" />
+      <TierLoot tier="9" type="Weapon" probability="0.1" />
+      <TierLoot tier="9" type="Weapon" probability="0.1" />
+      <TierLoot tier="10" type="Weapon" probability="0.05" />
+      <TierLoot tier="10" type="Weapon" probability="0.05" />
+      <ItemLoot item="Wine Cellar Incantation" probability="0.01" />
+      <ItemLoot item="Potion of Vitality" probability="0.3" />
+      <ItemLoot item="Potion of Dexterity" probability="0.3" />
+      <ItemLoot item="Potion of Speed" probability="0.3" />
+      <ItemLoot item="Potion of Attack" probability="0.3" />
+      <ItemLoot item="Potion of Wisdom" probability="0.3" />
+      <ItemLoot item="Potion of Defense" probability="0.3" />
+    </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Treasure Oryx Defender">
     <Prioritize>

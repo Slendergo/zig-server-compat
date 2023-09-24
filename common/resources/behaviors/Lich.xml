@@ -139,6 +139,37 @@
       <Shoot radius="10" count="2" shootAngle="7" cooldown="800" />
       <TimedTransition targetState="typeA" time="6000" />
     </State>
+    <TierLoot tier="1" type="Weapon" probability="0.9" />
+    <TierLoot tier="2" type="Weapon" probability="0.15" />
+    <TierLoot tier="2" type="Weapon" probability="0.11" />
+    <TierLoot tier="3" type="Weapon" probability="0.02" />
+    <TierLoot tier="3" type="Weapon" probability="0.01" />
+    <TierLoot tier="4" type="Weapon" probability="0.15" />
+    <TierLoot tier="5" type="Weapon" probability="0.1" />
+    <TierLoot tier="5" type="Weapon" probability="0.3" />
+    <TierLoot tier="5" type="Weapon" probability="0.3" />
+    <TierLoot tier="6" type="Weapon" probability="0.2" />
+    <TierLoot tier="6" type="Weapon" probability="0.2" />
+    <TierLoot tier="7" type="Weapon" probability="0.05" />
+    <TierLoot tier="7" type="Weapon" probability="0.05" />
+    <TierLoot tier="8" type="Weapon" probability="0.2" />
+    <TierLoot tier="8" type="Weapon" probability="0.2" />
+    <TierLoot tier="9" type="Weapon" probability="0.15" />
+    <TierLoot tier="9" type="Weapon" probability="0.15" />
+    <TierLoot tier="10" type="Weapon" probability="0.1" />
+    <TierLoot tier="10" type="Weapon" probability="0.1" />
+    <TierLoot tier="11" type="Weapon" probability="0.05" />
+    <TierLoot tier="11" type="Weapon" probability="0.05" />
+    <ItemLoot item="Potion of Vitality" probability="0.1" numRequired="1" />
+    <ItemLoot item="Wine Cellar Incantation" probability="0.005" />
+    <ItemLoot item="Experimental Ring" probability="0.01" />
+    <ItemLoot item="Robe of the Mad Scientist" probability="0.005" />
+    <ItemLoot item="Scepter of Fulmination" probability="0.005" />
+    <ItemLoot item="Potion of Wisdom" probability="1" />
+    <ItemLoot item="Helm of the Juggernaut" probability="0.004" />
+    <ItemLoot item="Potion of Dexterity" probability="0.1" numRequired="1" />
+    <ItemLoot item="Health Potion" probability="0.4" />
+    <ItemLoot item="Magic Potion" probability="0.4" />
   </BehaviorEntry>
   <BehaviorEntry id="Phylactery Bearer">
     <HealGroup range="15" cooldown="200" group="Heros" />
@@ -202,6 +233,9 @@
         <TimedTransition targetState="AttackX" time="2500" />
       </State>
     </State>
+    <ItemLoot item="Tincture of Defense" probability="0.02" />
+    <ItemLoot item="Orange Drake Egg" probability="0.06" />
+    <ItemLoot item="Magic Potion" probability="0.03" />
   </BehaviorEntry>
   <BehaviorEntry id="Haunted Spirit">
     <Decay time="90000" />
@@ -221,6 +255,13 @@
       <Shoot radius="10" count="2" shootAngle="70" coolDownOffset="200" cooldown="700" />
       <TimedTransition targetState="NewLocation" time="3000" />
     </State>
+    <TierLoot tier="8" type="Weapon" probability="0.02" />
+    <ItemLoot item="Magic Potion" probability="0.02" />
+    <ItemLoot item="Ring of Magic" probability="0.02" />
+    <ItemLoot item="Ring of Attack" probability="0.02" />
+    <ItemLoot item="Tincture of Dexterity" probability="0.06" />
+    <ItemLoot item="Tincture of Mana" probability="0.09" />
+    <ItemLoot item="Tincture of Life" probability="0.04" />
   </BehaviorEntry>
   <BehaviorEntry id="Mummy">
     <Prioritize>
@@ -229,6 +270,8 @@
       <Wander speed="0.4" />
     </Prioritize>
     <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <ItemLoot item="Magic Potion" probability="0.02" />
+    <ItemLoot item="Spirit Salve Tome" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Mummy King">
     <Prioritize>
@@ -237,6 +280,8 @@
       <Wander speed="0.4" />
     </Prioritize>
     <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <ItemLoot item="Magic Potion" probability="0.02" />
+    <ItemLoot item="Spirit Salve Tome" probability="0.02" />
   </BehaviorEntry>
   <BehaviorEntry id="Mummy Pharaoh">
     <Prioritize>
@@ -245,5 +290,9 @@
       <Wander speed="0.4" />
     </Prioritize>
     <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <ItemLoot item="Hell's Fire Wand" probability="0.02" />
+    <ItemLoot item="Slayer Staff" probability="0.02" />
+    <ItemLoot item="Golden Sword" probability="0.02" />
+    <ItemLoot item="Golden Dagger" probability="0.02" />
   </BehaviorEntry>
 </BehaviorEntries>

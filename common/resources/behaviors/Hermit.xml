@@ -66,6 +66,8 @@
     </Prioritize>
     <Shoot radius="6" count="3" shootAngle="10" cooldown="1000" />
     <Shoot radius="6" count="2" shootAngle="20" projectileIndex="1" predictive="0.8" cooldown="2600" />
+    <ItemLoot item="Health Potion" probability="0.1" />
+    <ItemLoot item="Magic Potion" probability="0.1" />
   </BehaviorEntry>
   <BehaviorEntry id="Whirlpool">
     <State id="Attack">
@@ -112,5 +114,10 @@
     <State id="Die">
       <Suicide />
     </State>
+    <Threshold threshold="0.01">
+      <ItemLoot item="Potion of Vitality" probability="0.1" numRequired="1" />
+      <ItemLoot item="Potion of Dexterity" probability="0.1" numRequired="1" />
+      <ItemLoot item="Helm of the Juggernaut" probability="0.004" />
+    </Threshold>
   </BehaviorEntry>
 </BehaviorEntries>
