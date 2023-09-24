@@ -152,8 +152,7 @@ public class ConnectManager {
         DbChar character = null;
 
         if (createChar) {
-            var status =
-                client.Manager.Database.CreateCharacter(acc, charType, skinType, out character);
+            var status = client.Manager.Database.CreateCharacter(acc, charType, skinType, out character);
             switch (status) {
                 case CreateStatus.ReachCharLimit:
                     client.Disconnect("Too many characters");

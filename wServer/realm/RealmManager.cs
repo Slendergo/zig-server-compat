@@ -134,7 +134,7 @@ public class RealmManager {
         player?.Owner?.LeaveWorld(player);
 
         Clients.TryRemove(client, out var plrInfo);
-
+        
         // recalculate usage statistics
         Config.serverInfo.players = ConMan.GetPlayerCount();
         Config.serverInfo.playerList.Remove(plrInfo);

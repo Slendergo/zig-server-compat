@@ -174,6 +174,7 @@ public class Client {
                 }
 
             Manager.Disconnect(this);
+            _server.Disconnect(this);
         }
     }
 
