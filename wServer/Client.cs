@@ -161,8 +161,7 @@ public class Client {
             SendFailure(0, reason);
 
             if (!string.IsNullOrEmpty(reason))
-                Log.Warn("Disconnecting client ({0}) @ {1}... {2}",
-                    Account?.Name ?? " ", IP, reason);
+                Log.Warn("Disconnecting client ({0}) @ {1}... {2}", Account?.Name ?? " ", IP, reason);
 
             if (Account != null)
                 try {
@@ -1494,8 +1493,7 @@ public class Client {
         }
     }
 
-    public void SendDamage(int targetId, ConditionEffects effects, ushort damageAmount, bool kill, byte bulletId,
-        int objectId) {
+    public void SendDamage(int targetId, ConditionEffects effects, ushort damageAmount, bool kill /*, byte bulletId, int objectId*/) {
         lock (SendLock) {
             var ptr = LENGTH_PREFIX;
             ref var spanRef = ref MemoryMarshal.GetReference(SendMem.Span);
@@ -1505,8 +1503,8 @@ public class Client {
             WriteULong(ref ptr, ref spanRef, (ulong) effects);
             WriteUShort(ref ptr, ref spanRef, damageAmount);
             WriteBool(ref ptr, ref spanRef, kill);
-            WriteByte(ref ptr, ref spanRef, bulletId);
-            WriteInt(ref ptr, ref spanRef, objectId);
+            //WriteByte(ref ptr, ref spanRef, bulletId);
+            //WriteInt(ref ptr, ref spanRef, objectId);
 
             TrySend(ptr);
         }

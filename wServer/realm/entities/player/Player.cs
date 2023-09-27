@@ -266,7 +266,7 @@ public partial class Player : Character, IContainer, IPlayer {
         HP -= dmg;
         foreach (var player in Owner.Players.Values)
             if (player.Id != Id && player.DistSqr(this) < RadiusSqr)
-                player.Client.SendDamage(Id, 0, (ushort) dmg, HP < 0, 0, src.Id);
+                player.Client.SendDamage(Id, 0, (ushort)dmg, HP < 0);
 
         if (HP <= 0)
             Death(src.ObjectDesc.DisplayId ??
@@ -541,8 +541,7 @@ public partial class Player : Character, IContainer, IPlayer {
         ApplyConditionEffect(projectile.ProjDesc.Effects);
         foreach (var player in Owner.Players.Values)
             if (player.Id != Id && player.DistSqr(this) < RadiusSqr)
-                player.Client.SendDamage(Id, projectile.ConditionEffects, (ushort) dmg, HP <= 0,
-                    projectile.ProjectileId, projectile.ProjectileOwner.Self.Id);
+                player.Client.SendDamage(Id, projectile.ConditionEffects, (ushort) dmg, HP <= 0);
 
         if (HP <= 0)
             Death(projectile.ProjectileOwner.Self.ObjectDesc.DisplayId ??

@@ -49,7 +49,7 @@ public partial class Player {
 
         foreach (var player in Owner.Players.Values)
             if (player.Id != Id && player.DistSqr(this) < RadiusSqr)
-                player.Client.SendDamage(Id, 0, (ushort) dmg, HP <= 0, 0, 0);
+                player.Client.SendDamage(Id, 0, (ushort)dmg, HP <= 0);
 
         if (HP <= 0) Death(tileDesc.ObjectId, tile: tile);
     }
