@@ -1114,9 +1114,12 @@ public class Client {
         if (Player?.Owner == null || x < 0f || x >= Player.Owner.Map.Width || y < 0f ||
             y >= Player.Owner.Map.Height)
             return;
+        
+        if (Player.Owner.Map[(int)x, (int)y].UpdateCount == 0)
+            Disconnect("tile load exploit");
+        
         Player.MoveReceived(Manager.Logic.RealmTime, tickId, time);
-        // ReSharper disable once CompareOfFloatsByEqualityOperator
-        if (x != Player.X || y != Player.Y)
+        if (Math.Abs(x - Player.X) > 0.001 || Math.Abs(y - Player.Y) > 0.001)
             Player.Move(x, y);
     }
 
