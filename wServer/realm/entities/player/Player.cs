@@ -716,7 +716,8 @@ public partial class Player : Character, IContainer, IPlayer {
         base.Move(x, y);
 
         if ((int) X != Sight.LastX || (int) Y != Sight.LastY) {
-            if (IsNoClipping()) Client.Manager.Logic.AddPendingAction(t => Client.Disconnect());
+            if (IsNoClipping())
+                Client.Disconnect("no clip");
 
             Sight.UpdateCount++;
         }

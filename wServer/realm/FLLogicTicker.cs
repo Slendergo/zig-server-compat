@@ -7,7 +7,6 @@ namespace wServer.realm;
 public sealed class LogicTicker {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
     public readonly int MillisecondsPerTick;
-    private readonly ConcurrentQueue<Action<RealmTime>>[] PendingActions = new ConcurrentQueue<Action<RealmTime>>[5];
 
     private readonly RealmManager RealmManager;
 
@@ -17,9 +16,6 @@ public sealed class LogicTicker {
     public LogicTicker(RealmManager manager) {
         RealmManager = manager;
         RealmTime = new RealmTime();
-
-        for (var i = 0; i < PendingActions.Length; i++)
-            PendingActions[i] = new ConcurrentQueue<Action<RealmTime>>();
 
         TPS = manager.Config.serverSettings.tps;
         MillisecondsPerTick = 1000 / TPS;
@@ -42,15 +38,6 @@ public sealed class LogicTicker {
 
                 var start = watch.ElapsedMilliseconds;
 
-                foreach (var i in PendingActions)
-                    while (i.TryDequeue(out var callback))
-                        try {
-                            callback.Invoke(RealmTime);
-                        }
-                        catch (Exception e) {
-                            Log.Error(e);
-                        }
-
                 RealmManager.Monitor.Tick(RealmTime);
                 RealmManager.InterServer.Tick(RealmTime.ElapsedMsDelta);
 
@@ -72,10 +59,5 @@ public sealed class LogicTicker {
         }
 
         Log.Info("Logic loop stopped.");
-    }
-
-    public void AddPendingAction(Action<RealmTime> callback,
-        PendingPriority priority = PendingPriority.Normal) {
-        PendingActions[(int) priority].Enqueue(callback);
     }
 }
