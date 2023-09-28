@@ -265,7 +265,7 @@ public partial class Player : Character, IContainer, IPlayer {
 
         HP -= dmg;
         foreach (var player in Owner.Players.Values)
-            if (player.Id != Id && player.DistSqr(this) < RadiusSqr)
+            if (player.DistSqr(this) < RadiusSqr)
                 player.Client.SendDamage(Id, 0, (ushort)dmg, HP < 0);
 
         if (HP <= 0)
