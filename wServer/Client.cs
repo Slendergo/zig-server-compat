@@ -1115,7 +1115,7 @@ public class Client {
             y >= Player.Owner.Map.Height)
             return;
         
-        if (Player.Owner.Map[(int)x, (int)y].UpdateCount == 0)
+        if (Player.tiles[(int)x, (int)y] == 0)
             Disconnect("tile load exploit");
         
         Player.MoveReceived(Manager.Logic.RealmTime, tickId, time);

@@ -64,7 +64,7 @@ public partial class Player : Character, IContainer, IPlayer {
 
     private int _originalSkin;
 
-    private byte[,] tiles;
+    public byte[,] tiles;
 
     public Player(Client client, bool saveInventory = true)
         : base(client.Manager, client.Character.ObjectType) {
