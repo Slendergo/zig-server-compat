@@ -220,14 +220,14 @@ public class Client {
         while (ptr < len) {
             var packetLen = ReadUShort(ref ptr, ref spanRef, len);
             var nextPacketPtr = ptr + packetLen - 2;
-            var packetId = (C2SPacketId) ReadByte(ref ptr, ref spanRef, len);
+            var packetId = (C2SPacketId) ReadByte(ref ptr, ref spanRef, nextPacketPtr);
             switch (packetId) {
                 case C2SPacketId.AcceptTrade:
                     ProcessAcceptTrade(ReadBoolArray(ref ptr, ref spanRef, nextPacketPtr),
                         ReadBoolArray(ref ptr, ref spanRef, nextPacketPtr));
                     break;
                 case C2SPacketId.AoeAck:
-                    ProcessAoeAck(ReadLong(ref ptr, ref spanRef, len), ReadFloat(ref ptr, ref spanRef, nextPacketPtr),
+                    ProcessAoeAck(ReadLong(ref ptr, ref spanRef, nextPacketPtr), ReadFloat(ref ptr, ref spanRef, nextPacketPtr),
                         ReadFloat(ref ptr, ref spanRef, nextPacketPtr));
                     break;
                 case C2SPacketId.Buy:
