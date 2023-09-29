@@ -189,7 +189,7 @@ public class RealmManager {
 
         var selectedMapData = MapParser.GetOrLoad(world.SelectMap(template));
         if (selectedMapData == null) {
-            Console.WriteLine($"Unable to find MapData: {selectedMapData}");
+            Log.Error($"Unable to find MapData for {template.IdName}");
             return null;
         }
 

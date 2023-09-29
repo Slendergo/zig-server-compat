@@ -55,9 +55,10 @@ public class Portal : StaticObject {
                 }
 
                 foreach (var w in Manager.Worlds.Values) {
-                    if (w is not GuildHall || (w as GuildHall).GuildId != player.Client.Account.GuildId)
+                    if (w is not GuildHall hall || hall.GuildId != player.Client.Account.GuildId)
                         continue;
-                    player.Client.Reconnect(w.IdName, w.Id);
+                    
+                    player.Client.Reconnect(hall.IdName, hall.Id);
                     return;
                 }
             }
@@ -65,6 +66,7 @@ public class Portal : StaticObject {
             var newWorld = player.Manager.CreateNewWorld(p, player.Client);
             if (!p.Instanced)
                 world = newWorld;
+            
             break;
         }
 
@@ -72,6 +74,7 @@ public class Portal : StaticObject {
         if (world == null) {
             world = Manager.GetWorld(World.Nexus);
             player.SendErrorText("Unable to find world, sent to nexus");
+            Log.Warn($"Unable to find world for: {ObjectId}");
         }
 
         WorldInstance = world;
