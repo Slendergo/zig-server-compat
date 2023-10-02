@@ -1146,6 +1146,12 @@ public class Client {
             return;
         }
 
+        if (Player.Inventory[1].ObjectType == objType)
+        {
+            // we dont handle ability
+            return;
+        }
+
         var prjDesc = item.Projectiles[0]; //Assume only one
 
         // validate

@@ -55,8 +55,7 @@ public class Enemy : Character {
 
     public void Death(RealmTime time) {
         DamageCounter.Death(time);
-        if (CurrentState != null)
-            CurrentState.OnDeath(new BehaviorEventArgs(this, time));
+        CurrentState?.OnDeath(new BehaviorEventArgs(this, time));
         OnDeath?.Invoke(this, new BehaviorEventArgs(this, time));
         Owner.LeaveWorld(this);
     }
@@ -99,14 +98,17 @@ public class Enemy : Character {
             var dmg = DamageWithDefense(projectile.Damage, Defense, projectile.ProjDesc.ArmorPiercing);
             HP -= dmg;
 
+            Console.WriteLine(dmg);
+
             ApplyConditionEffect(projectile.ProjDesc.Effects);
             foreach (var player in Owner.Players.Values)
                 if (player.Id != projectile.ProjectileOwner.Self.Id && player.DistSqr(this) < Player.RadiusSqr)
-                    player.Client.SendDamage(Id, projectile.ConditionEffects, (ushort)dmg, HP < 0);// projectile.ProjectileId, projectile.ProjectileOwner.Self.Id);
+                    player.Client.SendDamage(Id, projectile.ConditionEffects, (ushort)dmg, HP <= 0);
 
             DamageCounter.HitBy(projectile.ProjectileOwner as Player, time, projectile, dmg);
 
-            if (HP < 0 && Owner != null) Death(time);
+            if (HP <= 0 && Owner != null) 
+                Death(time);
             return true;
         }
 

@@ -558,7 +558,6 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
     public virtual bool HitByProjectile(Projectile projectile, RealmTime time) {
         if (ObjectDesc == null)
             return true;
-
         return ObjectDesc.Enemy || ObjectDesc.Player;
     }
 
