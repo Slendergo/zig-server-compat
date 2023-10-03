@@ -461,9 +461,8 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
     }
 
     public void MoveEntity(float x, float y) {
-        if (Owner != null && !(this is Projectile) && !(this is Pet) &&
-            (!(this is StaticObject) || (this as StaticObject).Hittestable))
-            (this is Enemy || (this is StaticObject && !(this is Decoy))
+        if (Owner != null)
+            (this is Enemy || (this is StaticObject && this is not Decoy)
                     ? Owner.EnemiesCollision
                     : Owner.PlayersCollision)
                 .Move(this, x, y);

@@ -1,11 +1,17 @@
 ﻿<Worlds>
     <World id="Tutorial" instanced="true" maxPlayers="1">
         <Map files="tutorial.pmap"/>
+        <BackgroundLightColor>0</BackgroundLightColor>
+        <BackgroundLightIntensity>0.15</BackgroundLightIntensity>
     </World>
 
     <World id="Nexus" showDisplays="true" persists="true" maxPlayers="300" specialized="nexus">
         <Music files="A.mp3;B.mp3"/>
         <Map files="nexus.pmap"/>
+        <BackgroundLightColor>0</BackgroundLightColor>
+        <BackgroundLightIntensity>0.15</BackgroundLightIntensity>
+        <DayLightIntensity>0.1</DayLightIntensity>
+        <NightLightIntensity>0.4</NightLightIntensity>
     </World>
 
     <World id="Test" instanced="true" maxPlayers="1"/>
@@ -13,10 +19,18 @@
     <World id="Vault" instanced="true" showDisplays="true" maxPlayers="1" specialized="vault">
         <Map files="vault.pmap"/>
         <Portal ids="Vault Portal"/>
+        <BackgroundLightColor>0</BackgroundLightColor>
+        <BackgroundLightIntensity>0.15</BackgroundLightIntensity>
+        <DayLightIntensity>0.1</DayLightIntensity>
+        <NightLightIntensity>0.4</NightLightIntensity>
     </World>
 
     <World id="Realm of the Mad God" persists="true" maxPlayers="85" specialized="realm">
         <Map files="realm.pmap"/>
+        <BackgroundLightColor>0</BackgroundLightColor>
+        <BackgroundLightIntensity>0.15</BackgroundLightIntensity>
+        <DayLightIntensity>0.1</DayLightIntensity>
+        <NightLightIntensity>0.4</NightLightIntensity>
     </World>
 
     <World id="Oryx's Castle" specialized="oryxcastle">
@@ -26,6 +40,8 @@
     <World id="Guild Hall" instanced="true" specialized="guildhall">
         <Map files="guild/0.map,guild/1.map,guild/2.map,guild/3.map"/>
         <Portal ids="Guild Hall Portal"/>
+        <BackgroundLightColor>0</BackgroundLightColor>
+        <BackgroundLightIntensity>0.15</BackgroundLightIntensity>
     </World>
 
     <World id="Sprite World">
@@ -36,6 +52,8 @@
     <World id="Abyss of Demons">
         <Map files="abyss_of_demons.pmap"/>
         <Portal ids="Abyss of Demons Portal"/>
+        <BackgroundLightColor>0</BackgroundLightColor>
+        <BackgroundLightIntensity>0.55</BackgroundLightIntensity>
     </World>
 
     <World id="Snake Pit">
