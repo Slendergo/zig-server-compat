@@ -1,0 +1,457 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Oryx Stone Guardian Right">
+    <State id="Idle">
+      <ConditionalEffect effect="Invulnerable" perm="true" />
+      <PlayerWithinTransition targetState="Order" dist="2" />
+    </State>
+    <State id="Order">
+      <Order range="10" children="Oryx Stone Guardian Left" targetState="Start" />
+      <TimedTransition targetState="Start" time="0" />
+    </State>
+    <State id="Start">
+      <ConditionalEffect effect="Invulnerable" />
+      <Flash color="0xC0C0C0" flashPeriod="0.5" flashRepeats="3" />
+      <TimedTransition targetState="Lets go" time="1500" />
+    </State>
+    <State id="Together is better">
+      <EntityNotExistsTransition targetState="Forever Alone" dist="100" target="Oryx Stone Guardian Left" />
+      <State id="Lets go">
+        <TimedTransition targetState="Circle" time="10000" />
+        <State id="Imma Follow">
+          <Follow speed="1" acquireRange="2" range="0.3" cooldown="0" />
+          <Shoot radius="5" count="5" shootAngle="5" cooldown="1000" />
+          <TimedTransition targetState="Imma chill" time="5000" />
+        </State>
+        <State id="Imma chill">
+          <Prioritize>
+            <StayCloseToSpawn speed="0.5" range="3" />
+            <Wander speed="0.5" />
+          </Prioritize>
+          <Shoot radius="0" count="10" shootAngle="0" projectileIndex="2" fixedAngle="0" cooldown="1000" />
+          <TimedTransition targetState="Imma Follow" time="5000" />
+        </State>
+      </State>
+      <State id="Circle">
+        <State id="Prepare">
+          <MoveTo speed="1" x="127.5" y="39.5" />
+          <EntityExistsTransition targetState="Prepare2" dist="1" target="Oryx Stone Guardian Left" />
+        </State>
+        <State id="Prepare2">
+          <MoveTo speed="1" x="130.5" y="39.5" />
+          <TimedTransition targetState="PrepareEnd" time="1000" />
+        </State>
+        <State id="PrepareEnd">
+          <Orbit speed="1" radius="5" target="Oryx Guardian TaskMaster" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+          <State id="cpe_1">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="0" cooldown="1000" />
+            <TimedTransition targetState="cpe_2" time="200" />
+          </State>
+          <State id="cpe_2">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="36" cooldown="1000" />
+            <TimedTransition targetState="cpe_3" time="200" />
+          </State>
+          <State id="cpe_3">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="72" cooldown="1000" />
+            <TimedTransition targetState="cpe_4" time="200" />
+          </State>
+          <State id="cpe_4">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="108" cooldown="1000" />
+            <TimedTransition targetState="cpe_5" time="200" />
+          </State>
+          <State id="cpe_5">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="144" cooldown="1000" />
+            <TimedTransition targetState="cpe_6" time="200" />
+          </State>
+          <State id="cpe_6">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="180" cooldown="1000" />
+            <TimedTransition targetState="cpe_7" time="200" />
+          </State>
+          <State id="cpe_7">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="216" cooldown="1000" />
+            <TimedTransition targetState="cpe_8" time="200" />
+          </State>
+          <State id="cpe_8">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="252" cooldown="1000" />
+            <TimedTransition targetState="cpe_9" time="200" />
+          </State>
+          <State id="cpe_9">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="288" cooldown="1000" />
+            <TimedTransition targetState="cpe_10" time="200" />
+          </State>
+          <State id="cpe_10">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="324" cooldown="1000" />
+            <TimedTransition targetState="checkEntities" time="200" />
+          </State>
+          <State id="checkEntities">
+            <PlayerWithinTransition targetState="cpe_Imma Follow" dist="3" />
+            <NoPlayerWithinTransition targetState="cpe_Imma chill" dist="3" />
+          </State>
+          <State id="cpe_x">
+            <TimedTransition targetState="Move Sideways" time="5000" />
+            <State id="cpe_Imma Follow">
+              <Follow speed="1" acquireRange="3" range="0.3" cooldown="0" />
+              <Shoot radius="5" count="5" shootAngle="0" cooldown="1000" />
+              <TimedTransition targetState="cpe_Imma chill" time="2500" />
+            </State>
+            <State id="cpe_Imma chill">
+              <Prioritize>
+                <StayCloseToSpawn speed="0.5" range="3" />
+                <Wander speed="0.5" />
+              </Prioritize>
+              <Shoot radius="0" count="10" shootAngle="0" projectileIndex="2" fixedAngle="0" cooldown="1000" />
+              <TimedTransition targetState="cpe_Imma Follow" time="2500" />
+            </State>
+          </State>
+        </State>
+      </State>
+      <State id="Move Sideways">
+        <State id="msw_prepare">
+          <MoveTo speed="1" x="141.5" y="39.5" />
+          <TimedTransition targetState="msw_shoot" time="1500" />
+        </State>
+        <State id="msw_shoot">
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="90" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="85.5" coolDownOffset="100" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="81" coolDownOffset="200" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="76.5" coolDownOffset="300" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="72" coolDownOffset="400" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="67.5" coolDownOffset="500" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="63" coolDownOffset="600" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="58.5" coolDownOffset="700" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="54" coolDownOffset="800" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="49.5" coolDownOffset="900" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="45" coolDownOffset="1000" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="40.5" coolDownOffset="1100" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="36" coolDownOffset="1200" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="31.5" coolDownOffset="1300" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="27" coolDownOffset="1400" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="22.5" coolDownOffset="1500" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="18" coolDownOffset="1600" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="13.5" coolDownOffset="1700" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="9" coolDownOffset="1800" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="4.5" coolDownOffset="1900" cooldown="1000" />
+        </State>
+      </State>
+    </State>
+    <State id="Forever Alone" />
+    <Threshold threshold="0.1">
+      <TierLoot tier="3" type="Weapon" probability="0.1" />
+      <TierLoot tier="7" type="Weapon" probability="0.1" />
+      <TierLoot tier="8" type="Weapon" probability="0.1" />
+      <ItemLoot item="Ancient Stone Sword" probability="0.01" />
+      <ItemLoot item="Potion of Defense" probability="1" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Oryx Stone Guardian Left">
+    <State id="Idle">
+      <ConditionalEffect effect="Invulnerable" perm="true" />
+      <PlayerWithinTransition targetState="Order" dist="2" />
+    </State>
+    <State id="Order">
+      <Order range="10" children="Oryx Stone Guardian Right" targetState="Start" />
+      <TimedTransition targetState="Start" time="0" />
+    </State>
+    <State id="Start">
+      <ConditionalEffect effect="Invulnerable" />
+      <Flash color="0xC0C0C0" flashPeriod="0.5" flashRepeats="3" />
+      <TimedTransition targetState="Together is better" time="1500" />
+    </State>
+    <State id="Together is better">
+      <EntityNotExistsTransition targetState="Forever Alone" dist="100" target="Oryx Stone Guardian Right" />
+      <State id="Lets go">
+        <TimedTransition targetState="Circle" time="10000" />
+        <State id="Imma Follow">
+          <Follow speed="1" acquireRange="2" range="0.3" cooldown="0" />
+          <Shoot radius="5" count="5" shootAngle="5" cooldown="1000" />
+          <TimedTransition targetState="Imma chill" time="5000" />
+        </State>
+        <State id="Imma chill">
+          <Prioritize>
+            <StayCloseToSpawn speed="0.5" range="3" />
+            <Wander speed="0.5" />
+          </Prioritize>
+          <Shoot radius="0" count="10" shootAngle="0" projectileIndex="2" fixedAngle="0" cooldown="1000" />
+          <TimedTransition targetState="Imma Follow" time="5000" />
+        </State>
+      </State>
+      <State id="Circle">
+        <State id="Prepare">
+          <MoveTo speed="1" x="127.5" y="39.5" />
+          <EntityExistsTransition targetState="Prepare2" dist="1" target="Oryx Stone Guardian Right" />
+        </State>
+        <State id="Prepare2">
+          <MoveTo speed="1" x="124.5" y="39.5" />
+          <TimedTransition targetState="PrepareEnd" time="1000" />
+        </State>
+        <State id="PrepareEnd">
+          <Orbit speed="1" radius="5" target="Oryx Guardian TaskMaster" speedVariance="0.1" radiusVariance="0.1" orbitClockwise="false" />
+          <State id="cpe_1">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="0" cooldown="1000" />
+            <TimedTransition targetState="cpe_2" time="200" />
+          </State>
+          <State id="cpe_2">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="36" cooldown="1000" />
+            <TimedTransition targetState="cpe_3" time="200" />
+          </State>
+          <State id="cpe_3">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="72" cooldown="1000" />
+            <TimedTransition targetState="cpe_4" time="200" />
+          </State>
+          <State id="cpe_4">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="108" cooldown="1000" />
+            <TimedTransition targetState="cpe_5" time="200" />
+          </State>
+          <State id="cpe_5">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="144" cooldown="1000" />
+            <TimedTransition targetState="cpe_6" time="200" />
+          </State>
+          <State id="cpe_6">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="180" cooldown="1000" />
+            <TimedTransition targetState="cpe_7" time="200" />
+          </State>
+          <State id="cpe_7">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="216" cooldown="1000" />
+            <TimedTransition targetState="cpe_8" time="200" />
+          </State>
+          <State id="cpe_8">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="252" cooldown="1000" />
+            <TimedTransition targetState="cpe_9" time="200" />
+          </State>
+          <State id="cpe_9">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="288" cooldown="1000" />
+            <TimedTransition targetState="cpe_10" time="200" />
+          </State>
+          <State id="cpe_10">
+            <Shoot radius="0" count="2" shootAngle="0" projectileIndex="1" fixedAngle="324" cooldown="1000" />
+            <TimedTransition targetState="checkEntities" time="200" />
+          </State>
+          <State id="checkEntities">
+            <PlayerWithinTransition targetState="cpe_Imma Follow" dist="3" />
+            <NoPlayerWithinTransition targetState="cpe_Imma chill" dist="3" />
+          </State>
+          <State id="cpe_x">
+            <TimedTransition targetState="Move Sideways" time="5000" />
+            <State id="cpe_Imma Follow">
+              <Follow speed="1" acquireRange="3" range="0.3" cooldown="0" />
+              <Shoot radius="5" count="5" shootAngle="0" cooldown="1000" />
+              <TimedTransition targetState="cpe_Imma chill" time="2500" />
+            </State>
+            <State id="cpe_Imma chill">
+              <Prioritize>
+                <StayCloseToSpawn speed="0.5" range="3" />
+                <Wander speed="0.5" />
+              </Prioritize>
+              <Shoot radius="0" count="10" shootAngle="0" projectileIndex="2" fixedAngle="0" cooldown="1000" />
+              <TimedTransition targetState="cpe_Imma Follow" time="2500" />
+            </State>
+          </State>
+        </State>
+      </State>
+      <State id="Move Sideways">
+        <State id="msw_prepare">
+          <MoveTo speed="1" x="113.5" y="39.5" />
+          <TimedTransition targetState="msw_shoot" time="1500" />
+        </State>
+        <State id="msw_shoot">
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="90" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="85.5" coolDownOffset="100" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="81" coolDownOffset="200" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="76.5" coolDownOffset="300" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="72" coolDownOffset="400" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="67.5" coolDownOffset="500" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="63" coolDownOffset="600" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="58.5" coolDownOffset="700" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="54" coolDownOffset="800" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="49.5" coolDownOffset="900" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="45" coolDownOffset="1000" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="40.5" coolDownOffset="1100" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="36" coolDownOffset="1200" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="31.5" coolDownOffset="1300" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="27" coolDownOffset="1400" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="22.5" coolDownOffset="1500" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="18" coolDownOffset="1600" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="13.5" coolDownOffset="1700" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="9" coolDownOffset="1800" cooldown="1000" />
+          <Shoot radius="0" count="2" shootAngle="0" fixedAngle="4.5" coolDownOffset="1900" cooldown="1000" />
+        </State>
+      </State>
+    </State>
+    <State id="Forever Alone" />
+    <Threshold threshold="0.1">
+      <TierLoot tier="3" type="Weapon" probability="0.1" />
+      <TierLoot tier="7" type="Weapon" probability="0.1" />
+      <TierLoot tier="8" type="Weapon" probability="0.1" />
+      <ItemLoot item="Ancient Stone Sword" probability="0.01" />
+      <ItemLoot item="Potion of Defense" probability="1" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Oryx Guardian TaskMaster">
+    <ConditionalEffect effect="Invincible" perm="true" />
+    <State id="Idle">
+      <EntitiesNotExistsTransition targetState="Death" dist="100" targets="Oryx Stone Guardian Right,Oryx Stone Guardian Left" />
+    </State>
+    <State id="Death">
+      <Spawn children="Oryx's Chamber Portal" maxChildren="1" initialSpawn="1" cooldown="0" />
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Oryx's Living Floor Fire Down">
+    <State id="Idle">
+      <PlayerWithinTransition targetState="Toss" dist="20" />
+    </State>
+    <State id="Toss">
+      <TossObject child="Quiet Bomb" range="10" cooldown="1000" />
+      <NoPlayerWithinTransition targetState="Idle" dist="21" />
+      <PlayerWithinTransition targetState="Shoot and Toss" dist="5" />
+    </State>
+    <State id="Shoot and Toss">
+      <Shoot radius="0" count="18" shootAngle="0" fixedAngle="0" cooldown="750" />
+      <TossObject child="Quiet Bomb" range="10" cooldown="1000" />
+      <NoPlayerWithinTransition targetState="Idle" dist="21" />
+      <NoPlayerWithinTransition targetState="Toss" dist="6" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Oryx Knight">
+    <State id="waiting for u bae &lt;3">
+      <PlayerWithinTransition targetState="tim 4 rekkings" dist="10" />
+    </State>
+    <State id="tim 4 rekkings">
+      <Prioritize>
+        <Wander speed="0.2" />
+        <Follow speed="0.6" range="3" duration="-1" cooldown="1000" />
+      </Prioritize>
+      <Shoot radius="10" count="3" shootAngle="20" cooldown="350" />
+      <TimedTransition targetState="tim 4 singular rekt" time="5000" />
+    </State>
+    <State id="tim 4 singular rekt">
+      <Prioritize>
+        <Wander speed="0.2" />
+        <Follow speed="0.7" range="3" duration="-1" cooldown="1000" />
+      </Prioritize>
+      <Shoot radius="10" shootAngle="0" cooldown="50" />
+      <Shoot radius="10" shootAngle="0" projectileIndex="1" cooldown="1000" />
+      <Shoot radius="10" shootAngle="0" projectileIndex="2" cooldown="450" />
+      <TimedTransition targetState="tim 4 rekkings" time="2500" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Oryx Pet">
+    <State id="swagoo baboon">
+      <PlayerWithinTransition targetState="anuspiddle" dist="10" />
+    </State>
+    <State id="anuspiddle">
+      <Prioritize>
+        <Wander speed="0.2" />
+        <Follow speed="0.6" range="0" duration="-1" cooldown="1000" />
+      </Prioritize>
+      <Shoot radius="10" count="2" shootAngle="20" cooldown="1" />
+      <Shoot radius="10" shootAngle="0" cooldown="1" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Oryx Insect Commander">
+    <State id="lol jordan is a nub">
+      <Prioritize>
+        <Wander speed="0.2" />
+      </Prioritize>
+      <Reproduce children="Oryx Insect Minion" densityMax="20" cooldown="1" />
+      <Shoot radius="10" shootAngle="0" cooldown="900" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Oryx Insect Minion">
+    <State id="its SWARMING time">
+      <Prioritize>
+        <Wander speed="0.2" />
+        <StayCloseToSpawn speed="0.4" range="8" />
+        <Follow speed="0.8" range="1" duration="-1" cooldown="1000" />
+      </Prioritize>
+      <Shoot radius="10" count="5" shootAngle="0" cooldown="1500" />
+      <Shoot radius="10" shootAngle="0" cooldown="230" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Oryx Suit of Armor">
+    <State id="idle">
+      <PlayerWithinTransition targetState="attack me pl0x" dist="8" />
+    </State>
+    <State id="attack me pl0x">
+      <DamageTakenTransition targetState="jordan is stanking" />
+    </State>
+    <State id="jordan is stanking">
+      <Prioritize>
+        <Wander speed="0.2" />
+        <Follow speed="0.4" range="2" duration="-1" cooldown="1000" />
+      </Prioritize>
+      <SetAltTexture minValue="1" cooldown="0" />
+      <Shoot radius="10" count="2" shootAngle="15" cooldown="600" />
+      <HpLessTransition targetState="heal" threshold="0.2" />
+    </State>
+    <State id="heal">
+      <ConditionalEffect effect="Invulnerable" />
+      <SetAltTexture minValue="0" cooldown="0" />
+      <Shoot radius="10" count="6" shootAngle="0" cooldown="200" />
+      <HealSelf amount="200" cooldown="2000" />
+      <TimedTransition targetState="jordan is stanking" time="1500" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Oryx Eye Warrior">
+    <State id="swaggin">
+      <PlayerWithinTransition targetState="penispiddle" dist="10" />
+    </State>
+    <State id="penispiddle">
+      <Prioritize>
+        <Follow speed="0.6" range="0" duration="-1" cooldown="1000" />
+      </Prioritize>
+      <Shoot radius="10" count="5" shootAngle="0" cooldown="1000" />
+      <Shoot radius="10" shootAngle="0" projectileIndex="1" cooldown="500" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Oryx Brute">
+    <State id="swaggin">
+      <PlayerWithinTransition targetState="piddle" dist="10" />
+    </State>
+    <State id="piddle">
+      <Prioritize>
+        <Wander speed="0.2" />
+        <Follow speed="0.4" range="1" duration="-1" cooldown="1000" />
+      </Prioritize>
+      <Shoot radius="10" count="5" shootAngle="0" projectileIndex="1" cooldown="1000" />
+      <Reproduce children="Oryx Eye Warrior" densityMax="4" cooldown="2" />
+      <TimedTransition targetState="charge" time="5000" />
+    </State>
+    <State id="charge">
+      <Prioritize>
+        <Wander speed="0.3" />
+        <Follow speed="1.2" range="1" duration="-1" cooldown="1000" />
+      </Prioritize>
+      <Shoot radius="10" count="5" shootAngle="0" projectileIndex="1" cooldown="1000" />
+      <Shoot radius="10" count="5" shootAngle="0" projectileIndex="2" cooldown="750" />
+      <Reproduce children="Oryx Eye Warrior" densityMax="4" cooldown="2" />
+      <Shoot radius="10" count="3" shootAngle="10" cooldown="300" />
+      <TimedTransition targetState="piddle" time="4000" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Quiet Bomb">
+    <ConditionalEffect effect="Invincible" perm="true" />
+    <State id="Idle">
+      <State id="Tex1">
+        <TimedTransition targetState="Tex2" time="250" />
+      </State>
+      <State id="Tex2">
+        <SetAltTexture minValue="1" cooldown="0" />
+        <TimedTransition targetState="Tex3" time="250" />
+      </State>
+      <State id="Tex3">
+        <SetAltTexture minValue="0" cooldown="0" />
+        <TimedTransition targetState="Tex4" time="250" />
+      </State>
+      <State id="Tex4">
+        <SetAltTexture minValue="1" cooldown="0" />
+        <TimedTransition targetState="Explode" time="250" />
+      </State>
+    </State>
+    <State id="Explode">
+      <SetAltTexture minValue="0" cooldown="0" />
+      <Shoot radius="0" count="18" shootAngle="0" fixedAngle="0" cooldown="1000" />
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+</BehaviorEntries>

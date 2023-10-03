@@ -163,7 +163,6 @@
     </Threshold>
   </BehaviorEntry>
   <BehaviorEntry id="Paper Bot">
-    <DropPortalOnDeath target="Puppet Theatre Portal" probability="0.15" />
     <Prioritize>
       <Orbit speed="0.4" radius="3" target="Rock Bot" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
       <Wander speed="0.8" />

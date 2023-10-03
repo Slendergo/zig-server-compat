@@ -1,0 +1,357 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Oryx the Mad God 2">
+    <DropPortalOnDeath target="Realm Portal" probability="100" />
+    <State id="Attack">
+      <Wander speed="0.05" />
+      <Shoot radius="25" count="8" shootAngle="45" coolDownOffset="1500" cooldown="1500" />
+      <Shoot radius="25" count="3" shootAngle="10" projectileIndex="1" coolDownOffset="1000" cooldown="1000" />
+      <Shoot radius="25" count="3" shootAngle="10" projectileIndex="2" predictive="0.2" coolDownOffset="1000" cooldown="1000" />
+      <Shoot radius="25" count="2" shootAngle="10" projectileIndex="3" predictive="0.4" coolDownOffset="1000" cooldown="1000" />
+      <Shoot radius="25" count="3" shootAngle="10" projectileIndex="4" predictive="0.6" coolDownOffset="1000" cooldown="1000" />
+      <Shoot radius="25" count="2" shootAngle="10" projectileIndex="5" predictive="0.8" coolDownOffset="1000" cooldown="1000" />
+      <Shoot radius="25" count="3" shootAngle="10" projectileIndex="6" predictive="1" coolDownOffset="1000" cooldown="1000" />
+      <Taunt text="Puny mortals! My {HP} HP will annihilate you!" cooldown="6000" />
+      <Spawn children="Henchman of Oryx" initialSpawn="2" cooldown="5000" />
+      <HpLessTransition targetState="prepareRage" threshold="0.2" />
+    </State>
+    <State id="prepareRage">
+      <Follow speed="0.1" acquireRange="15" range="3" cooldown="0" />
+      <Taunt text="Can't... keep... henchmen... alive... anymore! ARGHHH!!!" />
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="25" count="30" shootAngle="0" projectileIndex="7" fixedAngle="0" coolDownOffset="4000" cooldown="4000" />
+      <Shoot radius="25" count="30" shootAngle="0" projectileIndex="8" fixedAngle="30" coolDownOffset="4000" cooldown="4000" />
+      <TimedTransition targetState="rage" time="10000" />
+    </State>
+    <State id="rage">
+      <Follow speed="0.1" acquireRange="15" range="3" cooldown="0" />
+      <Shoot radius="25" count="30" shootAngle="0" projectileIndex="7" coolDownOffset="8000" cooldown="90000001" />
+      <Shoot radius="25" count="30" shootAngle="0" projectileIndex="8" coolDownOffset="8500" cooldown="90000001" />
+      <Shoot radius="25" count="8" shootAngle="45" coolDownOffset="1500" cooldown="1500" />
+      <Shoot radius="25" count="3" shootAngle="10" projectileIndex="1" coolDownOffset="1000" cooldown="1000" />
+      <Shoot radius="25" count="3" shootAngle="10" projectileIndex="2" predictive="0.2" coolDownOffset="1000" cooldown="1000" />
+      <Shoot radius="25" count="2" shootAngle="10" projectileIndex="3" predictive="0.4" coolDownOffset="1000" cooldown="1000" />
+      <Shoot radius="25" count="3" shootAngle="10" projectileIndex="4" predictive="0.6" coolDownOffset="1000" cooldown="1000" />
+      <Shoot radius="25" count="2" shootAngle="10" projectileIndex="5" predictive="0.8" coolDownOffset="1000" cooldown="1000" />
+      <Shoot radius="25" count="3" shootAngle="10" projectileIndex="6" predictive="1" coolDownOffset="1000" cooldown="1000" />
+      <TossObject child="Monstrosity Scarab" range="7" angle="0" cooldown="1000" />
+      <Taunt text="Puny mortals! My {HP} HP will annihilate you!" cooldown="6000" />
+    </State>
+    <Threshold threshold="0.1">
+      <TierLoot tier="5" type="Weapon" probability="0.07" />
+      <TierLoot tier="5" type="Weapon" probability="0.06" />
+      <TierLoot tier="6" type="Weapon" probability="0.05" />
+      <TierLoot tier="10" type="Weapon" probability="0.07" />
+      <TierLoot tier="11" type="Weapon" probability="0.06" />
+      <TierLoot tier="11" type="Weapon" probability="0.07" />
+      <TierLoot tier="12" type="Weapon" probability="0.05" />
+      <TierLoot tier="12" type="Weapon" probability="0.06" />
+      <TierLoot tier="13" type="Weapon" probability="0.05" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Oryx the Mad God 1">
+    <DropPortalOnDeath target="Wine Cellar Portal" probability="100" timeout="120" />
+    <HpLessTransition targetState="rage" threshold="0.2" />
+    <State id="Slow">
+      <Taunt text="Fools! I still have {HP} hitpoints!" />
+      <Spawn children="Minion of Oryx" initialSpawn="0" cooldown="350000" />
+      <Reproduce children="Minion of Oryx" cooldown="1500" />
+      <Shoot radius="25" count="4" shootAngle="10" projectileIndex="4" cooldown="1000" />
+      <TimedTransition targetState="Dance 1" time="20000" />
+    </State>
+    <State id="Dance 1">
+      <Flash color="0xF389E13" flashPeriod="0.5" flashRepeats="60" />
+      <Taunt text="BE SILENT!!!" />
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="50" count="8" shootAngle="0" projectileIndex="6" coolDownOffset="200" cooldown="700" />
+      <TossObject child="Ring Element" range="9" angle="24" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="48" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="72" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="96" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="120" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="144" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="168" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="192" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="216" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="240" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="264" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="288" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="312" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="336" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="360" cooldown="320000" />
+      <ConditionalEffect effect="Invulnerable" />
+      <TimedTransition targetState="artifacts" time="25000" />
+    </State>
+    <State id="artifacts">
+      <Taunt text="My Artifacts will protect me!" />
+      <Flash color="0xF389E13" flashPeriod="0.5" flashRepeats="60" />
+      <Shoot radius="50" count="3" shootAngle="0" projectileIndex="9" coolDownOffset="200" cooldown="1500" />
+      <Shoot radius="50" count="10" shootAngle="0" projectileIndex="8" coolDownOffset="200" cooldown="2000" />
+      <Shoot radius="50" count="10" shootAngle="0" projectileIndex="7" coolDownOffset="200" cooldown="500" />
+      <TossObject child="Guardian Element 1" range="1" angle="0" cooldown="90000001" coolDownOffset="1000" />
+      <TossObject child="Guardian Element 1" range="1" angle="90" cooldown="90000001" coolDownOffset="1000" />
+      <TossObject child="Guardian Element 1" range="1" angle="180" cooldown="90000001" coolDownOffset="1000" />
+      <TossObject child="Guardian Element 1" range="1" angle="270" cooldown="90000001" coolDownOffset="1000" />
+      <TossObject child="Guardian Element 2" range="9" angle="0" cooldown="90000001" coolDownOffset="1000" />
+      <TossObject child="Guardian Element 2" range="9" angle="90" cooldown="90000001" coolDownOffset="1000" />
+      <TossObject child="Guardian Element 2" range="9" angle="180" cooldown="90000001" coolDownOffset="1000" />
+      <TossObject child="Guardian Element 2" range="9" angle="270" cooldown="90000001" coolDownOffset="1000" />
+      <TimedTransition targetState="gaze" time="25000" />
+    </State>
+    <State id="gaze">
+      <Taunt text="All who looks upon my face shall die." />
+      <Shoot radius="7" count="2" shootAngle="10" projectileIndex="1" coolDownOffset="800" cooldown="1000" />
+      <TimedTransition targetState="Dance 2" time="10000" />
+    </State>
+    <State id="Dance 2">
+      <Flash color="0xF389E13" flashPeriod="0.5" flashRepeats="60" />
+      <Taunt text="Time for more dancing!" />
+      <Shoot radius="50" count="8" shootAngle="0" projectileIndex="6" coolDownOffset="200" cooldown="700" />
+      <TossObject child="Ring Element" range="9" angle="24" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="48" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="72" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="96" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="120" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="144" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="168" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="192" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="216" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="240" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="264" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="288" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="312" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="336" cooldown="320000" />
+      <TossObject child="Ring Element" range="9" angle="360" cooldown="320000" />
+      <TimedTransition targetState="Dance2, 1" time="1000" />
+    </State>
+    <State id="Dance2, 1">
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="8" fixedAngle="0" cooldown="170" />
+      <TimedTransition targetState="Dance2, 2" time="200" />
+    </State>
+    <State id="Dance2, 2">
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="8" fixedAngle="30" cooldown="170" />
+      <TimedTransition targetState="Dance2, 3" time="200" />
+    </State>
+    <State id="Dance2, 3">
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="8" fixedAngle="15" cooldown="170" />
+      <TimedTransition targetState="Dance2, 4" time="200" />
+    </State>
+    <State id="Dance2, 4">
+      <Shoot radius="0" count="4" shootAngle="90" projectileIndex="8" fixedAngle="45" cooldown="170" />
+      <TimedTransition targetState="Dance2, 1" time="200" />
+    </State>
+    <State id="rage">
+      <ChangeSize rate="10" target="200" />
+      <Taunt text="I HAVE HAD ENOUGH OF YOU!!!|ENOUGH!!!|DIE!!!" probability="0.3" />
+      <Spawn children="Minion of Oryx" maxChildren="10" initialSpawn="0" cooldown="350000" />
+      <Reproduce children="Minion of Oryx" cooldown="1500" />
+      <Shoot radius="7" count="2" shootAngle="10" projectileIndex="1" coolDownOffset="2000" cooldown="1500" />
+      <Shoot radius="7" count="5" shootAngle="10" projectileIndex="16" coolDownOffset="2000" cooldown="1500" />
+      <Follow speed="0.85" range="1" cooldown="0" />
+      <Flash color="0xFFF0000" flashPeriod="0.5" flashRepeats="9000001" />
+    </State>
+    <Threshold threshold="0.1">
+      <TierLoot tier="5" type="Weapon" probability="0.07" />
+      <TierLoot tier="5" type="Weapon" probability="0.06" />
+      <TierLoot tier="10" type="Weapon" probability="0.07" />
+      <TierLoot tier="11" type="Weapon" probability="0.06" />
+      <TierLoot tier="11" type="Weapon" probability="0.07" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Ring Element">
+    <State id="noName59">
+      <Shoot radius="50" count="12" shootAngle="0" coolDownOffset="200" cooldown="700" />
+      <ConditionalEffect effect="Invulnerable" />
+      <TimedTransition targetState="Despawn" time="20000" />
+    </State>
+    <State id="Despawn">
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Minion of Oryx">
+    <Wander speed="0.4"/>
+    <Shoot radius="3" count="3" shootAngle="10" cooldown="1000"/>
+    <Shoot radius="3" count="3" shootAngle="10" cooldown="1000" projectileIndex="1"/>
+    <TierLoot tier="7" type="Weapon" probability="0.2" />
+    <ItemLoot item="Health Potion" probability="0.03" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Guardian Element 1">
+    <State id="noName62">
+      <Orbit speed="1" radius="1" target="Oryx the Mad God 1" speedVariance="0.1" radiusVariance="0" orbitClockwise="false" />
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="25" count="3" shootAngle="10" cooldown="1000" />
+      <TimedTransition targetState="Grow" time="10000" />
+    </State>
+    <State id="Grow">
+      <ChangeSize rate="100" target="200" />
+      <ConditionalEffect effect="Invulnerable" />
+      <Orbit speed="1" radius="1" target="Oryx the Mad God 1" speedVariance="0.1" radiusVariance="0" orbitClockwise="false" />
+      <Shoot radius="3" shootAngle="10" cooldown="700" />
+      <TimedTransition targetState="Despawn" time="10000" />
+    </State>
+    <State id="Despawn">
+      <ConditionalEffect effect="Invulnerable" />
+      <Orbit speed="1" radius="1" target="Oryx the Mad God 1" speedVariance="0.1" radiusVariance="0" orbitClockwise="false" />
+      <ChangeSize rate="100" target="100" />
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Guardian Element 2">
+    <State id="noName64">
+      <Orbit speed="1.3" radius="9" target="Oryx the Mad God 1" speedVariance="0.13" radiusVariance="0" orbitClockwise="false" />
+      <ConditionalEffect effect="Invulnerable" />
+      <Shoot radius="25" count="3" shootAngle="10" cooldown="1000" />
+      <TimedTransition targetState="Despawn" time="20000" />
+    </State>
+    <State id="Despawn">
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Henchman of Oryx">
+    <State id="Attack">
+      <Prioritize>
+        <Orbit speed="0.2" radius="2" target="Oryx the Mad God 2" speedVariance="0.02" radiusVariance="1" orbitClockwise="false" />
+        <Wander speed="0.3" />
+      </Prioritize>
+      <Shoot radius="15" shootAngle="0" predictive="1" cooldown="2500" />
+      <Shoot radius="10" count="3" shootAngle="10" projectileIndex="1" cooldown="2500" />
+      <Spawn children="Vintner of Oryx" maxChildren="1" initialSpawn="1" cooldown="5000" />
+      <Spawn children="Aberrant of Oryx" maxChildren="1" initialSpawn="1" cooldown="5000" />
+      <Spawn children="Monstrosity of Oryx" maxChildren="1" initialSpawn="1" cooldown="5000" />
+      <Spawn children="Abomination of Oryx" maxChildren="1" initialSpawn="1" cooldown="5000" />
+    </State>
+    <State id="Suicide">
+      <Decay time="0" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Monstrosity of Oryx">
+    <State id="Wait">
+      <PlayerWithinTransition targetState="Attack" dist="15" />
+    </State>
+    <State id="Attack">
+      <Prioritize>
+        <Orbit speed="0.1" radius="6" target="Oryx the Mad God 2" speedVariance="0.01" radiusVariance="3" orbitClockwise="false" />
+        <Follow speed="0.1" acquireRange="15" range="6" cooldown="0" />
+        <Wander speed="0.2" />
+      </Prioritize>
+      <TossObject child="Monstrosity Scarab" range="1" angle="0" cooldown="10000" coolDownOffset="1000" />
+      <TimedTransition targetState="Wait" time="10000" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Monstrosity Scarab">
+    <State id="Attack">
+      <State id="Charge">
+        <Prioritize>
+          <Charge range="25" cooldown="1000" />
+          <Wander speed="0.3" />
+        </Prioritize>
+        <PlayerWithinTransition targetState="Boom" dist="1" />
+      </State>
+      <State id="Boom">
+        <Shoot radius="1" count="16" shootAngle="22" fixedAngle="0" cooldown="1000" />
+        <Decay time="0" />
+      </State>
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Vintner of Oryx">
+    <State id="Attack">
+      <Prioritize>
+        <Protect speed="1" protectee="Oryx the Mad God 2" protectionRange="4" reprotectRange="3" />
+        <Charge speed="1" range="15" cooldown="2000" />
+        <Protect speed="1" protectee="Henchman of Oryx" />
+        <StayBack speed="1" distance="15" />
+        <Wander speed="1" />
+      </Prioritize>
+      <Shoot radius="10" shootAngle="0" cooldown="250" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Aberrant of Oryx">
+    <Prioritize>
+      <Protect speed="0.2" protectee="Oryx the Mad God 2" />
+      <Wander speed="0.7" />
+    </Prioritize>
+    <State id="Wait">
+      <PlayerWithinTransition targetState="Attack" dist="15" />
+    </State>
+    <State id="Attack">
+      <TimedTransition targetState="Wait" time="10000" />
+      <State id="Randomize">
+        <TimedTransition targetState="Toss1" time="100" randomizedTime="true" />
+        <TimedTransition targetState="Toss2" time="100" randomizedTime="true" />
+        <TimedTransition targetState="Toss3" time="100" randomizedTime="true" />
+        <TimedTransition targetState="Toss4" time="100" randomizedTime="true" />
+        <TimedTransition targetState="Toss5" time="100" randomizedTime="true" />
+        <TimedTransition targetState="Toss6" time="100" randomizedTime="true" />
+        <TimedTransition targetState="Toss7" time="100" randomizedTime="true" />
+        <TimedTransition targetState="Toss8" time="100" randomizedTime="true" />
+      </State>
+      <State id="Toss1">
+        <TossObject child="Aberrant Blaster" angle="0" cooldown="40000" />
+        <TimedTransition targetState="Randomize" time="4900" />
+      </State>
+      <State id="Toss2">
+        <TossObject child="Aberrant Blaster" angle="45" cooldown="40000" />
+        <TimedTransition targetState="Randomize" time="4900" />
+      </State>
+      <State id="Toss3">
+        <TossObject child="Aberrant Blaster" angle="90" cooldown="40000" />
+        <TimedTransition targetState="Randomize" time="4900" />
+      </State>
+      <State id="Toss4">
+        <TossObject child="Aberrant Blaster" angle="135" cooldown="40000" />
+        <TimedTransition targetState="Randomize" time="4900" />
+      </State>
+      <State id="Toss5">
+        <TossObject child="Aberrant Blaster" angle="180" cooldown="40000" />
+        <TimedTransition targetState="Randomize" time="4900" />
+      </State>
+      <State id="Toss6">
+        <TossObject child="Aberrant Blaster" angle="225" cooldown="40000" />
+        <TimedTransition targetState="Randomize" time="4900" />
+      </State>
+      <State id="Toss7">
+        <TossObject child="Aberrant Blaster" angle="270" cooldown="40000" />
+        <TimedTransition targetState="Randomize" time="4900" />
+      </State>
+      <State id="Toss8">
+        <TossObject child="Aberrant Blaster" angle="315" cooldown="40000" />
+        <TimedTransition targetState="Randomize" time="4900" />
+      </State>
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Aberrant Blaster">
+    <State id="Wait">
+      <PlayerWithinTransition targetState="Boom" dist="3" />
+    </State>
+    <State id="Boom">
+      <Shoot radius="10" count="5" shootAngle="7" cooldown="1000" />
+      <Decay time="0" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Bile of Oryx">
+    <Prioritize>
+      <Protect speed="0.4" protectee="Oryx the Mad God 2" protectionRange="5" reprotectRange="4" />
+      <Wander speed="0.5" />
+    </Prioritize>
+  </BehaviorEntry>
+  <BehaviorEntry id="Abomination of Oryx">
+    <Prioritize>
+      <Charge speed="3" cooldown="3000" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <State id="Shoot">
+      <Shoot radius="1" count="3" shootAngle="5" cooldown="1000" />
+      <Shoot radius="1" count="5" shootAngle="5" projectileIndex="1" cooldown="1000" />
+      <Shoot radius="1" count="7" shootAngle="5" projectileIndex="2" cooldown="1000" />
+      <Shoot radius="1" count="5" shootAngle="5" projectileIndex="3" cooldown="1000" />
+      <Shoot radius="1" count="3" shootAngle="5" projectileIndex="4" cooldown="1000" />
+      <TimedTransition targetState="Wait" time="1000" />
+    </State>
+    <State id="Wait">
+      <PlayerWithinTransition targetState="Shoot" dist="2" />
+    </State>
+  </BehaviorEntry>
+</BehaviorEntries>

@@ -37,8 +37,6 @@ public partial class Player {
             {"Red Demon", Tuple.Create(13, 15, 20)},
 
             // events
-            {"shtrs Defense System", Tuple.Create(14, 15, 20)},
-            {"Fanatic of Chaos", Tuple.Create(14, 15, 20)},
             {"Skull Shrine", Tuple.Create(14, 15, 20)},
             {"Pentaract", Tuple.Create(14, 15, 20)},
             {"Cube God", Tuple.Create(14, 15, 20)},
@@ -49,13 +47,8 @@ public partial class Player {
             {"Dragon Head", Tuple.Create(14, 15, 20)},
             {"Lucky Ent God", Tuple.Create(14, 15, 20)},
             {"Lucky Djinn", Tuple.Create(14, 15, 20)},
-            {"Zombie Horde", Tuple.Create(14, 15, 20)},
 
             // dungeon bosses
-            {"Evil Chicken God", Tuple.Create(15, 1, 20)},
-            {"Bonegrind the Butcher", Tuple.Create(15, 1, 20)},
-            {"Dreadstump the Pirate King", Tuple.Create(15, 1, 20)},
-            {"Mama Megamoth", Tuple.Create(15, 1, 20)},
             {"Arachna the Spider Queen", Tuple.Create(15, 1, 20)},
             {"Stheno the Snake Queen", Tuple.Create(15, 1, 20)},
             {"Mixcoatl the Masked God", Tuple.Create(15, 1, 20)},
@@ -72,8 +65,6 @@ public partial class Player {
             {"Oryx Stone Guardian Right", Tuple.Create(15, 1, 20)},
             {"Oryx the Mad God 1", Tuple.Create(15, 1, 20)},
             {"Oryx the Mad God 2", Tuple.Create(15, 1, 20)},
-            {"Oryx the Mad God 3", Tuple.Create(15, 1, 20)},
-            {"Oryx the Mad God 4", Tuple.Create(15, 1, 20)},
             {"Gigacorn", Tuple.Create(15, 1, 20)},
             {"Desire Troll", Tuple.Create(15, 1, 20)},
             {"Spoiled Creampuff", Tuple.Create(15, 1, 20)},
@@ -89,44 +80,7 @@ public partial class Player {
             {"Tomb Defender", Tuple.Create(15, 1, 20)},
             {"Tomb Support", Tuple.Create(15, 1, 20)},
             {"Tomb Attacker", Tuple.Create(15, 1, 20)},
-            {"Active Sarcophagus", Tuple.Create(15, 1, 20)},
-            {"shtrs Bridge Sentinel", Tuple.Create(15, 1, 20)},
-            {"shtrs The Forgotten King", Tuple.Create(15, 1, 20)},
-            {"shtrs Twilight Archmage", Tuple.Create(15, 1, 20)},
-            {"NM Black Dragon God", Tuple.Create(15, 1, 20)},
-            {"NM Black Dragon God Hardmode", Tuple.Create(15, 1, 20)},
-            {"NM Red Dragon God", Tuple.Create(15, 1, 20)},
-            {"NM Red Dragon God Hardmode", Tuple.Create(15, 1, 20)},
-            {"NM Blue Dragon God", Tuple.Create(15, 1, 20)},
-            {"NM Blue Dragon God Hardmode", Tuple.Create(15, 1, 20)},
-            {"NM Green Dragon God", Tuple.Create(15, 1, 20)},
-            {"NM Green Dragon God Hardmode", Tuple.Create(15, 1, 20)},
-            {"lod Ivory Wyvern", Tuple.Create(15, 1, 20)},
-            {"The Puppet Master", Tuple.Create(15, 1, 20)},
-            {"Jon Bilgewater the Pirate King", Tuple.Create(15, 1, 20)},
-            {"Epic Larva", Tuple.Create(15, 1, 20)},
-            {"Epic Mama Megamoth", Tuple.Create(15, 1, 20)},
-            {"Murderous Megamoth", Tuple.Create(15, 1, 20)},
-            {"Son of Arachna", Tuple.Create(15, 1, 20)},
-            {"Golden Oryx Effigy", Tuple.Create(15, 1, 20)},
-            {"Murderous Megamoth Deux", Tuple.Create(15, 1, 20)},
-            {"Lord Ruthven Deux", Tuple.Create(15, 1, 20)},
-            {"NM Green Dragon God Deux", Tuple.Create(15, 1, 20)},
-            {"Archdemon Malphas Deux", Tuple.Create(15, 1, 20)},
-            {"Stheno the Snake Queen Deux", Tuple.Create(15, 1, 20)},
-            {"Golden Oryx Effigy Deux", Tuple.Create(15, 1, 20)},
-            {"Oryx the Mad God Deux", Tuple.Create(15, 1, 20)},
-            {"vlntns Botany Bella", Tuple.Create(15, 1, 20)},
-            {"md1 Head of Shaitan", Tuple.Create(15, 1, 20)},
-            {"Queen of Hearts", Tuple.Create(15, 1, 20)},
-            {"Fabian the King of the Ossis", Tuple.Create(15, 1, 20)},
-            {"TestChicken 2", Tuple.Create(15, 1, 20)},
-
-            // special events
-            {"Megaman", Tuple.Create(50, 20, 20)},
-            {"Boshy", Tuple.Create(50, 20, 20)},
-            {"The Kid", Tuple.Create(50, 20, 20)},
-            {"Sanic", Tuple.Create(50, 20, 20)}
+            {"Active Sarcophagus", Tuple.Create(15, 1, 20)}
         };
 
     public Entity Quest { get; private set; }

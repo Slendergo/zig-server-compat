@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Mixcoatl the Masked God">
+    <DropPortalOnDeath target="Realm Portal" probability="100" />
+    <State id="Idle">
+      <ConditionalEffect effect="Invulnerable" />
+      <Wander speed="0.5" />
+      <PlayerWithinTransition targetState="Start" dist="10" />
+    </State>
+    <State id="Start">
+      <ConditionalEffect effect="Invulnerable" />
+      <ReturnToSpawn speed="2" />
+      <SetAltTexture minValue="3" cooldown="0" />
+      <TimedTransition targetState="Start 2" time="200" />
+    </State>
+    <State id="Start 2">
+      <ConditionalEffect effect="Invulnerable" />
+      <SetAltTexture minValue="4" cooldown="0" />
+      <TimedTransition targetState="Start 3" time="200" />
+    </State>
+    <State id="Start 3">
+      <ConditionalEffect effect="Invulnerable" />
+      <SetAltTexture minValue="5" cooldown="0" />
+      <TimedTransition targetState="Start 4" time="200" />
+    </State>
+    <State id="Start 4">
+      <ConditionalEffect effect="Invulnerable" />
+      <ReturnToSpawn speed="2" />
+      <SetAltTexture minValue="6" cooldown="0" />
+      <TimedTransition targetState="Start Fight" time="400" />
+    </State>
+    <State id="Start Fight">
+      <ReturnToSpawn speed="2" />
+      <Shoot radius="20" count="3" shootAngle="5" projectileIndex="1" fixedAngle="0" coolDownOffset="200" cooldown="1000" />
+      <Shoot radius="20" count="3" shootAngle="5" projectileIndex="1" fixedAngle="0" angleOffset="45" coolDownOffset="400" cooldown="1000" />
+      <Shoot radius="20" count="3" shootAngle="5" projectileIndex="1" fixedAngle="0" angleOffset="90" coolDownOffset="600" cooldown="1000" />
+      <Shoot radius="20" count="3" shootAngle="5" projectileIndex="1" fixedAngle="0" angleOffset="135" coolDownOffset="800" cooldown="1000" />
+      <Shoot radius="20" count="3" shootAngle="5" projectileIndex="1" fixedAngle="0" angleOffset="180" coolDownOffset="1000" cooldown="1000" />
+      <Shoot radius="20" count="3" shootAngle="5" projectileIndex="1" fixedAngle="0" angleOffset="225" coolDownOffset="1200" cooldown="1000" />
+      <Shoot radius="20" count="3" shootAngle="5" projectileIndex="1" fixedAngle="0" angleOffset="270" coolDownOffset="1400" cooldown="1000" />
+      <Shoot radius="20" count="3" shootAngle="5" projectileIndex="1" fixedAngle="0" angleOffset="315" coolDownOffset="1600" cooldown="1000" />
+      <TimedTransition targetState="Start Fight 2" time="4000" />
+    </State>
+    <State id="Start Fight 2">
+      <ReturnToSpawn speed="2" />
+      <Order range="50" children="Boss Totem" targetState="Fire!" />
+      <SetAltTexture minValue="1" cooldown="0" />
+      <Shoot radius="20" count="8" shootAngle="0" fixedAngle="45" cooldown="400" />
+      <TimedTransition targetState="Charge" time="5000" />
+    </State>
+    <State id="Charge">
+      <Prioritize>
+        <Follow speed="0.5" range="10" cooldown="0" />
+        <Wander speed="0.5" />
+      </Prioritize>
+      <ReturnToSpawn speed="2" />
+      <Order range="50" children="Boss Totem" targetState="Fire!" />
+      <SetAltTexture minValue="1" cooldown="0" />
+      <Shoot radius="20" count="8" shootAngle="0" fixedAngle="45" cooldown="400" />
+      <TimedTransition targetState="Start Fight" time="8000" />
+    </State>
+    <Threshold threshold="0.2">
+      <ItemLoot item="Staff of the Crystal Serpent" probability="0.25" />
+      <ItemLoot item="Robe of the Tlatoani" probability="0.2" />
+      <ItemLoot item="Crystal Bone Ring" probability="0.15" />
+      <ItemLoot item="Cracked Crystal Skull" probability="0.2" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Boss Totem">
+    <State id="Idle">
+      <ConditionalEffect effect="Invincible" />
+    </State>
+    <State id="Fire!">
+      <ConditionalEffect effect="Invincible" />
+      <Shoot radius="10" count="6" shootAngle="0" fixedAngle="60" cooldown="400" />
+      <EntityNotExistsTransition targetState="Idle" dist="100" target="Mixcoatl the Masked God" />
+      <TimedTransition targetState="Idle" time="4000" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Totem Spirit">
+    <State id="Wander">
+      <Wander speed="0.4" />
+      <StayCloseToSpawn speed="0.5" range="3" />
+      <Shoot radius="8" shootAngle="0" cooldown="750" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Jungle Totem">
+    <State id="Stand">
+      <Spawn children="Totem Spirit" maxChildren="3" initialSpawn="1" cooldown="0" />
+      <Shoot radius="9" count="9" shootAngle="15" cooldown="1500" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Basilisk Baby">
+    <State id="Protect Mommy">
+      <Protect speed="0.4" protectee="Basilisk" acquireRange="8" protectionRange="5" reprotectRange="4" />
+      <Shoot radius="7" shootAngle="0" cooldown="750" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Basilisk">
+    <State id="Kill">
+      <Prioritize>
+        <Follow speed="0.6" acquireRange="6" range="1" cooldown="0" />
+        <Wander speed="0.5" />
+      </Prioritize>
+      <Shoot radius="6" shootAngle="0" cooldown="750" />
+      <Shoot radius="6" shootAngle="0" projectileIndex="1" cooldown="750" />
+      <Shoot radius="6" shootAngle="0" projectileIndex="2" cooldown="750" />
+      <Shoot radius="6" shootAngle="0" projectileIndex="3" cooldown="750" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Mask Shaman">
+    <State id="Circle">
+      <Orbit speed="0.4" radius="3" target="Jungle Fire" speedVariance="0.04" radiusVariance="0.04" orbitClockwise="false" />
+      <HealGroup range="8" cooldown="2000" group="Mask Men" />
+      <Shoot radius="7" count="8" shootAngle="45" cooldown="1500" />
+      <EntityNotExistsTransition targetState="Wander" dist="5" target="Jungle Fire" />
+    </State>
+    <State id="Wander">
+      <Wander speed="0.4" />
+      <HealGroup range="8" cooldown="2000" group="Mask Men" />
+      <Shoot radius="7" count="8" shootAngle="45" cooldown="1500" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Mask Warrior">
+    <State id="Protect">
+      <Protect speed="0.3" protectee="Mask Shaman" />
+      <Shoot radius="7" count="8" shootAngle="45" cooldown="1500" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Mask Hunter">
+    <State id="Killa">
+      <Prioritize>
+        <Follow speed="0.8" acquireRange="8" range="1" cooldown="0" />
+        <Wander speed="0.5" />
+      </Prioritize>
+      <Shoot radius="8" shootAngle="0" cooldown="1000" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Jungle Fire">
+    <State id="Burn">
+      <Shoot radius="1" shootAngle="0" cooldown="1000" />
+      <Shoot radius="7" shootAngle="0" projectileIndex="1" coolDownOffset="500" cooldown="1000" />
+      <Shoot radius="7" shootAngle="0" projectileIndex="1" coolDownOffset="600" cooldown="1000" />
+      <Shoot radius="7" shootAngle="0" projectileIndex="1" coolDownOffset="700" cooldown="1000" />
+      <Shoot radius="7" shootAngle="0" projectileIndex="1" coolDownOffset="800" cooldown="1000" />
+    </State>
+  </BehaviorEntry>
+</BehaviorEntries>

@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Lord Ruthven">
+    <DropPortalOnDeath target="Realm Portal" probability="100" />
+    <State id="default">
+      <PlayerWithinTransition targetState="spooksters" dist="8" />
+    </State>
+    <State id="spooksters">
+      <Wander speed="0.2" />
+      <Shoot radius="10" count="5" shootAngle="2" cooldown="900" />
+      <TimedTransition targetState="spooksters2" time="6000" />
+    </State>
+    <State id="spooksters2">
+      <Wander speed="0.15" />
+      <Shoot radius="8.4" count="40" shootAngle="0" projectileIndex="1" cooldown="2750" />
+      <Shoot radius="10" count="5" shootAngle="2" cooldown="900" />
+      <TimedTransition targetState="spooksters3" time="4000" />
+    </State>
+    <State id="spooksters3">
+      <HealSelf cooldown="1250" />
+      <Shoot radius="8.4" count="40" shootAngle="0" projectileIndex="1" cooldown="2750" />
+      <TimedTransition targetState="spooksters" time="4000" />
+    </State>
+    <Threshold threshold="0.025">
+      <TierLoot tier="3" type="Weapon" probability="0.05" />
+      <TierLoot tier="4" type="Weapon" probability="0.1" />
+      <TierLoot tier="4" type="Weapon" probability="0.025" />
+      <TierLoot tier="9" type="Weapon" probability="0.1" />
+      <TierLoot tier="9" type="Weapon" probability="0.1" />
+      <TierLoot tier="10" type="Weapon" probability="0.05" />
+      <TierLoot tier="10" type="Weapon" probability="0.05" />
+      <ItemLoot item="Potion of Attack" probability="1" />
+      <ItemLoot item="Holy Water" probability="0.5" />
+      <ItemLoot item="Chasuble of Holy Light" probability="0.01" />
+      <ItemLoot item="St. Abraham's Wand" probability="0.01" />
+      <ItemLoot item="Tome of Purification" probability="0.001" />
+      <ItemLoot item="Ring of Divine Faith" probability="0.01" />
+      <ItemLoot item="Bone Dagger" probability="0.08" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Hellhound">
+    <Follow speed="1.25" acquireRange="8" range="1" cooldown="275" />
+    <Shoot radius="10" count="5" shootAngle="7" cooldown="2000" />
+    <Threshold threshold="0.5">
+      <ItemLoot item="Timelock Orb" probability="0.01" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Vampire Bat Swarmer">
+    <Follow speed="1.5" acquireRange="8" range="1" cooldown="0" />
+    <Shoot radius="10" shootAngle="0" cooldown="6" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Lil Feratu">
+    <Follow speed="0.35" acquireRange="8" range="1" cooldown="0" />
+    <Shoot radius="10" count="6" shootAngle="2" cooldown="900" />
+    <Threshold threshold="0.5">
+      <ItemLoot item="Steel Helm" probability="0.01" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Lesser Bald Vampire">
+    <Follow speed="0.35" acquireRange="8" range="1" cooldown="0" />
+    <Shoot radius="10" count="5" shootAngle="6" cooldown="1000" />
+    <Threshold threshold="0.5">
+      <ItemLoot item="Steel Helm" probability="0.01" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Nosferatu">
+    <Wander speed="0.25" />
+    <Shoot radius="10" count="5" shootAngle="2" projectileIndex="1" cooldown="1000" />
+    <Shoot radius="10" count="6" shootAngle="90" cooldown="1500" />
+    <Threshold threshold="0.5">
+      <ItemLoot item="Bone Dagger" probability="0.01" />
+      <ItemLoot item="Wand of Death" probability="0.05" />
+      <ItemLoot item="Golden Bow" probability="0.04" />
+      <ItemLoot item="Steel Helm" probability="0.05" />
+      <ItemLoot item="Ring of Paramount Defense" probability="0.09" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Armor Guard">
+    <Wander speed="0.2" />
+    <TossObject child="RockBomb" range="7" cooldown="3000" />
+    <Shoot radius="10" shootAngle="0" predictive="7" cooldown="1000" />
+    <Shoot radius="10" shootAngle="0" projectileIndex="1" cooldown="750" />
+    <Threshold threshold="0.5">
+      <ItemLoot item="Glass Sword" probability="0.01" />
+      <ItemLoot item="Staff of Destruction" probability="0.01" />
+      <ItemLoot item="Golden Shield" probability="0.01" />
+      <ItemLoot item="Ring of Paramount Speed" probability="0.01" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Coffin Creature">
+    <Spawn children="Lil Feratu" maxChildren="2" initialSpawn="2" cooldown="2250" />
+    <Shoot radius="10" shootAngle="0" cooldown="700" />
+    <TierLoot tier="3" type="Weapon" probability="0.05" />
+    <TierLoot tier="3" type="Weapon" probability="0.2" />
+    <TierLoot tier="4" type="Weapon" probability="0.1" />
+    <TierLoot tier="4" type="Weapon" probability="0.025" />
+    <TierLoot tier="4" type="Weapon" probability="0.05" />
+    <TierLoot tier="4" type="Weapon" probability="0.1" />
+    <TierLoot tier="5" type="Weapon" probability="0.01" />
+    <TierLoot tier="5" type="Weapon" probability="0.03" />
+    <TierLoot tier="7" type="Weapon" probability="0.2" />
+    <TierLoot tier="8" type="Weapon" probability="0.2" />
+    <TierLoot tier="8" type="Weapon" probability="0.1" />
+    <TierLoot tier="9" type="Weapon" probability="0.03" />
+    <TierLoot tier="9" type="Weapon" probability="0.1" />
+    <TierLoot tier="9" type="Weapon" probability="0.03" />
+    <TierLoot tier="9" type="Weapon" probability="0.1" />
+    <TierLoot tier="10" type="Weapon" probability="0.02" />
+    <TierLoot tier="10" type="Weapon" probability="0.05" />
+    <TierLoot tier="10" type="Weapon" probability="0.05" />
+    <TierLoot tier="10" type="Weapon" probability="0.02" />
+    <TierLoot tier="11" type="Weapon" probability="0.01" />
+    <TierLoot tier="11" type="Weapon" probability="0.01" />
+    <ItemLoot item="Steel Helm" probability="0.01" />
+    <ItemLoot item="Golden Shield" probability="0.01" />
+    <ItemLoot item="Staff of Destruction" probability="0.01" />
+    <ItemLoot item="Glass Sword" probability="0.01" />
+    <ItemLoot item="Magic Potion" probability="0.05" />
+    <ItemLoot item="Ring of Paramount Defense" probability="0.09" />
+    <ItemLoot item="Potion of Attack" probability="1" />
+    <ItemLoot item="Holy Water" probability="0.5" />
+    <ItemLoot item="Chasuble of Holy Light" probability="0.01" />
+    <ItemLoot item="St. Abraham's Wand" probability="0.01" />
+    <ItemLoot item="Tome of Purification" probability="0.001" />
+    <ItemLoot item="Ring of Divine Faith" probability="0.01" />
+    <ItemLoot item="Bone Dagger" probability="0.08" />
+    <ItemLoot item="Magic Potion" probability="0.05" />
+    <ItemLoot item="Timelock Orb" probability="0.01" />
+    <ItemLoot item="Health Potion" probability="0.05" />
+    <ItemLoot item="Steel Helm" probability="0.01" />
+    <ItemLoot item="Steel Helm" probability="0.05" />
+    <ItemLoot item="Golden Bow" probability="0.04" />
+    <ItemLoot item="Wand of Death" probability="0.05" />
+    <ItemLoot item="Bone Dagger" probability="0.01" />
+    <ItemLoot item="Health Potion" probability="0.05" />
+    <ItemLoot item="Health Potion" probability="0.05" />
+    <ItemLoot item="Fire Nova Spell" probability="0.02" />
+    <ItemLoot item="Robe of the Tlatoani" probability="0.2" />
+    <ItemLoot item="Pollen Powder" probability="0.99" />
+    <ItemLoot item="Wand of Dark Magic" probability="0.01" />
+    <ItemLoot item="Avenger Staff" probability="0.01" />
+    <ItemLoot item="Robe of the Invoker" probability="0.01" />
+    <ItemLoot item="Essence Tap Skull" probability="0.01" />
+    <ItemLoot item="Demonhunter Trap" probability="0.01" />
+    <ItemLoot item="Magic Potion" probability="0.1" />
+    <ItemLoot item="Obsidian Dagger" probability="0.02" />
+    <ItemLoot item="Steel Helm" probability="0.02" />
+    <ItemLoot item="Spirit Salve Tome" probability="0.02" />
+    <ItemLoot item="Glass Sword" probability="0.01" />
+    <ItemLoot item="Ring of Greater Dexterity" probability="0.01" />
+    <ItemLoot item="Magesteel Quiver" probability="0.01" />
+    <ItemLoot item="Pollen Powder" probability="0.88" />
+    <ItemLoot item="Spirit Dagger" probability="0.015" />
+    <ItemLoot item="Ghostly Prism" probability="0.01" />
+    <ItemLoot item="Captain's Ring" probability="0.03" />
+    <ItemLoot item="Potion of Wisdom" probability="1" />
+    <ItemLoot item="Potion of Attack" probability="0.5" />
+    <ItemLoot item="Staff of the Crystal Serpent" probability="0.25" />
+    <ItemLoot item="Ring of Paramount Speed" probability="0.01" />
+    <ItemLoot item="Crystal Bone Ring" probability="0.15" />
+    <ItemLoot item="Cracked Crystal Skull" probability="0.2" />
+    <ItemLoot item="Pollen Powder" probability="1" />
+    <ItemLoot item="Spectral Cloth Armor" probability="0.013" />
+    <ItemLoot item="Magic Potion" probability="0.05" />
+  </BehaviorEntry>
+  <BehaviorEntry id="RockBomb">
+    <State id="BOUTTOEXPLODE">
+      <TimedTransition targetState="boom" time="1111" />
+    </State>
+    <State id="boom">
+      <Shoot radius="8.4" shootAngle="0" fixedAngle="0" cooldown="1000" />
+      <Shoot radius="8.4" shootAngle="0" fixedAngle="90" cooldown="1000" />
+      <Shoot radius="8.4" shootAngle="0" fixedAngle="180" cooldown="1000" />
+      <Shoot radius="8.4" shootAngle="0" fixedAngle="270" cooldown="1000" />
+      <Shoot radius="8.4" shootAngle="0" fixedAngle="45" cooldown="1000" />
+      <Shoot radius="8.4" shootAngle="0" fixedAngle="135" cooldown="1000" />
+      <Shoot radius="8.4" shootAngle="0" fixedAngle="235" cooldown="1000" />
+      <Shoot radius="8.4" shootAngle="0" fixedAngle="315" cooldown="1000" />
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Coffin">
+    <State id="Coffin1">
+      <HpLessTransition targetState="Coffin2" threshold="0.75" />
+    </State>
+    <State id="Coffin2">
+      <Spawn children="Vampire Bat Swarmer" maxChildren="15" initialSpawn="15" cooldown="99999" />
+      <HpLessTransition targetState="Coffin3" threshold="0.4" />
+    </State>
+    <State id="Coffin3">
+      <Spawn children="Vampire Bat Swarmer" maxChildren="8" initialSpawn="8" cooldown="99999" />
+      <Spawn children="Nosferatu" maxChildren="2" initialSpawn="2" cooldown="99999" />
+    </State>
+    <Threshold threshold="0.5">
+      <TierLoot tier="4" type="Weapon" probability="0.15" />
+      <TierLoot tier="6" type="Weapon" probability="0.2" />
+      <TierLoot tier="7" type="Weapon" probability="0.05" />
+      <ItemLoot item="Holy Water" probability="1" />
+      <ItemLoot item="Potion of Attack" probability="0.5" />
+      <ItemLoot item="Chasuble of Holy Light" probability="0.01" />
+      <ItemLoot item="St. Abraham's Wand" probability="0.01" />
+      <ItemLoot item="Tome of Purification" probability="0.001" />
+      <ItemLoot item="Ring of Divine Faith" probability="0.01" />
+      <ItemLoot item="Bone Dagger" probability="0.08" />
+    </Threshold>
+  </BehaviorEntry>
+</BehaviorEntries>

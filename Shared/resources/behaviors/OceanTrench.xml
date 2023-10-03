@@ -15,7 +15,7 @@
     </State>
     <Threshold threshold="0.01">
       <ItemLoot item="Coral Juice" probability="0.3" />
-      <ItemLoot item="Sea Slurp Egg" probability="0.25" />
+      <ItemLoot item="Sea Slurp Generator" probability="0.25" />
       <ItemLoot item="Potion of Mana" probability="0.04" />
       <ItemLoot item="Coral Bow" probability="0.01" />
       <ItemLoot item="Coral Venom Trap" probability="0.03" />
@@ -223,7 +223,7 @@
     </State>
     <Threshold threshold="0.1">
       <ItemLoot item="Coral Juice" probability="0.3" />
-      <ItemLoot item="Sea Slurp Egg" probability="0.25" />
+      <ItemLoot item="Sea Slurp Generator" probability="0.25" />
       <ItemLoot item="Coral Bow" probability="0.01" />
       <ItemLoot item="Coral Venom Trap" probability="0.03" />
       <ItemLoot item="Wine Cellar Incantation" probability="0.02" />

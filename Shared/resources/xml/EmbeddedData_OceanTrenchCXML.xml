@@ -282,6 +282,20 @@
 
     </Object>
 
+    <Object type="0x0985" id="Thessal Dropper">
+        <Enemy/>
+        <Class>Character</Class>
+        <Texture>
+            <File>lofiObjBig</File>
+            <Index>0xb6</Index>
+        </Texture>
+        <MaxHitPoints>1000</MaxHitPoints>
+        <XpMult>0</XpMult>
+        <Size>0</Size>
+        <NoMiniMap/>
+        <StasisImmune/>
+    </Object>
+
     <Object type="0x1707" id="Deep Sea Beast">
         <Group>Ocean Trench</Group>
         <Enemy/>

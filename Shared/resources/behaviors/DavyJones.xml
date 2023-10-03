@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BehaviorEntries>
+  <BehaviorEntry id="Davy Jones">
+    <DropPortalOnDeath target="Realm Portal" probability="100" />
+    <State id="Floating">
+      <ChangeSize rate="100" target="100" />
+      <SetAltTexture minValue="1" cooldown="0" />
+      <SetAltTexture minValue="3" cooldown="0" />
+      <Wander speed="0.2" />
+      <Shoot radius="10" count="5" shootAngle="10" cooldown="2000" />
+      <Shoot radius="10" shootAngle="10" projectileIndex="1" cooldown="4000" />
+      <ConditionalEffect effect="Invulnerable" />
+      <EntityNotExistsTransition targetState="Vunerable" dist="10" target="Ghost Lanturn Off" />
+    </State>
+    <State id="CheckOffLanterns">
+      <SetAltTexture minValue="2" cooldown="0" />
+      <StayCloseToSpawn speed="0.1" range="3" />
+      <ConditionalEffect effect="Invulnerable" />
+      <EntityNotExistsTransition targetState="Vunerable" dist="10" target="Ghost Lanturn Off" />
+    </State>
+    <State id="Vunerable">
+      <SetAltTexture minValue="2" cooldown="0" />
+      <StayCloseToSpawn speed="0.1" range="0" />
+      <TimedTransition targetState="deactivate" time="2500" />
+    </State>
+    <State id="deactivate">
+      <SetAltTexture minValue="2" cooldown="0" />
+      <StayCloseToSpawn speed="0.1" range="0" />
+      <EntityNotExistsTransition targetState="Floating" dist="10" target="Ghost Lanturn On" />
+    </State>
+    <Threshold threshold="0.15">
+      <TierLoot tier="3" type="Weapon" probability="0.2" />
+      <TierLoot tier="4" type="Weapon" probability="0.1" />
+      <TierLoot tier="4" type="Weapon" probability="0.05" />
+      <TierLoot tier="5" type="Weapon" probability="0.03" />
+      <TierLoot tier="5" type="Weapon" probability="0.01" />
+      <TierLoot tier="7" type="Weapon" probability="0.2" />
+      <TierLoot tier="8" type="Weapon" probability="0.2" />
+      <TierLoot tier="8" type="Weapon" probability="0.1" />
+      <TierLoot tier="9" type="Weapon" probability="0.03" />
+      <TierLoot tier="9" type="Weapon" probability="0.03" />
+      <TierLoot tier="10" type="Weapon" probability="0.02" />
+      <TierLoot tier="10" type="Weapon" probability="0.02" />
+      <TierLoot tier="11" type="Weapon" probability="0.01" />
+      <TierLoot tier="11" type="Weapon" probability="0.01" />
+      <ItemLoot item="Spirit Dagger" probability="0.015" />
+      <ItemLoot item="Spectral Cloth Armor" probability="0.013" />
+      <ItemLoot item="Ghostly Prism" probability="0.01" />
+      <ItemLoot item="Captain's Ring" probability="0.03" />
+      <ItemLoot item="Potion of Wisdom" probability="1" />
+      <ItemLoot item="Potion of Attack" probability="0.5" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Ghost Lanturn Off">
+    <State id="default">
+      <ConditionalEffect effect="Invincible" />
+      <EntityNotExistsTransition targetState="gogogo" dist="9999" target="Yellow Key" />
+    </State>
+    <State id="gogogo">
+      <TransformOnDeath target="Ghost Lanturn On" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Lost Soul">
+    <State id="Default">
+      <Prioritize>
+        <Orbit speed="0.3" radius="3" acquireRange="20" target="Ghost of Roger" speedVariance="0.03" radiusVariance="0.03" orbitClockwise="false" />
+        <Wander speed="0.1" />
+      </Prioritize>
+      <PlayerWithinTransition targetState="Default1" dist="4" />
+    </State>
+    <State id="Default1">
+      <Charge speed="0.5" range="8" cooldown="2000" />
+      <TimedTransition targetState="Blammo" time="2200" />
+    </State>
+    <State id="Blammo">
+      <Shoot radius="10" count="6" shootAngle="0" cooldown="2000" />
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Ghost of Roger">
+    <State id="spawn">
+      <Spawn children="Lost Soul" maxChildren="3" initialSpawn="3" cooldown="5000" />
+      <TimedTransition targetState="Attack" time="100" />
+    </State>
+    <State id="Attack">
+      <Shoot radius="13" shootAngle="0" cooldown="10" />
+      <TimedTransition targetState="Attack2" time="20" />
+    </State>
+    <State id="Attack2">
+      <Shoot radius="13" shootAngle="0" cooldown="10" />
+      <TimedTransition targetState="Attack3" time="20" />
+    </State>
+    <State id="Attack3">
+      <Shoot radius="13" shootAngle="0" cooldown="10" />
+      <TimedTransition targetState="Wait" time="20" />
+    </State>
+    <State id="Wait">
+      <TimedTransition targetState="Attack" time="1000" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Purple Key">
+    <RemoveObjectOnDeath />
+    <RemoveObjectOnDeath />
+    <State id="Idle">
+      <PlayerWithinTransition targetState="Cycle" dist="1" />
+    </State>
+    <State id="Cycle">
+      <Taunt text="Purple Key has been found!" broadcast="true" />
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Red Key">
+    <RemoveObjectOnDeath />
+    <RemoveObjectOnDeath />
+    <State id="Idle">
+      <PlayerWithinTransition targetState="Cycle" dist="1" />
+    </State>
+    <State id="Cycle">
+      <Taunt text="Red Key has been found!" broadcast="true" />
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Green Key">
+    <RemoveObjectOnDeath />
+    <RemoveObjectOnDeath />
+    <State id="Idle">
+      <PlayerWithinTransition targetState="Cycle" dist="1" />
+    </State>
+    <State id="Cycle">
+      <Taunt text="Green Key has been found!" broadcast="true" />
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Yellow Key">
+    <RemoveObjectOnDeath />
+    <RemoveObjectOnDeath />
+    <State id="Idle">
+      <PlayerWithinTransition targetState="Cycle" dist="1" />
+    </State>
+    <State id="Cycle">
+      <Taunt text="Yellow Key has been found!" broadcast="true" />
+      <Suicide />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Ghost Lanturn On">
+    <State id="idle">
+      <ConditionalEffect effect="Invulnerable" />
+      <TimedTransition targetState="deactivate" time="5000" />
+    </State>
+    <State id="deactivate">
+      <ConditionalEffect effect="Invulnerable" />
+      <EntityNotExistsTransition targetState="shoot" dist="10" target="Ghost Lanturn Off" />
+      <TimedTransition targetState="gone" time="10000" />
+    </State>
+    <State id="shoot">
+      <Shoot radius="10" count="6" shootAngle="0" coolDownOffset="100" cooldown="9000001" />
+      <TimedTransition targetState="gone" time="1000" />
+    </State>
+    <State id="gone">
+      <ConditionalEffect effect="Invulnerable" />
+      <Transform target="Ghost Lanturn Off" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Lil' Ghost Pirate">
+    <ChangeSize rate="30" target="120" />
+    <Shoot radius="10" shootAngle="0" cooldown="2000" />
+    <State id="Default">
+      <Prioritize>
+        <Follow speed="0.6" acquireRange="8" range="1" cooldown="0" />
+        <Wander speed="0.1" />
+      </Prioritize>
+      <TimedTransition targetState="Default1" time="2850" />
+    </State>
+    <State id="Default1">
+      <StayBack speed="0.2" distance="3" />
+      <TimedTransition targetState="Default" time="1850" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Zombie Pirate Sr">
+    <Shoot radius="10" shootAngle="0" cooldown="2000" />
+    <State id="Default">
+      <Prioritize>
+        <Follow speed="0.3" acquireRange="8" range="1" cooldown="0" />
+        <Wander speed="0.1" />
+      </Prioritize>
+      <TimedTransition targetState="Default1" time="2850" />
+    </State>
+    <State id="Default1">
+      <ConditionalEffect effect="Armored" />
+      <Prioritize>
+        <Follow speed="0.3" acquireRange="8" range="1" cooldown="0" />
+        <Wander speed="0.1" />
+      </Prioritize>
+      <TimedTransition targetState="Default" time="2850" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Zombie Pirate Jr">
+    <Shoot radius="10" shootAngle="0" cooldown="2500" />
+    <State id="Default">
+      <Prioritize>
+        <Follow speed="0.4" acquireRange="8" range="1" cooldown="0" />
+        <Wander speed="0.1" />
+      </Prioritize>
+      <TimedTransition targetState="Default1" time="2850" />
+    </State>
+    <State id="Default1">
+      <Swirl speed="0.2" radius="3" />
+      <TimedTransition targetState="Default" time="1850" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Captain Summoner">
+    <State id="Default">
+      <ConditionalEffect effect="Invincible" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="GhostShip Rat">
+    <State id="Default">
+      <Shoot radius="10" shootAngle="0" cooldown="1750" />
+      <Prioritize>
+        <Follow speed="0.55" acquireRange="8" range="1" cooldown="0" />
+        <Wander speed="0.1" />
+      </Prioritize>
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Violent Spirit">
+    <State id="Default">
+      <ChangeSize rate="35" target="120" />
+      <Shoot radius="10" count="3" shootAngle="0" cooldown="1750" />
+      <Prioritize>
+        <Follow speed="0.25" acquireRange="8" range="1" cooldown="0" />
+        <Wander speed="0.1" />
+      </Prioritize>
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="School of Ghostfish">
+    <State id="Default">
+      <Shoot radius="10" count="3" shootAngle="18" cooldown="4000" />
+      <Wander speed="0.35" />
+    </State>
+  </BehaviorEntry>
+</BehaviorEntries>

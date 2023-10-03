@@ -575,6 +575,17 @@
         </Texture>
     </Object>
 
+    <Object type="0x0823" id="Wine Cellar Portal">
+        <Class>Portal</Class>
+        <IntergamePortal/>
+        <DisplayId>Wine Cellar</DisplayId>
+        <DungeonName>Wine Cellar</DungeonName>
+        <Texture>
+            <File>lofiEnvironment</File>
+            <Index>0x7c</Index>
+        </Texture>
+    </Object>
+
     <Object type="0x0723" id="Gravestone 1">
         <Class>GameObject</Class>
         <ShowName/>

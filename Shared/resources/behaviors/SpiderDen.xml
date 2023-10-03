@@ -1,181 +1,208 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BehaviorEntries>
-  <BehaviorEntry id="Arachna the Spider Queen">
-    <State id="idle">
-      <ConditionalEffect effect="Invulnerable" />
-      <PlayerWithinTransition targetState="WEB!" dist="12" />
+  <BehaviorEntry id="Spider Egg Sac">
+    <TransformOnDeath target="Green Den Spider Hatchling" min="3" max="8" />
+    <State id="Idle">
+      <PlayerWithinTransition targetState="Open" dist="1" />
     </State>
-    <State id="WEB!">
+    <State id="Open">
+      <Spawn children="Green Den Spider Hatchling" maxChildren="8" initialSpawn="8" cooldown="500" />
+      <Decay time="0" />
+    </State>
+  </BehaviorEntry>
+  <BehaviorEntry id="Green Den Spider Hatchling">
+    <Prioritize>
+      <StayAbove speed="0.4" altitude="160" />
+      <Follow speed="0.4" acquireRange="9" range="3.5" duration="4" cooldown="1000" />
+      <Wander speed="0.4" />
+    </Prioritize>
+    <Shoot radius="8" shootAngle="0" predictive="0.2" cooldown="1000" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Black Den Spider">
+    <State id="Wander">
+      <StayAbove speed="0.2" altitude="50" />
+      <Wander speed="0.4" />
+      <PlayerWithinTransition targetState="Attack" dist="7" />
+    </State>
+    <State id="Attack">
+      <StayAbove speed="0.2" altitude="50" />
+      <Prioritize>
+        <Charge speed="2" cooldown="2000" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <Shoot radius="5" shootAngle="0" predictive="1" cooldown="1000" />
+      <TimedTransition targetState="Wander" time="1000" />
+    </State>
+    <TierLoot tier="3" type="Weapon" probability="0.1" />
+    <TierLoot tier="3" type="Weapon" probability="0.1" />
+    <TierLoot tier="7" type="Weapon" probability="0.1" />
+    <TierLoot tier="7" type="Weapon" probability="0.1" />
+    <TierLoot tier="8" type="Weapon" probability="0.1" />
+    <TierLoot tier="8" type="Weapon" probability="0.1" />
+    <ItemLoot item="Ancient Stone Sword" probability="0.01" />
+    <ItemLoot item="Potion of Defense" probability="1" />
+    <ItemLoot item="Ancient Stone Sword" probability="0.01" />
+    <ItemLoot item="Potion of Defense" probability="1" />
+    <ItemLoot item="Healing Ichor" probability="0.05" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Brown Den Spider">
+    <State id="Idle">
+      <StayAbove speed="0.2" altitude="50" />
+      <Wander speed="0.4" />
+      <PlayerWithinTransition targetState="Attack" dist="7" />
+    </State>
+    <State id="Attack">
+      <Prioritize>
+        <StayAbove speed="0.4" altitude="160" />
+        <Follow speed="0.9" acquireRange="9" range="0" cooldown="0" />
+        <Wander speed="0.4" />
+      </Prioritize>
+      <Shoot radius="8" count="3" shootAngle="10" cooldown="400" />
+      <TimedTransition targetState="Idle" time="10000" />
+    </State>
+    <ItemLoot item="Healing Ichor" probability="0.05" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Black Spotted Den Spider">
+    <Wander speed="0.4" />
+    <Shoot radius="7" shootAngle="0" cooldown="1000" />
+    <ItemLoot item="Healing Ichor" probability="0.05" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Red Spotted Den Spider">
+    <Prioritize>
+      <Follow speed="0.3" cooldown="0" />
+      <Wander speed="0.5" />
+    </Prioritize>
+    <Shoot radius="10" shootAngle="0" cooldown="1000" />
+    <ItemLoot item="Healing Ichor" probability="0.05" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Arachna the Spider Queen">
+    <DropPortalOnDeath target="Realm Portal" probability="100" />
+    <State id="Idle">
       <ConditionalEffect effect="Invulnerable" />
-      <TossObject child="Arachna Web Spoke 7" range="6" angle="0" cooldown="100000" />
-      <TossObject child="Arachna Web Spoke 8" range="6" angle="120" cooldown="100000" />
-      <TossObject child="Arachna Web Spoke 9" range="6" angle="240" cooldown="100000" />
+      <PlayerWithinTransition targetState="MakeWeb" dist="10" />
+    </State>
+    <State id="MakeWeb">
+      <ConditionalEffect effect="Invulnerable" />
       <TossObject child="Arachna Web Spoke 1" range="10" angle="0" cooldown="100000" />
+      <TossObject child="Arachna Web Spoke 7" range="6" angle="0" cooldown="100000" />
       <TossObject child="Arachna Web Spoke 2" range="10" angle="60" cooldown="100000" />
       <TossObject child="Arachna Web Spoke 3" range="10" angle="120" cooldown="100000" />
+      <TossObject child="Arachna Web Spoke 8" range="6" angle="120" cooldown="100000" />
       <TossObject child="Arachna Web Spoke 4" range="10" angle="180" cooldown="100000" />
       <TossObject child="Arachna Web Spoke 5" range="10" angle="240" cooldown="100000" />
+      <TossObject child="Arachna Web Spoke 9" range="6" angle="240" cooldown="100000" />
       <TossObject child="Arachna Web Spoke 6" range="10" angle="300" cooldown="100000" />
-      <TimedTransition targetState="attack" time="2000" />
+      <TimedTransition targetState="Attack" time="3500" />
     </State>
-    <State id="attack">
-      <Wander speed="1" />
-      <Shoot radius="3000" count="12" shootAngle="0" fixedAngle="22.5" cooldown="1000" />
-      <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="1000" />
-      <Shoot radius="10" shootAngle="0" projectileIndex="1" defaultAngle="0" predictive="1" cooldown="2000" />
+    <State id="Attack">
+      <Shoot radius="1" count="8" shootAngle="45" fixedAngle="0" cooldown="1200" />
+      <Shoot radius="10" shootAngle="0" projectileIndex="1" cooldown="2000" />
+      <State id="Follow">
+        <Prioritize>
+          <StayAbove speed="0.6" altitude="1" />
+          <StayBack speed="0.6" />
+          <Wander speed="0.7" />
+        </Prioritize>
+        <TimedTransition targetState="Return" time="1000" />
+      </State>
+      <State id="Return">
+        <StayCloseToSpawn speed="0.4" range="1" />
+        <TimedTransition targetState="Follow" time="1000" />
+      </State>
     </State>
-    <Threshold threshold="0.32">
-      <ItemLoot item="Healing Ichor" probability="1" />
-    </Threshold>
+    <ItemLoot item="Healing Ichor" probability="0.75" />
+    <ItemLoot item="Golden Dagger" probability="0.5" />
+    <ItemLoot item="Poison Fang Dagger" probability="0.1" />
+    <ItemLoot item="Spider's Eye Ring" probability="0.1" />
   </BehaviorEntry>
   <BehaviorEntry id="Arachna Web Spoke 1">
-    <State id=":D">
+    <State id="Attack">
       <ConditionalEffect effect="Invulnerable" />
-      <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
-      <Shoot radius="0" shootAngle="180" fixedAngle="180" cooldown="5" />
-      <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
+      <Shoot radius="1" count="3" shootAngle="60" fixedAngle="180" cooldown="150" />
+      <EntityNotExistsTransition targetState="Die" dist="1000" target="Arachna the Spider Queen" />
+    </State>
+    <State id="Die">
+      <Decay time="0" />
     </State>
   </BehaviorEntry>
   <BehaviorEntry id="Arachna Web Spoke 2">
-    <State id=":D">
+    <State id="Attack">
       <ConditionalEffect effect="Invulnerable" />
-      <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
-      <Shoot radius="0" shootAngle="180" fixedAngle="180" cooldown="5" />
-      <Shoot radius="0" shootAngle="300" fixedAngle="300" cooldown="5" />
+      <Shoot radius="1" shootAngle="60" fixedAngle="240" cooldown="150" />
+      <EntityNotExistsTransition targetState="Die" dist="1000" target="Arachna the Spider Queen" />
+    </State>
+    <State id="Die">
+      <Decay time="0" />
     </State>
   </BehaviorEntry>
   <BehaviorEntry id="Arachna Web Spoke 3">
-    <State id=":D">
+    <State id="Attack">
       <ConditionalEffect effect="Invulnerable" />
-      <Shoot radius="0" shootAngle="300" fixedAngle="300" cooldown="5" />
-      <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
-      <Shoot radius="0" shootAngle="0" fixedAngle="0" cooldown="5" />
+      <Shoot radius="1" count="3" shootAngle="60" fixedAngle="300" cooldown="150" />
+      <EntityNotExistsTransition targetState="Die" dist="1000" target="Arachna the Spider Queen" />
+    </State>
+    <State id="Die">
+      <Decay time="0" />
     </State>
   </BehaviorEntry>
   <BehaviorEntry id="Arachna Web Spoke 4">
-    <State id=":D">
+    <State id="Attack">
       <ConditionalEffect effect="Invulnerable" />
-      <Shoot radius="0" shootAngle="0" fixedAngle="0" cooldown="5" />
-      <Shoot radius="0" shootAngle="60" fixedAngle="60" cooldown="5" />
-      <Shoot radius="0" shootAngle="300" fixedAngle="300" cooldown="5" />
+      <Shoot radius="1" shootAngle="60" fixedAngle="0" cooldown="150" />
+      <EntityNotExistsTransition targetState="Die" dist="1000" target="Arachna the Spider Queen" />
+    </State>
+    <State id="Die">
+      <Decay time="0" />
     </State>
   </BehaviorEntry>
   <BehaviorEntry id="Arachna Web Spoke 5">
-    <State id=":D">
+    <State id="Attack">
       <ConditionalEffect effect="Invulnerable" />
-      <Shoot radius="0" shootAngle="60" fixedAngle="60" cooldown="5" />
-      <Shoot radius="0" shootAngle="0" fixedAngle="0" cooldown="5" />
-      <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
+      <Shoot radius="1" count="3" shootAngle="60" fixedAngle="60" cooldown="150" />
+      <EntityNotExistsTransition targetState="Die" dist="1000" target="Arachna the Spider Queen" />
+    </State>
+    <State id="Die">
+      <Decay time="0" />
     </State>
   </BehaviorEntry>
   <BehaviorEntry id="Arachna Web Spoke 6">
-    <State id=":D">
+    <State id="Attack">
       <ConditionalEffect effect="Invulnerable" />
-      <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
-      <Shoot radius="0" shootAngle="60" fixedAngle="60" cooldown="5" />
-      <Shoot radius="0" shootAngle="180" fixedAngle="180" cooldown="5" />
+      <Shoot radius="1" shootAngle="60" fixedAngle="120" cooldown="150" />
+      <EntityNotExistsTransition targetState="Die" dist="1000" target="Arachna the Spider Queen" />
+    </State>
+    <State id="Die">
+      <Decay time="0" />
     </State>
   </BehaviorEntry>
   <BehaviorEntry id="Arachna Web Spoke 7">
-    <State id=":D">
+    <State id="Attack">
       <ConditionalEffect effect="Invulnerable" />
-      <Shoot radius="0" shootAngle="180" fixedAngle="180" cooldown="5" />
-      <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
-      <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
+      <Shoot radius="1" count="3" shootAngle="60" fixedAngle="180" cooldown="150" />
+      <EntityNotExistsTransition targetState="Die" dist="1000" target="Arachna the Spider Queen" />
+    </State>
+    <State id="Die">
+      <Decay time="0" />
     </State>
   </BehaviorEntry>
   <BehaviorEntry id="Arachna Web Spoke 8">
-    <State id=":D">
+    <State id="Attack">
       <ConditionalEffect effect="Invulnerable" />
-      <Shoot radius="0" shootAngle="360" fixedAngle="360" cooldown="5" />
-      <Shoot radius="0" shootAngle="240" fixedAngle="240" cooldown="5" />
-      <Shoot radius="0" shootAngle="300" fixedAngle="300" cooldown="5" />
+      <Shoot radius="1" count="3" shootAngle="60" fixedAngle="300" cooldown="150" />
+      <EntityNotExistsTransition targetState="Die" dist="1000" target="Arachna the Spider Queen" />
+    </State>
+    <State id="Die">
+      <Decay time="0" />
     </State>
   </BehaviorEntry>
   <BehaviorEntry id="Arachna Web Spoke 9">
-    <State id=":D">
+    <State id="Attack">
       <ConditionalEffect effect="Invulnerable" />
-      <Shoot radius="0" shootAngle="0" fixedAngle="0" cooldown="5" />
-      <Shoot radius="0" shootAngle="60" fixedAngle="60" cooldown="5" />
-      <Shoot radius="0" shootAngle="120" fixedAngle="120" cooldown="5" />
+      <Shoot radius="1" count="3" shootAngle="60" fixedAngle="60" cooldown="150" />
+      <EntityNotExistsTransition targetState="Die" dist="1000" target="Arachna the Spider Queen" />
     </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Black Den Spider">
-    <State id="idle">
-      <Wander speed="0.8" />
-      <Charge speed="0.9" range="20" cooldown="2000" />
-      <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="500" />
-    </State>
-    <TierLoot tier="8" type="Weapon" probability="0.3" />
-    <TierLoot tier="9" type="Weapon" probability="0.2" />
-    <TierLoot tier="9" type="Weapon" probability="0.2" />
-    <TierLoot tier="10" type="Weapon" probability="0.1" />
-    <TierLoot tier="10" type="Weapon" probability="0.1" />
-    <ItemLoot item="Poison Fang Dagger" probability="0.2" />
-    <ItemLoot item="Spider's Eye Ring" probability="0.2" />
-    <ItemLoot item="Golden Dagger" probability="0.2" />
-    <ItemLoot item="Helm of the Juggernaut" probability="0.004" />
-    <ItemLoot item="Potion of Wisdom" probability="0.1" numRequired="1" />
-    <ItemLoot item="Potion of Vitality" probability="0.1" numRequired="1" />
-    <ItemLoot item="Snake Oil" probability="0.1" />
-    <ItemLoot item="Wine Cellar Incantation" probability="0.05" />
-    <ItemLoot item="Snake Eye Ring" probability="0.1" />
-    <ItemLoot item="Snake Skin Shield" probability="0.1" />
-    <ItemLoot item="Snake Skin Armor" probability="0.1" />
-    <ItemLoot item="Wand of the Bulwark" probability="0.005" />
-    <ItemLoot item="Potion of Speed" probability="1" />
-    <ItemLoot item="Ring of Greater Health" probability="0.1" />
-    <ItemLoot item="Ring of Greater Attack" probability="0.1" />
-    <ItemLoot item="Healing Ichor" probability="1" />
-    <ItemLoot item="Healing Ichor" probability="0.2" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Black Spotted Den Spider">
-    <State id="idle">
-      <Wander speed="0.8" />
-      <Charge speed="0.9" range="40" cooldown="2000" />
-      <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="500" />
-    </State>
-    <ItemLoot item="Healing Ichor" probability="0.2" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Brown Den Spider">
-    <State id="idle">
-      <Wander speed="0.8" />
-      <Follow speed="0.8" acquireRange="0.3" range="0" cooldown="0" />
-      <Shoot radius="10" count="3" shootAngle="20" cooldown="500" />
-    </State>
-    <ItemLoot item="Healing Ichor" probability="0.2" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Green Den Spider Hatchling">
-    <State id="idle">
-      <Wander speed="0" />
-      <Follow speed="0.8" acquireRange="0.8" range="0" cooldown="0" />
-      <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="1000" />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Spider Egg Sac">
-    <TransformOnDeath target="Green Den Spider Hatchling" min="2" max="7" />
-    <State id="idle">
-      <PlayerWithinTransition targetState="suicide" dist="0.5" />
-    </State>
-    <State id="suicide">
-      <Suicide />
-    </State>
-  </BehaviorEntry>
-  <BehaviorEntry id="Red Spotted Den Spider">
-    <State id="idle">
-      <Wander speed="0" />
-      <Follow speed="1" acquireRange="0.8" range="0" cooldown="0" />
-      <Shoot radius="10" shootAngle="0" defaultAngle="0" predictive="1" cooldown="500" />
-    </State>
-    <ItemLoot item="Healing Ichor" probability="0.2" />
-  </BehaviorEntry>
-  <BehaviorEntry id="Arachna Summoner">
-    <ConditionalEffect effect="Invincible" perm="true" />
-    <State id="idle">
-      <EntitiesNotExistsTransition targetState="Death" dist="300" targets="Arachna the Spider Queen" />
-    </State>
-    <State id="Death">
-      <Suicide />
+    <State id="Die">
+      <Decay time="0" />
     </State>
   </BehaviorEntry>
 </BehaviorEntries>

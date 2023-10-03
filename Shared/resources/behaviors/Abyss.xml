@@ -181,4 +181,74 @@
       <ItemLoot item="Magic Potion" probability="0.1" />
     </Threshold>
   </BehaviorEntry>
+  <BehaviorEntry id="Imp of the Abyss">
+    <Wander speed="0.2" />
+    <Shoot radius="8" count="5" shootAngle="10" cooldown="3200" />
+    <Threshold threshold="0.5">
+      <ItemLoot item="Cloak of the Red Agent" probability="0.01" />
+      <ItemLoot item="Felwasp Toxin" probability="0.01" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Demon of the Abyss">
+    <Prioritize>
+      <Follow speed="0.4" acquireRange="8" range="5" cooldown="0" />
+      <Wander speed="0.25" />
+    </Prioritize>
+    <Shoot radius="8" count="3" shootAngle="10" cooldown="5000" />
+    <Threshold threshold="0.5">
+      <ItemLoot item="Mithril Armor" probability="0.01" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Demon Warrior of the Abyss">
+    <Prioritize>
+      <Follow speed="0.5" acquireRange="8" range="5" cooldown="0" />
+      <Wander speed="0.25" />
+    </Prioritize>
+    <Shoot radius="8" count="3" shootAngle="10" cooldown="3000" />
+    <ItemLoot item="Magic Potion" probability="0.1" />
+    <ItemLoot item="Health Potion" probability="0.1" />
+    <ItemLoot item="Cloak of the Red Agent" probability="0.01" />
+    <ItemLoot item="Felwasp Toxin" probability="0.01" />
+    <ItemLoot item="Fire Bow" probability="0.05" />
+    <ItemLoot item="Mithril Armor" probability="0.01" />
+    <ItemLoot item="Fire Sword" probability="0.025" />
+    <ItemLoot item="Steel Shield" probability="0.025" />
+  </BehaviorEntry>
+  <BehaviorEntry id="Demon Mage of the Abyss">
+    <Prioritize>
+      <Follow speed="0.4" acquireRange="8" range="5" cooldown="0" />
+      <Wander speed="0.25" />
+    </Prioritize>
+    <Shoot radius="8" count="3" shootAngle="10" cooldown="3400" />
+    <Threshold threshold="0.1">
+      <ItemLoot item="Wand of Dark Magic" probability="0.01" />
+      <ItemLoot item="Avenger Staff" probability="0.01" />
+      <ItemLoot item="Robe of the Invoker" probability="0.01" />
+      <ItemLoot item="Essence Tap Skull" probability="0.01" />
+      <ItemLoot item="Demonhunter Trap" probability="0.01" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Brute of the Abyss">
+    <Prioritize>
+      <Follow speed="0.7" acquireRange="8" range="1" cooldown="0" />
+      <Wander speed="0.25" />
+    </Prioritize>
+    <Shoot radius="8" count="3" shootAngle="10" cooldown="800" />
+    <Threshold threshold="0.1">
+      <ItemLoot item="Obsidian Dagger" probability="0.02" />
+      <ItemLoot item="Steel Helm" probability="0.02" />
+    </Threshold>
+  </BehaviorEntry>
+  <BehaviorEntry id="Brute Warrior of the Abyss">
+    <Prioritize>
+      <Follow speed="0.4" acquireRange="8" range="1" cooldown="0" />
+      <Wander speed="0.25" />
+    </Prioritize>
+    <Shoot radius="8" count="3" shootAngle="10" cooldown="800" />
+    <Threshold threshold="0.5">
+      <ItemLoot item="Glass Sword" probability="0.01" />
+      <ItemLoot item="Ring of Greater Dexterity" probability="0.01" />
+      <ItemLoot item="Magesteel Quiver" probability="0.01" />
+    </Threshold>
+  </BehaviorEntry>
 </BehaviorEntries>

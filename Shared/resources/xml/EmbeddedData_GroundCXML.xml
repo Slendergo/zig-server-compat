@@ -867,7 +867,7 @@
             <Index>0x64</Index>
         </Texture>
     </Ground>
-    <Ground type="0x65" id="Grey Circle">
+    <Ground type="0x65" id="Grey Circle 2">
         <Texture>
             <File>lofiEnvironment</File>
             <Index>0x65</Index>
