@@ -1,4 +1,4 @@
-namespace DungeonGenerator;
+namespace DungeonGen;
 
 // Token: 0x02000006 RID: 6
 public struct Point {

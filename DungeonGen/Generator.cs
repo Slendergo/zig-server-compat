@@ -18,10 +18,10 @@
 
 */
 
-using DungeonGenerator.Dungeon;
-using DungeonGenerator.Templates;
+using DungeonGen.dungeon;
+using DungeonGen.templates;
 
-namespace DungeonGenerator;
+namespace DungeonGen;
 
 public enum GenerationStep {
     Initialize = 0,

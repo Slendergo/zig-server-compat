@@ -18,10 +18,10 @@
 
 */
 
-using DungeonGenerator.Dungeon;
+using DungeonGen.dungeon;
 using Json;
 
-namespace DungeonGenerator;
+namespace DungeonGen;
 
 public static class JsonMap {
     public static DungeonTile[,] Load(string json) {
@@ -69,7 +69,7 @@ public static class JsonMap {
         var index = 0;
         for (var y = 0; y < h; y++)
         for (var x = 0; x < w; x++)
-            result[x, y] = tiles[(ushort) ((data[index++] << 8) | data[index++])];
+            result[x, y] = tiles[(ushort) (data[index++] << 8 | data[index++])];
 
         return result;
     }

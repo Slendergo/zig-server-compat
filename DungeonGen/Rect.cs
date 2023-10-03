@@ -1,4 +1,4 @@
-namespace DungeonGenerator;
+namespace DungeonGen;
 
 // Token: 0x02000038 RID: 56
 

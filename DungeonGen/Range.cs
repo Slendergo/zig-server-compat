@@ -18,7 +18,7 @@
 
 */
 
-namespace DungeonGenerator;
+namespace DungeonGen;
 
 public struct Range {
     public static readonly Range Zero = new(0, 0);

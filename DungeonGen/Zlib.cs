@@ -1,6 +1,6 @@
 ﻿using System.IO.Compression;
 
-namespace DungeonGenerator;
+namespace DungeonGen;
 
 // Token: 0x0200000B RID: 11
 public static class Zlib {
@@ -13,7 +13,7 @@ public static class Zlib {
             num2 = (num2 + num) % 65521u;
         }
 
-        return (num2 << 16) | num;
+        return num2 << 16 | num;
     }
 
     // Token: 0x0600002F RID: 47 RVA: 0x000026B8 File Offset: 0x000008B8
@@ -36,7 +36,7 @@ public static class Zlib {
 
         var array = memoryStream.ToArray();
         var num = buffer.Length - 4;
-        var num2 = (uint) ((buffer[num++] << 24) | (buffer[num++] << 16) | (buffer[num++] << 8) | buffer[num++]);
+        var num2 = (uint) (buffer[num++] << 24 | buffer[num++] << 16 | buffer[num++] << 8 | buffer[num++]);
         if (num2 != ADLER32(array)) throw new InvalidDataException("Invalid data checksum");
         return array;
     }
@@ -54,7 +54,7 @@ public static class Zlib {
         // Refer to http://www.ietf.org/rfc/rfc1950.txt for zlib format
         const byte CM = 8;
         const byte CINFO = 7;
-        const byte CMF = CM | (CINFO << 4);
+        const byte CMF = CM | CINFO << 4;
         const byte FLG = 0xDA;
 
         var result = new byte[comp.Length + 6];

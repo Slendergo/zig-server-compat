@@ -19,14 +19,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\common\common.csproj"/>
+        <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Templates\Abyss\template.jm"/>
+        <EmbeddedResource Include="templates\abyss\template.jm" />
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Include="Templates\Lab\template.jm"/>
+        <EmbeddedResource Include="templates\lab\template.jm" />
     </ItemGroup>
 
 </Project>

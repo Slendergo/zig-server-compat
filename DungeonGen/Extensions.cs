@@ -1,6 +1,6 @@
-﻿using DungeonGenerator.Dungeon;
+﻿using DungeonGen.dungeon;
 
-namespace DungeonGenerator;
+namespace DungeonGen;
 
 public static class Extensions {
     public static void Copy<TPixel>(this BitmapRasterizer<TPixel> self, TPixel[,] src, Rect srcRect, Point dst,

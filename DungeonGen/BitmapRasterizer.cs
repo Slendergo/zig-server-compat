@@ -1,4 +1,4 @@
-namespace DungeonGenerator;
+namespace DungeonGen;
 
 // Token: 0x0200001F RID: 31
 public class BitmapRasterizer<TPixel> where TPixel : struct {

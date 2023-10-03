@@ -1,4 +1,4 @@
-namespace DungeonGenerator;
+namespace DungeonGen;
 
 // Token: 0x02000040 RID: 64
 public class NormDist {

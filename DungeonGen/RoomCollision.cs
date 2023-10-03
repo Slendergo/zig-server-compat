@@ -18,9 +18,9 @@
 
 */
 
-using DungeonGenerator.Dungeon;
+using DungeonGen.dungeon;
 
-namespace DungeonGenerator;
+namespace DungeonGen;
 
 public class RoomCollision {
     private const int GridScale = 3;
