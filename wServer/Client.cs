@@ -1116,7 +1116,7 @@ public class Client {
             return;
         
         if (Player.tiles[(int)x, (int)y] == 0)
-            Disconnect("tile load exploit");
+            Disconnect("Invalid position");
         
         Player.MoveReceived(Manager.Logic.RealmTime, tickId, time);
         if (Math.Abs(x - Player.X) > 0.001 || Math.Abs(y - Player.Y) > 0.001)

@@ -257,6 +257,9 @@ public partial class Player : Character, IContainer, IPlayer {
     public int[] SlotTypes { get; }
     public Inventory Inventory { get; }
 
+    public float GotoX = -1;
+    public float GotoY = -1;
+
     public void Damage(int dmg, Entity src) {
         if (IsInvulnerable())
             return;
@@ -421,6 +424,21 @@ public partial class Player : Character, IContainer, IPlayer {
         base.Tick(time);
 
         SendUpdate(time);
+
+        if (GotoX > 0 && GotoY > 0) {
+            var gotoPos = new Position {X = GotoX, Y = GotoY};
+            HandleQuest(time, true, gotoPos);
+
+            foreach (var player in Owner.Players.Values) {
+                player.Client.SendGoto(Id, GotoX, GotoY);
+                player.AwaitGotoAck(time.TotalElapsedMs);
+                player.Client.SendShowEffect(EffectType.Teleport, Id, gotoPos, new Position(), new ARGB(0xFFFFFFFF));
+            }
+
+            GotoX = -1;
+            GotoY = -1;
+        }
+        
         SendNewTick(time);
 
         if (HP <= 0) Death("Unknown");
@@ -469,14 +487,10 @@ public partial class Player : Character, IContainer, IPlayer {
             SetNewbiePeriod();
             FameCounter.Teleport();
         }
-
-        HandleQuest(time, true, position);
-
-        foreach (var player in Owner.Players.Values) {
-            player.Client.SendGoto(Id, position.X, position.Y);
-            player.AwaitGotoAck(time.TotalElapsedMs);
-            player.Client.SendShowEffect(EffectType.Teleport, Id, position, new Position(), new ARGB(0xFFFFFFFF));
-        }
+        
+        Move(position.X, position.Y);
+        GotoX = position.X;
+        GotoY = position.Y;
     }
 
     public void Teleport(RealmTime time, int objId, bool ignoreRestrictions = false) {
@@ -715,12 +729,13 @@ public partial class Player : Character, IContainer, IPlayer {
     public override void Move(float x, float y) {
         base.Move(x, y);
 
-        if ((int) X != Sight.LastX || (int) Y != Sight.LastY) {
-            if (IsNoClipping())
-                Client.Disconnect("no clip");
+        if ((int) X == Sight.LastX && (int) Y == Sight.LastY) 
+            return;
+        
+        if (IsNoClipping())
+            Client.Disconnect("Invalid position");
 
-            Sight.UpdateCount++;
-        }
+        Sight.UpdateCount++;
     }
 
     public override void Dispose() {
