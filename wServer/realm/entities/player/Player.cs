@@ -431,7 +431,6 @@ public partial class Player : Character, IContainer, IPlayer {
 
             foreach (var player in Owner.Players.Values) {
                 player.Client.SendGoto(Id, GotoX, GotoY);
-                player.AwaitGotoAck(time.TotalElapsedMs);
                 player.Client.SendShowEffect(EffectType.Teleport, Id, gotoPos, new Position(), new ARGB(0xFFFFFFFF));
             }
 

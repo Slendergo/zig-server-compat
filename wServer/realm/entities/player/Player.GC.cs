@@ -20,7 +20,6 @@ partial class Player {
         LastServerTime = -1;
         _shootAckTimeout.Clear();
         _updateAckTimeout.Clear();
-        _gotoAckTimeout.Clear();
         _move.Clear();
         _clientTimeLog.Clear();
         _serverTimeLog.Clear();

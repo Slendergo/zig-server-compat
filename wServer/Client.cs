@@ -34,7 +34,6 @@ public enum C2SPacketId : byte {
     EditAccountList = 11,
     EnemyHit = 12,
     Escape = 13,
-    GotoAck = 14,
     GroundDamage = 15,
     GuildInvite = 16,
     GuildRemove = 17,
@@ -261,9 +260,6 @@ public class Client {
                     break;
                 case C2SPacketId.Escape:
                     ProcessEscape();
-                    break;
-                case C2SPacketId.GotoAck:
-                    ProcessGotoAck(ReadLong(ref ptr, ref spanRef, nextPacketPtr));
                     break;
                 case C2SPacketId.GroundDamage:
                     ProcessGroundDamage(ReadLong(ref ptr, ref spanRef, nextPacketPtr),
@@ -704,10 +700,6 @@ public class Client {
 
     private void ProcessEscape() {
         if (Player?.Owner != null) Reconnect("Hub", -2);
-    }
-
-    private void ProcessGotoAck(long time) {
-        Player.GotoAckReceived();
     }
 
     private void ProcessGroundDamage(long time, float x, float y) {

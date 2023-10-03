@@ -7,7 +7,6 @@ public partial class Player {
     private const int PingPeriod = 3000;
     public const int DcThresold = 12000;
     private readonly ConcurrentQueue<long> _clientTimeLog = new();
-    private readonly ConcurrentQueue<long> _gotoAckTimeout = new();
     private readonly ConcurrentQueue<int> _move = new();
     private readonly ConcurrentQueue<long> _serverTimeLog = new();
 
@@ -51,13 +50,6 @@ public partial class Player {
         if (_updateAckTimeout.TryPeek(out timeout))
             if (time.TotalElapsedMs > timeout) {
                 Client.Disconnect("Connection timeout. (UpdateAck)");
-                return false;
-            }
-
-        // check for gotoack timeout
-        if (_gotoAckTimeout.TryPeek(out timeout))
-            if (time.TotalElapsedMs > timeout) {
-                Client.Disconnect("Connection timeout. (GotoAck)");
                 return false;
             }
 
@@ -127,16 +119,7 @@ public partial class Player {
         if (!_updateAckTimeout.TryDequeue(out _))
             Client.Disconnect("One too many UpdateAcks");
     }
-
-    public void AwaitGotoAck(long serverTime) {
-        _gotoAckTimeout.Enqueue(serverTime + DcThresold);
-    }
-
-    public void GotoAckReceived() {
-        long ignored;
-        if (!_gotoAckTimeout.TryDequeue(out ignored)) Client.Disconnect("One too many GotoAcks");
-    }
-
+    
     public void AwaitMove(int tickId) {
         _move.Enqueue(tickId);
     }
