@@ -178,22 +178,6 @@ public class World {
         InitMap();
     }
 
-    protected void FromJson(string json) {
-        Log.Info("Loading json map for world {0}...", Id);
-
-        if (Map == null) {
-            var dat = new MemoryStream(Json2Wmap.Convert(Manager.Resources.GameData, json));
-
-            Map = new Wmap(Manager.Resources.GameData);
-            _ = Interlocked.Add(ref _entityInc, Map.LoadFromWmap(dat, _entityInc));
-        }
-        else {
-            Map.ResetTiles();
-        }
-
-        InitMap();
-    }
-
     private void InitMap() {
         var w = Map.Width;
         var h = Map.Height;
@@ -409,15 +393,16 @@ public class World {
 
         Timers.Add(new WorldTimer(8000, (w, t) => {
             foreach (var plr in w.Players.Values)
-                if (plr.HasConditionEffect(ConditionEffects.Paused))
+                if (plr.HasConditionEffect(ConditionEffects.Paused)) {
                     plr.Client.Reconnect("Nexus", Nexus);
-                else
+                }
+                else {
                     plr.Client.Reconnect(newWorld.IdName, newWorld.Id);
+                }
         }));
 
         if (!Persists)
             Timers.Add(new WorldTimer(20000, (w2, t2) => {
-                // to ensure people get kicked out of world
                 foreach (var plr in w2.Players.Values)
                     plr.Client.Disconnect();
             }));

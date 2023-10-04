@@ -1,6 +1,9 @@
-﻿using Shared.resources;
+﻿using System.Net;
+using Shared.resources;
 using Ionic.Zlib;
+using Newtonsoft.Json;
 using NLog;
+using Shared;
 
 namespace GameServer.realm.worlds.parser;
 
@@ -84,7 +87,28 @@ public sealed class MapParser {
         var isRealm = rdr.ReadBoolean();
         return new MapData(rdr, isRealm);
     }
+    
+    #region Legacy Converter Tools
+    
+    #region Wmap
 
+
+    private struct ConvertData : IEquatable<ConvertData> {
+        public ushort TileType;
+        public ushort ObjectType;
+        public byte Region;
+        public byte Terrain;
+        public byte Elevation;
+
+        public bool Equals(ConvertData other) {
+            return TileType == other.TileType &&
+                   ObjectType == other.ObjectType &&
+                   Region == other.Region &&
+                   Terrain == other.Terrain &&
+                   Elevation == other.Elevation;
+        }
+    }
+    
     public static byte[] ConvertWmapRealmToMapData(byte[] data) {
         using var stream = new MemoryStream(data);
 
@@ -148,15 +172,18 @@ public sealed class MapParser {
         }
 
         var writeByte = dict.Count <= 256;
-        foreach (var index in indices)
-            if (writeByte)
+        foreach (var index in indices) {
+            if (writeByte) {
                 wtr.Write((byte) index);
-            else
+            }
+            else {
                 wtr.Write((ushort) index);
+            }
+        }
+
         return ZlibStream.CompressBuffer(ms.ToArray());
     }
-
-
+    
     public static byte[] ConvertWmapToMapData(byte[] data) {
         using var stream = new MemoryStream(data);
 
@@ -228,20 +255,215 @@ public sealed class MapParser {
 
         return ZlibStream.CompressBuffer(ms.ToArray());
     }
-
-    private struct ConvertData : IEquatable<ConvertData> {
-        public ushort TileType;
-        public ushort ObjectType;
-        public byte Region;
-        public byte Terrain;
-        public byte Elevation;
-
-        public bool Equals(ConvertData other) {
-            return TileType == other.TileType &&
-                   ObjectType == other.ObjectType &&
-                   Region == other.Region &&
-                   Terrain == other.Terrain &&
-                   Elevation == other.Elevation;
+    
+    #endregion
+    
+    // Converts all wmap files to pmap files. input and output directories are located in the executable's directory.
+    public static void ConvertWmapsToMapData() {
+        var inputDir = $"{Environment.CurrentDirectory}/input/";
+        if (!Directory.Exists(inputDir)) {
+            Console.WriteLine("Input directory does not exist. " +
+                              "Make a directory in the executable's directory called \"input\" and put your wmap files in there.");
+            return;
+        }
+        
+        var files = Directory.GetFiles(inputDir, "*.wmap");
+        if (files.Length == 0) {
+            Console.WriteLine("No wmap files found in input directory.");
+            return;
+        }
+        
+        if (!Directory.Exists($"{Environment.CurrentDirectory}/output/")) {
+            Directory.CreateDirectory($"{Environment.CurrentDirectory}/output/");
+        }
+        
+        if (Program.Resources == null) {
+            Program.Config = ServerConfig.ReadFile("GameServer.json");
+            Program.Resources = new Resources(Program.Config.serverSettings.resourceFolder);
+        }
+        
+        foreach (var file in files) {
+            var data = ConvertWmapToMapData(File.ReadAllBytes(file));
+            File.WriteAllBytes($"{Environment.CurrentDirectory}/output/{Path.GetFileNameWithoutExtension(file)}.pmap", data);
+            Console.WriteLine($"Converted {Path.GetFileNameWithoutExtension(file)}.wmap");
         }
     }
+    
+    #region Jm
+    
+    [Serializable]
+    private struct Obj
+    {
+        public readonly string Name;
+        public readonly string Id;
+        
+        public Obj(string name, string id) {
+            Name = name;
+            Id = id;
+        }
+    }
+    
+    [Serializable]
+    private struct Location
+    {
+        public readonly string Ground;
+        public readonly Obj[] Objs;
+        public readonly Obj[] Regions;
+        
+        public Location(string ground, Obj[] objs, Obj[] regions) {
+            Ground = ground;
+            Objs = objs;
+            Regions = regions;
+        }
+    }
+
+    [Serializable]
+    private struct JsonData {
+        public readonly byte[] Data;
+        public readonly int Width;
+        public readonly int Height;
+        public readonly Location[] Dict;
+        
+        public JsonData(byte[] data, int width, int height, Location[] dict) {
+            Data = data;
+            Width = width;
+            Height = height;
+            Dict = dict;
+        }
+    }
+
+    public struct TerrainTile : IEquatable<TerrainTile> {
+        public int PolygonId;
+        public byte Elevation;
+        public float Moisture;
+        public string Biome;
+        public ushort TileId;
+        public string Name;
+        public string TileObj;
+        public TerrainType Terrain;
+        public TileRegion Region;
+
+        public bool Equals(TerrainTile other) {
+            return
+                TileId == other.TileId &&
+                TileObj == other.TileObj &&
+                Name == other.Name &&
+                Terrain == other.Terrain &&
+                Region == other.Region;
+        }
+    }
+    
+    public static byte[] ExportWmap(TerrainTile[,] tiles) {
+        var dict = new List<TerrainTile>();
+        var w = tiles.GetLength(0);
+        var h = tiles.GetLength(1);
+        var dat = new byte[w * h * 3];
+        var idx = 0;
+        for (var y = 0; y < h; y++)
+        for (var x = 0; x < w; x++) {
+            var tile = tiles[x, y];
+            var i = (short) dict.IndexOf(tile);
+            if (i == -1) {
+                i = (short) dict.Count;
+                dict.Add(tile);
+            }
+
+            dat[idx] = (byte) (i & 0xff);
+            dat[idx + 1] = (byte) (i >> 8);
+            dat[idx + 2] = tile.Elevation;
+            idx += 3;
+        }
+
+        MemoryStream ms = new MemoryStream();
+        using (BinaryWriter wtr = new BinaryWriter(ms)) {
+            wtr.Write((short) dict.Count);
+            foreach (var i in dict) {
+                wtr.Write(i.TileId);
+                wtr.Write(i.TileObj ?? "");
+                wtr.Write(i.Name ?? "");
+                wtr.Write((byte) i.Terrain);
+                wtr.Write((byte) i.Region);
+            }
+
+            wtr.Write(w);
+            wtr.Write(h);
+            wtr.Write(dat);
+        }
+
+        var buff = ZlibStream.CompressBuffer(ms.ToArray());
+        var ret = new byte[buff.Length + 1];
+        Buffer.BlockCopy(buff, 0, ret, 1, buff.Length);
+        ret[0] = 2;
+        return ret;
+    }
+    
+    public static byte[] ConvertJmToWmap(XmlData data, string json, bool bigEndian = false)
+    {
+        var obj = JsonConvert.DeserializeObject<JsonData>(json);
+        var dat = ZlibStream.UncompressBuffer(obj.Data);
+
+        Dictionary<short, TerrainTile> tileDict = new Dictionary<short, TerrainTile>();
+        for (var i = 0; i < obj.Dict.Length; i++)
+        {
+            var o = obj.Dict[i];
+            tileDict[(short)i] = new TerrainTile
+            {
+                TileId = o.Ground == null ? (ushort)0xff : data.IdToTileType[o.Ground],
+                TileObj = o.Objs?[0].Id,
+                Name = o.Objs == null ? "" : o.Objs[0].Name ?? "",
+                Terrain = TerrainType.None,
+                Region = o.Regions == null ? TileRegion.None : (TileRegion)Enum.Parse(typeof(TileRegion), o.Regions[0].Id.Replace(' ', '_'))
+            };
+        }
+
+        var tiles = new TerrainTile[obj.Width, obj.Height];
+        using (NReader rdr = new NReader(new MemoryStream(dat)))
+            for (var y = 0; y < obj.Height; y++)
+            for (var x = 0; x < obj.Width; x++) {
+                if (bigEndian) {
+                    tiles[x, y] = tileDict[IPAddress.NetworkToHostOrder(rdr.ReadInt16())];
+                }
+                else {
+                    tiles[x, y] = tileDict[rdr.ReadInt16()];
+                }
+            }
+
+        return ExportWmap(tiles);
+    }
+    
+    #endregion
+    
+    // Converts all jm files to pmap files. input and output directories are located in the executable's directory.
+    public static void ConvertJmsToMapData() {
+        var inputDir = $"{Environment.CurrentDirectory}/input/";
+        if (!Directory.Exists(inputDir)) {
+            Console.WriteLine("Input directory does not exist. " +
+                              "Make a directory in the executable's directory called \"input\" and put your jm files in there.");
+            return;
+        }
+        
+        var files = Directory.GetFiles(inputDir, "*.jm");
+        if (files.Length == 0) {
+            Console.WriteLine("No jm files found in input directory.");
+            return;
+        }
+        
+        if (!Directory.Exists($"{Environment.CurrentDirectory}/output/")) {
+            Directory.CreateDirectory($"{Environment.CurrentDirectory}/output/");
+        }
+        
+        if (Program.Resources == null) {
+            Program.Config = ServerConfig.ReadFile("GameServer.json");
+            Program.Resources = new Resources(Program.Config.serverSettings.resourceFolder);
+        }
+        
+        foreach (var file in files) {
+            var wmapData = ConvertJmToWmap(Program.Resources.GameData, File.ReadAllText(file), true);
+            var data = ConvertWmapToMapData(wmapData);
+            File.WriteAllBytes($"{Environment.CurrentDirectory}/output/{Path.GetFileNameWithoutExtension(file)}.pmap", data);
+            Console.WriteLine($"Converted {Path.GetFileNameWithoutExtension(file)}.jm");
+        }
+    }
+    
+    #endregion
 }

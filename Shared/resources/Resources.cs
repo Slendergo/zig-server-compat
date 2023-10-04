@@ -5,7 +5,7 @@ namespace Shared.resources;
 
 public class Resources : IDisposable {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-    public readonly XmlData GameData;
+    public XmlData GameData;
 
     public readonly string ResourcePath;
     public readonly AppSettings Settings;

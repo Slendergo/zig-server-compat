@@ -6,7 +6,9 @@ using Shared.resources;
 using GameServer.realm.entities;
 using GameServer.realm.entities.player;
 using GameServer.realm.setpieces;
+using GameServer.realm.worlds;
 using GameServer.realm.worlds.logic;
+using GameServer.realm.worlds.parser;
 using Newtonsoft.Json;
 using NLog;
 
@@ -16,7 +18,8 @@ internal class SpawnCommand : Command {
     private const int Delay = 3; // in seconds
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-    public SpawnCommand() : base("spawn", true) { }
+    public SpawnCommand() : base("spawn", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         args = args.Trim();
@@ -218,7 +221,8 @@ internal class SpawnCommand : Command {
 }
 
 internal class ClearSpawnsCommand : Command {
-    public ClearSpawnsCommand() : base("clearspawn", true, "cs") { }
+    public ClearSpawnsCommand() : base("clearspawn", true, "cs") {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         var iterations = 0;
@@ -246,7 +250,8 @@ internal class ClearSpawnsCommand : Command {
 }
 
 internal class ClearGravesCommand : Command {
-    public ClearGravesCommand() : base("cleargraves", true, "cgraves") { }
+    public ClearGravesCommand() : base("cleargraves", true, "cgraves") {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         var removed = 0;
@@ -266,7 +271,8 @@ internal class ClearGravesCommand : Command {
 }
 
 internal class ToggleEffCommand : Command {
-    public ToggleEffCommand() : base("eff", true) { }
+    public ToggleEffCommand() : base("eff", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         if (!Enum.TryParse(args, true, out ConditionEffectIndex effect)) {
@@ -277,22 +283,26 @@ internal class ToggleEffCommand : Command {
         var target = player;
         if ((target.ConditionEffects & (ConditionEffects) ((ulong) 1 << (int) effect)) != 0)
             //remove
-            target.ApplyConditionEffect(new ConditionEffect {
+            target.ApplyConditionEffect(new ConditionEffect
+            {
                 Effect = effect,
                 DurationMS = 0
             });
         else
             //add
-            target.ApplyConditionEffect(new ConditionEffect {
+            target.ApplyConditionEffect(new ConditionEffect
+            {
                 Effect = effect,
                 DurationMS = -1
             });
+
         return true;
     }
 }
 
 internal class GuildRankCommand : Command {
-    public GuildRankCommand() : base("grank", true) { }
+    public GuildRankCommand() : base("grank", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         if (player == null)
@@ -310,6 +320,7 @@ internal class GuildRankCommand : Command {
         var rank = args.Substring(index + 1).IsInt()
             ? args.Substring(index + 1).ToInt32()
             : RankNumberFromName(args.Substring(index + 1));
+
         if (rank == -1) {
             player.SendErrorText("Unknown rank!");
             return false;
@@ -365,7 +376,8 @@ internal class GuildRankCommand : Command {
 }
 
 internal class GiveCommand : Command {
-    public GiveCommand() : base("give", true) { }
+    public GiveCommand() : base("give", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         var gameData = player.Manager.Resources.GameData;
@@ -376,6 +388,7 @@ internal class GiveCommand : Command {
                 // direct get or partial match
                 var val = gameData.Items.Values.FirstOrDefault(_ =>
                     _.ObjectId.ToLower().StartsWith(args.ToLower()) || _.ObjectId.Contains(args.ToLower()));
+
                 if (val == null) {
                     player.SendErrorText("Unknown item type!");
                     return false;
@@ -402,7 +415,8 @@ internal class GiveCommand : Command {
 }
 
 internal class TpPosCommand : Command {
-    public TpPosCommand() : base("tpPos", true, "goto") { }
+    public TpPosCommand() : base("tpPos", true, "goto") {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         var coordinates = args.Split(' ');
@@ -424,7 +438,8 @@ internal class TpPosCommand : Command {
 }
 
 internal class SetpieceCommand : Command {
-    public SetpieceCommand() : base("setpiece", true) { }
+    public SetpieceCommand() : base("setpiece", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string setPiece) {
         if (string.IsNullOrWhiteSpace(setPiece)) {
@@ -432,8 +447,10 @@ internal class SetpieceCommand : Command {
             var types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(p => type.IsAssignableFrom(p) && !p.IsAbstract);
+
             var msg = types.Aggregate(
                 "Valid SetPieces: ", (c, p) => c + p.Name + ", ");
+
             player.SendInfo(msg.Substring(0, msg.Length - 2) + ".");
             return false;
         }
@@ -442,6 +459,7 @@ internal class SetpieceCommand : Command {
             try {
                 var piece = (ISetPiece) Activator.CreateInstance(Type.GetType(
                     "GameServer.realm.setpieces." + setPiece, true, true));
+
                 piece.RenderSetPiece(player.Owner, new IntPoint((int) player.X + 1, (int) player.Y + 1));
                 return true;
             }
@@ -456,7 +474,8 @@ internal class SetpieceCommand : Command {
 }
 
 internal class KillAllCommand : Command {
-    public KillAllCommand() : base("killAll", true, "ka") { }
+    public KillAllCommand() : base("killAll", true, "ka") {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         var iterations = 0;
@@ -483,7 +502,8 @@ internal class KillAllCommand : Command {
 }
 
 internal class KickCommand : Command {
-    public KickCommand() : base("kick", true) { }
+    public KickCommand() : base("kick", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         foreach (var i in player.Manager.Clients.Keys)
@@ -499,7 +519,8 @@ internal class KickCommand : Command {
 }
 
 internal class GetQuestCommand : Command {
-    public GetQuestCommand() : base("getQuest", true) { }
+    public GetQuestCommand() : base("getQuest", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         if (player.Quest == null) {
@@ -513,7 +534,8 @@ internal class GetQuestCommand : Command {
 }
 
 internal class OryxSayCommand : Command {
-    public OryxSayCommand() : base("oryxSay", true, "osay") { }
+    public OryxSayCommand() : base("oryxSay", true, "osay") {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         ChatManager.Oryx(player.Owner, args);
@@ -522,7 +544,8 @@ internal class OryxSayCommand : Command {
 }
 
 internal class AnnounceCommand : Command {
-    public AnnounceCommand() : base("announce", true) { }
+    public AnnounceCommand() : base("announce", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         player.Manager.Chat.Announce(args);
@@ -531,7 +554,8 @@ internal class AnnounceCommand : Command {
 }
 
 internal class SummonCommand : Command {
-    public SummonCommand() : base("summon", true) { }
+    public SummonCommand() : base("summon", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         foreach (var i in player.Owner.Players)
@@ -548,7 +572,8 @@ internal class SummonCommand : Command {
 }
 
 internal class SummonAllCommand : Command {
-    public SummonAllCommand() : base("summonall", true) { }
+    public SummonAllCommand() : base("summonall", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         foreach (var i in player.Owner.Players) {
@@ -562,7 +587,8 @@ internal class SummonAllCommand : Command {
 }
 
 internal class KillPlayerCommand : Command {
-    public KillPlayerCommand() : base("killPlayer", true) { }
+    public KillPlayerCommand() : base("killPlayer", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         foreach (var i in player.Manager.Clients.Keys)
@@ -579,12 +605,14 @@ internal class KillPlayerCommand : Command {
 }
 
 internal class SizeCommand : Command {
-    public SizeCommand() : base("size", true) { }
+    public SizeCommand() : base("size", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         if (string.IsNullOrEmpty(args)) {
             player.SendErrorText(
                 "Usage: /size <positive integer>. Using 0 will restore the default size for the sprite.");
+
             return false;
         }
 
@@ -594,6 +622,7 @@ internal class SizeCommand : Command {
         if (size < min && size != 0 || size > max) {
             player.SendErrorText(
                 $"Invalid size. Size needs to be within the range: {min}-{max}. Use 0 to reset size to default.");
+
             return false;
         }
 
@@ -612,7 +641,8 @@ internal class RebootCommand : Command {
     // An external program is used to monitor the world server existance.
     // If !exist it automatically restarts it.
 
-    public RebootCommand() : base("reboot", true) { }
+    public RebootCommand() : base("reboot", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string name) {
         var manager = player.Manager;
@@ -649,6 +679,7 @@ internal class RebootCommand : Command {
                 RebootServer(player, 29000, servers
                     .Select(s => s.instanceId)
                     .ToArray());
+
                 player.SendInfo("Reboot command sent.");
                 return true;
             case "gameserver":
@@ -656,6 +687,7 @@ internal class RebootCommand : Command {
                     .Where(s => s.type == ServerType.GameServer)
                     .Select(s => s.instanceId)
                     .ToArray());
+
                 player.SendInfo("Reboot command sent.");
                 return true;
             case "appengine":
@@ -663,6 +695,7 @@ internal class RebootCommand : Command {
                     .Where(s => s.type == ServerType.AppEngine)
                     .Select(s => s.instanceId)
                     .ToArray());
+
                 player.SendInfo("Reboot command sent.");
                 return true;
         }
@@ -673,7 +706,8 @@ internal class RebootCommand : Command {
 
     private void RebootServer(Player issuer, int delay, params string[] instanceIds) {
         foreach (var instanceId in instanceIds)
-            issuer.Manager.InterServer.Publish(Channel.Control, new ControlMsg {
+            issuer.Manager.InterServer.Publish(Channel.Control, new ControlMsg
+            {
                 Type = ControlType.Reboot,
                 TargetInst = instanceId,
                 Issuer = issuer.Name,
@@ -683,7 +717,8 @@ internal class RebootCommand : Command {
 }
 
 internal class ReSkinCommand : Command {
-    public ReSkinCommand() : base("reskin", true) { }
+    public ReSkinCommand() : base("reskin", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         var skins = player.Manager.Resources.GameData.Skins
@@ -703,6 +738,7 @@ internal class ReSkinCommand : Command {
         if (skin != 0 && !skins.Contains(skin)) {
             player.SendErrorText(
                 "Error setting skin. Either the skin type doesn't exist or the skin is for another class.");
+
             return false;
         }
 
@@ -716,7 +752,8 @@ internal class ReSkinCommand : Command {
 }
 
 internal class MaxCommand : Command {
-    public MaxCommand() : base("max", true) { }
+    public MaxCommand() : base("max", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         var pd = player.Manager.Resources.GameData.Classes[player.ObjectType];
@@ -736,7 +773,8 @@ internal class MaxCommand : Command {
 }
 
 internal class TpQuestCommand : Command {
-    public TpQuestCommand() : base("tq", true) { }
+    public TpQuestCommand() : base("tq", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         if (player.Quest == null) {
@@ -766,6 +804,7 @@ internal class MuteCommand : Command {
         if (!match.Success) {
             player?.SendErrorText("Usage: /mute <player name> <time out in minutes>\\n" +
                                   "Time parameter is optional. If left out player will be muted until unmuted.");
+
             return false;
         }
 
@@ -788,6 +827,7 @@ internal class MuteCommand : Command {
         if (acc.IP == null) {
             player?.SendErrorText(
                 "Account has no associated IP address. Player must login at least once before being muted.");
+
             return false;
         }
 
@@ -841,7 +881,8 @@ internal class MuteCommand : Command {
 }
 
 internal class UnMuteCommand : Command {
-    public UnMuteCommand() : base("unmute", true) { }
+    public UnMuteCommand() : base("unmute", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string name) {
         if (string.IsNullOrWhiteSpace(name)) {
@@ -862,11 +903,13 @@ internal class UnMuteCommand : Command {
         if (acc.IP == null) {
             player.SendErrorText(
                 "Account has no associated IP address. Player must login at least once before being unmuted.");
+
             return false;
         }
 
         // unmute ip address
-        player.Manager.Database.IsMuted(acc.IP).ContinueWith(t => {
+        player.Manager.Database.IsMuted(acc.IP).ContinueWith(t =>
+        {
             if (!t.IsCompleted) {
                 player.SendInfo("Db access error while trying to unmute.");
                 return;
@@ -887,7 +930,8 @@ internal class UnMuteCommand : Command {
 }
 
 internal class BanAccountCommand : Command {
-    public BanAccountCommand() : base("ban", true) { }
+    public BanAccountCommand() : base("ban", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         BanInfo bInfo;
@@ -909,6 +953,7 @@ internal class BanAccountCommand : Command {
             bInfo.Name = match.Groups[1].Value;
             if (!int.TryParse(bInfo.Name, out bInfo.accountId))
                 bInfo.accountId = player.Manager.Database.ResolveId(bInfo.Name);
+
             bInfo.banReasons = match.Groups[2].Value;
             bInfo.banLiftTime = -1;
         }
@@ -935,6 +980,7 @@ internal class BanAccountCommand : Command {
         player.Manager.Database.Ban(bInfo.accountId, bInfo.banReasons, bInfo.banLiftTime);
         var target = player.Manager.Clients.Keys
             .SingleOrDefault(c => c.Account != null && c.Account.AccountId == bInfo.accountId);
+
         target?.Disconnect();
 
         player.SendInfo(!string.IsNullOrEmpty(bInfo.Name) ? $"{bInfo.Name} successfully banned." : "Ban successful.");
@@ -950,7 +996,8 @@ internal class BanAccountCommand : Command {
 }
 
 internal class BanIPCommand : Command {
-    public BanIPCommand() : base("banip", true, "ipban") { }
+    public BanIPCommand() : base("banip", true, "ipban") {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         var manager = player.Manager;
@@ -1012,7 +1059,8 @@ internal class BanIPCommand : Command {
 }
 
 internal class UnBanAccountCommand : Command {
-    public UnBanAccountCommand() : base("unban", true) { }
+    public UnBanAccountCommand() : base("unban", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         var db = player.Manager.Database;
@@ -1062,18 +1110,21 @@ internal class UnBanAccountCommand : Command {
 }
 
 internal class ClearInvCommand : Command {
-    public ClearInvCommand() : base("clearinv", true) { }
+    public ClearInvCommand() : base("clearinv", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         for (var i = 4; i < 12; i++)
             player.Inventory[i] = null;
+
         player.SendInfo("Inventory Cleared.");
         return true;
     }
 }
 
 internal class CloseRealmCommand : Command {
-    public CloseRealmCommand() : base("closerealm", true) { }
+    public CloseRealmCommand() : base("closerealm", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         if (player.Owner is not RealmOfTheMadGod gw) {
@@ -1092,53 +1143,81 @@ internal class CloseRealmCommand : Command {
 }
 
 internal class QuakeCommand : Command {
-    public QuakeCommand() : base("quake", true) { }
+    public QuakeCommand() : base("quake", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string worldName) {
-        return false;
-        //var worldProtoData = player.Manager.Resources.Worlds.Data;
+        if (string.IsNullOrWhiteSpace(worldName)) {
+            var sb = new StringBuilder("Valid worlds: ");
+            foreach (var i in Program.Resources.GameData.WorldTemplates)
+                sb.Append(i.Key + ", ");
+        }
 
-        //if (String.IsNullOrWhiteSpace(worldName))
-        //{
-        //    var msg = worldProtoData.Aggregate(
-        //        "Valid World Names: ", (c, p) => c + ((!p.Value.setpiece) ? (p.Key + ", ") : ""));
-        //    player.SendInfo(msg.Substring(0, msg.Length - 2) + ".");
-        //    return false;
-        //}
+        if (player.Owner is Nexus) {
+            player.SendErrorText("Cannot use /quake in Nexus.");
+            return false;
+        }
 
-        //if (player.Owner is Nexus)
-        //{
-        //    player.SendErrorText("Cannot use /quake in Nexus.");
-        //    return false;
-        //}
+        var manager = player.Manager;
+        var template = manager.Resources.GameData.WorldTemplates
+            .FirstOrDefault(p => p.Key.EqualsIgnoreCase(worldName)).Value;
 
-        //var worldNameProper =
-        //    player.Manager.Resources.Worlds.Data.FirstOrDefault(
-        //        p => p.Key.Equals(worldName, StringComparison.InvariantCultureIgnoreCase)).Key;
+        if (template == null) {
+            player.SendErrorText("World not found.");
+            return false;
+        }
 
-        //WorldTemplateData template;
-        //if (worldNameProper == null || (proto = worldProtoData[worldNameProper]).setpiece)
-        //{
-        //    player.SendErrorText("Invalid world.");
-        //    return false;
-        //}
+        World world;
+        switch (template.Specialized) {
+            case SpecializedDungeonType.Default:
+                world = new World(manager, template);
+                break;
+            case SpecializedDungeonType.Nexus:
+                world = manager.Worlds[World.Nexus];
+                break;
+            case SpecializedDungeonType.Realm:
+                var realms = manager.Worlds.Values.Where(i => i is RealmOfTheMadGod).ToArray();
+                world = realms.ElementAt(Random.Shared.Next(realms.Length));
+                break;
+            case SpecializedDungeonType.Vault:
+                player.SendErrorText("Cannot quake to vault.");
+                return false;
+            case SpecializedDungeonType.GuildHall:
+                player.SendErrorText("Cannot quake to guild hall.");
+                return false;
+            case SpecializedDungeonType.OryxCastle:
+                world = new OryxCastle(manager, template);
+                break;
+            default:
+                var msg = $"Unknown specialized dungeon type: {template.Specialized}";
+                player.SendErrorText(msg);
+                Log.Warn(msg);
+                return false;
+        }
 
-        //World world;
-        //if (proto.persist)
-        //    world = player.Manager.Worlds[proto.id];
-        //else
-        //{
-        //    DynamicWorld.TryGetWorld(proto, player.Client, out world);
-        //    world = player.Manager.AddWorld(world ?? new World(template));
-        //}
+        if (world.Id == 0)
+            world.Id = Interlocked.Increment(ref manager.NextWorldId);
 
-        //player.Owner.QuakeToWorld(world);
-        //return true;
+        var selectedMapData = MapParser.GetOrLoad(world.SelectMap(template));
+        if (selectedMapData == null) {
+            player.SendErrorText("Map for world not found.");
+            return false;
+        }
+
+        world.LoadMapFromData(selectedMapData);
+        world.Init();
+
+        Log.Info("World {0}({1}) added. {2} Worlds existing.", world.Id, world.IdName, manager.Worlds.Count);
+        manager.Worlds[world.Id] = world;
+
+        player.Owner.QuakeToWorld(world);
+        return true;
     }
 }
 
 internal class VisitCommand : Command {
-    public VisitCommand() : base("visit", true) { }
+    public VisitCommand() : base("visit", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string name) {
         if (string.IsNullOrWhiteSpace(name)) {
@@ -1162,7 +1241,8 @@ internal class VisitCommand : Command {
 }
 
 internal class LinkCommand : Command {
-    public LinkCommand() : base("link", true) { }
+    public LinkCommand() : base("link", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         if (player?.Owner == null)
@@ -1184,7 +1264,8 @@ internal class LinkCommand : Command {
 }
 
 internal class UnLinkCommand : Command {
-    public UnLinkCommand() : base("unlink", true) { }
+    public UnLinkCommand() : base("unlink", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         if (player?.Owner == null)
@@ -1206,7 +1287,8 @@ internal class UnLinkCommand : Command {
 }
 
 internal class Level20Command : Command {
-    public Level20Command() : base("level20", true, "l20") { }
+    public Level20Command() : base("level20", true, "l20") {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         if (player.Level < 20) {
@@ -1221,7 +1303,8 @@ internal class Level20Command : Command {
 }
 
 internal class RenameCommand : Command {
-    public RenameCommand() : base("rename", true) { }
+    public RenameCommand() : base("rename", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         var index = args.IndexOf(' ');
@@ -1283,7 +1366,8 @@ internal class RenameCommand : Command {
 }
 
 internal class UnnameCommand : Command {
-    public UnnameCommand() : base("unname", true) { }
+    public UnnameCommand() : base("unname", true) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         if (string.IsNullOrWhiteSpace(args)) {
@@ -1332,7 +1416,8 @@ internal class UnnameCommand : Command {
 }
 
 internal class ReloadBehaviorsCommand : Command {
-    public ReloadBehaviorsCommand() : base("reloadbehaviors", true, "rlb", false) { }
+    public ReloadBehaviorsCommand() : base("reloadbehaviors", true, "rlb", false) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string args) {
         player.Manager.Behaviors.ResolveBehaviors(true);
@@ -1341,7 +1426,8 @@ internal class ReloadBehaviorsCommand : Command {
 }
 
 internal class CompactLOHCommand : Command {
-    public CompactLOHCommand() : base("compactLOH", true, listCommand: false) { }
+    public CompactLOHCommand() : base("compactLOH", true, listCommand: false) {
+    }
 
     protected override bool Process(Player player, RealmTime time, string name) {
         GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;

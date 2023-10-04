@@ -49,7 +49,7 @@ public class Portal : StaticObject {
     public void CreateWorld(Player player) {
         World world = null;
         foreach (var p in Program.Resources.GameData.WorldTemplates.Values.Where(p => p.Portals.Contains(ObjectId))) {
-            if (p.Specialized == SpeicalizedDungeonType.GuildHall) {
+            if (p.Specialized == SpecializedDungeonType.GuildHall) {
                 if (string.IsNullOrEmpty(player.Guild)) {
                     player.SendErrorText("You are not in a guild.");
                     return;

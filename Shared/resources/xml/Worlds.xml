@@ -43,6 +43,14 @@
         <BackgroundLightColor>0</BackgroundLightColor>
         <BackgroundLightIntensity>0.15</BackgroundLightIntensity>
     </World>
+    
+    <World id="Oryx Castle" specialized="oryxcastle">
+        <Map files="oryx_castle.pmap"/>
+    </World>
+    
+    <World id="Wine Cellar">
+        <Map files="wine_cellar.pmap"/>
+    </World>
 
     <World id="Sprite World">
         <Map files="sprite_world.pmap"/>
@@ -65,6 +73,11 @@
         <Map files="ocean_trench.pmap"/>
         <Portal ids="Ocean Trench Portal"/>
     </World>
+    
+    <World id="Davy Jone's Locker">
+        <Map files="davy_jones_locker.pmap"/>
+        <Portal ids="Davy Jone's Locker Portal"/>
+    </World>
 
     <World id="Manor of the Immortals">
         <Map files="manor_of_the_immortals.pmap"/>
@@ -84,5 +97,10 @@
     <World id="Spider Den">
         <Map files="spider_den.pmap"/>
         <Portal ids="Spider Den Portal"/>
+    </World>
+    
+    <World id="Forbidden Jungle">
+        <Map files="forbidden_jungle.pmap"/>
+        <Portal ids="Forbidden Jungle Portal"/>
     </World>
 </Worlds>

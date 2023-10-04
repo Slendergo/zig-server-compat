@@ -8,7 +8,7 @@ public enum VisibilityType {
     LineOfSight = 2
 }
 
-public enum SpeicalizedDungeonType {
+public enum SpecializedDungeonType {
     Default,
     Nexus,
     Realm,
@@ -37,7 +37,7 @@ public sealed class WorldTemplateData {
 
     public string[] Portals;
     public bool ShowDisplays;
-    public SpeicalizedDungeonType Specialized;
+    public SpecializedDungeonType Specialized;
     public VisibilityType VisibilityType;
 
     public WorldTemplateData(XElement e) {
@@ -49,7 +49,7 @@ public sealed class WorldTemplateData {
         DisableTeleport = e.GetAttribute("disableTeleport", "false") == "true";
         ShowDisplays = e.GetAttribute("showDisplays", "false") == "true";
         VisibilityType = Enum.Parse<VisibilityType>(e.GetAttribute("visibilityType", "full"), true);
-        Specialized = Enum.Parse<SpeicalizedDungeonType>(e.GetAttribute("specialized", "default"), true);
+        Specialized = Enum.Parse<SpecializedDungeonType>(e.GetAttribute("specialized", "default"), true);
 
         MaxPlayers = e.GetValue("MaxPlayers", 85);
         Background = e.GetValue("Background", 0);

@@ -32,7 +32,7 @@ public class RealmManager {
     public readonly ConcurrentDictionary<int, World> Worlds = new();
     private int _nextClientId;
 
-    private int _nextWorldId;
+    public int NextWorldId;
 
     public RealmManager(Resources resources, Database db, ServerConfig config) {
         Log.Info("Initalizing Realm Manager...");
@@ -156,7 +156,7 @@ public class RealmManager {
 
         World world;
         switch (template.Specialized) {
-            case SpeicalizedDungeonType.Nexus:
+            case SpecializedDungeonType.Nexus:
                 // dont make two nexus's
                 if (Worlds.ContainsKey(World.Nexus))
                     return null;
@@ -166,25 +166,26 @@ public class RealmManager {
             //case SpeicalizedDungeonType.Test:
             //    world = new Test(this, client, template);
             //    break;
-            case SpeicalizedDungeonType.Vault:
+            case SpecializedDungeonType.Vault:
                 world = new Vault(this, template, client);
                 break;
-            case SpeicalizedDungeonType.Realm:
+            case SpecializedDungeonType.Realm:
                 world = new RealmOfTheMadGod(this, template);
                 break;
-            case SpeicalizedDungeonType.GuildHall:
+            case SpecializedDungeonType.GuildHall:
                 world = new GuildHall(this, template, client);
                 break;
-            case SpeicalizedDungeonType.OryxCastle:
+            case SpecializedDungeonType.OryxCastle:
                 world = new OryxCastle(this, template);
                 break;
+            case SpecializedDungeonType.Default:
             default:
                 world = new World(this, template);
                 break;
         }
 
         if (world.Id == 0)
-            world.Id = Interlocked.Increment(ref _nextWorldId);
+            world.Id = Interlocked.Increment(ref NextWorldId);
 
         var selectedMapData = MapParser.GetOrLoad(world.SelectMap(template));
         if (selectedMapData == null) {

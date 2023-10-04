@@ -44,11 +44,6 @@ internal class Program {
                    Config.dbInfo.index,
                    Config.dbInfo.auth,
                    Resources)) {
-            //var data = MapParser.ConvertWmapRealmToMapData(File.ReadAllBytes("realm.wmap"));
-            //File.WriteAllBytes($"{Environment.CurrentDirectory}/realm.pmap", data);
-
-            //data = MapParser.ConvertWmapToMapData(File.ReadAllBytes("nexus.wmap"));
-            //File.WriteAllBytes($"{Environment.CurrentDirectory}/nexus.pmap", data);
 
             Config.serverInfo.instanceId = Guid.NewGuid().ToString();
 
