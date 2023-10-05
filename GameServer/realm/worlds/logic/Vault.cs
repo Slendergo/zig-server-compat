@@ -23,7 +23,7 @@ public class Vault : World {
         return base.AllowedAccess(client) && AccountId == client.Account.AccountId;
     }
 
-    public void InitVault() {
+    public override void Init() {
         var vaultChestPosition = new List<IntPoint>();
         var spawn = new IntPoint(0, 0);
 

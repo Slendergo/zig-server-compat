@@ -43,7 +43,7 @@ public class UpdatedSet : HashSet<Entity> {
 }
 
 public partial class Player {
-    public const int Radius = 15;
+    public const int Radius = 5;
     public const int RadiusSqr = Radius * Radius;
     private const int StaticBoundingBox = Radius * 2;
     private const int AppoxAreaOfSight = (int) (Math.PI * Radius * Radius + 1);

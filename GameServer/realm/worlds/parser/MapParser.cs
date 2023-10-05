@@ -46,10 +46,10 @@ public sealed class MapData {
 
         var byteRead = tileDatas.Length <= 256;
         for (var y = 0; y < Height; y++)
-        for (var x = 0; x < Width; x++) {
-            var index = byteRead ? rdr.ReadByte() : rdr.ReadUInt16();
-            Tiles[x, y] = tileDatas[index];
-        }
+            for (var x = 0; x < Width; x++) {
+                var index = byteRead ? rdr.ReadByte() : rdr.ReadUInt16();
+                Tiles[x, y] = tileDatas[index];
+            }
     }
 }
 
