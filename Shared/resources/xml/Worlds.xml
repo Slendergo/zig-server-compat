@@ -1,12 +1,12 @@
 ﻿<Worlds>
 	<World id="Tutorial" instanced="true" maxPlayers="1">
-		<Map files="tutorial.pmap"/>
+		<Map files="tutorial/tutorial1.pmap"/>
 		<BackgroundLightColor>0</BackgroundLightColor>
 		<BackgroundLightIntensity>0.15</BackgroundLightIntensity>
 	</World>
 	<World id="Nexus" showDisplays="true" persists="true" maxPlayers="300" specialized="nexus">
 		<Music files="A.mp3;B.mp3"/>
-		<Map files="nexus.pmap"/>
+		<Map files="nexus/default.pmap"/>
 		<BackgroundLightColor>0</BackgroundLightColor>
 		<BackgroundLightIntensity>0.15</BackgroundLightIntensity>
 		<DayLightIntensity>0.1</DayLightIntensity>
@@ -14,7 +14,7 @@
 	</World>
 	<World id="Test" instanced="true" maxPlayers="1"/>
 	<World id="Vault" instanced="true" showDisplays="true" maxPlayers="1" specialized="vault">
-		<Map files="vault.pmap"/>
+		<Map files="vault/default.pmap"/>
 		<Portal ids="Vault Portal"/>
 		<BackgroundLightColor>0</BackgroundLightColor>
 		<BackgroundLightIntensity>0.15</BackgroundLightIntensity>
@@ -22,14 +22,14 @@
 		<NightLightIntensity>0.4</NightLightIntensity>
 	</World>
 	<World id="Realm of the Mad God" persists="true" maxPlayers="85" specialized="realm">
-		<Map files="realm.pmap"/>
+		<Map files="realm/realm1.pmap"/>
 		<BackgroundLightColor>0</BackgroundLightColor>
 		<BackgroundLightIntensity>0.15</BackgroundLightIntensity>
 		<DayLightIntensity>0.1</DayLightIntensity>
 		<NightLightIntensity>0.4</NightLightIntensity>
 	</World>
 	<World id="Oryx's Castle" specialized="oryxcastle">
-		<Map files="oryxcastle.pmap"/>
+		<Map files="oryx/castle.pmap"/>
 	</World>
 	<World id="Guild Hall" instanced="true" specialized="guildhall">
 		<Map files="guild/0.map,guild/1.map,guild/2.map,guild/3.map"/>
@@ -37,52 +37,49 @@
 		<BackgroundLightColor>0</BackgroundLightColor>
 		<BackgroundLightIntensity>0.15</BackgroundLightIntensity>
 	</World>
-	<World id="Oryx Castle" specialized="oryxcastle">
-		<Map files="oryx_castle.pmap"/>
-	</World>
 	<World id="Wine Cellar">
-		<Map files="wine_cellar.pmap"/>
+		<Map files="oryx/cellar.pmap"/>
 	</World>
 	<World id="Sprite World">
-		<Map files="sprite_world.pmap"/>
+		<Map files="sprite_world/sprite1.pmap"/>
 		<Portal ids="Glowing Portal"/>
 	</World>
 	<World id="Abyss of Demons">
-		<Map files="abyss_of_demons.pmap"/>
+		<Map files="abyss_of_demons/abyss1.pmap"/>
 		<Portal ids="Abyss of Demons Portal"/>
 		<BackgroundLightColor>0</BackgroundLightColor>
 		<BackgroundLightIntensity>0.55</BackgroundLightIntensity>
 	</World>
 	<World id="Snake Pit">
-		<Map files="snake_pit.pmap"/>
+		<Map files="snake_pit/snake1.pmap"/>
 		<Portal ids="Snake Pit Portal"/>
 	</World>
 	<World id="Ocean Trench">
-		<Map files="ocean_trench.pmap"/>
+		<Map files="ocean_trench/otrench1.pmap"/>
 		<Portal ids="Ocean Trench Portal"/>
 	</World>
 	<World id="Davy Jone's Locker">
-		<Map files="davy_jones_locker.pmap"/>
+		<Map files="davy_jones/davy1.pmap"/>
 		<Portal ids="Davy Jone's Locker Portal"/>
 	</World>
 	<World id="Manor of the Immortals">
-		<Map files="manor_of_the_immortals.pmap"/>
+		<Map files="manor_of_the_immortals/manor1.pmap"/>
 		<Portal ids="Manor of the Immortals Portal"/>
 	</World>
 	<World id="Tomb of the Ancients">
-		<Map files="tomb_of_the_ancients.pmap"/>
+		<Map files="tomb_of_the_ancients/tomb1.pmap"/>
 		<Portal ids="Tomb of the Ancients Portal"/>
 	</World>
 	<World id="Pirate Cave">
-		<Map files="pirate_cave.pmap"/>
+		<Map files="pirate_cave/pcave1.pmap"/>
 		<Portal ids="Glowing Portal"/>
 	</World>
 	<World id="Spider Den">
-		<Map files="spider_den.pmap"/>
+		<Map files="spider_den/spider1.pmap"/>
 		<Portal ids="Spider Den Portal"/>
 	</World>
 	<World id="Forbidden Jungle">
-		<Map files="forbidden_jungle.pmap"/>
+		<Map files="forbidden_jungle/jungle1.pmap"/>
 		<Portal ids="Forbidden Jungle Portal"/>
 	</World>
 </Worlds>
