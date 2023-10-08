@@ -99,8 +99,6 @@ public class Enemy : Character {
             var dmg = DamageWithDefense(projectile.Damage, Defense, projectile.ProjDesc.ArmorPiercing);
             HP -= dmg;
 
-            Console.WriteLine(dmg);
-
             ApplyConditionEffect(projectile.ProjDesc.Effects);
             foreach (var player in Owner.Players.Values)
                 if (player.Id != projectile.ProjectileOwner.Self.Id && player.DistSqr(this) < Player.RadiusSqr)

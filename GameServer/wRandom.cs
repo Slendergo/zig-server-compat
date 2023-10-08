@@ -45,7 +45,7 @@ public sealed class WRandom
         if (lb > 2147483647) 
             lb -= 2147483647;
 
-        Console.WriteLine("Seed: " + lb);
+        //Console.WriteLine("Seed: " + lb);
         return _seed = lb;
     }
 }
