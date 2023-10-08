@@ -12,7 +12,7 @@ internal class DropPortalOnDeath : Behavior {
     public DropPortalOnDeath(XElement e) {
         _target = GetObjType(e.ParseString("@target"));
         _probability = e.ParseFloat("@probability", 1);
-        _timeout = e.ParseNInt("@timeout");
+        _timeout = e.ParseNInt("@timeout", 30);
     }
 
     public DropPortalOnDeath(string target, double probability = 1, int? timeout = null) {

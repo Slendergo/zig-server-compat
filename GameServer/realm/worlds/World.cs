@@ -10,6 +10,8 @@ using GameServer.realm.terrain;
 using GameServer.realm.worlds.logic;
 using GameServer.realm.worlds.parser;
 using NLog;
+using GameServer.logic.behaviors;
+using System.Security.Cryptography;
 
 namespace GameServer.realm.worlds;
 
@@ -481,10 +483,8 @@ public class World {
 
     public Projectile GetProjectile(int objectId, int bulletId) {
         var entity = GetEntity(objectId);
-        return entity != null
-            ? ((IProjectileOwner) entity).Projectiles[bulletId]
-            : Projectiles.SingleOrDefault(p =>
-                p.Value.ProjectileOwner.Self.Id == objectId &&
-                p.Value.ProjectileId == bulletId).Value;
+        if (entity != null)
+            return ((IProjectileOwner) entity).Projectiles[bulletId];
+        return Projectiles.SingleOrDefault(p => p.Value.ProjectileOwner.Self.Id == objectId && p.Value.ProjectileId == bulletId).Value;
     }
 }

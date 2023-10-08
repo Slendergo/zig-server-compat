@@ -76,11 +76,11 @@ public class Enemy : Character {
             ApplyConditionEffect(effs);
             foreach (var player in Owner.Players.Values)
                 if (player.Id != Id && player.DistSqr(this) < Player.RadiusSqr)
-                    player.Client.SendDamage(Id, 0, (ushort)dmg, HP < 0);
+                    player.Client.SendDamage(Id, 0, (ushort)dmg, HP <= 0);
 
             DamageCounter.HitBy(from, time, null, dmg);
 
-            if (HP < 0 && Owner != null) Death(time);
+            if (HP <= 0 && Owner != null) Death(time);
 
             return dmg;
         }

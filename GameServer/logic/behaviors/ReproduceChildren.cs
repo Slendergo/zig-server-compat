@@ -54,7 +54,7 @@ internal class ReproduceChildren : Behavior {
 
         var toRemove = new List<Enemy>();
         foreach (var child in spawn.livingChildren)
-            if (child.HP < 0)
+            if (child.HP <= 0)
                 toRemove.Add(child);
         foreach (var child in toRemove)
             spawn.livingChildren.Remove(child);

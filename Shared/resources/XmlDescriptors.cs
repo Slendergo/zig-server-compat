@@ -310,7 +310,7 @@ public class PortalDesc : ObjectDesc {
         DungeonName = e.GetValue<string>("DungeonName");
         IntergamePortal = e.HasElement("IntergamePortal");
         Locked = e.HasElement("LockedPortal");
-        Timeout = e.GetValue("Timeout", 30);
+        Timeout = 30;
     }
 }
 
