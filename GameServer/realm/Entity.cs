@@ -39,7 +39,11 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
 
     public bool Spawned;
 
-    protected Entity(RealmManager manager, ushort objType) {
+    protected Entity(RealmManager manager, ushort objType)
+    {
+        ObjectType = objType;
+        Manager = manager;
+
         ObjectId = manager.Resources.GameData.ObjectTypeToId[objType];
 
         _name = new SV<string>(this, StatsType.Name, "");
@@ -50,10 +54,9 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         _y = new SV<float>(this, StatsType.None, 0);
         _conditionEffects1 = new SV<ulong>(this, StatsType.Effects, 0);
 
-        ObjectType = objType;
-        Manager = manager;
         manager.Behaviors.ResolveBehavior(this);
-        manager.Resources.GameData.ObjectDescs.TryGetValue(ObjectType, out _desc);
+        _ = manager.Resources.GameData.ObjectDescs.TryGetValue(ObjectType, out _desc);
+
         if (_desc == null)
             return;
 
@@ -70,7 +73,8 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
             return;
         }
 
-        if (_desc.Character) EffectDuration = new int[EffectCount];
+        if (_desc.Character) 
+            EffectDuration = new int[EffectCount];
     }
 
     public RealmManager Manager { get; }
@@ -166,14 +170,16 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
     }
 
     public virtual void Tick(RealmTime time) {
-        if (this is Projectile || Owner == null) return;
-        if (CurrentState != null && Owner != null)
-            if (!HasConditionEffect(ConditionEffects.Stasis) &&
-                !TickStateManually &&
-                (this.AnyPlayerNearby() || ConditionEffects != 0))
+        if (Owner == null) 
+            return;
+
+        if (CurrentState != null)
+            if (!HasConditionEffect(ConditionEffects.Stasis) && !TickStateManually && (this.AnyPlayerNearby() || ConditionEffects != 0))
                 TickState(time);
+
         if (_posHistory != null)
-            _posHistory[++_posIdx] = new Position {X = X, Y = Y};
+            _posHistory[++_posIdx] = new Position() { X = X, Y = Y };
+
         if (EffectDuration != null)
             ProcessConditionEffects(time);
     }
@@ -533,9 +539,9 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         }
     }
 
-    public Projectile CreateProjectile(ProjectileDesc desc, ushort container, int dmg, long time, Position pos,
-        float angle) {
-        var ret = new Projectile(Manager, desc) //Assume only one
+    public Projectile CreateProjectile(ProjectileDesc desc, ushort container, int dmg, long time, Position pos, float angle) 
+    {
+        var ret = new Projectile(Owner, desc) //Assume only one
         {
             ProjectileOwner = this,
             ProjectileId = projectileId++,
@@ -544,13 +550,10 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
 
             CreationTime = time,
             StartPos = pos,
-            Angle = angle,
-
-            X = pos.X,
-            Y = pos.Y
+            Angle = angle
         };
-        if (_projectiles[ret.ProjectileId] != null)
-            _projectiles[ret.ProjectileId].Destroy();
+
+        _projectiles[ret.ProjectileId]?.Destroy();
         _projectiles[ret.ProjectileId] = ret;
         return ret;
     }

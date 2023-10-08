@@ -242,6 +242,17 @@ public class World {
         }
     }
 
+    public void AddProjectile(Projectile projectile)
+    {
+        var index = Tuple.Create(projectile.ProjectileOwner.Self.Id, projectile.ProjectileId);
+        Projectiles[index] = projectile;
+    }
+
+    public bool RemoveProjectile(Projectile projectile)
+    {
+        var index = Tuple.Create(projectile.ProjectileOwner.Self.Id, projectile.ProjectileId);
+        return Projectiles.TryRemove(index, out _);
+    }
 
     public virtual int EnterWorld(Entity entity, bool noIdChange = false) {
         switch (entity) {
@@ -260,12 +271,6 @@ public class World {
                 EnemiesCollision.Insert(enemy);
                 if (enemy.ObjectDesc.Quest)
                     Quests.TryAdd(enemy.Id, enemy);
-                break;
-            }
-            case Projectile projectile: {
-                projectile.Init(this);
-                var prj = projectile;
-                Projectiles[new Tuple<int, byte>(prj.ProjectileOwner.Self.Id, prj.ProjectileId)] = prj;
                 break;
             }
             case StaticObject staticObject: {
@@ -307,10 +312,6 @@ public class World {
             EnemiesCollision.Remove(entity);
             if (entity.ObjectDesc.Quest)
                 Quests.TryRemove(entity.Id, out dummy);
-        }
-        else if (entity is Projectile) {
-            var p = entity as Projectile;
-            Projectiles.TryRemove(new Tuple<int, byte>(p.ProjectileOwner.Self.Id, p.ProjectileId), out p);
         }
         else if (entity is StaticObject) {
             StaticObject dummy;

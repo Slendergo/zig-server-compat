@@ -509,7 +509,6 @@ public class ProjectileDesc {
     public readonly int MaxDamage;
     public readonly int MinDamage;
     public readonly bool MultiHit;
-    public readonly string ObjectId;
     public readonly bool Parametric;
     public readonly bool PassesCover;
     public readonly float Speed;
@@ -517,7 +516,6 @@ public class ProjectileDesc {
 
     public ProjectileDesc(XElement e) {
         BulletType = e.GetAttribute<int>("id");
-        ObjectId = e.GetValue<string>("ObjectId");
         LifetimeMS = e.GetValue<float>("LifetimeMS");
         Speed = e.GetValue<float>("Speed", 100);
 

@@ -363,10 +363,8 @@ partial class Player {
         var prjs = new Projectile[20];
         var prjDesc = item.Projectiles[0]; //Assume only one
         for (var i = 0; i < 20; i++) {
-            var proj = CreateProjectile(prjDesc, item.ObjectType,
-                Random.Next(prjDesc.MinDamage, prjDesc.MaxDamage),
-                time.TotalElapsedMs, target, (float) (i * (Math.PI * 2) / 20));
-            Owner.EnterWorld(proj);
+            var proj = CreateProjectile(prjDesc, item.ObjectType, Random.Next(prjDesc.MinDamage, prjDesc.MaxDamage), time.TotalElapsedMs, target, (float) (i * (Math.PI * 2) / 20));
+            Owner.AddProjectile(proj);
             FameCounter.Shoot(proj);
             foreach (var player in Owner.Players.Values)
                 if (player.DistSqr(this) < RadiusSqr)
@@ -782,7 +780,7 @@ partial class Player {
             var proj = CreateProjectile(prjDesc, item.ObjectType,
                 Stats.GetClientDamage(prjDesc.MinDamage, prjDesc.MaxDamage, true), time.TotalElapsedMs,
                 new Position {X = X, Y = Y}, (float) (startAngle + arcGap * i));
-            Owner.EnterWorld(proj);
+            Owner.AddProjectile(proj);
 
             foreach (var otherPlayer in Owner.Players.Values)
                 if (otherPlayer.Id != Id && otherPlayer.DistSqr(this) < RadiusSqr)

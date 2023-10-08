@@ -1,13 +1,12 @@
 ﻿namespace GameServer;
 
-public class wRandom {
-    //static readonly ILog Log = LogManager.GetLogger(typeof(wRandom));
+public sealed class WRandom 
+{
+    private uint _seed = 834569746;
 
-    private uint _seed;
-
-    public wRandom() : this((uint) Environment.TickCount) { }
-
-    public wRandom(uint seed) {
+    public WRandom() { }
+    public WRandom(uint seed)
+    {
         _seed = seed;
     }
 
@@ -39,9 +38,14 @@ public class wRandom {
     private uint Gen() {
         var lb = 16807 * (_seed & 0xFFFF);
         var hb = 16807 * (uint) ((int) _seed >> 16);
-        lb = lb + ((hb & 32767) << 16);
-        lb = lb + (uint) ((int) hb >> 15);
-        if (lb > 2147483647) lb = lb - 2147483647;
+        
+        lb += ((hb & 32767) << 16);
+        lb += (uint) ((int) hb >> 15);
+        
+        if (lb > 2147483647) 
+            lb -= 2147483647;
+
+        Console.WriteLine("Seed: " + lb);
         return _seed = lb;
     }
 }

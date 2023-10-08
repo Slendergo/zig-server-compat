@@ -113,7 +113,7 @@ public class Client {
     public string IP;
     public Player Player;
 
-    public wRandom Random;
+    public WRandom SeededRandom;
     public uint Seed;
 
     private object SendLock = new();
@@ -133,6 +133,7 @@ public class Client {
         Account = null;
         Character = null;
         Player = null;
+        SeededRandom = null;
         Socket = socket;
         try {
             IP = ((IPEndPoint) socket.RemoteEndPoint).Address.ToString();
@@ -1153,13 +1154,16 @@ public class Client {
     }
 
     private void ProcessPlayerShoot(long time, byte bulletId, ushort objType, float x, float y, float angle) {
-        if (!Player.Manager.Resources.GameData.Items.TryGetValue(Player.Inventory[0].ObjectType, out var item)) {
-            Player.Client.Random.NextInt();
+   
+        if (Player.Inventory[1].ObjectType == objType) {
+            // we dont handle ability
+            Player.Client.SeededRandom.NextInt(); // this is needed as we doShoot client side which uses the random gen
             return;
         }
 
-        if (Player.Inventory[1].ObjectType == objType) {
-            // we dont handle ability
+        if (!Player.Manager.Resources.GameData.Items.TryGetValue(Player.Inventory[0].ObjectType, out var item))
+        {
+            Player.Client.SeededRandom.NextInt();
             return;
         }
 
@@ -1168,7 +1172,7 @@ public class Client {
         // validate
         var result = Player.ValidatePlayerShoot(item, time);
         if (result != PlayerShootStatus.OK) {
-            Player.Client.Random.NextInt();
+            Player.Client.SeededRandom.NextInt();
             return;
         }
 
@@ -1177,7 +1181,7 @@ public class Client {
             bulletId, prjDesc, item.ObjectType,
             time, new Position { X = x, Y = y }, angle);
 
-        Player.Owner.EnterWorld(prj);
+        Player.Owner.AddProjectile(prj);
 
         foreach (var otherPlayer in Player.Owner.Players.Values)
             if (otherPlayer.Id != Player.Id && otherPlayer.DistSqr(Player) < Player.RadiusSqr)

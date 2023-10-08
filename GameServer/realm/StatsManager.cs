@@ -46,7 +46,7 @@ public class StatsManager {
 
     public int GetClientDamage(int min, int max, bool useMult = false) {
         var mult = useMult ? GetAttackMult() : 1.0;
-        return (int) (Owner.Client.Random.NextIntRange((uint) min, (uint) max) * mult);
+        return (int) (Owner.Client.SeededRandom.NextIntRange((uint) min, (uint) max) * mult);
     }
 
     public float GetAttackMult() {

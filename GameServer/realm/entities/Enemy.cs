@@ -104,7 +104,7 @@ public class Enemy : Character {
             ApplyConditionEffect(projectile.ProjDesc.Effects);
             foreach (var player in Owner.Players.Values)
                 if (player.Id != projectile.ProjectileOwner.Self.Id && player.DistSqr(this) < Player.RadiusSqr)
-                    player.Client.SendDamage(Id, projectile.ConditionEffects, (ushort)dmg, HP <= 0);
+                    player.Client.SendDamage(Id, 0, (ushort)dmg, HP <= 0);  // todo this was once projectile.ConditionEffects but this was not correct, i need to figure out how to send over the effects from the projectile.ProjDesc.Effects instead
 
             DamageCounter.HitBy(projectile.ProjectileOwner as Player, time, projectile, dmg);
 

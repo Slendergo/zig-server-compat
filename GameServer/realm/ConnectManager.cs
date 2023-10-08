@@ -40,9 +40,12 @@ public class ConnectManager {
             world = client.Manager.GetWorld(World.Nexus);
         }
 
+        var seed = (uint)((long)Environment.TickCount * client.Account.AccountId.GetHashCode()) % uint.MaxValue;
+        client.SeededRandom = new WRandom(seed);
+
         // send out map info
         var mapSize = Math.Max(world.Map.Width, world.Map.Height);
-        client.SendMapInfo(mapSize, mapSize, world.IdName, world.DisplayName, client.Seed, world.Difficulty,
+        client.SendMapInfo(mapSize, mapSize, world.IdName, world.DisplayName, seed, world.Difficulty,
             world.Background, world.AllowTeleport, world.ShowDisplays, world.BgLightColor, world.BgLightIntensity,
             world.DayLightIntensity, world.NightLightIntensity, world.Manager.Logic.RealmTime.TotalElapsedMicroSeconds);
 
@@ -125,21 +128,19 @@ public class ConnectManager {
             }
         }
 
-        var seed = (uint) ((long) Environment.TickCount * client.Account.AccountId.GetHashCode()) % uint.MaxValue;
-        client.Random = new wRandom(seed);
-        client.Seed = seed;
-
         var now = (int) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-
         if (acc.GuildId > 0 && now - acc.LastSeen > 1800)
             client.Manager.Chat.GuildAnnounce(acc, acc.Name + " has joined the game");
 
         acc.RefreshLastSeen();
         acc.FlushAsync();
 
+        var seed = (uint)((long)Environment.TickCount * client.Account.AccountId.GetHashCode()) % uint.MaxValue;
+        client.SeededRandom = new WRandom(seed);
+
         // send out map info
         var mapSize = Math.Max(world.Map.Width, world.Map.Height);
-        client.SendMapInfo(mapSize, mapSize, world.IdName, world.DisplayName, client.Seed, world.Difficulty,
+        client.SendMapInfo(mapSize, mapSize, world.IdName, world.DisplayName, seed, world.Difficulty,
             world.Background, world.AllowTeleport, world.ShowDisplays, world.BgLightColor, world.BgLightIntensity,
             world.DayLightIntensity, world.NightLightIntensity, world.Manager.Logic.RealmTime.TotalElapsedMicroSeconds);
 

@@ -44,7 +44,7 @@ public partial class Player {
         if (!tileDesc.Damaging || objDesc != null && objDesc.ProtectFromGroundDamage)
             return;
 
-        var dmg = (int) Client.Random.NextIntRange((uint) tileDesc.MinDamage, (uint) tileDesc.MaxDamage);
+        var dmg = (int) Client.SeededRandom.NextIntRange((uint) tileDesc.MinDamage, (uint) tileDesc.MaxDamage);
         HP -= dmg;
 
         foreach (var player in Owner.Players.Values)
