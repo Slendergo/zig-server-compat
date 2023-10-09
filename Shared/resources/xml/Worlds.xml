@@ -6,7 +6,7 @@
 	</World>
 	<World id="Nexus" showDisplays="true" persists="true" maxPlayers="300" specialized="nexus">
 		<Music files="A.mp3;B.mp3"/>
-		<Map files="nexus/default.pmap"/>
+		<Map files="nexus/nexus_fall.pmap"/>
 		<BackgroundLightColor>0</BackgroundLightColor>
 		<BackgroundLightIntensity>0.15</BackgroundLightIntensity>
 		<DayLightIntensity>0.1</DayLightIntensity>

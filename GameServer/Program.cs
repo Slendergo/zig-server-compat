@@ -8,6 +8,7 @@ using NLog.Targets;
 using Org.BouncyCastle.Asn1.Cms;
 using System.Text;
 using System.Xml.Linq;
+using GameServer.realm.worlds.parser;
 
 namespace GameServer;
 
@@ -184,11 +185,12 @@ internal class Program {
         LogManager.Configuration.Variables["buildConfig"] = Utils.GetBuildConfiguration();
 
         using (Resources = new Resources(Config.serverSettings.resourceFolder))
-        using (Database = new Database(Config.dbInfo.host,
-                   Config.dbInfo.port,
-                   Config.dbInfo.index,
-                   Config.dbInfo.auth,
-                   Resources)) {
+        using (Database = new Database(Config.dbInfo.host, Config.dbInfo.port, Config.dbInfo.index, Config.dbInfo.auth, Resources)) {
+
+#if DEBUG
+            // this will try to convert maps every time we run.
+            MapParser.ConvertMaps();
+#endif
 
             Config.serverInfo.instanceId = Guid.NewGuid().ToString();
 
