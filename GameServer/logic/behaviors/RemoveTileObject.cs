@@ -42,11 +42,11 @@ internal class RemoveTileObject : Behavior {
                 continue;
 
             if (tile.ObjectDesc?.BlocksSight == true)
-                foreach (var plr in host.Owner.Players.Values.Where(p =>
-                             MathsUtils.DistSqr(p.X, p.Y, x, y) < Player.RadiusSqr))
-                    plr.Sight.UpdateCount++;
+                foreach (var player in host.Owner.Players.Values)
+                    if (MathsUtils.DistSqr(player.X, player.Y, x, y) < Player.RADIUS_SQR)
+                        player.Sight.UpdateVisibility();
 
-            tile.ObjectType = 0;
+                tile.ObjectType = 0;
             tile.UpdateCount++;
             map[x, y] = tile;
         }

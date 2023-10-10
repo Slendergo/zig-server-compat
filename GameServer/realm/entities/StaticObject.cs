@@ -57,7 +57,7 @@ public class StaticObject : Entity {
         HP -= dmg;
 
         foreach (var player in Owner.Players.Values)
-            if (player.Id != projectile.ProjectileOwner.Self.Id && player.DistSqr(this) < Player.RadiusSqr)
+            if (player.Id != projectile.ProjectileOwner.Self.Id && player.DistSqr(this) < Player.RADIUS_SQR)
                 player.Client.SendDamage(Id, 0, (ushort)dmg, !CheckHP());
 
         return true;

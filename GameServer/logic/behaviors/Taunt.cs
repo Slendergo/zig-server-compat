@@ -124,7 +124,7 @@ internal class Taunt : Behavior {
         }
 
         foreach (var p in host.Owner.Players.Values)
-            if (host.DistSqr(p) < Player.RadiusSqr)
+            if (host.DistSqr(p) < Player.RADIUS_SQR)
                 p.SendEnemy(name, taunt);
     }
 }

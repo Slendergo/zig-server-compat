@@ -6,7 +6,8 @@ using StackExchange.Redis;
 
 namespace Shared;
 
-public class Database : IDisposable {
+public class Database : IDisposable
+{
     private const int _lockTTL = 60;
 
     public const string REG_LOCK = "regLock";
@@ -41,7 +42,8 @@ public class Database : IDisposable {
 
     private ISManager _isManager;
 
-    public Database(string host, int port, int index, string auth, Resources resources) {
+    public Database(string host, int port, int index, string auth, Resources resources)
+    {
         Log.Info("Initializing Database...");
         _resources = resources;
 
@@ -58,20 +60,24 @@ public class Database : IDisposable {
 
     public IDatabase Conn { get; }
 
-    public void Dispose() {
+    public void Dispose()
+    {
         _redis.Dispose();
     }
 
-    public void SetISManager(ISManager isManager) {
+    public void SetISManager(ISManager isManager)
+    {
         _isManager = isManager;
     }
 
-    public DbAccount CreateGuestAccount(string uuid) {
+    public DbAccount CreateGuestAccount(string uuid)
+    {
         var newAccounts = _resources.Settings.NewAccounts;
 
-        var acnt = new DbAccount(Conn, 0) {
+        var acnt = new DbAccount(Conn, 0)
+        {
             UUID = uuid,
-            Name = GuestNames[(uint) uuid.GetHashCode() % GuestNames.Length],
+            Name = GuestNames[(uint)uuid.GetHashCode() % GuestNames.Length],
             Admin = false,
             NameChosen = false,
             FirstDeath = true,
@@ -90,24 +96,27 @@ public class Database : IDisposable {
 
         // make sure guest have all classes if they are supposed to
         var stats = new DbClassStats(acnt);
-        if (newAccounts.ClassesUnlocked) {
+        if (newAccounts.ClassesUnlocked)
+        {
             foreach (var @class in _resources.GameData.Classes.Keys)
                 stats.Unlock(@class);
             stats.FlushAsync();
         }
-        else {
+        else
+        {
             Conn.KeyDelete("classStats.0");
         }
 
         // make sure guests have all skins if they are supposed to
         if (newAccounts.SkinsUnlocked)
             acnt.Skins = (from skin in _resources.GameData.Skins.Values
-                select skin.Type).ToArray();
+                          select skin.Type).ToArray();
 
         return acnt;
     }
 
-    public LoginStatus Verify(string uuid, string password, out DbAccount acc) {
+    public LoginStatus Verify(string uuid, string password, out DbAccount acc)
+    {
         acc = null;
 
         //check login
@@ -131,13 +140,14 @@ public class Database : IDisposable {
         // make sure account has all skins if they are supposed to
         if (_resources.Settings.NewAccounts.SkinsUnlocked)
             acc.Skins = (from skin in _resources.GameData.Skins.Values
-                select skin.Type).ToArray();
+                         select skin.Type).ToArray();
 
         return LoginStatus.OK;
     }
 
     // basic account locking functions
-    public bool AcquireLock(DbAccount acc) {
+    public bool AcquireLock(DbAccount acc)
+    {
         var tran = Conn.CreateTransaction();
 
         var lockToken = Guid.NewGuid().ToString();
@@ -151,11 +161,13 @@ public class Database : IDisposable {
         return committed;
     }
 
-    public TimeSpan? GetLockTime(DbAccount acc) {
+    public TimeSpan? GetLockTime(DbAccount acc)
+    {
         return Conn.KeyTimeToLive($"lock:{acc.AccountId}");
     }
 
-    public bool RenewLock(DbAccount acc) {
+    public bool RenewLock(DbAccount acc)
+    {
         var tran = Conn.CreateTransaction();
 
         var aKey = $"lock:{acc.AccountId}";
@@ -164,7 +176,8 @@ public class Database : IDisposable {
         return tran.Execute();
     }
 
-    public void ReleaseLock(DbAccount acc) {
+    public void ReleaseLock(DbAccount acc)
+    {
         var tran = Conn.CreateTransaction();
 
         var aKey = $"lock:{acc.AccountId}";
@@ -174,19 +187,23 @@ public class Database : IDisposable {
         tran.ExecuteAsync(CommandFlags.FireAndForget);
     }
 
-    public bool AccountLockExists(int accId) {
+    public bool AccountLockExists(int accId)
+    {
         return Conn.KeyExists($"lock:{accId}");
     }
 
-    public IDisposable Lock(DbAccount acc) {
+    public IDisposable Lock(DbAccount acc)
+    {
         return new l(this, acc);
     }
 
-    public bool LockOk(IDisposable l) {
-        return ((l) l).lockOk;
+    public bool LockOk(IDisposable l)
+    {
+        return ((l)l).lockOk;
     }
 
-    public string AcquireLock(string key) {
+    public string AcquireLock(string key)
+    {
         var lockToken = Guid.NewGuid().ToString();
 
         var tran = Conn.CreateTransaction();
@@ -196,14 +213,16 @@ public class Database : IDisposable {
         return tran.Execute() ? lockToken : null;
     }
 
-    public void ReleaseLock(string key, string token) {
+    public void ReleaseLock(string key, string token)
+    {
         var tran = Conn.CreateTransaction();
         tran.AddCondition(Condition.StringEqual(key, token));
         tran.KeyDeleteAsync(key);
         tran.Execute();
     }
 
-    public bool RenameUUID(DbAccount acc, string newUuid, string lockToken) {
+    public bool RenameUUID(DbAccount acc, string newUuid, string lockToken)
+    {
         string p = Conn.HashGet("logins", acc.UUID.ToUpperInvariant());
         var trans = Conn.CreateTransaction();
         trans.AddCondition(Condition.StringEqual(REG_LOCK, lockToken));
@@ -217,7 +236,8 @@ public class Database : IDisposable {
         return true;
     }
 
-    public bool RenameIGN(DbAccount acc, string newName, string lockToken) {
+    public bool RenameIGN(DbAccount acc, string newName, string lockToken)
+    {
         var trans = Conn.CreateTransaction();
         trans.AddCondition(Condition.StringEqual(NAME_LOCK, lockToken));
         trans.HashDeleteAsync("names", acc.Name.ToUpperInvariant());
@@ -230,7 +250,8 @@ public class Database : IDisposable {
         return true;
     }
 
-    public bool UnnameIGN(DbAccount acc, string lockToken) {
+    public bool UnnameIGN(DbAccount acc, string lockToken)
+    {
         var trans = Conn.CreateTransaction();
         trans.AddCondition(Condition.StringEqual(NAME_LOCK, lockToken));
         trans.HashDeleteAsync("names", acc.Name.ToUpperInvariant());
@@ -242,7 +263,8 @@ public class Database : IDisposable {
         return true;
     }
 
-    public void ChangePassword(string uuid, string password) {
+    public void ChangePassword(string uuid, string password)
+    {
         var login = new DbLoginInfo(Conn, uuid);
 
         var x = new byte[0x10];
@@ -255,21 +277,24 @@ public class Database : IDisposable {
         login.Flush();
     }
 
-    public void Guest(DbAccount acc, bool isGuest) {
+    public void Guest(DbAccount acc, bool isGuest)
+    {
         acc.Guest = isGuest;
         acc.FlushAsync();
     }
 
-    public RegisterStatus Register(string uuid, string password, string name, out DbAccount acc) {
+    public RegisterStatus Register(string uuid, string password, string name, out DbAccount acc)
+    {
         var newAccounts = _resources.Settings.NewAccounts;
 
         acc = null;
         if (!Conn.HashSet("logins", uuid.ToUpperInvariant(), "{}", When.NotExists))
             return RegisterStatus.UsedName;
 
-        var newAccId = (int) Conn.StringIncrement("nextAccId");
+        var newAccId = (int)Conn.StringIncrement("nextAccId");
 
-        acc = new DbAccount(Conn, newAccId) {
+        acc = new DbAccount(Conn, newAccId)
+        {
             UUID = uuid,
             Name = name,
             Admin = false,
@@ -286,12 +311,12 @@ public class Database : IDisposable {
             Credits = newAccounts.Credits,
             TotalCredits = newAccounts.Credits,
             PassResetToken = "",
-            LastSeen = (int) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds
+            LastSeen = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds
         };
 
         if (newAccounts.SkinsUnlocked)
             acc.Skins = (from skin in _resources.GameData.Skins.Values
-                select skin.Type).ToArray();
+                         select skin.Type).ToArray();
 
         acc.FlushAsync();
 
@@ -316,17 +341,20 @@ public class Database : IDisposable {
         return RegisterStatus.OK;
     }
 
-    public bool HasUUID(string uuid) {
+    public bool HasUUID(string uuid)
+    {
         return Conn.HashExists("logins", uuid.ToUpperInvariant());
     }
 
-    public DbAccount GetAccount(int id, string field = null) {
+    public DbAccount GetAccount(int id, string field = null)
+    {
         var ret = new DbAccount(Conn, id, field);
         if (ret.IsNull) return null;
         return ret;
     }
 
-    public DbAccount GetAccount(string uuid) {
+    public DbAccount GetAccount(string uuid)
+    {
         var info = new DbLoginInfo(Conn, uuid);
         if (info.IsNull)
             return null;
@@ -336,7 +364,8 @@ public class Database : IDisposable {
         return ret;
     }
 
-    public void LockAccount(DbAccount target, DbAccount acc, bool add) {
+    public void LockAccount(DbAccount target, DbAccount acc, bool add)
+    {
         var lockList = target.LockList.ToList();
         if (lockList.Contains(acc.AccountId) && add)
             return;
@@ -350,7 +379,8 @@ public class Database : IDisposable {
         target.FlushAsync();
     }
 
-    public void IgnoreAccount(DbAccount target, DbAccount acc, bool add) {
+    public void IgnoreAccount(DbAccount target, DbAccount acc, bool add)
+    {
         var ignoreList = target.IgnoreList.ToList();
         if (ignoreList.Contains(acc.AccountId) && add)
             return;
@@ -364,12 +394,14 @@ public class Database : IDisposable {
         target.FlushAsync();
     }
 
-    public void ReloadAccount(DbAccount acc) {
+    public void ReloadAccount(DbAccount acc)
+    {
         acc.FlushAsync();
         acc.Reload();
     }
 
-    public GuildCreateStatus CreateGuild(string guildName, out DbGuild guild) {
+    public GuildCreateStatus CreateGuild(string guildName, out DbGuild guild)
+    {
         guild = null;
 
         if (string.IsNullOrWhiteSpace(guildName))
@@ -386,12 +418,13 @@ public class Database : IDisposable {
             return GuildCreateStatus.InvalidName;
 
         // add guild to guild list
-        var newGuildId = (int) Conn.StringIncrement("nextGuildId");
+        var newGuildId = (int)Conn.StringIncrement("nextGuildId");
         if (!Conn.HashSet("guilds", guildName.ToUpperInvariant(), newGuildId, When.NotExists))
             return GuildCreateStatus.UsedName;
 
         // create guild data structure
-        guild = new DbGuild(Conn, newGuildId) {
+        guild = new DbGuild(Conn, newGuildId)
+        {
             Name = guildName,
             Level = 0,
             Fame = 0,
@@ -404,13 +437,15 @@ public class Database : IDisposable {
         return GuildCreateStatus.OK;
     }
 
-    public DbGuild GetGuild(int id) {
+    public DbGuild GetGuild(int id)
+    {
         var ret = new DbGuild(Conn, id);
         if (ret.IsNull) return null;
         return ret;
     }
 
-    public AddGuildMemberStatus AddGuildMember(DbGuild guild, DbAccount acc, bool founder = false) {
+    public AddGuildMemberStatus AddGuildMember(DbGuild guild, DbAccount acc, bool founder = false)
+    {
         if (acc == null)
             return AddGuildMemberStatus.Error;
 
@@ -423,7 +458,8 @@ public class Database : IDisposable {
         if (acc.GuildId > 0)
             return AddGuildMemberStatus.InAnotherGuild;
 
-        using (TimedLock.Lock(guild.MemberLock)) {
+        using (TimedLock.Lock(guild.MemberLock))
+        {
             var guildSize = 50;
             // probably not best to lock this up but should be ok
             if (guild.Members.Length >= guildSize)
@@ -445,16 +481,19 @@ public class Database : IDisposable {
         return AddGuildMemberStatus.OK;
     }
 
-    public bool RemoveFromGuild(DbAccount acc) {
+    public bool RemoveFromGuild(DbAccount acc)
+    {
         var guild = GetGuild(acc.GuildId);
 
         if (guild == null)
             return false;
 
         List<int> members;
-        using (TimedLock.Lock(guild.MemberLock)) {
+        using (TimedLock.Lock(guild.MemberLock))
+        {
             members = guild.Members.ToList();
-            if (members.Contains(acc.AccountId)) {
+            if (members.Contains(acc.AccountId))
+            {
                 members.Remove(acc.AccountId);
                 guild.Members = members.ToArray();
                 guild.FlushAsync();
@@ -472,8 +511,9 @@ public class Database : IDisposable {
         return true;
     }
 
-    public bool ChangeGuildRank(DbAccount acc, int rank) {
-        if (acc.GuildId <= 0 || !new short[] {0, 10, 20, 30, 40}.Any(r => r == rank))
+    public bool ChangeGuildRank(DbAccount acc, int rank)
+    {
+        if (acc.GuildId <= 0 || !new short[] { 0, 10, 20, 30, 40 }.Any(r => r == rank))
             return false;
 
         acc.GuildRank = rank;
@@ -481,7 +521,8 @@ public class Database : IDisposable {
         return true;
     }
 
-    public bool SetGuildBoard(DbGuild guild, string text) {
+    public bool SetGuildBoard(DbGuild guild, string text)
+    {
         if (guild.IsNull)
             return false;
 
@@ -490,7 +531,8 @@ public class Database : IDisposable {
         return true;
     }
 
-    public bool ChangeGuildLevel(DbGuild guild, int level) {
+    public bool ChangeGuildLevel(DbGuild guild, int level)
+    {
         // supported guild levels
         if (level != 1 &&
             level != 2 &&
@@ -502,27 +544,31 @@ public class Database : IDisposable {
         return true;
     }
 
-    public int ResolveId(string ign) {
-        var val = (string) Conn.HashGet("names", ign.ToUpperInvariant());
+    public int ResolveId(string ign)
+    {
+        var val = (string)Conn.HashGet("names", ign.ToUpperInvariant());
         if (val == null)
             return 0;
         return int.Parse(val);
     }
 
-    public string ResolveIgn(int accId) {
+    public string ResolveIgn(int accId)
+    {
         return Conn.HashGet("account." + accId, "name");
     }
 
-    public void UnlockClass(DbAccount acc, ushort type) {
+    public void UnlockClass(DbAccount acc, ushort type)
+    {
         var cs = ReadClassStats(acc);
         cs.Unlock(type);
         cs.FlushAsync();
     }
 
-    public void PurchaseSkin(DbAccount acc, ushort skinType, int cost) {
+    public void PurchaseSkin(DbAccount acc, ushort skinType, int cost)
+    {
         if (cost > 0)
-            acc.TotalCredits = (int) Conn.HashIncrement(acc.Key, "totalCredits", cost);
-        acc.Credits = (int) Conn.HashIncrement(acc.Key, "credits", cost);
+            acc.TotalCredits = (int)Conn.HashIncrement(acc.Key, "totalCredits", cost);
+        acc.Credits = (int)Conn.HashIncrement(acc.Key, "credits", cost);
 
         // not thread safe
         var ownedSkins = acc.Skins.ToList();
@@ -532,14 +578,16 @@ public class Database : IDisposable {
         acc.FlushAsync();
     }
 
-    public void UpdateCurrency(int accountId, int amount, CurrencyType currency, ITransaction transaction = null) {
+    public void UpdateCurrency(int accountId, int amount, CurrencyType currency, ITransaction transaction = null)
+    {
         var trans = transaction ?? Conn.CreateTransaction();
 
         var key = $"account.{accountId}";
         var fields = CurrencyKey[currency];
 
-        if (currency == CurrencyType.GuildFame) {
-            var guildId = (int) Conn.HashGet(key, "guildId");
+        if (currency == CurrencyType.GuildFame)
+        {
+            var guildId = (int)Conn.HashGet(key, "guildId");
             if (guildId <= 0)
                 return;
             key = $"guild.{guildId}";
@@ -553,14 +601,16 @@ public class Database : IDisposable {
             trans.Execute();
     }
 
-    public Task UpdateCurrency(DbAccount acc, int amount, CurrencyType currency, ITransaction transaction = null) {
+    public Task UpdateCurrency(DbAccount acc, int amount, CurrencyType currency, ITransaction transaction = null)
+    {
         var trans = transaction ?? Conn.CreateTransaction();
 
         var key = acc.Key;
         var fields = CurrencyKey[currency];
 
-        if (currency == CurrencyType.GuildFame) {
-            var guildId = (int) Conn.HashGet(key, "guildId");
+        if (currency == CurrencyType.GuildFame)
+        {
+            var guildId = (int)Conn.HashGet(key, "guildId");
             if (guildId <= 0)
                 return Task.FromResult(false);
             key = $"guild.{guildId}";
@@ -573,14 +623,16 @@ public class Database : IDisposable {
 
         if (amount > 0)
             trans.HashIncrementAsync(key, fields[0], amount)
-                .ContinueWith(t => {
+                .ContinueWith(t =>
+                {
                     if (!t.IsCanceled)
-                        UpdateAccountCurrency(acc, currency, (int) t.Result, true);
+                        UpdateAccountCurrency(acc, currency, (int)t.Result, true);
                 });
         var task = trans.HashIncrementAsync(key, fields[1], amount)
-            .ContinueWith(t => {
+            .ContinueWith(t =>
+            {
                 if (!t.IsCanceled)
-                    UpdateAccountCurrency(acc, currency, (int) t.Result);
+                    UpdateAccountCurrency(acc, currency, (int)t.Result);
             });
 
         if (transaction == null)
@@ -589,8 +641,10 @@ public class Database : IDisposable {
         return task;
     }
 
-    private int? GetCurrencyAmount(DbAccount acc, CurrencyType currency) {
-        switch (currency) {
+    private int? GetCurrencyAmount(DbAccount acc, CurrencyType currency)
+    {
+        switch (currency)
+        {
             case CurrencyType.Gold:
                 return acc.Credits;
             case CurrencyType.Fame:
@@ -600,8 +654,10 @@ public class Database : IDisposable {
         }
     }
 
-    private void UpdateAccountCurrency(DbAccount acc, CurrencyType type, int value, bool total = false) {
-        switch (type) {
+    private void UpdateAccountCurrency(DbAccount acc, CurrencyType type, int value, bool total = false)
+    {
+        switch (type)
+        {
             case CurrencyType.Gold:
                 if (total)
                     acc.TotalCredits = value;
@@ -618,20 +674,23 @@ public class Database : IDisposable {
         }
     }
 
-    public Task UpdateCredit(DbAccount acc, int amount, ITransaction transaction = null) {
+    public Task UpdateCredit(DbAccount acc, int amount, ITransaction transaction = null)
+    {
         var trans = transaction ?? Conn.CreateTransaction();
 
         if (amount > 0)
             trans.HashIncrementAsync(acc.Key, "totalCredits", amount)
-                .ContinueWith(t => {
+                .ContinueWith(t =>
+                {
                     if (!t.IsCanceled)
-                        acc.TotalCredits = (int) t.Result;
+                        acc.TotalCredits = (int)t.Result;
                 });
 
         var task = trans.HashIncrementAsync(acc.Key, "credits", amount)
-            .ContinueWith(t => {
+            .ContinueWith(t =>
+            {
                 if (!t.IsCanceled)
-                    acc.Credits = (int) t.Result;
+                    acc.Credits = (int)t.Result;
             });
 
         if (transaction == null)
@@ -640,20 +699,23 @@ public class Database : IDisposable {
         return task;
     }
 
-    public Task UpdateFame(DbAccount acc, int amount, ITransaction transaction = null) {
+    public Task UpdateFame(DbAccount acc, int amount, ITransaction transaction = null)
+    {
         var trans = transaction ?? Conn.CreateTransaction();
 
         if (amount > 0)
             trans.HashIncrementAsync(acc.Key, "totalFame", amount)
-                .ContinueWith(t => {
+                .ContinueWith(t =>
+                {
                     if (!t.IsCanceled)
-                        acc.TotalFame = (int) t.Result;
+                        acc.TotalFame = (int)t.Result;
                 });
 
         var task = trans.HashIncrementAsync(acc.Key, "fame", amount)
-            .ContinueWith(t => {
+            .ContinueWith(t =>
+            {
                 if (!t.IsCanceled)
-                    acc.Fame = (int) t.Result;
+                    acc.Fame = (int)t.Result;
             });
 
         if (transaction == null)
@@ -662,22 +724,25 @@ public class Database : IDisposable {
         return task;
     }
 
-    public Task UpdateGuildFame(DbGuild guild, int amount, ITransaction transaction = null) {
+    public Task UpdateGuildFame(DbGuild guild, int amount, ITransaction transaction = null)
+    {
         var guildKey = $"guild.{guild.Id}";
 
         var trans = transaction ?? Conn.CreateTransaction();
 
         if (amount > 0)
             trans.HashIncrementAsync(guildKey, "totalFame", amount)
-                .ContinueWith(t => {
+                .ContinueWith(t =>
+                {
                     if (!t.IsCanceled)
-                        guild.TotalFame = (int) t.Result;
+                        guild.TotalFame = (int)t.Result;
                 });
 
         var task = trans.HashIncrementAsync(guildKey, "fame", amount)
-            .ContinueWith(t => {
+            .ContinueWith(t =>
+            {
                 if (!t.IsCanceled)
-                    guild.Fame = (int) t.Result;
+                    guild.Fame = (int)t.Result;
             });
 
         if (transaction == null)
@@ -686,46 +751,55 @@ public class Database : IDisposable {
         return task;
     }
 
-    private void UpdatePlayerGuildFame(DbAccount acc, int amount) {
-        acc.GuildFame = (int) Conn.HashIncrement(acc.Key, "guildFame", amount);
+    private void UpdatePlayerGuildFame(DbAccount acc, int amount)
+    {
+        acc.GuildFame = (int)Conn.HashIncrement(acc.Key, "guildFame", amount);
     }
 
-    public DbClassStats ReadClassStats(DbAccount acc) {
+    public DbClassStats ReadClassStats(DbAccount acc)
+    {
         return new DbClassStats(acc);
     }
 
-    public DbVault ReadVault(DbAccount acc) {
+    public DbVault ReadVault(DbAccount acc)
+    {
         return new DbVault(acc);
     }
 
-    public int? CreateChest(DbAccount acc, ITransaction tran = null) {
+    public int? CreateChest(DbAccount acc, ITransaction tran = null)
+    {
         if (tran == null)
-            return (int) Conn.HashIncrement(acc.Key, "vaultCount");
+            return (int)Conn.HashIncrement(acc.Key, "vaultCount");
         tran.HashIncrementAsync(acc.Key, "vaultCount");
         return null;
     }
 
-    public int CreateGiftChest(DbAccount acc) {
-        var id = (int) Conn.HashIncrement(acc.Key, "giftCount");
+    public int CreateGiftChest(DbAccount acc)
+    {
+        var id = (int)Conn.HashIncrement(acc.Key, "giftCount");
         return id;
     }
 
-    public IEnumerable<int> GetAliveCharacters(DbAccount acc) {
+    public IEnumerable<int> GetAliveCharacters(DbAccount acc)
+    {
         foreach (var i in Conn.SetMembers("alive." + acc.AccountId))
             yield return BitConverter.ToInt32(i, 0);
     }
 
-    public IEnumerable<int> GetDeadCharacters(DbAccount acc) {
+    public IEnumerable<int> GetDeadCharacters(DbAccount acc)
+    {
         foreach (var i in Conn.ListRange("dead." + acc.AccountId, 0, int.MaxValue))
             yield return BitConverter.ToInt32(i, 0);
     }
 
-    public bool IsAlive(DbChar character) {
+    public bool IsAlive(DbChar character)
+    {
         return Conn.SetContains("alive." + character.Account.AccountId,
             BitConverter.GetBytes(character.CharId));
     }
 
-    private ushort[] InitInventory(ushort[] givenItems) {
+    private ushort[] InitInventory(ushort[] givenItems)
+    {
         var inv = Utils.ResizeArray(givenItems, 20);
         for (var i = givenItems.Length; i < inv.Length; i++)
             inv[i] = 0xffff;
@@ -733,17 +807,21 @@ public class Database : IDisposable {
         return inv;
     }
 
-    public CreateStatus CreateCharacter(DbAccount acc, ushort type, ushort skinType, out DbChar character) {
-        if (Conn.SetLength("alive." + acc.AccountId) >= acc.MaxCharSlot) {
+    public CreateStatus CreateCharacter(DbAccount acc, ushort type, ushort skinType, out DbChar character)
+    {
+        if (Conn.SetLength("alive." + acc.AccountId) >= acc.MaxCharSlot)
+        {
             character = null;
             return CreateStatus.ReachCharLimit;
         }
 
         // check skin requirements
-        if (skinType != 0) {
+        if (skinType != 0)
+        {
             var skinDesc = _resources.GameData.Skins[skinType];
             if (!acc.Skins.Contains(skinType) ||
-                skinDesc.PlayerClassType != type) {
+                skinDesc.PlayerClassType != type)
+            {
                 character = null;
                 return CreateStatus.SkinUnavailable;
             }
@@ -758,17 +836,19 @@ public class Database : IDisposable {
 
         // check to see if account has unlocked via gold
         if (classStats.AllKeys
-            .All(x => (ushort) (int) x != type))
+            .All(x => (ushort)(int)x != type))
             // check to see if account meets unlock requirements
-            if (unlockClass != null && classStats[(ushort) unlockClass].BestLevel < playerDesc.Unlock.Level) {
+            if (unlockClass != null && classStats[(ushort)unlockClass].BestLevel < playerDesc.Unlock.Level)
+            {
                 character = null;
                 return CreateStatus.Locked;
             }
 
-        var newId = (int) Conn.HashIncrement(acc.Key, "nextCharId");
+        var newId = (int)Conn.HashIncrement(acc.Key, "nextCharId");
 
         var newCharacters = _resources.Settings.NewCharacters;
-        character = new DbChar(acc, newId) {
+        character = new DbChar(acc, newId)
+        {
             ObjectType = type,
             Level = newCharacters.Level,
             Experience = 0,
@@ -795,7 +875,8 @@ public class Database : IDisposable {
             LastSeen = DateTime.Now
         };
 
-        if (newCharacters.Maxed) {
+        if (newCharacters.Maxed)
+        {
             character.Stats = new[] {
                 playerDesc.Stats[0].MaxValue,
                 playerDesc.Stats[1].MaxValue,
@@ -815,13 +896,15 @@ public class Database : IDisposable {
         return CreateStatus.OK;
     }
 
-    public DbChar LoadCharacter(DbAccount acc, int charId) {
+    public DbChar LoadCharacter(DbAccount acc, int charId)
+    {
         var ret = new DbChar(acc, charId);
         if (ret.IsNull) return null;
         return ret;
     }
 
-    public DbChar LoadCharacter(int accId, int charId) {
+    public DbChar LoadCharacter(int accId, int charId)
+    {
         var acc = new DbAccount(Conn, accId);
         if (acc.IsNull) return null;
         var ret = new DbChar(acc, charId);
@@ -830,7 +913,8 @@ public class Database : IDisposable {
     }
 
     public Task<bool> SaveCharacter(
-        DbAccount acc, DbChar character, DbClassStats stats, bool lockAcc) {
+        DbAccount acc, DbChar character, DbClassStats stats, bool lockAcc)
+    {
         var trans = Conn.CreateTransaction();
         if (lockAcc)
             trans.AddCondition(Condition.StringEqual(
@@ -841,26 +925,28 @@ public class Database : IDisposable {
         return trans.ExecuteAsync();
     }
 
-    public void DeleteCharacter(DbAccount acc, int charId) {
+    public void DeleteCharacter(DbAccount acc, int charId)
+    {
         Conn.KeyDeleteAsync("char." + acc.AccountId + "." + charId);
         var buff = BitConverter.GetBytes(charId);
         Conn.SetRemoveAsync("alive." + acc.AccountId, buff);
         Conn.ListRemoveAsync("dead." + acc.AccountId, buff);
     }
 
-    public void Death(XmlData dat, DbAccount acc, DbChar character, FameStats stats, string killer) {
+    public void Death(XmlData dat, DbAccount acc, DbChar character, FameStats stats, string killer)
+    {
         character.Dead = true;
         var classStats = new DbClassStats(acc);
 
         // calculate total fame given bonuses
-        var finalFame = stats.CalculateTotal(dat, character,
-            classStats, out var firstBorn);
+        var finalFame = stats.CalculateTotal(dat, character, classStats, out var firstBorn);
 
         // save character
         character.FinalFame = finalFame;
         SaveCharacter(acc, character, classStats, acc.LockToken != null);
 
-        var death = new DbDeath(acc, character.CharId) {
+        var death = new DbDeath(acc, character.CharId)
+        {
             ObjectType = character.ObjectType,
             Level = character.Level,
             TotalFame = finalFame,
@@ -879,7 +965,8 @@ public class Database : IDisposable {
         UpdateFame(acc, finalFame);
 
         var guild = new DbGuild(acc);
-        if (!guild.IsNull) {
+        if (!guild.IsNull)
+        {
             UpdateGuildFame(guild, finalFame);
             UpdatePlayerGuildFame(acc, finalFame);
         }
@@ -887,27 +974,32 @@ public class Database : IDisposable {
         if (!acc.Admin) DbLegend.Insert(Conn, acc.AccountId, character.CharId, finalFame);
     }
 
-    public void LogAccountByIp(string ip, int accountId) {
+    public void LogAccountByIp(string ip, int accountId)
+    {
         var abi = new DbIpInfo(Conn, ip);
 
         if (!abi.IsNull)
             abi.Accounts.Add(accountId);
         else
-            abi.Accounts = new HashSet<int> {accountId};
+            abi.Accounts = new HashSet<int> { accountId };
 
         abi.Flush();
     }
 
-    public void Mute(string ip, TimeSpan? timeSpan = null) {
+    public void Mute(string ip, TimeSpan? timeSpan = null)
+    {
         Conn.StringSetAsync($"mutes:{ip}", "", timeSpan);
     }
 
-    public Task<bool> IsMuted(string ip) {
+    public Task<bool> IsMuted(string ip)
+    {
         return Conn.KeyExistsAsync($"mutes:{ip}");
     }
 
-    public void Ban(int accId, string reason = "", int liftTime = -1) {
-        var acc = new DbAccount(Conn, accId) {
+    public void Ban(int accId, string reason = "", int liftTime = -1)
+    {
+        var acc = new DbAccount(Conn, accId)
+        {
             Banned = true,
             Notes = reason,
             BanLiftTime = liftTime
@@ -915,9 +1007,11 @@ public class Database : IDisposable {
         acc.FlushAsync();
     }
 
-    public bool UnBan(int accId) {
+    public bool UnBan(int accId)
+    {
         var acc = new DbAccount(Conn, accId);
-        if (acc.Banned) {
+        if (acc.Banned)
+        {
             acc.Banned = false;
             acc.FlushAsync();
             return true;
@@ -926,17 +1020,21 @@ public class Database : IDisposable {
         return false;
     }
 
-    public void BanIp(string ip, string notes = "") {
-        var abi = new DbIpInfo(Conn, ip) {
+    public void BanIp(string ip, string notes = "")
+    {
+        var abi = new DbIpInfo(Conn, ip)
+        {
             Banned = true,
             Notes = notes
         };
         abi.Flush();
     }
 
-    public bool UnBanIp(string ip) {
+    public bool UnBanIp(string ip)
+    {
         var abi = new DbIpInfo(Conn, ip);
-        if (!abi.IsNull && abi.Banned) {
+        if (!abi.IsNull && abi.Banned)
+        {
             abi.Banned = false;
             abi.Flush();
             return true;
@@ -945,19 +1043,22 @@ public class Database : IDisposable {
         return false;
     }
 
-    public bool IsIpBanned(string ip) {
+    public bool IsIpBanned(string ip)
+    {
         var abi = new DbIpInfo(Conn, ip);
         return abi.Banned;
     }
 
-    public int LastLegendsUpdateTime() {
+    public int LastLegendsUpdateTime()
+    {
         var time = Conn.StringGet("legends:updateTime");
         if (time.IsNullOrEmpty)
             return -1;
         return int.Parse(time);
     }
 
-    public DbChar[] GetLegendsBoard(string timeSpan) {
+    public DbChar[] GetLegendsBoard(string timeSpan)
+    {
         return DbLegend
             .Get(Conn, timeSpan)
             .Select(e => LoadCharacter(e.AccId, e.ChrId))
@@ -965,27 +1066,32 @@ public class Database : IDisposable {
             .ToArray();
     }
 
-    public void CleanLegends() {
+    public void CleanLegends()
+    {
         DbLegend.Clean(Conn);
     }
 
-    public Task<bool> IsLegend(int accId) {
+    public Task<bool> IsLegend(int accId)
+    {
         return Conn.HashExistsAsync("legend", accId);
     }
 
     // abstracted account locking funcs
-    private struct l : IDisposable {
+    private struct l : IDisposable
+    {
         private Database db;
         private DbAccount acc;
         internal bool lockOk;
 
-        public l(Database db, DbAccount acc) {
+        public l(Database db, DbAccount acc)
+        {
             this.db = db;
             this.acc = acc;
             lockOk = db.AcquireLock(acc);
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             if (lockOk)
                 db.ReleaseLock(acc);
         }

@@ -61,7 +61,7 @@ internal class Decoy : StaticObject, IPlayer {
             exploded = true;
 
             foreach (var otherPlayer in Owner.Players.Values)
-                if (otherPlayer.DistSqr(this) < Player.RadiusSqr)
+                if (otherPlayer.DistSqr(this) < Player.RADIUS_SQR)
                     otherPlayer.Client.SendShowEffect(EffectType.AreaBlast, Id, new Position {X = 1}, new Position(),
                         new ARGB(0xffff0000));
         }

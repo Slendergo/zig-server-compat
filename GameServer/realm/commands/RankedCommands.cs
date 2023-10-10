@@ -432,7 +432,7 @@ internal class TpPosCommand : Command {
         }
 
         player.SetNewbiePeriod();
-        player.TeleportPosition(time, x + 0.5f, y + 0.5f, true);
+        player.TeleportPosition(x + 0.5f, y + 0.5f, true);
         return true;
     }
 }
@@ -783,7 +783,7 @@ internal class TpQuestCommand : Command {
         }
 
         player.SetNewbiePeriod();
-        player.TeleportPosition(time, player.Quest.RealX, player.Quest.RealY, true);
+        player.TeleportPosition(player.Quest.X, player.Quest.Y, true);
         player.SendInfo("Teleported to Quest Location: (" + player.Quest.X + ", " + player.Quest.Y + ")");
         return true;
     }

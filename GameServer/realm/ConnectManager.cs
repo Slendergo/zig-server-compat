@@ -1,9 +1,8 @@
-﻿using Shared;
-using GameServer.realm.entities;
-using GameServer.realm.entities.player;
+﻿using GameServer.realm.entities.player;
 using GameServer.realm.worlds;
 using GameServer.realm.worlds.logic;
 using NLog;
+using Shared;
 
 namespace GameServer.realm;
 
@@ -29,7 +28,8 @@ public class ConnectManager {
         var currentWorld = client.Player.Owner;
 
         var world = client.Manager.GetWorld(gameId);
-        if (world == null || world.Deleted) world = client.Manager.GetWorld(World.Nexus);
+        if (world == null || world.Deleted) 
+            world = client.Manager.GetWorld(World.Nexus);
 
         if (!world.AllowedAccess(client)) {
             if (gameId == World.Nexus) {
@@ -114,7 +114,7 @@ public class ConnectManager {
         }
 
         if (!world.AllowedAccess(client)) {
-            if (!world.Persists && world.TotalConnects <= 0)
+            if (!world.Persists /*&& world.TotalConnects <= 0*/) // not sure why this exists might be needed idk removed it for now can read back later if it causes issues
                 client.Manager.RemoveWorld(world);
 
             client.SendErrorText("Access denied");

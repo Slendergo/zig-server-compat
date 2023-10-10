@@ -164,7 +164,7 @@ public partial class Player {
 
         if (newGoal > FameGoal) {
             foreach (var player in Owner.Players.Values)
-                if (player.DistSqr(this) < RadiusSqr)
+                if (player.DistSqr(this) < RADIUS_SQR)
                     player.Client.SendNotification(Id, "Class Quest Complete!", new ARGB(0xff00ff00));
 
             Stars = GetStars();
@@ -210,7 +210,7 @@ public partial class Player {
     public bool EnemyKilled(Enemy enemy, int exp, bool killer) {
         if (enemy == Quest)
             foreach (var player in Owner.Players.Values)
-                if (player.DistSqr(this) < RadiusSqr)
+                if (player.DistSqr(this) < RADIUS_SQR)
                     player.Client.SendNotification(Id, "Quest Complete!", new ARGB(0xff00ff00));
 
         if (exp != 0) Experience += exp;

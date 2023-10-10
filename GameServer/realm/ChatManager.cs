@@ -57,7 +57,7 @@ public class ChatManager : IDisposable {
         var name = (src.Client.Account.Admin ? "@" : "") + src.Name;
 
         foreach (var p in src.Owner.Players.Values)
-            if (!p.Client.Account.IgnoreList.Contains(src.AccountId) && p.DistSqr(src) < Player.RadiusSqr)
+            if (!p.Client.Account.IgnoreList.Contains(src.AccountId) && p.DistSqr(src) < Player.RADIUS_SQR)
                 p.Client.SendText($"#{name}", src.Id, src.Stars, 5, string.Empty, text);
 
         log.Info($"[{src.Owner.IdName}({src.Owner.Id})] <{src.Name}> {text}");

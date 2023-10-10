@@ -31,7 +31,7 @@ public class DamageCounter {
         LastProjectile = projectile;
         LastHitter = player;
 
-        player.FameCounter.Hit(projectile, Host);
+        player.FameCounter.IncrementShotsThatDamage();
     }
 
     public Tuple<Player, int>[] GetPlayerData() {

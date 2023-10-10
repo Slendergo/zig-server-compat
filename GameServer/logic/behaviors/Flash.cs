@@ -29,7 +29,7 @@ internal class Flash : Behavior {
 
     protected override void OnStateEntry(Entity host, RealmTime time, ref object state) {
         foreach (var player in host.Owner.Players.Values)
-            if (player.DistSqr(host) < Player.RadiusSqr)
+            if (player.DistSqr(host) < Player.RADIUS_SQR)
                 player.Client.SendShowEffect(EffectType.Flashing, host.Id,
                     new Position {X = flashPeriod, Y = flashRepeats}, new Position(), new ARGB(color));
     }

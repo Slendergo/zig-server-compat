@@ -72,7 +72,6 @@ public class World {
 
     public Wmap Map { get; private set; }
     public bool Deleted { get; protected set; }
-    public int TotalConnects => _totalConnects;
     public bool Closed { get; set; }
 
     public ConcurrentDictionary<int, Player> Players { get; private set; } = new();
@@ -264,7 +263,6 @@ public class World {
                 player.Init(this);
                 Players.TryAdd(player.Id, player);
                 PlayersCollision.Insert(player);
-                Interlocked.Increment(ref _totalConnects);
                 break;
             case Enemy enemy: {
                 enemy.Id = GetNextEntityId();
@@ -320,9 +318,9 @@ public class World {
             StaticObjects.TryRemove(entity.Id, out dummy);
 
             if (entity.ObjectDesc?.BlocksSight == true)
-                foreach (var plr in Players.Values.Where(p =>
-                             MathsUtils.DistSqr(p.X, p.Y, entity.X, entity.Y) < Player.RadiusSqr))
-                    plr.Sight.UpdateCount++;
+                foreach (var player in Players.Values)
+                    if (MathsUtils.DistSqr(player.X, player.Y, entity.X, entity.Y) < Player.RADIUS_SQR)
+                        player.Sight.UpdateVisibility();
 
             if (entity is Decoy)
                 PlayersCollision.Remove(entity);

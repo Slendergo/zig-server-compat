@@ -265,7 +265,7 @@ internal static class EntityUtils {
         return Math.Sqrt(a.DistSqr(b));
     }
 
-    public static bool AnyPlayerNearby(this Entity entity, int radius = Player.Radius) {
+    public static bool AnyPlayerNearby(this Entity entity, int radius = Player.RADIUS) {
         foreach (var i in entity.Owner.PlayersCollision.HitTest(entity.X, entity.Y, radius).Where(e => e is Player)) {
             var d = i.DistSqr(entity);
             if (d < radius * radius)
@@ -275,7 +275,7 @@ internal static class EntityUtils {
         return false;
     }
 
-    public static bool AnyPlayerNearby(this World world, double x, double y, int radius = Player.Radius) {
+    public static bool AnyPlayerNearby(this World world, double x, double y, int radius = Player.RADIUS) {
         foreach (var i in world.PlayersCollision.HitTest(x, y, radius).Where(e => e is Player)) {
             var d = MathsUtils.DistSqr(i.X, i.Y, x, y);
             if (d < radius * radius)
@@ -285,7 +285,7 @@ internal static class EntityUtils {
         return false;
     }
 
-    public static bool AnyEnemyNearby(this Entity entity, int radius = Player.Radius) {
+    public static bool AnyEnemyNearby(this Entity entity, int radius = Player.RADIUS) {
         foreach (var i in entity.Owner.EnemiesCollision.HitTest(entity.X, entity.Y, radius)) {
             if (!(i is Enemy) || entity == i)
                 continue;
@@ -298,7 +298,7 @@ internal static class EntityUtils {
         return false;
     }
 
-    public static bool AnyEnemyNearby(this World world, double x, double y, int radius = Player.Radius) {
+    public static bool AnyEnemyNearby(this World world, double x, double y, int radius = Player.RADIUS) {
         foreach (var i in world.EnemiesCollision.HitTest(x, y, radius)) {
             if (!(i is Enemy))
                 continue;

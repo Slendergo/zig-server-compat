@@ -70,13 +70,13 @@ internal class Grenade : Behavior {
                     };
                 
                 foreach (var otherPlayer in host.Owner.Players.Values)
-                    if (otherPlayer.DistSqr(host) < Player.RadiusSqr)
+                    if (otherPlayer.DistSqr(host) < Player.RADIUS_SQR)
                         otherPlayer.Client.SendShowEffect(EffectType.Throw, host.Id, target, new Position(),
                             new ARGB(color));
 
                 host.Owner.Timers.Add(new WorldTimer(1500, (world, t) => {
                     foreach (var otherPlayer in host.Owner.Players.Values)
-                        if (otherPlayer.DistSqr(host) < Player.RadiusSqr) 
+                        if (otherPlayer.DistSqr(host) < Player.RADIUS_SQR) 
                             otherPlayer.Client.SendAoe(target, radius, (ushort) damage, 0, 0, host.ObjectType);
 
                     world.AOE(target, radius, true, p => {

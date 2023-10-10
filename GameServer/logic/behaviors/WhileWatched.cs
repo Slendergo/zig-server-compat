@@ -21,13 +21,12 @@ internal class WhileWatched : CycleBehavior {
     }
 
     protected override void OnStateEntry(Entity host, RealmTime time, ref object state) {
-        foreach (var player in host.GetNearestEntities(Player.Radius, null, true).OfType<Player>())
-            if (player.clientEntities.Contains(host)) {
+        foreach (var player in host.GetNearestEntities(Player.RADIUS, null, true).OfType<Player>())
+            if (player.ClientEntities.Contains(host)) {
                 foreach (var behav in children) {
                     behav.OnStateEntry(host, time);
                     Status = behav is CycleBehavior behavior ? behavior.Status : CycleStatus.InProgress;
                 }
-
                 return;
             }
 
@@ -35,8 +34,8 @@ internal class WhileWatched : CycleBehavior {
     }
 
     protected override void TickCore(Entity host, RealmTime time, ref object state) {
-        foreach (var player in host.GetNearestEntities(Player.Radius, null, true).OfType<Player>())
-            if (player.clientEntities.Contains(host)) {
+        foreach (var player in host.GetNearestEntities(Player.RADIUS, null, true).OfType<Player>())
+            if (player.ClientEntities.Contains(host)) {
                 foreach (var behav in children) {
                     behav.Tick(host, time);
                     Status = behav is CycleBehavior behavior ? behavior.Status : CycleStatus.InProgress;
@@ -49,8 +48,8 @@ internal class WhileWatched : CycleBehavior {
     }
 
     protected override void OnStateExit(Entity host, RealmTime time, ref object state) {
-        foreach (var player in host.GetNearestEntities(Player.Radius, null, true).OfType<Player>())
-            if (player.clientEntities.Contains(host)) {
+        foreach (var player in host.GetNearestEntities(Player.RADIUS, null, true).OfType<Player>())
+            if (player.ClientEntities.Contains(host)) {
                 foreach (var behav in children) {
                     behav.OnStateExit(host, time);
                     Status = behav is CycleBehavior behavior ? behavior.Status : CycleStatus.InProgress;

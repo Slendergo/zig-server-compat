@@ -44,7 +44,7 @@ internal class KillPlayer : Behavior {
             // send kill message
             if (_killMessage != null)
                 foreach (var player in host.Owner.Players.Values)
-                    if (player.DistSqr(host) < Player.RadiusSqr)
+                    if (player.DistSqr(host) < Player.RADIUS_SQR)
                         player.SendEnemy(host.ObjectDesc.DisplayId ?? host.ObjectDesc.ObjectId, _killMessage);
 
             cool = _coolDown.Next(Random);
@@ -58,7 +58,7 @@ internal class KillPlayer : Behavior {
 
     private void Kill(Entity host, Player player) {
         foreach (var otherPlayer in host.Owner.Players.Values)
-            if (otherPlayer.DistSqr(host) < Player.RadiusSqr)
+            if (otherPlayer.DistSqr(host) < Player.RADIUS_SQR)
                 otherPlayer.Client.SendShowEffect(EffectType.Flashing, host.Id,
                     new Position {X = player.X, Y = player.Y}, new Position(), new ARGB(0xffffffff));
 

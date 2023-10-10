@@ -100,7 +100,7 @@ partial class Player {
     }
 
     public bool IsNoClipping() {
-        if (Owner == null || !TileOccupied(RealX, RealY) && !TileFullOccupied(RealX, RealY))
+        if (Owner == null || !TileOccupied(X, Y) && !TileFullOccupied(X, Y))
             return false;
 
         CheatLog.Info($"{Name} is walking on an occupied tile.");

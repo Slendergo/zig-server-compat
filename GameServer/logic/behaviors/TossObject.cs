@@ -170,7 +170,7 @@ internal class TossObject : Behavior {
 
                 if (!_tossInvis)
                     foreach (var otherPlayer in host.Owner.Players.Values)
-                        if (otherPlayer.DistSqr(host) < Player.RadiusSqr)
+                        if (otherPlayer.DistSqr(host) < Player.RADIUS_SQR)
                             otherPlayer.Client.SendShowEffect(EffectType.Throw, host.Id, target, new Position(),
                                 new ARGB(0xffffbf00));
                 host.Owner.Timers.Add(new WorldTimer(1500, (world, t) => {

@@ -13,7 +13,8 @@ internal interface IPlayer {
     bool IsVisibleToEnemy();
 }
 
-public partial class Player : Character, IContainer, IPlayer {
+public partial class Player : Character, IContainer, IPlayer
+{
     private new static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
     //Stats
@@ -63,10 +64,11 @@ public partial class Player : Character, IContainer, IPlayer {
 
     private int _originalSkin;
 
-    public byte[,] tiles;
+    public byte[,] Tiles { get; private set; }
 
     public Player(Client client, bool saveInventory = true)
-        : base(client.Manager, client.Character.ObjectType) {
+        : base(client.Manager, client.Character.ObjectType)
+    {
         var settings = Manager.Resources.Settings;
         var gameData = Manager.Resources.GameData;
 
@@ -74,7 +76,7 @@ public partial class Player : Character, IContainer, IPlayer {
 
         // found in player.update partial
         Sight = new Sight(this);
-        _clientEntities = new UpdatedSet(this);
+        ClientEntities = new UpdatedSet(this);
 
         _accountId = new SV<int>(this, StatsType.AccountId, client.Account.AccountId, true);
         _experience = new SV<int>(this, StatsType.Experience, client.Character.Experience, true);
@@ -87,8 +89,7 @@ public partial class Player : Character, IContainer, IPlayer {
         _guild = new SV<string>(this, StatsType.Guild, "");
         _guildRank = new SV<int>(this, StatsType.GuildRank, -1);
         _credits = new SV<int>(this, StatsType.Credits, client.Account.Credits, true);
-        _nameChosen = new SV<bool>(this, StatsType.NameChosen, client.Account.NameChosen, false,
-            v => Client.Account?.NameChosen ?? v);
+        _nameChosen = new SV<bool>(this, StatsType.NameChosen, client.Account.NameChosen, false, v => Client.Account?.NameChosen ?? v);
         _texture1 = new SV<int>(this, StatsType.Texture1, client.Character.Tex1);
         _texture2 = new SV<int>(this, StatsType.Texture2, client.Character.Tex2);
         _skin = new SV<int>(this, StatsType.Skin, 0);
@@ -101,14 +102,16 @@ public partial class Player : Character, IContainer, IPlayer {
         HP = client.Character.HP;
         ConditionEffects = 0;
 
-        var s = (ushort) client.Character.Skin;
-        if (gameData.Skins.Keys.Contains(s)) {
+        var s = (ushort)client.Character.Skin;
+        if (gameData.Skins.Keys.Contains(s))
+        {
             SetDefaultSkin(s);
             SetDefaultSize(gameData.Skins[s].Size);
         }
 
         var guild = Manager.Database.GetGuild(client.Account.GuildId);
-        if (guild?.Name != null) {
+        if (guild?.Name != null)
+        {
             Guild = guild.Name;
             GuildRank = client.Account.GuildRank;
         }
@@ -119,7 +122,7 @@ public partial class Player : Character, IContainer, IPlayer {
             client.Character.HealthStackCount, settings.MaxStackablePotions);
         MagicPots = new ItemStacker(this, 255, 0x0A23,
             client.Character.MagicStackCount, settings.MaxStackablePotions);
-        Stacks = new[] {HealthPots, MagicPots};
+        Stacks = new[] { HealthPots, MagicPots };
 
         // inventory setup
         DbLink = new DbCharInv(Client.Account, Client.Character.CharId);
@@ -147,97 +150,116 @@ public partial class Player : Character, IContainer, IPlayer {
 
     public Client Client { get; }
 
-    public int AccountId {
+    public int AccountId
+    {
         get => _accountId.GetValue();
         set => _accountId.SetValue(value);
     }
 
-    public int Experience {
+    public int Experience
+    {
         get => _experience.GetValue();
         set => _experience.SetValue(value);
     }
 
-    public int ExperienceGoal {
+    public int ExperienceGoal
+    {
         get => _experienceGoal.GetValue();
         set => _experienceGoal.SetValue(value);
     }
 
-    public int Level {
+    public int Level
+    {
         get => _level.GetValue();
         set => _level.SetValue(value);
     }
 
-    public int CurrentFame {
+    public int CurrentFame
+    {
         get => _currentFame.GetValue();
         set => _currentFame.SetValue(value);
     }
 
-    public int Fame {
+    public int Fame
+    {
         get => _fame.GetValue();
         set => _fame.SetValue(value);
     }
 
-    public int FameGoal {
+    public int FameGoal
+    {
         get => _fameGoal.GetValue();
         set => _fameGoal.SetValue(value);
     }
 
-    public int Stars {
+    public int Stars
+    {
         get => _stars.GetValue();
         set => _stars.SetValue(value);
     }
 
-    public string Guild {
+    public string Guild
+    {
         get => _guild.GetValue();
         set => _guild.SetValue(value);
     }
 
-    public int GuildRank {
+    public int GuildRank
+    {
         get => _guildRank.GetValue();
         set => _guildRank.SetValue(value);
     }
 
-    public int Credits {
+    public int Credits
+    {
         get => _credits.GetValue();
         set => _credits.SetValue(value);
     }
 
-    public bool NameChosen {
+    public bool NameChosen
+    {
         get => _nameChosen.GetValue();
         set => _nameChosen.SetValue(value);
     }
 
-    public int Texture1 {
+    public int Texture1
+    {
         get => _texture1.GetValue();
         set => _texture1.SetValue(value);
     }
 
-    public int Texture2 {
+    public int Texture2
+    {
         get => _texture2.GetValue();
         set => _texture2.SetValue(value);
     }
 
-    public int Skin {
+    public int Skin
+    {
         get => _skin.GetValue();
         set => _skin.SetValue(value);
     }
 
-    public int Glow {
+    public int Glow
+    {
         get => _glow.GetValue();
         set => _glow.SetValue(value);
     }
 
-    public int MP {
+    public int MP
+    {
         get => _mp.GetValue();
         set => _mp.SetValue(value);
     }
 
-    public bool HasBackpack {
+    public bool HasBackpack
+    {
         get => _hasBackpack.GetValue();
         set => _hasBackpack.SetValue(value);
     }
 
-    public int OxygenBar {
+    public int OxygenBar
+    {
         get => _oxygenBar.GetValue();
         set => _oxygenBar.SetValue(value);
     }
@@ -259,7 +281,8 @@ public partial class Player : Character, IContainer, IPlayer {
     public float GotoX = -1;
     public float GotoY = -1;
 
-    public void Damage(int dmg, Entity src) {
+    public void Damage(int dmg, Entity src)
+    {
         if (IsInvulnerable())
             return;
 
@@ -267,7 +290,7 @@ public partial class Player : Character, IContainer, IPlayer {
 
         HP -= dmg;
         foreach (var player in Owner.Players.Values)
-            if (player.DistSqr(this) < RadiusSqr)
+            if (player.DistSqr(this) < RADIUS_SQR)
                 player.Client.SendDamage(Id, 0, (ushort)dmg, HP <= 0);
 
         if (HP <= 0)
@@ -276,7 +299,8 @@ public partial class Player : Character, IContainer, IPlayer {
                 src);
     }
 
-    protected override void ExportStats(IDictionary<StatsType, object> stats) {
+    protected override void ExportStats(IDictionary<StatsType, object> stats)
+    {
         base.ExportStats(stats);
         stats[StatsType.AccountId] = AccountId;
         stats[StatsType.Experience] = Experience - GetLevelExp(Level);
@@ -337,7 +361,8 @@ public partial class Player : Character, IContainer, IPlayer {
         stats[StatsType.OxygenBar] = OxygenBar;
     }
 
-    public void SaveToCharacter() {
+    public void SaveToCharacter()
+    {
         var chr = Client.Character;
         chr.Level = Level;
         chr.Experience = Experience;
@@ -357,11 +382,13 @@ public partial class Player : Character, IContainer, IPlayer {
         chr.Items = Inventory.GetItemTypes();
     }
 
-    public override void Init(World owner) {
+    public override void Init(World owner)
+    {
         var x = 0;
         var y = 0;
         var spawnRegions = owner.GetSpawnPoints();
-        if (spawnRegions.Any()) {
+        if (spawnRegions.Any())
+        {
             var rand = new Random();
             var sRegion = spawnRegions.ElementAt(rand.Next(0, spawnRegions.Length));
             x = sRegion.Key.X;
@@ -369,7 +396,13 @@ public partial class Player : Character, IContainer, IPlayer {
         }
 
         Move(x + 0.5f, y + 0.5f);
-        tiles = new byte[owner.Map.Width, owner.Map.Height];
+
+        // dont move this anywhere or will get some issues with collision map owner check for Move to lazy to adjust the logic flow for how entities get mapped there (EnterWorld Insert)
+        base.Init(owner);
+
+        Tiles = new byte[owner.Map.Width, owner.Map.Height];
+
+        Sight.UpdateVisibility();
 
         // spawn pet if player has one attached
         SpawnPetIfAttached(owner);
@@ -383,18 +416,18 @@ public partial class Player : Character, IContainer, IPlayer {
             OxygenBar = 100;
 
         SetNewbiePeriod();
-
-        base.Init(owner);
     }
 
-    private void SpawnPetIfAttached(World owner) {
+    private void SpawnPetIfAttached(World owner)
+    {
         // despawn old pet if found
         Pet?.Owner?.LeaveWorld(Pet);
 
         // create new pet
         var petId = PetId;
-        if (petId != 0) {
-            var pet = new Pet(Manager, this, (ushort) petId);
+        if (petId != 0)
+        {
+            var pet = new Pet(Manager, this, (ushort)petId);
             pet.Move(X, Y);
             owner.EnterWorld(pet);
             pet.SetDefaultSize(pet.ObjectDesc.Size);
@@ -402,14 +435,16 @@ public partial class Player : Character, IContainer, IPlayer {
         }
     }
 
-    public override void Tick(RealmTime time) {
+    public override void Tick(RealmTime time)
+    {
         if (!KeepAlive(time))
             return;
 
         CheckTradeTimeout(time);
         HandleQuest(time);
 
-        if (!HasConditionEffect(ConditionEffects.Paused)) {
+        if (!HasConditionEffect(ConditionEffects.Paused))
+        {
             HandleRegen(time);
             HandleEffects(time);
             HandleOceanTrenchGround(time);
@@ -424,11 +459,18 @@ public partial class Player : Character, IContainer, IPlayer {
 
         SendUpdate(time);
 
-        if (GotoX > 0 && GotoY > 0) {
-            var gotoPos = new Position {X = GotoX, Y = GotoY};
+        if (GotoX > 0 && GotoY > 0)
+        {
+            var gotoPos = new Position() 
+            { 
+                X = GotoX, 
+                Y = GotoY 
+            };
+
             HandleQuest(time, true, gotoPos);
 
-            foreach (var player in Owner.Players.Values) {
+            foreach (var player in Owner.Players.Values)
+            {
                 player.Client.SendGoto(Id, GotoX, GotoY);
                 player.Client.SendShowEffect(EffectType.Teleport, Id, gotoPos, new Position(), new ARGB(0xFFFFFFFF));
             }
@@ -436,47 +478,53 @@ public partial class Player : Character, IContainer, IPlayer {
             GotoX = -1;
             GotoY = -1;
         }
-        
+
         SendNewTick(time);
 
         if (HP <= 0) Death("Unknown");
     }
 
-    private void HandleRegen(RealmTime time) {
+    private void HandleRegen(RealmTime time)
+    {
         // hp regen
-        if (HP == Stats[0] || !CanHpRegen()) {
+        if (HP == Stats[0] || !CanHpRegen())
+        {
             _hpRegenCounter = 0;
         }
-        else {
+        else
+        {
             _hpRegenCounter += Stats.GetHPRegen() * time.ElapsedMsDelta / 1000f;
-            var regen = (int) _hpRegenCounter;
-            if (regen > 0) {
+            var regen = (int)_hpRegenCounter;
+            if (regen > 0)
+            {
                 HP = Math.Min(Stats[0], HP + regen);
                 _hpRegenCounter -= regen;
             }
         }
 
         // mp regen
-        if (MP == Stats[1] || !CanMpRegen()) {
+        if (MP == Stats[1] || !CanMpRegen())
+        {
             _mpRegenCounter = 0;
         }
-        else {
+        else
+        {
             _mpRegenCounter += Stats.GetMPRegen() * time.ElapsedMsDelta / 1000f;
-            var regen = (int) _mpRegenCounter;
-            if (regen > 0) {
+            var regen = (int)_mpRegenCounter;
+            if (regen > 0)
+            {
                 MP = Math.Min(Stats[1], MP + regen);
                 _mpRegenCounter -= regen;
             }
         }
     }
 
-    public void TeleportPosition(RealmTime time, float x, float y, bool ignoreRestrictions = false) {
-        TeleportPosition(time, new Position {X = x, Y = y}, ignoreRestrictions);
-    }
-
-    public void TeleportPosition(RealmTime time, Position position, bool ignoreRestrictions = false) {
-        if (!ignoreRestrictions) {
-            if (!TPCooledDown()) {
+    public void TeleportPosition(float x, float y, bool ignoreRestrictions = false)
+    {
+        if (!ignoreRestrictions)
+        {
+            if (!TPCooledDown())
+            {
                 SendErrorText("Too soon to teleport again!");
                 return;
             }
@@ -485,55 +533,66 @@ public partial class Player : Character, IContainer, IPlayer {
             SetNewbiePeriod();
             FameCounter.Teleport();
         }
-        
-        Move(position.X, position.Y);
-        GotoX = position.X;
-        GotoY = position.Y;
+
+        Move(x, y);
+        GotoX = x;
+        GotoY = y;
+        Sight.UpdateVisibility();
     }
 
-    public void Teleport(RealmTime time, int objId, bool ignoreRestrictions = false) {
+    public void Teleport(RealmTime time, int objId, bool ignoreRestrictions = false)
+    {
         var obj = Owner.GetEntity(objId);
-        if (obj == null) {
+        if (obj == null)
+        {
             SendErrorText("Target does not exist.");
             return;
         }
 
-        if (!ignoreRestrictions) {
-            if (Id == objId) {
+        if (!ignoreRestrictions)
+        {
+            if (Id == objId)
+            {
                 SendInfo("You are already at yourself, and always will be!");
                 return;
             }
 
-            if (!Owner.AllowTeleport) {
+            if (!Owner.AllowTeleport)
+            {
                 SendErrorText("Cannot teleport here.");
                 return;
             }
 
-            if (HasConditionEffect(ConditionEffects.Paused)) {
+            if (HasConditionEffect(ConditionEffects.Paused))
+            {
                 SendErrorText("Cannot teleport while paused.");
                 return;
             }
 
-            if (!(obj is Player)) {
+            if (!(obj is Player))
+            {
                 SendErrorText("Can only teleport to players.");
                 return;
             }
 
-            if (obj.HasConditionEffect(ConditionEffects.Invisible)) {
+            if (obj.HasConditionEffect(ConditionEffects.Invisible))
+            {
                 SendErrorText("Cannot teleport to an invisible player.");
                 return;
             }
 
-            if (obj.HasConditionEffect(ConditionEffects.Paused)) {
+            if (obj.HasConditionEffect(ConditionEffects.Paused))
+            {
                 SendErrorText("Cannot teleport to a paused player.");
                 return;
             }
         }
 
-        TeleportPosition(time, obj.X, obj.Y, ignoreRestrictions);
+        TeleportPosition(obj.X, obj.Y, ignoreRestrictions);
     }
 
-    public bool IsInvulnerable() {
+    public bool IsInvulnerable()
+    {
         if (HasConditionEffect(ConditionEffects.Paused) ||
             HasConditionEffect(ConditionEffects.Stasis) ||
             HasConditionEffect(ConditionEffects.Invincible) ||
@@ -542,7 +601,8 @@ public partial class Player : Character, IContainer, IPlayer {
         return false;
     }
 
-    public override bool HitByProjectile(Projectile projectile, RealmTime time) {
+    public override bool HitByProjectile(Projectile projectile, RealmTime time)
+    {
         if (projectile.ProjectileOwner is Player ||
             IsInvulnerable())
             return false;
@@ -552,8 +612,8 @@ public partial class Player : Character, IContainer, IPlayer {
 
         ApplyConditionEffect(projectile.ProjDesc.Effects);
         foreach (var player in Owner.Players.Values)
-            if (player.Id != Id && player.DistSqr(this) < RadiusSqr)
-                player.Client.SendDamage(Id, 0, (ushort) dmg, HP <= 0); // todo this was once projectile.ConditionEffects but this was not correct, i need to figure out how to send over the effects from the projectile.ProjDesc.Effects instead
+            if (player.Id != Id && player.DistSqr(this) < RADIUS_SQR)
+                player.Client.SendDamage(Id, 0, (ushort)dmg, HP <= 0); // todo this was once projectile.ConditionEffects but this was not correct, i need to figure out how to send over the effects from the projectile.ProjDesc.Effects instead
 
         if (HP <= 0)
             Death(projectile.ProjectileOwner.Self.ObjectDesc.DisplayId ??
@@ -563,12 +623,14 @@ public partial class Player : Character, IContainer, IPlayer {
         return base.HitByProjectile(projectile, time);
     }
 
-    private void GenerateGravestone(bool phantomDeath = false) {
+    private void GenerateGravestone(bool phantomDeath = false)
+    {
         var playerDesc = Manager.Resources.GameData.Classes[ObjectType];
         var maxed = playerDesc.Stats.Where((t, i) => Stats.Base[i] >= t.MaxValue).Count();
         ushort objType;
         int time;
-        switch (maxed) {
+        switch (maxed)
+        {
             case 8:
                 objType = 0x0735;
                 time = 600000;
@@ -604,12 +666,14 @@ public partial class Player : Character, IContainer, IPlayer {
             default:
                 objType = 0x0725;
                 time = 300000;
-                if (Level < 20) {
+                if (Level < 20)
+                {
                     objType = 0x0724;
                     time = 60000;
                 }
 
-                if (Level <= 1) {
+                if (Level <= 1)
+                {
                     objType = 0x0723;
                     time = 30000;
                 }
@@ -623,7 +687,8 @@ public partial class Player : Character, IContainer, IPlayer {
         Owner.EnterWorld(obj);
     }
 
-    private bool TestWorld(string killer) {
+    private bool TestWorld(string killer)
+    {
         if (!(Owner is Test))
             return false;
 
@@ -632,8 +697,10 @@ public partial class Player : Character, IContainer, IPlayer {
         return true;
     }
 
-    private bool Resurrection() {
-        for (var i = 0; i < 4; i++) {
+    private bool Resurrection()
+    {
+        for (var i = 0; i < 4; i++)
+        {
             var item = Inventory[i];
 
             if (item == null || !item.Resurrects)
@@ -650,12 +717,14 @@ public partial class Player : Character, IContainer, IPlayer {
         return false;
     }
 
-    private void ReconnectToNexus() {
+    private void ReconnectToNexus()
+    {
         HP = 1;
         Client.Reconnect("Nexus", World.Nexus);
     }
 
-    private void AnnounceDeath(string killer) {
+    private void AnnounceDeath(string killer)
+    {
         var playerDesc = Manager.Resources.GameData.Classes[ObjectType];
         var maxed = playerDesc.Stats.Where((t, i) => Stats.Base[i] >= t.MaxValue).Count();
         var deathMessage = string.Format(
@@ -665,7 +734,8 @@ public partial class Player : Character, IContainer, IPlayer {
         foreach (var i in Owner.Players.Values) i.SendInfo(deathMessage);
     }
 
-    public void Death(string killer, Entity entity = null, WmapTile tile = null) {
+    public void Death(string killer, Entity entity = null, WmapTile tile = null)
+    {
         if (_dead)
             return;
 
@@ -685,7 +755,8 @@ public partial class Player : Character, IContainer, IPlayer {
 
         Client.SendDeath(AccountId, Client.Character.CharId, killer);
 
-        Owner.Timers.Add(new WorldTimer(1000, (w, t) => {
+        Owner.Timers.Add(new WorldTimer(1000, (w, t) =>
+        {
             if (Client.Player != this)
                 return;
 
@@ -693,8 +764,9 @@ public partial class Player : Character, IContainer, IPlayer {
         }));
     }
 
-    public void Reconnect(object portal, World world) {
-        ((Portal) portal).WorldInstanceSet -= Reconnect;
+    public void Reconnect(object portal, World world)
+    {
+        ((Portal)portal).WorldInstanceSet -= Reconnect;
 
         if (world == null)
             SendErrorText("Portal Not Implemented!");
@@ -702,8 +774,10 @@ public partial class Player : Character, IContainer, IPlayer {
             Client.Reconnect(world.IdName, world.Id);
     }
 
-    public int GetCurrency(CurrencyType currency) {
-        switch (currency) {
+    public int GetCurrency(CurrencyType currency)
+    {
+        switch (currency)
+        {
             case CurrencyType.Gold:
                 return Credits;
             case CurrencyType.Fame:
@@ -713,8 +787,10 @@ public partial class Player : Character, IContainer, IPlayer {
         }
     }
 
-    public void SetCurrency(CurrencyType currency, int amount) {
-        switch (currency) {
+    public void SetCurrency(CurrencyType currency, int amount)
+    {
+        switch (currency)
+        {
             case CurrencyType.Gold:
                 Credits = amount;
                 break;
@@ -724,29 +800,20 @@ public partial class Player : Character, IContainer, IPlayer {
         }
     }
 
-    public override void Move(float x, float y) {
-        base.Move(x, y);
-
-        if ((int) X == Sight.LastX && (int) Y == Sight.LastY) 
-            return;
-        
-        if (IsNoClipping())
-            Client.Disconnect("Invalid position");
-
-        Sight.UpdateCount++;
-    }
-
-    public override void Dispose() {
+    public override void Dispose()
+    {
         base.Dispose();
-        _clientEntities.Dispose();
+        ClientEntities.Dispose();
     }
 
-    public void SetDefaultSkin(int skin) {
+    public void SetDefaultSkin(int skin)
+    {
         _originalSkin = skin;
         Skin = skin;
     }
 
-    public void RestoreDefaultSkin() {
+    public void RestoreDefaultSkin()
+    {
         Skin = _originalSkin;
     }
 }

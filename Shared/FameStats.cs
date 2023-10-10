@@ -287,8 +287,8 @@ public class FameStats {
         return ret.ToArray();
     }
 
-    public int CalculateTotal(
-        XmlData data, DbChar character, DbClassStats stats, out bool firstBorn) {
+    public int CalculateTotal(XmlData data, DbChar character, DbClassStats stats, out bool firstBorn)
+    {
         var f = 0;
         foreach (var i in bonusDat)
             if (i.Item3(this, character, character.Fame))
@@ -296,17 +296,17 @@ public class FameStats {
 
         //Well Equiped
         var bonus = character.Items.Take(4).Where(x => x != 0xffff).Sum(x => data.Items[x].FameBonus) / 100.0;
-        f += (int) ((character.Fame + f) * bonus);
+        f += (int)((character.Fame + f) * bonus);
 
         //First born
         var bestFames = stats.AllKeys.Select(x => stats[ushort.Parse(x)].BestFame).ToArray();
-        if (bestFames.Length <= 0 || character.Fame + f > bestFames.Max()) {
-            f += (int) ((character.Fame + f) * 0.1);
+        if (bestFames.Length <= 0 || character.Fame + f > bestFames.Max())
+        {
+            f += (int)((character.Fame + f) * 0.1);
             firstBorn = true;
         }
-        else {
+        else
             firstBorn = false;
-        }
 
         return character.Fame + f;
     }

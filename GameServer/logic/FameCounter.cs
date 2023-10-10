@@ -1,40 +1,35 @@
-﻿using Shared;
-using GameServer.realm;
+﻿using GameServer.realm;
 using GameServer.realm.entities;
 using GameServer.realm.entities.player;
+using Shared;
 
 namespace GameServer.logic;
 
-public class FameCounter {
-    private int elapsed;
+public class FameCounter
+{
+    public const int ONE_MINUTE_MS = 60000;
 
-    public FameCounter(Player player) {
+    public Player Host { get; }
+    public FameStats Stats { get; }
+
+    public DbClassStats ClassStats { get; private set; }
+
+    private int ElapsedTime;
+
+    public FameCounter(Player player)
+    {
         Host = player;
         Stats = FameStats.Read(player.Client.Character.FameStats);
         ClassStats = new DbClassStats(player.Client.Account);
     }
 
-    public Player Host { get; }
+    public void IncrementShoot() => Stats.Shots++;
+    public void IncrementShotsThatDamage() => Stats.ShotsThatDamage++;
 
-    public FameStats Stats { get; }
-    public DbClassStats ClassStats { get; private set; }
-
-    //HashSet<Projectile> projs = new HashSet<Projectile>();
-    public void Shoot(Projectile proj) {
-        Stats.Shots++;
-        //projs.Add(proj);
-    }
-
-    public void Hit(Projectile proj, Enemy enemy) {
-        //if (projs.Contains(proj))
-        //{
-        //    projs.Remove(proj);
-        Stats.ShotsThatDamage++;
-        //}
-    }
-
-    public void CompleteDungeon(string name) {
-        switch (name) {
+    public void CompleteDungeon(string name)
+    {
+        switch (name)
+        {
             case "PirateCave":
                 Stats.PirateCavesCompleted++;
                 break;
@@ -68,15 +63,18 @@ public class FameCounter {
         }
     }
 
-
-    public void Killed(Enemy enemy, bool killer) {
+    public void Killed(Enemy enemy, bool killer)
+    {
         if (enemy.ObjectDesc.God)
             Stats.GodAssists++;
         else
             Stats.MonsterAssists++;
+
         if (Host.Quest == enemy)
             Stats.QuestsCompleted++;
-        if (killer) {
+        
+        if (killer)
+        {
             if (enemy.ObjectDesc.God)
                 Stats.GodKills++;
             else
@@ -89,30 +87,18 @@ public class FameCounter {
         }
     }
 
-    public void LevelUpAssist(int count) {
-        Stats.LevelUpAssists += count;
-    }
+    public void LevelUpAssist(int amount) => Stats.LevelUpAssists += amount;
+    public void UncoverTiles(int amount) => Stats.TilesUncovered += amount;
+    public void Teleport() => Stats.Teleports++;
+    public void UseAbility() => Stats.SpecialAbilityUses++;
+    public void DrinkPot() => Stats.PotionsDrunk++;
 
-    public void TileSent(int num) {
-        Stats.TilesUncovered += num;
-    }
-
-    public void Teleport() {
-        Stats.Teleports++;
-    }
-
-    public void UseAbility() {
-        Stats.SpecialAbilityUses++;
-    }
-
-    public void DrinkPot() {
-        Stats.PotionsDrunk++;
-    }
-
-    public void Tick(RealmTime time) {
-        elapsed += time.ElapsedMsDelta;
-        if (elapsed > 1000 * 60) {
-            elapsed -= 1000 * 60;
+    public void Tick(RealmTime time)
+    {
+        ElapsedTime += time.ElapsedMsDelta;
+        if (ElapsedTime > ONE_MINUTE_MS)
+        {
+            ElapsedTime -= ONE_MINUTE_MS;
             Stats.MinutesActive++;
         }
     }

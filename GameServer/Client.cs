@@ -128,13 +128,15 @@ public class Client {
     }
 
     public RealmManager Manager { get; }
-
+    public bool Reconnecting { get; private set; }
+    
     public void Reset(Socket socket) {
         Account = null;
         Character = null;
         Player = null;
         SeededRandom = null;
         Socket = socket;
+        Reconnecting = false;
         try {
             IP = ((IPEndPoint) socket.RemoteEndPoint).Address.ToString();
         }
@@ -152,8 +154,10 @@ public class Client {
             return;
         }
 
+        Reconnecting = true;
         Log.Trace("Reconnecting client ({0}) @ {1} to {2}...", Account.Name, IP, name);
         ConnectManager.Reconnect(this, gameId);
+        Reconnecting = false;
     }
 
     public void Disconnect(string reason = "") {
@@ -221,6 +225,10 @@ public class Client {
             var packetLen = ReadUShort(ref ptr, ref spanRef, len);
             var nextPacketPtr = ptr + packetLen - 2;
             var packetId = (C2SPacketId) ReadByte(ref ptr, ref spanRef, nextPacketPtr);
+
+            if (Reconnecting)
+                Console.WriteLine($"Handling: {packetId} while Reconnect is in process");
+
             switch (packetId) {
                 case C2SPacketId.AcceptTrade:
                     ProcessAcceptTrade(ReadBoolArray(ref ptr, ref spanRef, nextPacketPtr),
@@ -719,7 +727,8 @@ public class Client {
     }
 
     private void ProcessEscape() {
-        if (Player?.Owner != null) Reconnect("Hub", -2);
+        if (Player?.Owner != null) 
+            Reconnect("Hub", -2);
     }
 
     private void ProcessGroundDamage(long time, float x, float y) {
@@ -938,8 +947,7 @@ public class Client {
 
         // init container
         container.Inventory[0] = item;
-        container.Move(Player.X + (float) ((InvRand.NextDouble() * 2 - 1) * 0.5),
-            Player.Y + (float) ((InvRand.NextDouble() * 2 - 1) * 0.5));
+        container.Move(Player.X + (float) ((InvRand.NextDouble() * 2 - 1) * 0.5), Player.Y + (float) ((InvRand.NextDouble() * 2 - 1) * 0.5));
 
         container.SetDefaultSize(75);
         Player.Owner.EnterWorld(container);
@@ -1122,17 +1130,31 @@ public class Client {
         Manager.Chat.Guild(Player, Player.Name + " has joined the guild!", true);
     }
 
-    private void ProcessMove(int tickId, long time, float x, float y, MoveRecord[] records) {
-        if (Player?.Owner == null || x < 0f || x >= Player.Owner.Map.Width || y < 0f ||
-            y >= Player.Owner.Map.Height)
+    private void ProcessMove(int tickId, long time, float x, float y, MoveRecord[] records) 
+    {
+        if (Player == null)
+            return;//seperated logic so i can breakpoint
+        if (Player.Owner == null)
             return;
 
-        if (Player.tiles[(int) x, (int) y] == 0)
-            Disconnect("Invalid position");
+        if(x == -1 && y == -1) // will cause bounds error might look into removing this type of interaction
+            return;
+
+        if(!Player.Owner.Map.Contains((int)x, (int)y))
+        {
+            Console.WriteLine($"Player went out of map bounds: {x}, {y}");
+            //Disconnect($"Player went out of map bounds: {x}, {y}");
+            return;
+        }
 
         Player.MoveReceived(Manager.Logic.RealmTime, tickId, time);
-        if (Math.Abs(x - Player.X) > 0.001 || Math.Abs(y - Player.Y) > 0.001)
-            Player.Move(x, y);
+        Player.Move(x, y);
+
+        if ((int)x != (int)Player.PreviousX || (int)y != (int)Player.PreviousY)
+            Player.Sight.UpdateVisibility();
+
+        if (Player.IsNoClipping() || !Player.Sight.VisibleTiles.Contains(new IntPoint((int)x, (int)y))) // replaces Player.Tiles check
+            Disconnect("Invalid position");
     }
 
     private void ProcessOtherHit(long time, byte bulletId, int ownerId, int targetId) {
@@ -1184,10 +1206,10 @@ public class Client {
         Player.Owner.AddProjectile(prj);
 
         foreach (var otherPlayer in Player.Owner.Players.Values)
-            if (otherPlayer.Id != Player.Id && otherPlayer.DistSqr(Player) < Player.RadiusSqr)
+            if (otherPlayer.Id != Player.Id && otherPlayer.DistSqr(Player) < Player.RADIUS_SQR)
                 otherPlayer.Client.SendAllyShoot(bulletId, Player.Id, objType, angle);
 
-        Player.FameCounter.Shoot(prj);
+        Player.FameCounter.IncrementShoot();
     }
 
     private void ProcessPlayerText(string text) {

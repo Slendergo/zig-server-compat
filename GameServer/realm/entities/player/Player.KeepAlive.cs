@@ -124,18 +124,22 @@ public partial class Player {
         _move.Enqueue(tickId);
     }
 
-    public void MoveReceived(RealmTime time, int moveTickId, long moveTime) {
-        if (!_move.TryDequeue(out var tickId)) {
+    public void MoveReceived(RealmTime time, int moveTickId, long moveTime)
+    {
+        if (!_move.TryDequeue(out var tickId))
+        {
             Client.Disconnect("One too many MovePackets");
             return;
         }
 
-        if (tickId != moveTickId) {
+        if (tickId != moveTickId)
+        {
             Client.Disconnect("[NewTick -> Move] TickIds don't match");
             return;
         }
 
-        if (moveTickId > TickId) {
+        if (moveTickId > TickId)
+        {
             Client.Disconnect("[NewTick -> Move] Invalid tickId");
             return;
         }
@@ -149,12 +153,13 @@ public partial class Player {
             return;
 
         _clientTimeLog.Enqueue(moveTime - lastClientTime);
-        _serverTimeLog.Enqueue((int) (time.TotalElapsedMs - lastServerTime));
+        _serverTimeLog.Enqueue((int)(time.TotalElapsedMs - lastServerTime));
 
         if (_clientTimeLog.Count < 30)
             return;
 
-        if (_clientTimeLog.Count > 30) {
+        if (_clientTimeLog.Count > 30)
+        {
             _clientTimeLog.TryDequeue(out _);
             _serverTimeLog.TryDequeue(out _);
         }

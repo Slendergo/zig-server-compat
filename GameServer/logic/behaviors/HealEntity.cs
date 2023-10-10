@@ -53,7 +53,7 @@ internal class HealEntity : Behavior {
                     entity.HP = newHp;
 
                     foreach (var player in host.Owner.Players.Values)
-                        if (player.DistSqr(host) < Player.RadiusSqr) {
+                        if (player.DistSqr(host) < Player.RADIUS_SQR) {
                             player.Client.SendShowEffect(EffectType.Potion, entity.Id, new Position(), new Position(),
                                 new ARGB(0xffffffff));
                             player.Client.SendShowEffect(EffectType.Trail, host.Id,

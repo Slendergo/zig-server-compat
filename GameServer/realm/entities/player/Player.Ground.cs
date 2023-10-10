@@ -48,7 +48,7 @@ public partial class Player {
         HP -= dmg;
 
         foreach (var player in Owner.Players.Values)
-            if (player.Id != Id && player.DistSqr(this) < RadiusSqr)
+            if (player.Id != Id && player.DistSqr(this) < RADIUS_SQR)
                 player.Client.SendDamage(Id, 0, (ushort)dmg, HP <= 0);
 
         if (HP <= 0) Death(tileDesc.ObjectId, tile: tile);

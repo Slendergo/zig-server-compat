@@ -188,7 +188,7 @@ internal class Shoot : CycleBehavior {
                 }
 
                 foreach (var otherPlayer in host.Owner.Players.Values)
-                    if (otherPlayer.DistSqr(host) < Player.RadiusSqr)
+                    if (otherPlayer.DistSqr(host) < Player.RADIUS_SQR)
                         otherPlayer.Client.SendEnemyShoot(prjId, host.Id, (byte) desc.BulletType, prjPos,
                             startAngle, (short) dmg, (byte) count, _shootAngle);
             }

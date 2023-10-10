@@ -27,7 +27,7 @@ internal class Trap : StaticObject {
     public override void Tick(RealmTime time) {
         if (t / 500 == p) {
             foreach (var otherPlayer in Owner.Players.Values)
-                if (otherPlayer.DistSqr(this) < Player.RadiusSqr)
+                if (otherPlayer.DistSqr(this) < Player.RADIUS_SQR)
                     otherPlayer.Client.SendShowEffect(EffectType.Trap, Id, new Position {X = radius / 2},
                         new Position(), new ARGB(0xff9000ff));
 
@@ -50,7 +50,7 @@ internal class Trap : StaticObject {
 
     private void Explode(RealmTime time) {
         foreach (var otherPlayer in Owner.Players.Values)
-            if (otherPlayer.DistSqr(this) < Player.RadiusSqr)
+            if (otherPlayer.DistSqr(this) < Player.RADIUS_SQR)
                 otherPlayer.Client.SendShowEffect(EffectType.AreaBlast, Id, new Position {X = radius}, new Position(),
                     new ARGB(0xff9000ff));
 

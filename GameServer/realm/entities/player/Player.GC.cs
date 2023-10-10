@@ -3,13 +3,14 @@
 partial class Player {
     // todo add any more if needed
 
-    public void CleanupReconnect() {
-        _clientEntities.Dispose();
-        _clientStatic.Clear();
+    public void CleanupReconnect() 
+    {
+        ClientEntities.Dispose();
+        ClientStatics.Clear();
         _newObjects = null;
-        _newStatics.Clear();
+        NewStatics.Clear();
         _removedObjects = null;
-        _statUpdates.Clear();
+        StatUpdates.Clear();
         _tiles = null;
         _updateStatuses = null;
 
@@ -18,9 +19,10 @@ partial class Player {
         _pongTime = -1;
         LastClientTime = -1;
         LastServerTime = -1;
+
+        _move.Clear();
         _shootAckTimeout.Clear();
         _updateAckTimeout.Clear();
-        _move.Clear();
         _clientTimeLog.Clear();
         _serverTimeLog.Clear();
     }

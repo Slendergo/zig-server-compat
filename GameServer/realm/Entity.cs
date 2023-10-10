@@ -6,10 +6,12 @@ using GameServer.realm.entities.player;
 using GameServer.realm.entities.vendors;
 using GameServer.realm.worlds;
 using NLog;
+using log4net.Layout;
 
 namespace GameServer.realm;
 
-public class Entity : IProjectileOwner, ICollidable<Entity> {
+public class Entity : IProjectileOwner, ICollidable<Entity>
+{
     private const int EffectCount = 29;
 
     protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
@@ -32,7 +34,6 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
     private State _stateEntryCommonRoot;
     private Dictionary<object, object> _states;
     private bool _tickingEffects;
-    public Player Controller;
     private int[] EffectDuration;
     public bool GivesNoXp;
     protected byte projectileId;
@@ -60,20 +61,22 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         if (_desc == null)
             return;
 
-        if (_desc.Player) {
+        if (_desc.Player)
+        {
             _posHistory = new Position[256];
             _projectiles = new Projectile[256];
             EffectDuration = new int[EffectCount];
             return;
         }
 
-        if (_desc.Enemy && !_desc.Static) {
+        if (_desc.Enemy && !_desc.Static)
+        {
             _projectiles = new Projectile[256];
             EffectDuration = new int[EffectCount];
             return;
         }
 
-        if (_desc.Character) 
+        if (_desc.Character)
             EffectDuration = new int[EffectCount];
     }
 
@@ -86,37 +89,41 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
     public int LootValue { get; set; } = 1;
     public ObjectDesc ObjectDesc => _desc;
 
-    public string Name {
+    public string Name
+    {
         get => _name.GetValue();
         set => _name.SetValue(value);
     }
 
-    public int Size {
+    public int Size
+    {
         get => _size.GetValue();
         set => _size.SetValue(value);
     }
 
-    public int AltTextureIndex {
+    public int AltTextureIndex
+    {
         get => _altTextureIndex.GetValue();
         set => _altTextureIndex.SetValue(value);
     }
 
-    public ConditionEffects ConditionEffects {
+    public ConditionEffects ConditionEffects
+    {
         get => _conditionEffects;
-        set {
+        set
+        {
             _conditionEffects = value;
-            _conditionEffects1?.SetValue((ulong) value);
+            _conditionEffects1?.SetValue((ulong)value);
         }
     }
-
-    public float RealX => _x.GetValue();
-    public float RealY => _y.GetValue();
 
     public bool TickStateManually { get; set; }
     public State CurrentState { get; private set; }
 
-    public IDictionary<object, object> StateStorage {
-        get {
+    public IDictionary<object, object> StateStorage
+    {
+        get
+        {
             if (_states == null) _states = new Dictionary<object, object>();
             return _states;
         }
@@ -125,21 +132,27 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
     public CollisionNode<Entity> CollisionNode { get; set; }
     public CollisionMap<Entity> Parent { get; set; }
 
-    public float X {
+    public float X
+    {
         get => _x.GetValue();
         private set => _x.SetValue(value);
     }
 
-    public float Y {
+    public float Y
+    {
         get => _y.GetValue();
         private set => _y.SetValue(value);
     }
+
+    public float PreviousX { get; private set; }
+    public float PreviousY { get; private set; }
 
     Entity IProjectileOwner.Self => this;
     Projectile[] IProjectileOwner.Projectiles => _projectiles;
     public event EventHandler<StatChangedEventArgs> StatChanged;
 
-    protected virtual void ExportStats(IDictionary<StatsType, object> stats) {
+    protected virtual void ExportStats(IDictionary<StatsType, object> stats)
+    {
         stats[StatsType.Name] = Name;
         stats[StatsType.Size] = Size;
         if (AltTextureIndex != -1)
@@ -147,30 +160,36 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         stats[StatsType.Effects] = _conditionEffects1.GetValue();
     }
 
-    public ObjectStats ExportStats() {
+    public ObjectStats ExportStats()
+    {
         var stats = new Dictionary<StatsType, object>();
         ExportStats(stats);
 
-        return new ObjectStats {
+        return new ObjectStats
+        {
             Id = Id,
-            Position = new Position {X = RealX, Y = RealY},
+            Position = new Position { X = X, Y = Y },
             Stats = stats.ToArray()
         };
     }
 
-    public ObjectDef ToDefinition() {
-        return new ObjectDef {
+    public ObjectDef ToDefinition()
+    {
+        return new ObjectDef
+        {
             ObjectType = ObjectType,
             Stats = ExportStats()
         };
     }
 
-    public virtual void Init(World owner) {
+    public virtual void Init(World owner)
+    {
         Owner = owner;
     }
 
-    public virtual void Tick(RealmTime time) {
-        if (Owner == null) 
+    public virtual void Tick(RealmTime time)
+    {
+        if (Owner == null)
             return;
 
         if (CurrentState != null)
@@ -184,7 +203,8 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
             ProcessConditionEffects(time);
     }
 
-    public void SwitchTo(State state) {
+    public void SwitchTo(State state)
+    {
         var origState = CurrentState;
 
         CurrentState = state;
@@ -194,18 +214,22 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         _stateEntry = true;
     }
 
-    private void GoDeeeeeeeep() {
+    private void GoDeeeeeeeep()
+    {
         //always the first deepest sub-state
         if (CurrentState == null) return;
         while (CurrentState.States.Count > 0)
             CurrentState = CurrentState = CurrentState.States[0];
     }
 
-    public void TickState(RealmTime time) {
-        if (_stateEntry) {
+    public void TickState(RealmTime time)
+    {
+        if (_stateEntry)
+        {
             //State entry
             var s = CurrentState;
-            while (s != null && s != _stateEntryCommonRoot) {
+            while (s != null && s != _stateEntryCommonRoot)
+            {
                 foreach (var i in s.Behaviors)
                     i.OnStateEntry(this, time);
                 s = s.Parent;
@@ -218,15 +242,18 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         var origState = CurrentState;
         var state = CurrentState;
         var transited = false;
-        while (state != null) {
+        while (state != null)
+        {
             if (!transited)
                 foreach (var i in state.Transitions)
-                    if (i.Tick(this, time)) {
+                    if (i.Tick(this, time))
+                    {
                         transited = true;
                         break;
                     }
 
-            foreach (var i in state.Behaviors) {
+            foreach (var i in state.Behaviors)
+            {
                 if (Owner == null) break;
                 i.Tick(this, time);
             }
@@ -236,10 +263,12 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
             state = state.Parent;
         }
 
-        if (transited) {
+        if (transited)
+        {
             //State exit
             var s = origState;
-            while (s != null && s != _stateEntryCommonRoot) {
+            while (s != null && s != _stateEntryCommonRoot)
+            {
                 foreach (var i in s.Behaviors)
                     i.OnStateExit(this, time);
                 s = s.Parent;
@@ -247,7 +276,8 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         }
     }
 
-    public void ValidateAndMove(float x, float y) {
+    public void ValidateAndMove(float x, float y)
+    {
         if (Owner == null)
             return;
 
@@ -256,8 +286,10 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         Move(pos.X, pos.Y);
     }
 
-    private void ResolveNewLocation(float x, float y, FPoint pos) {
-        if (HasConditionEffect(ConditionEffects.Paralyzed)) {
+    private void ResolveNewLocation(float x, float y, FPoint pos)
+    {
+        if (HasConditionEffect(ConditionEffects.Paralyzed))
+        {
             pos.X = X;
             pos.Y = Y;
             return;
@@ -270,7 +302,8 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         if (dx < colSkipBoundary &&
             dx > -colSkipBoundary &&
             dy < colSkipBoundary &&
-            dy > -colSkipBoundary) {
+            dy > -colSkipBoundary)
+        {
             CalcNewLocation(x, y, pos);
             return;
         }
@@ -282,8 +315,10 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         pos.Y = Y;
 
         var done = false;
-        while (!done) {
-            if (tds + ds >= 1) {
+        while (!done)
+        {
+            if (tds + ds >= 1)
+            {
                 ds = 1 - tds;
                 done = true;
             }
@@ -293,38 +328,44 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         }
     }
 
-    private void CalcNewLocation(float x, float y, FPoint pos) {
+    private void CalcNewLocation(float x, float y, FPoint pos)
+    {
         float fx = 0;
         float fy = 0;
 
-        var isFarX = X % .5f == 0 && x != X || (int) (X / .5f) != (int) (x / .5f);
-        var isFarY = Y % .5f == 0 && y != Y || (int) (Y / .5f) != (int) (y / .5f);
+        var isFarX = X % .5f == 0 && x != X || (int)(X / .5f) != (int)(x / .5f);
+        var isFarY = Y % .5f == 0 && y != Y || (int)(Y / .5f) != (int)(y / .5f);
 
-        if (!isFarX && !isFarY || RegionUnblocked(x, y)) {
+        if (!isFarX && !isFarY || RegionUnblocked(x, y))
+        {
             pos.X = x;
             pos.Y = y;
             return;
         }
 
-        if (isFarX) {
-            fx = x > X ? (int) (x * 2) / 2f : (int) (X * 2) / 2f;
-            if ((int) fx > (int) X)
-                fx = fx - 0.01f;
+        if (isFarX)
+        {
+            fx = x > X ? (int)(x * 2) / 2f : (int)(X * 2) / 2f;
+            if ((int)fx > (int)X)
+                fx -= 0.01f;
         }
 
-        if (isFarY) {
-            fy = y > Y ? (int) (y * 2) / 2f : (int) (Y * 2) / 2f;
-            if ((int) fy > (int) Y)
-                fy = fy - 0.01f;
+        if (isFarY)
+        {
+            fy = y > Y ? (int)(y * 2) / 2f : (int)(Y * 2) / 2f;
+            if ((int)fy > (int)Y)
+                fy -= 0.01f;
         }
 
-        if (!isFarX) {
+        if (!isFarX)
+        {
             pos.X = x;
             pos.Y = fy;
             return;
         }
 
-        if (!isFarY) {
+        if (!isFarY)
+        {
             pos.X = fx;
             pos.Y = y;
             return;
@@ -332,27 +373,33 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
 
         var ax = x > X ? x - fx : fx - x;
         var ay = y > Y ? y - fy : fy - y;
-        if (ax > ay) {
-            if (RegionUnblocked(x, fy)) {
+        if (ax > ay)
+        {
+            if (RegionUnblocked(x, fy))
+            {
                 pos.X = x;
                 pos.Y = fy;
                 return;
             }
 
-            if (RegionUnblocked(fx, y)) {
+            if (RegionUnblocked(fx, y))
+            {
                 pos.X = fx;
                 pos.Y = y;
                 return;
             }
         }
-        else {
-            if (RegionUnblocked(fx, y)) {
+        else
+        {
+            if (RegionUnblocked(fx, y))
+            {
                 pos.X = fx;
                 pos.Y = y;
                 return;
             }
 
-            if (RegionUnblocked(x, fy)) {
+            if (RegionUnblocked(x, fy))
+            {
                 pos.X = x;
                 pos.Y = fy;
                 return;
@@ -363,22 +410,26 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         pos.Y = fy;
     }
 
-    private bool RegionUnblocked(float x, float y) {
+    private bool RegionUnblocked(float x, float y)
+    {
         if (TileOccupied(x, y))
             return false;
 
-        var xFrac = x - (int) x;
-        var yFrac = y - (int) y;
+        var xFrac = x - (int)x;
+        var yFrac = y - (int)y;
 
-        if (xFrac < 0.5) {
+        if (xFrac < 0.5)
+        {
             if (TileFullOccupied(x - 1, y))
                 return false;
 
-            if (yFrac < 0.5) {
+            if (yFrac < 0.5)
+            {
                 if (TileFullOccupied(x, y - 1) || TileFullOccupied(x - 1, y - 1))
                     return false;
             }
-            else {
+            else
+            {
                 if (yFrac > 0.5)
                     if (TileFullOccupied(x, y + 1) || TileFullOccupied(x - 1, y + 1))
                         return false;
@@ -387,15 +438,18 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
             return true;
         }
 
-        if (xFrac > 0.5) {
+        if (xFrac > 0.5)
+        {
             if (TileFullOccupied(x + 1, y))
                 return false;
 
-            if (yFrac < 0.5) {
+            if (yFrac < 0.5)
+            {
                 if (TileFullOccupied(x, y - 1) || TileFullOccupied(x + 1, y - 1))
                     return false;
             }
-            else {
+            else
+            {
                 if (yFrac > 0.5)
                     if (TileFullOccupied(x, y + 1) || TileFullOccupied(x + 1, y + 1))
                         return false;
@@ -404,7 +458,8 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
             return true;
         }
 
-        if (yFrac < 0.5) {
+        if (yFrac < 0.5)
+        {
             if (TileFullOccupied(x, y - 1))
                 return false;
 
@@ -418,9 +473,10 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         return true;
     }
 
-    public bool TileOccupied(float x, float y) {
-        var x_ = (int) x;
-        var y_ = (int) y;
+    public bool TileOccupied(float x, float y)
+    {
+        var x_ = (int)x;
+        var y_ = (int)y;
 
         var map = Owner.Map;
 
@@ -433,7 +489,8 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         if (tileDesc?.NoWalk == true)
             return true;
 
-        if (tile.ObjectType != 0) {
+        if (tile.ObjectType != 0)
+        {
             var objDesc = Manager.Resources.GameData.ObjectDescs[tile.ObjectType];
             if (objDesc?.EnemyOccupySquare == true)
                 return true;
@@ -442,58 +499,58 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         return false;
     }
 
-    public bool TileFullOccupied(float x, float y) {
-        var xx = (int) x;
-        var yy = (int) y;
+    public bool TileFullOccupied(float x, float y)
+    {
+        var xx = (int)x;
+        var yy = (int)y;
 
         if (!Owner.Map.Contains(xx, yy))
             return true;
 
         var tile = Owner.Map[xx, yy];
-
-        if (tile.ObjectType != 0) {
+        if (tile.ObjectType != 0)
+        {
             var objDesc = Manager.Resources.GameData.ObjectDescs[tile.ObjectType];
             if (objDesc?.FullOccupy == true)
                 return true;
         }
-
         return false;
     }
 
-    public virtual void Move(float x, float y) {
-        if (Controller != null)
-            return;
-
-        MoveEntity(x, y);
-    }
-
-    public void MoveEntity(float x, float y) {
+    public virtual void Move(float x, float y)
+    {
         if (Owner != null)
-            (this is Enemy || this is StaticObject && this is not Decoy
-                    ? Owner.EnemiesCollision
-                    : Owner.PlayersCollision)
-                .Move(this, x, y);
+            (this is Enemy || this is StaticObject && this is not Decoy ? Owner.EnemiesCollision : Owner.PlayersCollision).Move(this, x, y);
+
+        var prevX = X;
+        var prevY = Y;
         X = x;
         Y = y;
+        PreviousX = prevX;
+        PreviousY = prevY;
     }
 
-    public Position? TryGetHistory(long ticks) {
+    public Position? TryGetHistory(long ticks)
+    {
         if (_posHistory == null) return null;
         if (ticks > 255) return null;
-        return _posHistory[(byte) (_posIdx - (byte) ticks)];
+        return _posHistory[(byte)(_posIdx - (byte)ticks)];
     }
 
-    public static Entity Resolve(RealmManager manager, string name) {
+    public static Entity Resolve(RealmManager manager, string name)
+    {
         if (!manager.Resources.GameData.IdToObjectType.TryGetValue(name, out var id))
             return null;
 
         return Resolve(manager, id);
     }
 
-    public static Entity Resolve(RealmManager manager, ushort id) {
+    public static Entity Resolve(RealmManager manager, ushort id)
+    {
         var node = manager.Resources.GameData.ObjectTypeToElement[id];
         var type = node.Element("Class").Value;
-        switch (type) {
+        switch (type)
+        {
             case "Projectile":
                 throw new Exception("Projectile should not instantiated using Entity.Resolve");
             case "Sign":
@@ -539,7 +596,7 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         }
     }
 
-    public Projectile CreateProjectile(ProjectileDesc desc, ushort container, int dmg, long time, Position pos, float angle) 
+    public Projectile CreateProjectile(ProjectileDesc desc, ushort container, int dmg, long time, Position pos, float angle)
     {
         var ret = new Projectile(Owner, desc) //Assume only one
         {
@@ -558,68 +615,79 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         return ret;
     }
 
-    public virtual bool HitByProjectile(Projectile projectile, RealmTime time) {
+    public virtual bool HitByProjectile(Projectile projectile, RealmTime time)
+    {
         if (ObjectDesc == null)
             return true;
         return ObjectDesc.Enemy || ObjectDesc.Player;
     }
 
-    private void ProcessConditionEffects(RealmTime time) {
+    private void ProcessConditionEffects(RealmTime time)
+    {
         if (EffectDuration == null || !_tickingEffects) return;
 
         ConditionEffects newEffects = 0;
         _tickingEffects = false;
         for (var i = 0; i < EffectDuration.Length; i++)
-            if (EffectDuration[i] > 0) {
+            if (EffectDuration[i] > 0)
+            {
                 EffectDuration[i] -= time.ElapsedMsDelta;
-                if (EffectDuration[i] > 0) {
-                    newEffects |= (ConditionEffects) ((ulong) 1 << i);
+                if (EffectDuration[i] > 0)
+                {
+                    newEffects |= (ConditionEffects)((ulong)1 << i);
                     _tickingEffects = true;
                 }
-                else {
+                else
+                {
                     EffectDuration[i] = 0;
                 }
             }
-            else if (EffectDuration[i] == -1) {
-                newEffects |= (ConditionEffects) ((ulong) 1 << i);
+            else if (EffectDuration[i] == -1)
+            {
+                newEffects |= (ConditionEffects)((ulong)1 << i);
             }
 
         ConditionEffects = newEffects;
     }
 
-    public bool HasConditionEffect(ConditionEffects eff) {
+    public bool HasConditionEffect(ConditionEffects eff)
+    {
         return (ConditionEffects & eff) != 0;
     }
 
-    public void ApplyConditionEffect(params ConditionEffect[] effs) {
-        foreach (var i in effs) {
+    public void ApplyConditionEffect(params ConditionEffect[] effs)
+    {
+        foreach (var i in effs)
+        {
             if (!ApplyCondition(i.Effect))
                 continue;
 
-            var eff = (int) i.Effect;
+            var eff = (int)i.Effect;
 
             EffectDuration[eff] = i.DurationMS;
             if (i.DurationMS != 0)
-                ConditionEffects |= (ConditionEffects) ((ulong) 1 << eff);
+                ConditionEffects |= (ConditionEffects)((ulong)1 << eff);
         }
 
         _tickingEffects = true;
     }
 
-    public void ApplyConditionEffect(ConditionEffectIndex effect, int durationMs = -1) {
+    public void ApplyConditionEffect(ConditionEffectIndex effect, int durationMs = -1)
+    {
         if (!ApplyCondition(effect))
             return;
 
-        var eff = (int) effect;
+        var eff = (int)effect;
 
         EffectDuration[eff] = durationMs;
         if (durationMs != 0)
-            ConditionEffects |= (ConditionEffects) ((ulong) 1 << eff);
+            ConditionEffects |= (ConditionEffects)((ulong)1 << eff);
 
         _tickingEffects = true;
     }
 
-    private bool ApplyCondition(ConditionEffectIndex effect) {
+    private bool ApplyCondition(ConditionEffectIndex effect)
+    {
         if (effect == ConditionEffectIndex.Stunned &&
             HasConditionEffect(ConditionEffects.StunImmune))
             return false;
@@ -631,48 +699,56 @@ public class Entity : IProjectileOwner, ICollidable<Entity> {
         return true;
     }
 
-    public void OnChatTextReceived(Player player, string text) {
+    public void OnChatTextReceived(Player player, string text)
+    {
         var state = CurrentState;
-        while (state != null) {
+        while (state != null)
+        {
             foreach (var t in state.Transitions.OfType<PlayerTextTransition>())
                 t.OnChatReceived(player, text);
             state = state.Parent;
         }
     }
 
-    public void InvokeStatChange(StatsType t, object val, bool updateSelfOnly = false) {
+    public void InvokeStatChange(StatsType t, object val, bool updateSelfOnly = false)
+    {
         StatChanged?.Invoke(this, new StatChangedEventArgs(t, val, updateSelfOnly));
     }
 
-    public void SetDefaultSize(int size) {
+    public void SetDefaultSize(int size)
+    {
         _originalSize = size;
         Size = size;
     }
 
-    public void RestoreDefaultSize() {
+    public void RestoreDefaultSize()
+    {
         Size = _originalSize;
     }
 
-    public int DamageWithDefense(int origDamage, int targetDefense, bool armorPiercing) {
-        var def = (float) targetDefense;
+    public int DamageWithDefense(int origDamage, int targetDefense, bool armorPiercing)
+    {
+        var def = (float)targetDefense;
         if (armorPiercing || HasConditionEffect(ConditionEffects.ArmorBroken))
             def = 0;
         else if (HasConditionEffect(ConditionEffects.Armored))
             def *= 2.0f;
 
         var min = origDamage * 0.25;
-        var d = (int) Math.Max(min, origDamage - def);
+        var d = (int)Math.Max(min, origDamage - def);
         if (HasConditionEffect(ConditionEffects.Invulnerable) || HasConditionEffect(ConditionEffects.Invincible))
             d = 0;
-        
+
         return d;
     }
 
-    public virtual void Dispose() {
+    public virtual void Dispose()
+    {
         Owner = null;
     }
 
-    private class FPoint {
+    private class FPoint
+    {
         public float X;
         public float Y;
     }

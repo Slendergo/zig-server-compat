@@ -17,7 +17,7 @@ internal class GLandCommand : Command {
             return false;
         }
 
-        player.TeleportPosition(time, 1512 + 0.5f, 1048 + 0.5f);
+        player.TeleportPosition(1512 + 0.5f, 1048 + 0.5f);
         return true;
     }
 }
