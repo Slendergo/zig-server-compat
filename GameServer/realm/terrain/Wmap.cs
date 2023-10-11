@@ -10,7 +10,12 @@ using NLog;
 
 namespace GameServer.realm.terrain;
 
-public class WmapTile {
+public class WmapTile
+{
+    // cus why the hell not makes update easier
+    public short X;
+    public short Y;
+
     private readonly WmapDesc _originalDesc;
     public byte Elevation;
     public ObjectDesc ObjectDesc;
@@ -31,10 +36,16 @@ public class WmapTile {
 
     public WmapTile() { }
 
-    public WmapTile(WmapDesc desc) {
+    public WmapTile(short x, short y, WmapDesc desc) 
+    {
+        X = x;
+        Y = y;
+
         _originalDesc = desc;
         Reset();
     }
+
+    public override int GetHashCode() => ObjectId + X + Y;
 
     public void Reset(Wmap map = null, int x = 0, int y = 0) {
         TileId = _originalDesc.TileId;
@@ -77,7 +88,7 @@ public class WmapTile {
         tile.Elevation = Elevation;
     }
 
-    public ObjectDef ToDef(int x, int y) {
+    public ObjectDef ToDefinition(int x, int y) {
         var stats = new List<KeyValuePair<StatsType, object>>();
         if (!string.IsNullOrEmpty(ObjectNameConfiguration))
             foreach (var item in ObjectNameConfiguration.Split(';')) {
@@ -174,6 +185,15 @@ public class Wmap {
 
     public int Width { get; private set; }
     public int Height { get; private set; }
+
+    public bool IsBlocking(int x, int y)
+    {
+        //clamp?
+        //x = Math.Max(0, Math.Min(x, Width));
+        //y = Math.Max(0, Math.Min(y, Height));
+        var tile = Tiles[x, y];
+        return tile.ObjectType != 0 && tile.ObjectDesc != null && tile.ObjectDesc.BlocksSight;
+    }
 
     public Dictionary<IntPoint, TileRegion> Regions { get; }
 
@@ -291,7 +311,7 @@ public class Wmap {
             var entities = new List<Tuple<IntPoint, ushort, string>>();
             for (var y = 0; y < Height; y++)
             for (var x = 0; x < Width; x++) {
-                var tile = new WmapTile(dict[rdr.ReadInt16()]);
+                var tile = new WmapTile((short)x, (short)y, dict[rdr.ReadInt16()]);
                 if (ver == 2)
                     tile.Elevation = rdr.ReadByte();
 
@@ -354,7 +374,7 @@ public class Wmap {
         var entities = new List<Tuple<IntPoint, ushort, string>>();
         for (var y = 0; y < Height; y++)
         for (var x = 0; x < Width; x++) {
-            var tile = new WmapTile(wTiles[x, y]);
+            var tile = new WmapTile((short)x, (short)y, wTiles[x, y]);
 
             if (tile.Region != 0)
                 Regions.Add(new IntPoint(x, y), tile.Region);

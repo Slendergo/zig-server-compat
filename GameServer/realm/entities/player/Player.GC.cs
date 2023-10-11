@@ -7,12 +7,12 @@ partial class Player {
     {
         ClientEntities.Dispose();
         ClientStatics.Clear();
-        _newObjects = null;
-        NewStatics.Clear();
-        _removedObjects = null;
+        //_newObjects = null;
+        //NewStatics.Clear();
+        //_removedObjects = null;
+        //_tiles = null;
         StatUpdates.Clear();
-        _tiles = null;
-        _updateStatuses = null;
+        UpdateStatuses = null;
 
         TickId = 0;
         _pingTime = -1;

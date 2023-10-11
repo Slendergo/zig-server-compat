@@ -4,8 +4,7 @@ namespace Shared.resources;
 
 public enum VisibilityType {
     Full = 0,
-    Path = 1,
-    LineOfSight = 2
+    LineOfSight = 1
 }
 
 public enum SpecializedDungeonType {

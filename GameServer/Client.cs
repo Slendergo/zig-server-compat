@@ -1786,57 +1786,65 @@ public class Client {
         }
     }
 
-    public void SendNewTick(int tickId, int tickTime, ObjectStats[] statuses) {
-        lock (SendLock) {
+    public void SendNewTick(int tickId, int tickTime, ObjectStats[] statuses)
+    {
+        lock (SendLock)
+        {
             var ptr = LENGTH_PREFIX;
             ref var spanRef = ref MemoryMarshal.GetReference(SendMem.Span);
-            WriteByte(ref ptr, ref spanRef, (byte) S2CPacketId.NewTick);
+            WriteByte(ref ptr, ref spanRef, (byte)S2CPacketId.NewTick);
 
             WriteInt(ref ptr, ref spanRef, tickId);
             WriteInt(ref ptr, ref spanRef, tickTime);
-            WriteUShort(ref ptr, ref spanRef, (ushort) statuses.Length);
-            foreach (var status in statuses) {
+            WriteUShort(ref ptr, ref spanRef, (ushort)statuses.Length);
+            foreach (var status in statuses)
+            {
                 WriteInt(ref ptr, ref spanRef, status.Id);
                 WriteFloat(ref ptr, ref spanRef, status.Position.X);
                 WriteFloat(ref ptr, ref spanRef, status.Position.Y);
-                WriteUShort(ref ptr, ref spanRef, (ushort) status.Stats.Length);
+                WriteUShort(ref ptr, ref spanRef, (ushort)status.Stats.Length);
                 var lengthPtr = ptr;
                 WriteUShort(ref ptr, ref spanRef, 0);
                 foreach (var stat in status.Stats) WriteStat(ref ptr, ref spanRef, stat.Key, stat.Value);
-                WriteUShort(ref lengthPtr, ref spanRef, (ushort) (ptr - lengthPtr - 2));
+                WriteUShort(ref lengthPtr, ref spanRef, (ushort)(ptr - lengthPtr - 2));
             }
 
             TrySend(ptr);
         }
     }
 
-    public void SendUpdate(TileData[] tiles, int[] drops, ObjectDef[] newObjs) {
-        lock (SendLock) {
+    public void SendUpdate(List<TileData> tiles, List<ObjectDef> newObjs, List<int> drops)
+    {
+        lock (SendLock)
+        {
             var ptr = LENGTH_PREFIX;
             ref var spanRef = ref MemoryMarshal.GetReference(SendMem.Span);
-            WriteByte(ref ptr, ref spanRef, (byte) S2CPacketId.Update);
+            WriteByte(ref ptr, ref spanRef, (byte)S2CPacketId.Update);
 
-            WriteUShort(ref ptr, ref spanRef, (ushort) tiles.Length);
-            foreach (var tile in tiles) {
+            WriteUShort(ref ptr, ref spanRef, (ushort)tiles.Count);
+            foreach (var tile in tiles)
+            {
                 WriteShort(ref ptr, ref spanRef, tile.X);
                 WriteShort(ref ptr, ref spanRef, tile.Y);
                 WriteUShort(ref ptr, ref spanRef, tile.Tile);
             }
 
-            WriteUShort(ref ptr, ref spanRef, (ushort) drops.Length);
-            foreach (var drop in drops) WriteInt(ref ptr, ref spanRef, drop);
+            WriteUShort(ref ptr, ref spanRef, (ushort)drops.Count);
+            foreach (var drop in drops)
+                WriteInt(ref ptr, ref spanRef, drop);
 
-            WriteUShort(ref ptr, ref spanRef, (ushort) newObjs.Length);
-            foreach (var newObj in newObjs) {
+            WriteUShort(ref ptr, ref spanRef, (ushort)newObjs.Count);
+            foreach (var newObj in newObjs)
+            {
                 WriteUShort(ref ptr, ref spanRef, newObj.ObjectType);
                 WriteInt(ref ptr, ref spanRef, newObj.Stats.Id);
                 WriteFloat(ref ptr, ref spanRef, newObj.Stats.Position.X);
                 WriteFloat(ref ptr, ref spanRef, newObj.Stats.Position.Y);
-                WriteUShort(ref ptr, ref spanRef, (ushort) newObj.Stats.Stats.Length);
+                WriteUShort(ref ptr, ref spanRef, (ushort)newObj.Stats.Stats.Length);
                 var lengthPtr = ptr;
                 WriteUShort(ref ptr, ref spanRef, 0);
                 foreach (var stat in newObj.Stats.Stats) WriteStat(ref ptr, ref spanRef, stat.Key, stat.Value);
-                WriteUShort(ref lengthPtr, ref spanRef, (ushort) (ptr - lengthPtr - 2));
+                WriteUShort(ref lengthPtr, ref spanRef, (ushort)(ptr - lengthPtr - 2));
             }
 
             TrySend(ptr);
