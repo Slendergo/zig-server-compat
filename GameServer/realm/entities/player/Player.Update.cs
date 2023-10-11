@@ -133,8 +133,6 @@ public partial class Player
 
     private void SendUpdate(RealmTime time)
     {
-        using var t = new TimedProfiler($"SendUpdate: {time.ElapsedMsDelta}");
-
         AddTiles();
         CheckObjectsToAdd();
         CheckObjectsToRemove();
