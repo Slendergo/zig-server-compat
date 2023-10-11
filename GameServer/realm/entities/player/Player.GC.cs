@@ -7,10 +7,11 @@ partial class Player {
     {
         ClientEntities.Dispose();
         ClientStatics.Clear();
-        //_newObjects = null;
-        //NewStatics.Clear();
-        //_removedObjects = null;
-        //_tiles = null;
+        
+        ToAdd.Clear();
+        ToRemove.Clear();
+        TilesToAdd.Clear();
+
         StatUpdates.Clear();
         UpdateStatuses = null;
 
