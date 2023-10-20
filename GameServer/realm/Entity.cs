@@ -1,16 +1,15 @@
-﻿using Shared.resources;
-using GameServer.logic;
+﻿using GameServer.logic;
 using GameServer.logic.transitions;
 using GameServer.realm.entities;
 using GameServer.realm.entities.player;
 using GameServer.realm.entities.vendors;
 using GameServer.realm.worlds;
 using NLog;
-using log4net.Layout;
+using Shared.resources;
 
 namespace GameServer.realm;
 
-public class Entity : IProjectileOwner, ICollidable<Entity>
+public class Entity : ICollidable<Entity>
 {
     private const int EffectCount = 29;
 
@@ -23,7 +22,6 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
     private readonly SV<string> _name;
 
     private readonly Position[] _posHistory;
-    private readonly Projectile[] _projectiles;
     private readonly SV<int> _size;
     private readonly SV<float> _x;
     private readonly SV<float> _y;
@@ -34,7 +32,7 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
     private State _stateEntryCommonRoot;
     private Dictionary<object, object> _states;
     private bool _tickingEffects;
-    private int[] EffectDuration;
+    private readonly int[] EffectDuration;
     public bool GivesNoXp;
     protected byte projectileId;
 
@@ -64,14 +62,14 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
         if (_desc.Player)
         {
             _posHistory = new Position[256];
-            _projectiles = new Projectile[256];
+            Projectiles = new Projectile[256];
             EffectDuration = new int[EffectCount];
             return;
         }
 
         if (_desc.Enemy && !_desc.Static)
         {
-            _projectiles = new Projectile[256];
+            Projectiles = new Projectile[256];
             EffectDuration = new int[EffectCount];
             return;
         }
@@ -147,8 +145,9 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
     public float PreviousX { get; private set; }
     public float PreviousY { get; private set; }
 
-    Entity IProjectileOwner.Self => this;
-    Projectile[] IProjectileOwner.Projectiles => _projectiles;
+    public Projectile[] Projectiles { get; private set; }
+
+
     public event EventHandler<StatChangedEventArgs> StatChanged;
 
     protected virtual void ExportStats(IDictionary<StatsType, object> stats)
@@ -600,7 +599,7 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
     {
         var ret = new Projectile(Owner, desc) //Assume only one
         {
-            ProjectileOwner = this,
+            Owner = this,
             ProjectileId = projectileId++,
             Container = container,
             Damage = dmg,
@@ -610,8 +609,8 @@ public class Entity : IProjectileOwner, ICollidable<Entity>
             Angle = angle
         };
 
-        _projectiles[ret.ProjectileId]?.Destroy();
-        _projectiles[ret.ProjectileId] = ret;
+        Projectiles[ret.ProjectileId]?.Destroy();
+        Projectiles[ret.ProjectileId] = ret;
         return ret;
     }
 

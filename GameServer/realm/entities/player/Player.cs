@@ -294,9 +294,7 @@ public partial class Player : Character, IContainer, IPlayer
                 player.Client.SendDamage(Id, 0, (ushort)dmg, HP <= 0);
 
         if (HP <= 0)
-            Death(src.ObjectDesc.DisplayId ??
-                  src.ObjectDesc.ObjectId,
-                src);
+            Death(src.ObjectDesc.DisplayId ?? src.ObjectDesc.ObjectId);
     }
 
     protected override void ExportStats(IDictionary<StatsType, object> stats)
@@ -603,7 +601,7 @@ public partial class Player : Character, IContainer, IPlayer
 
     public override bool HitByProjectile(Projectile projectile, RealmTime time)
     {
-        if (projectile.ProjectileOwner is Player ||
+        if (projectile.Owner is Player ||
             IsInvulnerable())
             return false;
 
@@ -616,9 +614,7 @@ public partial class Player : Character, IContainer, IPlayer
                 player.Client.SendDamage(Id, 0, (ushort)dmg, HP <= 0); // todo this was once projectile.ConditionEffects but this was not correct, i need to figure out how to send over the effects from the projectile.ProjDesc.Effects instead
 
         if (HP <= 0)
-            Death(projectile.ProjectileOwner.Self.ObjectDesc.DisplayId ??
-                  projectile.ProjectileOwner.Self.ObjectDesc.ObjectId,
-                projectile.ProjectileOwner.Self);
+            Death(projectile.Owner.ObjectDesc.DisplayId ?? projectile.Owner.ObjectDesc.ObjectId);
 
         return base.HitByProjectile(projectile, time);
     }
@@ -734,7 +730,7 @@ public partial class Player : Character, IContainer, IPlayer
         foreach (var i in Owner.Players.Values) i.SendInfo(deathMessage);
     }
 
-    public void Death(string killer, Entity entity = null, WmapTile tile = null)
+    public void Death(string killer)
     {
         if (_dead)
             return;

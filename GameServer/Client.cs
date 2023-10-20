@@ -711,12 +711,13 @@ public class Client {
         }
     }
 
-    private void ProcessEnemyHit(long time, byte bulletId, int targetId, bool kill) {
+    private void ProcessEnemyHit(long time, byte bulletId, int targetId, bool kill)
+    {
         var entity = Player?.Owner?.GetEntity(targetId);
         if (entity?.Owner == null)
             return;
 
-        var prj = (Player as IProjectileOwner).Projectiles[bulletId];
+        var prj = Player.Projectiles[bulletId];
         if (prj == null)
             Log.Debug("prj is dead...");
 
@@ -1160,18 +1161,18 @@ public class Client {
     private void ProcessOtherHit(long time, byte bulletId, int ownerId, int targetId) {
     }
 
-    private void ProcessPlayerHit(byte bulletId, int objId) {
+    private void ProcessPlayerHit(byte bulletId, int objId)
+    {
         if (Player?.Owner == null)
             return;
 
-        var entity = Player.Owner.GetEntity(objId);
+        var shooter = Player.Owner.GetEntity(objId);
+        if (shooter == null)
+            return;
 
-        var prj = entity != null
-            ? ((IProjectileOwner) entity).Projectiles[bulletId]
-            : Player.Owner.Projectiles
-                .Where(p => p.Value.ProjectileOwner.Self.Id == objId)
-                .SingleOrDefault(p => p.Value.ProjectileId == bulletId).Value;
-
+        var prj = Player.Owner.GetProjectile(objId, bulletId);
+        if(prj == null)
+            Console.WriteLine("Null PlayerHit Projectile");
         prj?.ForceHit(Player, Manager.Logic.RealmTime);
     }
 

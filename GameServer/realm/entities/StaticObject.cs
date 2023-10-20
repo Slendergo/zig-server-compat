@@ -50,14 +50,14 @@ public class StaticObject : Entity {
     }
 
     public override bool HitByProjectile(Projectile projectile, RealmTime time) {
-        if (!Vulnerable || projectile.ProjectileOwner is not Player)
+        if (!Vulnerable || projectile.Owner is not Player)
             return true;
 
         var dmg = DamageWithDefense(projectile.Damage, Defense, projectile.ProjDesc.ArmorPiercing);
         HP -= dmg;
 
         foreach (var player in Owner.Players.Values)
-            if (player.Id != projectile.ProjectileOwner.Self.Id && player.DistSqr(this) < Player.RADIUS_SQR)
+            if (player.Id != projectile.Owner.Id && player.DistSqr(this) < Player.RADIUS_SQR)
                 player.Client.SendDamage(Id, 0, (ushort)dmg, !CheckHP());
 
         return true;

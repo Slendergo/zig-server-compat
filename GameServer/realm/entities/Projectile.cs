@@ -5,11 +5,6 @@ using GameServer.realm.worlds;
 
 namespace GameServer.realm.entities;
 
-public interface IProjectileOwner {
-    Projectile[] Projectiles { get; }
-    Entity Self { get; }
-}
-
 // todo make this not bad
 // shouldnt be global server state it should be per player depending on state of client
 // might be less memory efficient but will make more sense when your implementing proper hit detection
@@ -18,7 +13,7 @@ public class Projectile
 {
     private readonly HashSet<Entity> _hit = new();
 
-    public IProjectileOwner ProjectileOwner { get; set; }
+    public Entity Owner { get; set; }
     public ushort Container { get; set; }
     public ProjectileDesc ProjDesc { get; }
     public long CreationTime { get; set; }
@@ -29,12 +24,12 @@ public class Projectile
     public float Angle { get; set; }
     public int Damage { get; set; }
 
-    private readonly World Owner;
+    private readonly World World;
 
     // max value here as the type of projectile doesnt matter at all, projectiles shouldnt even be a entity base class i need to rewrite this - Slendergo
     public Projectile(World world, ProjectileDesc desc)
     {
-        Owner = world;
+        World = world;
         ProjDesc = desc;
     }
 
@@ -105,12 +100,12 @@ public class Projectile
             return;
         Destroyed = true;
 
-        if (Owner == null)
+        if (World == null)
             Console.WriteLine("Failed to remove projectile World is Null, Possible Memroy Leak Occuring");
 
-        if (!Owner.RemoveProjectile(this))
+        if (!World.RemoveProjectile(this))
             Console.WriteLine("Failed to remove projectile not found in world, Possible Memroy Leak Occuring");
 
-        ProjectileOwner.Projectiles[ProjectileId] = null;
+        Owner.Projectiles[ProjectileId] = null;
     }
 }
