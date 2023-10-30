@@ -137,6 +137,10 @@ public class Client {
         SeededRandom = null;
         Socket = socket;
         Reconnecting = false;
+
+        ReceiveMem.Span.Clear();
+        SendMem.Span.Clear();
+
         try {
             IP = ((IPEndPoint) socket.RemoteEndPoint).Address.ToString();
         }
@@ -205,6 +209,12 @@ public class Client {
         try {
             while (Socket.Connected) {
                 var len = await Socket.ReceiveAsync(ReceiveMem);
+                
+                if(len == 0) {
+                    Disconnect();
+                    break;
+                }
+
                 if (len > 0)
                     ProcessPacket(len);
             }

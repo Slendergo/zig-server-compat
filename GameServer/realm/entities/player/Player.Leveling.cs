@@ -144,6 +144,10 @@ public partial class Player {
     }
 
     public void HandleQuest(RealmTime time, bool force = false, Position? destination = null) {
+        
+        if (Owner == null)
+            return;
+
         if (force || time.TickCount % 500 == 0 || Quest == null || Quest.Owner == null) {
             var newQuest = FindQuest(destination);
             if (newQuest != null && newQuest != Quest) {
