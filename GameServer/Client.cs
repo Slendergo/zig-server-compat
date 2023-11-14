@@ -96,7 +96,6 @@ public enum S2CPacketId : byte {
 }
 
 public class Client {
-    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
     private static readonly Random InvRand = new();
     private readonly int[] _realmPortals = { 0x0704, 0x070e, 0x071c, 0x703, 0x070d, 0x0d40 };
 
@@ -148,7 +147,7 @@ public class Client {
             IP = "";
         }
 
-        Log.Trace("Received client @ {0}.", IP);
+        SLog.Trace("Received client @ {0}.", IP);
         Receive();
     }
 
@@ -159,7 +158,7 @@ public class Client {
         }
 
         Reconnecting = true;
-        Log.Trace("Reconnecting client ({0}) @ {1} to {2}...", Account.Name, IP, name);
+        SLog.Trace("Reconnecting client ({0}) @ {1} to {2}...", Account.Name, IP, name);
         ConnectManager.Reconnect(this, gameId);
         Reconnecting = false;
     }
@@ -169,7 +168,7 @@ public class Client {
             SendFailure(0, reason);
 
             if (!string.IsNullOrEmpty(reason))
-                Log.Warn("Disconnecting client ({0}) @ {1}... {2}", Account?.Name ?? " ", IP, reason);
+                SLog.Warn("Disconnecting client ({0}) @ {1}... {2}", Account?.Name ?? " ", IP, reason);
 
             if (Account != null)
                 try {
@@ -177,7 +176,7 @@ public class Client {
                 }
                 catch (Exception e) {
                     var msg = $"{e.Message}\n{e.StackTrace}";
-                    Log.Error(msg);
+                    SLog.Error(msg);
                 }
 
             Manager.Disconnect(this);
@@ -223,7 +222,7 @@ public class Client {
             Disconnect();
             if (e is not SocketException se || se.SocketErrorCode != SocketError.ConnectionReset &&
                 se.SocketErrorCode != SocketError.Shutdown)
-                Log.Error($"Could not receive data from {Account?.Name ?? "[unconnected]"} ({IP}): {e}");
+                SLog.Error($"Could not receive data from {Account?.Name ?? "[unconnected]"} ({IP}): {e}");
         }
     }
 
@@ -395,7 +394,7 @@ public class Client {
                     ProcessUsePortal(ReadInt(ref ptr, ref spanRef, nextPacketPtr));
                     break;
                 default:
-                    Log.Warn($"Unhandled packet '.{packetId}'.");
+                    SLog.Warn($"Unhandled packet '.{packetId}'.");
                     break;
             }
 
@@ -729,7 +728,7 @@ public class Client {
 
         var prj = Player.Projectiles[bulletId];
         if (prj == null)
-            Log.Debug("prj is dead...");
+            SLog.Debug("prj is dead...");
 
         prj?.ForceHit(entity, Manager.Logic.RealmTime);
 
@@ -882,7 +881,7 @@ public class Client {
 
         if (acc.Banned) {
             Disconnect("Account banned.");
-            Log.Info("{0} ({1}) tried to log in. Account Banned.",
+            SLog.Info("{0} ({1}) tried to log in. Account Banned.",
                 acc.Name, IP);
 
             return;
@@ -890,7 +889,7 @@ public class Client {
 
         if (Manager.Database.IsIpBanned(IP)) {
             Disconnect("IP banned.");
-            Log.Info($"{acc.Name} ({IP}) tried to log in. IP Banned.");
+            SLog.Info($"{acc.Name} ({IP}) tried to log in. IP Banned.");
             return;
         }
 
@@ -1349,7 +1348,7 @@ public class Client {
             // dynamic case lookup
             if (portal.CreateWorldTask == null || portal.CreateWorldTask.IsCompleted)
                 portal.CreateWorldTask = Task.Factory.StartNew(() => portal.CreateWorld(Player))
-                    .ContinueWith(e => Log.Error(e.Exception.InnerException.ToString()),
+                    .ContinueWith(e => SLog.Error(e.Exception.InnerException.ToString()),
                         TaskContinuationOptions.OnlyOnFaulted);
 
             portal.WorldInstanceSet += Player.Reconnect;
@@ -1897,7 +1896,7 @@ public class Client {
                 WriteULong(ref ptr, ref spanRef, value);
                 break;
             default:
-                Log.Error($"Unhandled stat {stat}, value: {val}");
+                SLog.Error($"Unhandled stat {stat}, value: {val}");
                 break;
         }
     }
@@ -1907,7 +1906,7 @@ public class Client {
             return;
 
         try {
-            //Log.Error($"Sending packet {(S2CPacketId) SendMem.Span[LENGTH_PREFIX]} {len}");
+            //SLog.Error($"Sending packet {(S2CPacketId) SendMem.Span[LENGTH_PREFIX]} {len}");
             BinaryPrimitives.WriteUInt16LittleEndian(SendMem.Span, (ushort) (len - LENGTH_PREFIX));
             _ = await Socket.SendAsync(SendMem[..len]);
         }
@@ -1915,7 +1914,7 @@ public class Client {
             Disconnect();
             if (e is not SocketException se || se.SocketErrorCode != SocketError.ConnectionReset &&
                 se.SocketErrorCode != SocketError.Shutdown)
-                Log.Error($"{Account?.Name ?? "[unconnected]"} ({IP}): {e}");
+                SLog.Error($"{Account?.Name ?? "[unconnected]"} ({IP}): {e}");
         }
     }
 

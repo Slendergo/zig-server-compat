@@ -27,7 +27,7 @@ public sealed class WRandom
 
     public uint NextIntRange(uint min, uint max) {
         var ret = min == max ? min : min + Gen() % (max - min);
-        //Log.Info($"NextIntRange: {ret}");
+        //SLog.Info($"NextIntRange: {ret}");
         return ret;
     }
 

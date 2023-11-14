@@ -13,7 +13,7 @@ public class Resources : IDisposable {
     public IEnumerable<XElement> XmlBehaviors;
 
     public Resources(string resourcePath, bool appEngine = false) {
-        Log.Info("Loading resources...");
+        SLog.Info("Loading resources...");
         ResourcePath = resourcePath;
         GameData = new XmlData(resourcePath + "/xml");
         Settings = new AppSettings(resourcePath + "/data/init.xml");
@@ -26,7 +26,7 @@ public class Resources : IDisposable {
     public void Dispose() { }
 
     private void webFiles(string dir) {
-        Log.Info("Loading web data...");
+        SLog.Info("Loading web data...");
 
         var files = Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories);
         foreach (var file in files) {

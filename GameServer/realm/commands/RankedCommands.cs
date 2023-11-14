@@ -174,7 +174,7 @@ internal class SpawnCommand : Command {
                     entity = Entity.Resolve(world.Manager, mobObjectType);
                 }
                 catch (Exception e) {
-                    log.Error(e.ToString());
+                    SLog.Error(e.ToString());
                     return;
                 }
 
@@ -1191,7 +1191,7 @@ internal class QuakeCommand : Command {
             default:
                 var msg = $"Unknown specialized dungeon type: {template.Specialized}";
                 player.SendErrorText(msg);
-                Log.Warn(msg);
+                SLog.Warn(msg);
                 return false;
         }
 
@@ -1207,7 +1207,7 @@ internal class QuakeCommand : Command {
         world.LoadMapFromData(selectedMapData);
         world.Init();
 
-        Log.Info("World {0}({1}) added. {2} Worlds existing.", world.Id, world.IdName, manager.Worlds.Count);
+        SLog.Info("World {0}({1}) added. {2} Worlds existing.", world.Id, world.IdName, manager.Worlds.Count);
         manager.Worlds[world.Id] = world;
 
         player.Owner.QuakeToWorld(world);

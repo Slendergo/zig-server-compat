@@ -11,16 +11,12 @@ using System.Threading.Tasks;
 using System.Web;
 using Shared;
 using Shared.resources;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
 using StackExchange.Redis;
 using ServerType = Shared.ServerType;
 
 namespace AppEngine;
 
 public class Program {
-    private static Logger Log = LogManager.GetCurrentClassLogger();
     internal static ServerConfig Config;
     internal static Resources Resources;
     internal static Database Database;
@@ -35,22 +31,6 @@ public class Program {
         Config = args.Length != 0
             ? ServerConfig.ReadFile(args[0] + "/AppEngine.json")
             : ServerConfig.ReadFile("AppEngine.json");
-        var logConfig = new LoggingConfiguration();
-        var consoleTarget = new ColoredConsoleTarget("consoleTarget") {
-            Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}"
-        };
-        logConfig.AddTarget(consoleTarget);
-        logConfig.AddRule(LogLevel.Info, LogLevel.Fatal, consoleTarget);
-
-        var fileTarget = new FileTarget("fileTarget") {
-            FileName = "${var:logDirectory}/log.txt",
-            Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}"
-        };
-        logConfig.AddTarget(fileTarget);
-        LogManager.Configuration = logConfig;
-        LogManager.Configuration.Variables["logDirectory"] =
-            (args.Length != 0 ? args[0] + "/" : "") + Config.serverSettings.logFolder + "/login";
-        LogManager.Configuration.Variables["buildConfig"] = Utils.GetBuildConfiguration();
 
         ResourcePath = args.Length != 0 ? args[0] + "/resources" : Config.serverSettings.resourceFolder;
         Resources = new Resources(ResourcePath, true);
@@ -80,16 +60,16 @@ public class Program {
         var address = Config.serverInfo.bindAddress;
 
         using var server = new HttpListener();
-
-        // stupid admin prompting bai
-#if DEBUG
-        server.Prefixes.Add($"http://*:{port}/");
-#else
         server.Prefixes.Add($"http://{address}:{port}/");
-#endif
+        // stupid admin prompting bai
+        //#if DEBUG
+        //        server.Prefixes.Add($"http://*:{port}/");
+        //#else
+        //        server.Prefixes.Add($"http://{address}:{port}/");
+        //#endif
         server.Start();
 
-        Log.Info("Listening at address {0}:{1}...", address, port);
+        SLog.Info("Listening at address {0}:{1}...", address, port);
         while (true) {
             var ctx = server.GetContext();
             var req = ctx.Request;
@@ -130,7 +110,7 @@ public class Program {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static string HandleUnknown(string endpoint, string ip) {
-        Log.Error("Invalid endpoint " + endpoint + ", IP: " + ip);
+        SLog.Error("Invalid endpoint " + endpoint + ", IP: " + ip);
         return "<Error>Invalid endpoint</Error>";
     }
 
@@ -169,7 +149,7 @@ public class Program {
             acc.MaxCharSlot++;
             return "<Success />";
         }).ContinueWith(e => {
-            Log.Error(e.Exception?.InnerException?.ToString());
+            SLog.Error(e.Exception?.InnerException?.ToString());
             return "<Error>" + status.GetInfo() + "</Error>";
         }, TaskContinuationOptions.OnlyOnFaulted);
 
@@ -228,8 +208,10 @@ public class Program {
     private static string HandleAccountVerify(string guid, string password) {
         var status = Database.Verify(guid, password, out var acc);
         if (status == LoginStatus.OK)
-            return Account.FromDb(acc).ToXml().ToString();
-
+            {
+                var msg = Account.FromDb(acc).ToXml().ToString();
+                return msg;
+            }
         return "<Error>" + status.GetInfo() + "</Error>";
     }
 
@@ -318,6 +300,6 @@ public class Program {
     }
 
     private static void LogUnhandledException(object sender, UnhandledExceptionEventArgs args) {
-        Log.Fatal((Exception) args.ExceptionObject);
+        SLog.Fatal((Exception) args.ExceptionObject);
     }
 }

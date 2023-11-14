@@ -1,5 +1,4 @@
-﻿using NLog.LayoutRenderers;
-using Shared;
+﻿using Shared;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using static GameServer.realm.Sight;
@@ -102,7 +101,7 @@ public partial class Player
             if (statChange.Stat != StatsType.None)
                 StatUpdates[e][statChange.Stat] = statChange.Value;
 
-            //Log.Info($"{entity} {statChange.Stat} {statChange.Value}");
+            //SLog.Info($"{entity} {statChange.Stat} {statChange.Value}");
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using GameServer.realm.entities;
 using GameServer.realm.entities.player;
 using NLog;
+using Shared;
 
 namespace GameServer.realm.commands;
 
@@ -35,7 +36,7 @@ public abstract class Command {
             return Process(player, time, args);
         }
         catch (Exception ex) {
-            Log.Error("Error when executing the command.", ex);
+            SLog.Error("Error when executing the command.", ex);
             player.SendErrorText("Error when executing the command.");
             return false;
         }
@@ -75,7 +76,7 @@ public class CommandManager {
         }
 
         var owner = player.Owner;
-        Log.Info("[Command] [{0}] <{1}> {2}", owner?.IdName ?? "", player.Name, text);
+        SLog.Info("[Command] [{0}] <{1}> {2}", owner?.IdName ?? "", player.Name, text);
         return command.Execute(player, time, args);
     }
 }

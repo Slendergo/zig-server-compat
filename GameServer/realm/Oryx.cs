@@ -4,6 +4,7 @@ using GameServer.realm.entities.player;
 using GameServer.realm.setpieces;
 using GameServer.realm.worlds.logic;
 using NLog;
+using Shared;
 
 namespace GameServer.realm;
 
@@ -546,7 +547,7 @@ internal class Oryx {
     }
 
     public void Init() {
-        Log.Info("Oryx is controlling world {0}({1})...", _world.Id, _world.IdName);
+        SLog.Info("Oryx is controlling world {0}({1})...", _world.Id, _world.IdName);
 
         var w = _world.Map.Width;
         var h = _world.Map.Height;
@@ -559,7 +560,7 @@ internal class Oryx {
                 stats[(int) tile.Terrain - 1]++;
         }
 
-        Log.Info("Spawning minions...");
+        SLog.Info("Spawning minions...");
         foreach (var i in RegionMobs) {
             var terrain = i.Key;
             var idx = (int) terrain - 1;
@@ -580,7 +581,7 @@ internal class Oryx {
             }
         }
 
-        Log.Info("Oryx is done.");
+        SLog.Info("Oryx is done.");
     }
 
     public void Tick(RealmTime time) {
@@ -598,7 +599,7 @@ internal class Oryx {
     }
 
     private void EnsurePopulation() {
-        Log.Info("Oryx is controlling population...");
+        SLog.Info("Oryx is controlling population...");
 
         RecalculateEnemyCount();
 
@@ -668,7 +669,7 @@ internal class Oryx {
         RecalculateEnemyCount();
 
         //GC.Collect();
-        Log.Info("Oryx is back to sleep.");
+        SLog.Info("Oryx is back to sleep.");
     }
 
     private void RecalculateEnemyCount() {
@@ -740,7 +741,7 @@ internal class Oryx {
         pt.X -= (setpiece.Size - 1) / 2;
         pt.Y -= (setpiece.Size - 1) / 2;
         setpiece.RenderSetPiece(_world, pt);
-        Log.Info("Oryx spawned {0} at ({1}, {2}).", name, pt.X, pt.Y);
+        SLog.Info("Oryx spawned {0} at ({1}, {2}).", name, pt.X, pt.Y);
     }
 
     public void OnEnemyKilled(Enemy enemy, Player killer) {

@@ -1,4 +1,5 @@
-﻿using Shared.resources;
+﻿using Shared;
+using Shared.resources;
 
 namespace GameServer.realm.entities.player;
 
@@ -35,7 +36,7 @@ public partial class Player
         }
         catch (Exception ex)
         {
-            Log.Error(ex);
+            SLog.Error(ex);
         }
     }
 

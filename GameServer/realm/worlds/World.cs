@@ -147,7 +147,7 @@ public class World
 
     protected void FromDungeonGen(int seed, DungeonTemplate template)
     {
-        Log.Info("Loading template for world {0}({1})...", Id, IdName);
+        SLog.Info("Loading template for world {0}({1})...", Id, IdName);
 
         var gen = new Generator(seed, template);
         gen.Generate();
@@ -175,7 +175,7 @@ public class World
 
     public void LoadMapFromData(MapData mapData)
     {
-        Log.Info("Loading map for world {0}({1})...", Id, IdName);
+        SLog.Info("Loading map for world {0}({1})...", Id, IdName);
 
         // assume nothing is wrong, this should be allowed to crash and cause issues so devs will fix the missing maps,
         // preferably not during production runs
@@ -494,7 +494,7 @@ public class World
             catch (Exception e)
             {
                 var msg = e.Message + "\n" + e.StackTrace;
-                Log.Error(msg);
+                SLog.Error(msg);
                 Timers.RemoveAt(i);
             }
 
@@ -507,7 +507,7 @@ public class World
             catch (Exception e)
             {
                 var msg = "Player: " + e.Message + "\n" + e.StackTrace;
-                Log.Error(msg);
+                SLog.Error(msg);
             }
 
         if (EnemiesCollision != null)

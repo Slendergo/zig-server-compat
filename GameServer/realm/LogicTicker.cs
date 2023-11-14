@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using NLog;
+using Shared;
 
 namespace GameServer.realm;
 
@@ -25,7 +26,7 @@ public sealed class LogicTicker
 
     public void TickLoop()
     {
-        Log.Info("Logic loop started.");
+        SLog.Info("Logic loop started.");
 
         var watch = Stopwatch.StartNew();
         var lastMS = 0L;
@@ -65,6 +66,6 @@ public sealed class LogicTicker
             }
         }
 
-        Log.Info("Logic loop stopped.");
+        SLog.Info("Logic loop stopped.");
     }
 }

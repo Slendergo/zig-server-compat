@@ -2,6 +2,7 @@
 using GameServer.realm.entities;
 using GameServer.realm.entities.player;
 using NLog;
+using Shared;
 
 namespace GameServer.realm.worlds.logic;
 
@@ -44,7 +45,7 @@ public class RealmOfTheMadGod : World {
     }
 
     public override void Init() {
-        Log.Info("Initializing Game World {0}({1}) from map {2}...", Id, IdName, _mapId);
+        SLog.Info("Initializing Game World {0}({1}) from map {2}...", Id, IdName, _mapId);
 
         DisplayName = _realmNames[Environment.TickCount % _realmNames.Length];
 
@@ -57,7 +58,7 @@ public class RealmOfTheMadGod : World {
             _overseer.Init();
         }
 
-        Log.Info("Game World initalized.");
+        SLog.Info("Game World initalized.");
     }
 
     public override void Tick(RealmTime time) {
@@ -84,7 +85,7 @@ public class RealmOfTheMadGod : World {
 
                 _overseer?.Tick(time);
             }).ContinueWith(e =>
-                    Log.Error(e.Exception.InnerException.ToString()),
+                    SLog.Error(e.Exception.InnerException.ToString()),
                 TaskContinuationOptions.OnlyOnFaulted);
     }
 

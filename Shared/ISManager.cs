@@ -23,7 +23,7 @@ public class ISManager : InterServerChannel, IDisposable {
 
     public ISManager(Database db, ServerConfig settings)
         : base(db, settings.serverInfo.instanceId) {
-        Log.Info("Server's Id is {0}", settings.serverInfo.instanceId);
+        SLog.Info("Server's Id is {0}", settings.serverInfo.instanceId);
 
         _settings = settings;
 
@@ -72,7 +72,7 @@ public class ISManager : InterServerChannel, IDisposable {
             // check for server timeouts
             foreach (var s in _lastUpdateTime.Where(s => s.Value > ServerTimeout).ToArray()) {
                 var sInfo = _servers[s.Key];
-                Log.Info("{0} ({1}) timed out.", sInfo.name, s.Key);
+                SLog.Info("{0} ({1}) timed out.", sInfo.name, s.Key);
                 RemoveServer(s.Key);
 
                 // invoke server quit event
@@ -91,7 +91,7 @@ public class ISManager : InterServerChannel, IDisposable {
             switch (e.Content.Code) {
                 case NetworkCode.Join:
                     if (AddServer(e.InstanceId, e.Content.Info)) {
-                        Log.Info("{0} ({1}, {2}) joined the network.",
+                        SLog.Info("{0} ({1}, {2}) joined the network.",
                             e.Content.Info.name, e.Content.Info.type, e.InstanceId);
 
                         // make new server aware of this server
@@ -110,14 +110,14 @@ public class ISManager : InterServerChannel, IDisposable {
 
                 case NetworkCode.Ping:
                     if (!_servers.ContainsKey(e.InstanceId))
-                        Log.Info("{0} ({1}, {2}) re-joined the network.",
+                        SLog.Info("{0} ({1}, {2}) re-joined the network.",
                             e.Content.Info.name, e.Content.Info.type, e.InstanceId);
                     UpdateServer(e.InstanceId, e.Content.Info);
                     ServerPing?.Invoke(this, e);
                     break;
 
                 case NetworkCode.Quit:
-                    Log.Info("{0} ({1}, {2}) left the network.",
+                    SLog.Info("{0} ({1}, {2}) left the network.",
                         e.Content.Info.name, e.Content.Info.type, e.InstanceId);
                     RemoveServer(e.InstanceId);
                     ServerQuit?.Invoke(this, e);

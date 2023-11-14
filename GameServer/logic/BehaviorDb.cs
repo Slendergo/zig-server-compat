@@ -14,7 +14,7 @@ public class BehaviorDb {
     internal static BehaviorDb InitDb;
 
     public BehaviorDb(RealmManager manager) {
-        Log.Info("Initializing behavior database...");
+        SLog.Info("Initializing behavior database...");
 
         Manager = manager;
         MobDrops.Init(manager);
@@ -22,7 +22,7 @@ public class BehaviorDb {
         Definitions = new Dictionary<ushort, Tuple<State, Loot>>();
 
         if (Interlocked.Exchange(ref _initializing, 1) == 1) {
-            Log.Error("Attempted to initialize multiple BehaviorDb at the same time.");
+            SLog.Error("Attempted to initialize multiple BehaviorDb at the same time.");
             throw new InvalidOperationException("Attempted to initialize multiple BehaviorDb at the same time.");
         }
 
@@ -30,7 +30,7 @@ public class BehaviorDb {
 
         ResolveBehaviors();
         _initializing = 0;
-        Log.Info("Behavior database initialized...");
+        SLog.Info("Behavior database initialized...");
     }
 
     public RealmManager Manager { get; }
@@ -46,7 +46,7 @@ public class BehaviorDb {
             var rootState = entry.Behaviors.OfType<State>()
                 .FirstOrDefault(x => x.Name == "root");
             if (rootState == null) {
-                Log.Error($"Error when adding \"{entry.Id}\": no root state.");
+                SLog.Error($"Error when adding \"{entry.Id}\": no root state.");
                 continue;
             }
 
@@ -54,7 +54,7 @@ public class BehaviorDb {
             rootState.Resolve(d);
             rootState.ResolveChildren(d);
             if (!id2ObjType.ContainsKey(entry.Id)) {
-                Log.Error($"Error when adding \"{entry.Id}\": entity not found.");
+                SLog.Error($"Error when adding \"{entry.Id}\": entity not found.");
                 continue;
             }
 
@@ -78,7 +78,7 @@ public class BehaviorDb {
             }
         }
 
-        Log.Info($"Loaded {Definitions.Count} XML Behaviors.");
+        SLog.Info($"Loaded {Definitions.Count} XML Behaviors.");
     }
 
     public void ResolveBehavior(Entity entity) {

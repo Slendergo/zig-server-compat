@@ -35,7 +35,7 @@ public class RealmManager {
     public int NextWorldId;
 
     public RealmManager(Resources resources, Database db, ServerConfig config) {
-        Log.Info("Initalizing Realm Manager...");
+        SLog.Info("Initalizing Realm Manager...");
 
         Resources = resources;
         Database = db;
@@ -65,7 +65,7 @@ public class RealmManager {
 
         CreateNewRealm();
 
-        Log.Info("Realm Manager initialized.");
+        SLog.Info("Realm Manager initialized.");
     }
 
     public string InstanceId { get; private set; }
@@ -87,7 +87,7 @@ public class RealmManager {
     public LogicTicker Logic { get; private set; }
 
     public void Run() {
-        Log.Info("Starting Realm Manager...");
+        SLog.Info("Starting Realm Manager...");
 
         // start server logic management
         Logic = new LogicTicker(this);
@@ -95,17 +95,17 @@ public class RealmManager {
         logic.ContinueWith(Program.Stop, TaskContinuationOptions.OnlyOnFaulted);
         logic.Start();
 
-        Log.Info("Realm Manager started.");
+        SLog.Info("Realm Manager started.");
     }
 
     public void Stop() {
-        Log.Info("Stopping Realm Manager...");
+        SLog.Info("Stopping Realm Manager...");
 
         Terminating = true;
         InterServer.Dispose();
         Resources.Dispose();
 
-        Log.Info("Realm Manager stopped.");
+        SLog.Info("Realm Manager stopped.");
     }
 
     public bool TryConnect(Client client) {
@@ -189,14 +189,14 @@ public class RealmManager {
 
         var selectedMapData = MapParser.GetOrLoad(world.SelectMap(template));
         if (selectedMapData == null) {
-            Log.Error($"Unable to find MapData for {template.IdName}");
+            SLog.Error($"Unable to find MapData for {template.IdName}");
             return null;
         }
 
         world.LoadMapFromData(selectedMapData);
         world.Init();
 
-        Log.Info("World {0}({1}) added. {2} Worlds existing.", world.Id, world.IdName, Worlds.Count);
+        SLog.Info("World {0}({1}) added. {2} Worlds existing.", world.Id, world.IdName, Worlds.Count);
         Worlds[world.Id] = world;
         return world;
     }
@@ -220,7 +220,7 @@ public class RealmManager {
     private void OnWorldRemoved(World world) {
         //world.Manager = null;
         Monitor.RemovePortal(world.Id);
-        Log.Info("World {0}({1}) removed.", world.Id, world.IdName);
+        SLog.Info("World {0}({1}) removed.", world.Id, world.IdName);
     }
 
     public World GetRandomRealm() {

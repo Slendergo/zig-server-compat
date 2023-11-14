@@ -1,5 +1,6 @@
 ﻿using Shared.resources;
 using GameServer.realm.entities.player;
+using Shared;
 
 namespace GameServer.realm.entities.vendors;
 
@@ -167,7 +168,7 @@ public abstract class Merchant : SellableObject {
     protected virtual void SendNotifications(Player player) {
         player.Client.SendBuyResult(BuyResultType.Success, "Item purchased!");
 
-        Log.Info("[{0}]User {1} has bought {2} for {3} {4}.",
+        SLog.Info("[{0}]User {1} has bought {2} for {3} {4}.",
             DateTime.Now, player.Name, Manager.Resources.GameData.Items[Item].DisplayName, Price, Currency.ToString());
     }
 }

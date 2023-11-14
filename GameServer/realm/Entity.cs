@@ -5,6 +5,7 @@ using GameServer.realm.entities.player;
 using GameServer.realm.entities.vendors;
 using GameServer.realm.worlds;
 using NLog;
+using Shared;
 using Shared.resources;
 
 namespace GameServer.realm;
@@ -590,7 +591,7 @@ public class Entity : ICollidable<Entity>
             case "GuildMerchant":
                 return new GuildMerchant(manager, id);
             default:
-                Log.Warn("Not supported type: {0}", type);
+                SLog.Warn("Not supported type: {0}", type);
                 return new Entity(manager, id);
         }
     }

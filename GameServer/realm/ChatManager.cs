@@ -47,7 +47,7 @@ public class ChatManager : IDisposable {
             if (!p.Client.Account.IgnoreList.Contains(src.AccountId))
                 p.Client.SendText($"#{name}", src.Id, src.Stars, 5, string.Empty, text);
 
-        log.Info($"[{src.Owner.IdName}({src.Owner.Id})] <{src.Name}> {text}");
+        SLog.Info($"[{src.Owner.IdName}({src.Owner.Id})] <{src.Name}> {text}");
     }
 
     public static bool Local(Player src, string text) {
@@ -60,7 +60,7 @@ public class ChatManager : IDisposable {
             if (!p.Client.Account.IgnoreList.Contains(src.AccountId) && p.DistSqr(src) < Player.RADIUS_SQR)
                 p.Client.SendText($"#{name}", src.Id, src.Stars, 5, string.Empty, text);
 
-        log.Info($"[{src.Owner.IdName}({src.Owner.Id})] <{src.Name}> {text}");
+        SLog.Info($"[{src.Owner.IdName}({src.Owner.Id})] <{src.Name}> {text}");
         return true;
     }
 
@@ -74,7 +74,7 @@ public class ChatManager : IDisposable {
         foreach (var player in world.Players.Values)
             player.Client.SendText($"#{name}", entity.Id, -1, 5, string.Empty, text);
 
-        log.Info($"[{world.IdName}({world.Id})] <{name}> {text}");
+        SLog.Info($"[{world.IdName}({world.Id})] <{name}> {text}");
     }
 
     public void Announce(string text, bool local = false) {
@@ -117,7 +117,7 @@ public class ChatManager : IDisposable {
         foreach (var player in world.Players.Values)
             player.Client.SendText("#Oryx the Mad God", 0, -1, 5, string.Empty, text);
 
-        log.Info("[{0}({1})] <Oryx the Mad God> {2}", world.IdName, world.Id, text);
+        SLog.Info("[{0}({1})] <Oryx the Mad God> {2}", world.IdName, world.Id, text);
     }
 
     public bool Tell(Player src, string target, string text) {

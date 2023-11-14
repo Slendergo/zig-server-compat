@@ -17,7 +17,7 @@ public class PortalMonitor {
     private readonly object _worldLock;
 
     public PortalMonitor(RealmManager manager, World world) {
-        Log.Info("Initalizing Portal Monitor...");
+        SLog.Info("Initalizing Portal Monitor...");
 
         _manager = manager;
         _world = world;
@@ -69,7 +69,7 @@ public class PortalMonitor {
             portal.Move(pos.X + 0.5f, pos.Y + 0.5f);
             _world.EnterWorld(portal);
             _portals.Add(worldId, portal);
-            Log.Info("Portal {0}({1}) added.", world.Id, world.GetDisplayName());
+            SLog.Info("Portal {0}({1}) added.", world.Id, world.GetDisplayName());
             if (announce)
                 foreach (var w in _manager.Worlds.Values)
                 foreach (var p in w.Players.Values)
@@ -91,7 +91,7 @@ public class PortalMonitor {
             var portal = _portals[worldId];
             _world.LeaveWorld(portal);
             _portals.Remove(worldId);
-            Log.Info("Portal {0}({1}) removed.",
+            SLog.Info("Portal {0}({1}) removed.",
                 portal.WorldInstance.Id,
                 portal.WorldInstance.IdName);
             return true;
@@ -109,7 +109,7 @@ public class PortalMonitor {
             var worldId = _portals.FirstOrDefault(p => p.Value == portal).Key;
             _world.LeaveWorld(portal);
             _portals.Remove(worldId);
-            Log.Info("Portal {0}({1}) removed.",
+            SLog.Info("Portal {0}({1}) removed.",
                 worldId, portal.WorldInstance.IdName);
             return true;
         }
@@ -126,7 +126,7 @@ public class PortalMonitor {
 
             _world.LeaveWorld(portal.Value);
             _portals.Remove(portal.Key);
-            Log.Info("Portal {0}({1}) removed.",
+            SLog.Info("Portal {0}({1}) removed.",
                 portal.Key, portal.Value.WorldInstance.IdName);
             return true;
         }

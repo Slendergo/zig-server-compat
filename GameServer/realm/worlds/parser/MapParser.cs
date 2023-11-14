@@ -74,14 +74,14 @@ public sealed class MapParser
             // the code i write will prevent any issues with a null map, it just simply wont work if map isnt found 
             // ~ Slendergo
 
-            Log.Debug(data != null ? $"Cached: {map}" : $"Unable to locate: {map} in MapParser cache");
+            SLog.Debug(data != null ? $"Cached: {map}" : $"Unable to locate: {map} in MapParser cache");
             return data;
         }
     }
 
     private static MapData TryCacheMap(string map)
     {
-        Log.Debug($"Caching: {map}");
+        SLog.Debug($"Caching: {map}");
         var path = $"{Program.Resources.ResourcePath}/worlds/{map}";
         if (!File.Exists(path))
             return null;
@@ -416,7 +416,7 @@ public sealed class MapParser
         if (!Directory.Exists(inputDir))
         {
             _ = Directory.CreateDirectory(inputDir);
-            Console.WriteLine($"No files found in {inputDir} skipping converting stage");
+            SLog.Debug($"No files found in {inputDir} skipping converting stage");
             return;
         }
 
@@ -434,7 +434,7 @@ public sealed class MapParser
         var files = Directory.GetFiles(inputDir, "*.jm");
         if (files.Length == 0)
         {
-            Console.WriteLine("No jm files found in input directory.");
+            SLog.Debug("No jm files found in input directory.");
             return;
         }
 
@@ -443,7 +443,7 @@ public sealed class MapParser
             var name = Path.GetFileNameWithoutExtension(file);
             if (File.Exists(file))
             {
-                Console.WriteLine($"{name}.jm has been converted already, skipping process");
+                SLog.Debug($"{name}.jm has been converted already, skipping process");
                 continue;
             }
             var wmapData = ConvertJmToWmap(File.ReadAllText(file), true);
@@ -459,7 +459,7 @@ public sealed class MapParser
         var files = Directory.GetFiles(inputDir, "*.wmap");
         if (files.Length == 0)
         {
-            Console.WriteLine("No wmap files found in input directory.");
+            SLog.Debug("No wmap files found in input directory.");
             return;
         }
 
@@ -468,14 +468,14 @@ public sealed class MapParser
             var name = Path.GetFileNameWithoutExtension(file);
             if (File.Exists(file))
             {
-                Console.WriteLine($"{name}.wmap has been converted already, skipping process");
+                SLog.Debug($"{name}.wmap has been converted already, skipping process");
                 continue;
             }
 
             var data = ConvertWmapToMapData(File.ReadAllBytes(file));
 
             File.WriteAllBytes($"{outputDir}/{name}.pmap", data);
-            Console.WriteLine($"Converted {name}.wmap to {name}.pmap");
+            SLog.Debug($"Converted {name}.wmap to {name}.pmap");
         }
     }
 

@@ -48,7 +48,7 @@ public static class Utils {
         }
         catch (Exception ex) {
             if (l)
-                Log.Error(ex.ToString());
+                SLog.Error(ex.ToString());
             return false;
         }
     }
@@ -74,7 +74,7 @@ public static class Utils {
         if (t == typeof(bool))
             return (T) Convert.ChangeType(string.IsNullOrWhiteSpace(val) || bool.Parse(val), t);
 
-        Log.Error(string.Format("Type of {0} is not supported by this method, returning default value: {1}...", t,
+        SLog.Error(string.Format("Type of {0} is not supported by this method, returning default value: {1}...", t,
             def));
         return def;
     }
@@ -100,7 +100,7 @@ public static class Utils {
         if (t == typeof(bool))
             return (T) Convert.ChangeType(string.IsNullOrWhiteSpace(val) || bool.Parse(val), t);
 
-        Log.Error(string.Format("Type of {0} is not supported by this method, returning default value: {1}...", t,
+        SLog.Error(string.Format("Type of {0} is not supported by this method, returning default value: {1}...", t,
             def));
         return def;
     }

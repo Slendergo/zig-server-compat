@@ -44,7 +44,7 @@ public class Database : IDisposable
 
     public Database(string host, int port, int index, string auth, Resources resources)
     {
-        Log.Info("Initializing Database...");
+        SLog.Info("Initializing Database...");
         _resources = resources;
 
         DatabaseIndex = index;

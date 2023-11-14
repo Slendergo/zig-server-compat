@@ -293,7 +293,7 @@ public class Wmap {
                 if (_dat.IdToObjectType.ContainsKey(obj))
                     desc.ObjType = _dat.IdToObjectType[obj];
                 else if (!string.IsNullOrEmpty(obj))
-                    Log.Warn($"Object: {obj} not found.");
+                    SLog.Warn($"Object: {obj} not found.");
                 desc.ObjCfg = rdr.ReadString();
                 desc.Terrain = (TerrainType) rdr.ReadByte();
                 desc.Region = (TileRegion) rdr.ReadByte();

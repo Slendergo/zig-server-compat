@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using GameServer.realm.worlds.logic;
+using Shared;
 
 namespace GameServer.realm.entities.player;
 
@@ -171,7 +172,7 @@ public partial class Player {
             ? clientDeltaAvg - serverDeltaAvg
             : serverDeltaAvg - clientDeltaAvg;
         if (dx > 15)
-            Log.Debug(
+            SLog.Debug(
                 $"TickId: {tickId}, Client Delta: {_clientTimeLog.Sum() / _clientTimeLog.Count}, Server Delta: {_serverTimeLog.Sum() / _serverTimeLog.Count}");
     }
 }

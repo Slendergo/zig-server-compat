@@ -65,7 +65,7 @@ public abstract class Behavior : IStateChildren {
             return ret;
 
         ret = BehaviorDb.InitGameData.IdToObjectType["Pirate"];
-        Log.Warn($"Object type '{id}' not found. Using Pirate ({ret.To4Hex()}).");
+        SLog.Warn($"Object type '{id}' not found. Using Pirate ({ret.To4Hex()}).");
         return ret;
     }
 }

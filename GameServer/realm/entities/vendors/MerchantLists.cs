@@ -155,7 +155,7 @@ internal static class MerchantLists {
         foreach (var shop in Shops)
         foreach (var shopItem in shop.Value.Item1.OfType<ShopItem>())
             if (!manager.Resources.GameData.IdToObjectType.TryGetValue(shopItem.Name, out var id))
-                Log.Warn("Item name: {0}, not found.", shopItem.Name);
+                SLog.Warn("Item name: {0}, not found.", shopItem.Name);
             else
                 shopItem.SetItem(id);
     }

@@ -1,6 +1,7 @@
 ﻿using Shared.resources;
 using GameServer.realm.entities.player;
 using GameServer.realm.worlds.logic;
+using Shared;
 
 namespace GameServer.realm.entities.vendors;
 
@@ -36,7 +37,7 @@ internal class ClosedVaultChest : SellableObject {
             (Owner as Vault)?.AddChest(this);
             player.Client.SendBuyResult(BuyResultType.Success, "Vault chest purchased!");
         }).ContinueWith(e =>
-                Log.Error(e.Exception.InnerException.ToString()),
+                SLog.Error(e.Exception.InnerException.ToString()),
             TaskContinuationOptions.OnlyOnFaulted);
     }
 }

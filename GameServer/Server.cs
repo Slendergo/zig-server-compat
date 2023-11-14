@@ -1,18 +1,18 @@
 using System.Net;
 using System.Net.Sockets;
 using GameServer.realm;
-using NLog;
+using Shared;
 
 namespace GameServer;
 
 public class Server {
-    private static Logger Log = LogManager.GetCurrentClassLogger();
+    
     private Queue<Client> _clientPool;
     private Socket _listenSocket;
     private RealmManager _manager;
 
     public Server(RealmManager manager, int port, int maxConn) {
-        Log.Info("Starting server...");
+        SLog.Info("Starting server...");
         _manager = manager;
         _clientPool = new Queue<Client>(maxConn);
         for (var i = 0; i < maxConn; i++)
@@ -22,7 +22,7 @@ public class Server {
         _listenSocket = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         _listenSocket.Bind(endpoint);
         _listenSocket.Listen(128);
-        Log.Info("Listening on port {0}...", port);
+        SLog.Info("Listening on port {0}...", port);
         Accept();
     }
 
@@ -46,18 +46,18 @@ public class Server {
         catch (Exception e) {
             if (e is not SocketException se || se.SocketErrorCode != SocketError.NotConnected &&
                 se.SocketErrorCode != SocketError.Shutdown)
-                Log.Error(e);
+                SLog.Error(e);
         }
     }
 
     public void Stop() {
-        Log.Info("Stopping server...");
+        SLog.Info("Stopping server...");
         try {
             _listenSocket.Shutdown(SocketShutdown.Both);
         }
         catch (Exception e) {
             if (e is not SocketException se || se.SocketErrorCode != SocketError.NotConnected)
-                Log.Error(e);
+                SLog.Error(e);
         }
 
         _listenSocket.Close();

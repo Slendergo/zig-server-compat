@@ -73,7 +73,7 @@ partial class Player
     {
         using (TimedLock.Lock(_useLock))
         {
-            //Log.Debug(objId + ":" + slot);
+            //SLog.Debug(objId + ":" + slot);
             var entity = Owner.GetEntity(objId);
             if (entity == null || entity is Player && objId != Id)
             {
@@ -175,9 +175,9 @@ partial class Player
                 FameCounter.DrinkPot();
             }
 
-            //Log.Debug(item.SlotType + ":" + slotType);
+            //SLog.Debug(item.SlotType + ":" + slotType);
             if (item.Consumable || item.SlotType == slotType)
-                //Log.Debug("HUH");
+                //SLog.Debug("HUH");
                 Activate(time, item, pos);
             else
                 Client.SendInventoryResult(1);
@@ -279,7 +279,7 @@ partial class Player
                     AEBackpack(time, item, target, eff);
                     break;
                 default:
-                    Log.Warn("Activate effect {0} not implemented.", eff.Effect);
+                    SLog.Warn("Activate effect {0} not implemented.", eff.Effect);
                     break;
             }
     }
@@ -293,10 +293,10 @@ partial class Player
     {
         var type = Manager.Resources.GameData.IdToObjectType[eff.ObjectId];
         var desc = Manager.Resources.GameData.ObjectDescs[type];
-        //Log.Debug(desc.ObjectType);
+        //SLog.Debug(desc.ObjectType);
         PetId = desc.ObjectType;
         SpawnPetIfAttached(Owner);
-        //Log.Debug("hey!");
+        //SLog.Debug("hey!");
     }
 
     private void AEUnlockPortal(RealmTime time, Item item, Position target, ActivateEffect eff)
@@ -318,13 +318,13 @@ partial class Player
         //WorldTemplateData template;
         //if (!Manager.Resources.Worlds.Data.TryGetValue(eff.DungeonName, out proto))
         //{
-        //    Log.Error("Unable to unlock portal. \"" + eff.DungeonName + "\" does not exist.");
+        //    SLog.Error("Unable to unlock portal. \"" + eff.DungeonName + "\" does not exist.");
         //    return;
         //}
 
         //if (proto.portals == null || proto.portals.Length < 1)
         //{
-        //    Log.Error("World is not associated with any portals.");
+        //    SLog.Error("World is not associated with any portals.");
         //    return;
         //}
 
@@ -333,7 +333,7 @@ partial class Player
         //var uPortal = Resolve(Manager, portalType) as Portal;
         //if (uPortal == null)
         //{
-        //    Log.Error("Error creating portal: {0}", portalType);
+        //    SLog.Error("Error creating portal: {0}", portalType);
         //    return;
         //}
 

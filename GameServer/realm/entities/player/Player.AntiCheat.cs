@@ -1,5 +1,6 @@
 ﻿using Shared.resources;
 using NLog;
+using Shared;
 
 namespace GameServer.realm.entities.player;
 
@@ -71,7 +72,6 @@ public class TimeCop {
 partial class Player {
     private const float MaxTimeDiff = 1.08f;
     private const float MinTimeDiff = 0.92f;
-    private static readonly Logger CheatLog = LogManager.GetCurrentClassLogger();
 
     private long LastAttackTime = -1;
     private int Shots;
@@ -103,7 +103,7 @@ partial class Player {
         if (Owner == null || !TileOccupied(X, Y) && !TileFullOccupied(X, Y))
             return false;
 
-        CheatLog.Info($"{Name} is walking on an occupied tile.");
+        SLog.Info($"{Name} is walking on an occupied tile.");
         return true;
     }
 }

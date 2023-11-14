@@ -2,6 +2,7 @@
 using GameServer.realm.worlds;
 using GameServer.realm.worlds.parser;
 using NLog;
+using Shared;
 
 namespace GameServer.realm.setpieces;
 
@@ -64,7 +65,7 @@ internal class SetPieces {
     }
 
     public static void ApplySetPieces(World world) {
-        log.Info("Applying set pieces to world {0}({1}).", world.Id, world.IdName);
+        SLog.Info("Applying set pieces to world {0}({1}).", world.Id, world.IdName);
 
         var map = world.Map;
         int w = map.Width, h = map.Height;
@@ -94,12 +95,12 @@ internal class SetPieces {
             }
         }
 
-        log.Info("Set pieces applied.");
+        SLog.Info("Set pieces applied.");
     }
 
     public static void RenderSetpiece(World world, IntPoint pos, string map) {
         var mapData = MapParser.GetOrLoad(map);
-        if (mapData == null) log.Error("MapData: {0} not found.", map);
+        if (mapData == null) SLog.Error("MapData: {0} not found.", map);
 
         // todo
     }

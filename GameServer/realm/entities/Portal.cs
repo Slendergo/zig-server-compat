@@ -35,7 +35,7 @@ public class Portal : StaticObject
         var portals = manager.Resources.GameData.Portals;
         if (!portals.ContainsKey(objType))
         {
-            Log.Warn($"Portal {objType.To4Hex()} does not exist. Using Portal of Cowardice.");
+            SLog.Warn($"Portal {objType.To4Hex()} does not exist. Using Portal of Cowardice.");
             objType = 0x0703; // default to Portal of Cowardice
         }
 
@@ -89,7 +89,7 @@ public class Portal : StaticObject
         {
             world = Manager.GetWorld(World.Nexus);
             player.SendErrorText("Unable to find world, sent to nexus");
-            Log.Warn($"Unable to find world for: {ObjectId}");
+            SLog.Warn($"Unable to find world for: {ObjectId}");
         }
 
         if (!isInstanced)

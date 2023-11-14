@@ -45,7 +45,7 @@ public class ItemLoot : MobDrops {
             LootDefs.Add(new LootDef(item, prob, numReq, threshold));
         }
         else {
-            Log.Error($"Error when adding \"{itemId}\" to loot definitions. Item not found.");
+            SLog.Error($"Error when adding \"{itemId}\" to loot definitions. Item not found.");
         }
     }
 }

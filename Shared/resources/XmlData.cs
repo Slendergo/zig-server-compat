@@ -26,16 +26,16 @@ public class XmlData {
     public Dictionary<string, WorldTemplateData> WorldTemplates = new(StringComparer.InvariantCulture);
 
     public XmlData(string dir) {
-        Log.Info("Loading XmlData...");
+        SLog.Info("Loading XmlData...");
         LoadXmls(dir);
 
-        Log.Info("Loaded {0} Tiles...", Tiles.Count);
-        Log.Info("Loaded {0} Items...", Items.Count);
-        Log.Info("Loaded {0} Objects...", ObjectDescs.Count);
-        Log.Info("Loaded {0} Players...", Classes.Count);
-        Log.Info("Loaded {0} Portals...", Portals.Count);
-        Log.Info("Loaded {0} Skins...", Skins.Count);
-        Log.Info("Loaded {0} WorldTemplates...", WorldTemplates.Count);
+        SLog.Info("Loaded {0} Tiles...", Tiles.Count);
+        SLog.Info("Loaded {0} Items...", Items.Count);
+        SLog.Info("Loaded {0} Objects...", ObjectDescs.Count);
+        SLog.Info("Loaded {0} Players...", Classes.Count);
+        SLog.Info("Loaded {0} Portals...", Portals.Count);
+        SLog.Info("Loaded {0} Skins...", Skins.Count);
+        SLog.Info("Loaded {0} WorldTemplates...", WorldTemplates.Count);
     }
 
     private void LoadXmls(string dir) {
@@ -58,10 +58,10 @@ public class XmlData {
             var displayName = string.IsNullOrWhiteSpace(displayId) ? id : displayId;
 
             if (ObjectTypeToId.ContainsKey(type))
-                Log.Warn("'{0}' and '{1}' have the same type of '0x{2:x4}'", id, ObjectTypeToId[type], type);
+                SLog.Warn("'{0}' and '{1}' have the same type of '0x{2:x4}'", id, ObjectTypeToId[type], type);
 
             if (IdToObjectType.ContainsKey(id))
-                Log.Warn("'0x{0:x4}' and '0x{1:x4}' have the same id of '{2}'", type, IdToObjectType[id], id);
+                SLog.Warn("'0x{0:x4}' and '0x{1:x4}' have the same id of '{2}'", type, IdToObjectType[id], id);
 
             ObjectTypeToId[type] = id;
             ObjectTypeToElement[type] = e;
@@ -102,10 +102,10 @@ public class XmlData {
             var type = e.GetAttribute<ushort>("type");
 
             if (TileTypeToId.ContainsKey(type))
-                Log.Warn("'{0}' and '{1}' have the same type of '0x{2:x4}'", id, TileTypeToId[type], type);
+                SLog.Warn("'{0}' and '{1}' have the same type of '0x{2:x4}'", id, TileTypeToId[type], type);
 
             if (IdToTileType.ContainsKey(id))
-                Log.Warn("'0x{0:x4}' and '0x{1:x4}' have the same id of '{2}'", type, IdToTileType[id], id);
+                SLog.Warn("'0x{0:x4}' and '0x{1:x4}' have the same id of '{2}'", type, IdToTileType[id], id);
 
             TileTypeToId[type] = id;
             TileTypeToElement[type] = e;

@@ -22,7 +22,7 @@ public class ISControl {
         switch (c.Type) {
             case ControlType.Reboot:
                 if (c.TargetInst.Equals(_manager.InstanceId)) {
-                    Log.Info($"Server received control message to reboot from {c.Issuer} on {serverInfo?.name}.");
+                    SLog.Info($"Server received control message to reboot from {c.Issuer} on {serverInfo?.name}.");
                     Reboot();
                 }
 
