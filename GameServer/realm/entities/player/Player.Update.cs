@@ -121,8 +121,8 @@ public partial class Player
             StatUpdates.Clear();
         }
 
-        Client.SendNewTick(TickId, time.ElapsedMsDelta, UpdateStatuses);
         AwaitMove(TickId);
+        Client.SendNewTick(TickId, time.ElapsedMsDelta, UpdateStatuses);
     }
 
     // should be more than enough for most cases
@@ -139,8 +139,8 @@ public partial class Player
         if (TilesToAdd.Count == 0 && ToAdd.Count == 0 && ToRemove.Count == 0)
             return;
 
-        Client.SendUpdate(TilesToAdd, ToAdd, ToRemove);
         AwaitUpdateAck(time.TotalElapsedMs);
+        Client.SendUpdate(TilesToAdd, ToAdd, ToRemove);
     }
 
     private void AddTiles()
