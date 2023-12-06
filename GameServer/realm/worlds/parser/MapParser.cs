@@ -441,7 +441,7 @@ public sealed class MapParser
         foreach (var file in files)
         {
             var name = Path.GetFileNameWithoutExtension(file);
-            if (File.Exists(file))
+            if (File.Exists($"{outputDir}/{name}.pmap"))
             {
                 SLog.Debug($"{name}.jm has been converted already, skipping process");
                 continue;
